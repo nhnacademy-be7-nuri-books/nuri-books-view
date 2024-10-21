@@ -10,6 +10,6 @@ public class DemoController {
 
 	@GetMapping("/index")
 	public String demo() {
-		return "index";
+		return "register";
 	}
 }
