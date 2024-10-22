@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -124,21 +124,26 @@
             <div class="col-lg-6">
                 <div class="login_form_inner register_form_inner">
                     <h3>Create an account</h3>
-                    <form class="row login_form" action="#/" id="register_form">
-                        <div class="col-md-12 form-group">
+                    <form class="row login_form" th:action="@{/sign-up}" method="post" id="register_form">
+                        <div class="col-md-6 form-group">
+                            <input type="text" class="form-control" id="userId" name="userId" placeholder="ID"
+                                   onfocus="this.placeholder = ''" onblur="this.placeholder = 'ID'">
+                        </div>
+                        <div class="col-md-6 form-group">
                             <input type="text" class="form-control" id="name" name="name" placeholder="Username"
                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'">
                         </div>
                         <div class="col-md-12 form-group">
-                            <input type="text" class="form-control" id="email" name="email" placeholder="Email Address"
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Email Address"
                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address'">
                         </div>
                         <div class="col-md-6 form-group">
-                            <input type="text" class="form-control" id="password" name="password" placeholder="Password"
+                            <input type="password" class="form-control" id="password" name="password"
+                                   placeholder="Password"
                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
                         </div>
                         <div class="col-md-6 form-group">
-                            <input type="text" class="form-control" id="confirmPassword" name="confirmPassword"
+                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
                                    placeholder="Confirm Password" onfocus="this.placeholder = ''"
                                    onblur="this.placeholder = 'Confirm Password'">
                         </div>
@@ -148,9 +153,8 @@
                                    onblur="this.placeholder = 'Phone Number'">
                         </div>
                         <div class="col-md-12 form-group">
-                            <input type="date" class="form-control" id="birth" name="birth"
-                                   placeholder="Birth" onfocus="this.placeholder = ''"
-                                   onblur="this.placeholder = 'Birth'">
+                            <input type="date" class="form-control" id="birth" name="birthday"
+                                   onfocus="this.placeholder = ''" onblur="this.placeholder = 'Birth'">
                         </div>
                         <div class="col-md-12 form-group">
                             <div class="creat_account">
@@ -159,9 +163,10 @@
                             </div>
                         </div>
                         <div class="col-md-12 form-group">
-                            <button type="submit" value="submit" class="button button-register w-100">Register</button>
+                            <button type="submit" class="button button-register w-100">Register</button>
                         </div>
                     </form>
+                    <div id="error-message" class="alert alert-danger mt-2" style="display: none;"></div>
                 </div>
             </div>
         </div>
@@ -261,6 +266,75 @@
     </div>
 </footer>
 <!--================ End footer Area  =================-->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("register_form");
+
+        form.addEventListener("submit", function (event) {
+            let valid = true;
+            const errorMessage = document.getElementById("error-message");
+            errorMessage.style.display = "none"; // 초기화
+
+            const userId = document.getElementById("userId").value;
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
+            const phoneNumber = document.getElementById("phoneNumber").value;
+            const birthday = document.getElementById("birth").value;
+
+            // 필수 입력 검증
+            if (!userId || !name || !email || !password || !confirmPassword || !phoneNumber || !birthday) {
+                errorMessage.textContent = "모든 필드를 입력해야 합니다.";
+                valid = false;
+            }
+
+            // 길이 검증
+            if (userId.length < 4 || userId.length > 20) {
+                errorMessage.textContent = "사용자 아이디는 4자 이상 20자 이하로 입력해야 합니다.";
+                valid = false;
+            }
+            if (name.length < 2 || name.length > 30) {
+                errorMessage.textContent = "사용자 이름은 2자 이상 30자 이하로 입력해야 합니다.";
+                valid = false;
+            }
+            if (password.length < 8 || password.length > 20) {
+                errorMessage.textContent = "비밀번호는 8자 이상 20자 이하로 입력해야 합니다.";
+                valid = false;
+            }
+            if (phoneNumber.length < 10 || phoneNumber.length > 13) {
+                errorMessage.textContent = "휴대폰 번호는 10자에서 13자 사이의 숫자로 입력해야 합니다.";
+                valid = false;
+            }
+
+            // 이메일 형식 검증
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email && !emailPattern.test(email)) {
+                errorMessage.textContent = "유효한 이메일 주소를 입력하세요.";
+                valid = false;
+            }
+
+            // 비밀번호 일치 여부 검증
+            if (password !== confirmPassword) {
+                errorMessage.textContent = "비밀번호가 일치하지 않습니다.";
+                valid = false;
+            }
+
+            // 휴대전화 형식 검증
+            const phonePattern = /^\d{10,13}$/;
+            if (phoneNumber && !phonePattern.test(phoneNumber)) {
+                errorMessage.textContent = "유효한 휴대폰 번호를 입력하세요. (10~13자 숫자)";
+                valid = false;
+            }
+
+            // 유효하지 않으면 오류 메시지 표시하고 폼 제출 중지
+            if (!valid) {
+                event.preventDefault();
+                errorMessage.style.display = "block"; // 오류 메시지 표시
+            }
+        });
+    });
+</script>
 
 
 <script th:src="@{/vendors/jquery/jquery-3.2.1.min.js}"></script>
