@@ -16,12 +16,10 @@ public class MemberService {
 
 	private final MemberServiceClient memberServiceClient;
 
-	public ResponseMessage registerUser(@Valid MemberCreateRequest userRequest) {
+	public void registerUser(@Valid MemberCreateRequest userRequest) {
 		ResponseEntity<ResponseMessage> response = memberServiceClient.registerUser(userRequest);
 
-		if (response.getStatusCode().is2xxSuccessful()) {
-			return response.getBody();
-		} else {
+		if (!response.getStatusCode().is2xxSuccessful()) {
 			throw new MemberRegisterFailedException("회원가입 실패");
 		}
 	}
