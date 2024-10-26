@@ -15,6 +15,12 @@
     <link rel="stylesheet" th:href="@{/vendors/nice-select/nice-select.css}">
     <link rel="stylesheet" th:href="@{/vendors/nouislider/nouislider.min.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .modal {
+            z-index: 1050;
+            position: fixed; /* 또는 absolute */
+        }
+    </style>
 </head>
 <body>
 <!--================ Start Header Menu Area =================-->
@@ -107,6 +113,39 @@
 </section>
 <!-- ================ end banner area ================= -->
 
+<!-- ================ end modal area ================= -->
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">오류</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p th:text="${errorMessage}">에러 메시지입니다.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:if="${errorMessage}">
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modalElement = document.getElementById('errorModal');
+            var modal = new bootstrap.Modal(modalElement);
+            modal.show();
+        });
+    </script>
+</div>
+
+<!-- ================ end modal area ================= -->
+
 <!--================Login Box Area =================-->
 <section class="login_box_area section-margin">
     <div class="container">
@@ -126,15 +165,18 @@
                     <h3>Create an account</h3>
                     <form class="row login_form" th:action="@{/sign-up}" method="post" id="register_form">
                         <div class="col-md-6 form-group">
-                            <input type="text" class="form-control" id="userId" name="userId" placeholder="ID"
+                            <input type="text" class="form-control" id="userId" name="userId"
+                                   th:value="${userRequest?.userId ?: ''}" placeholder="ID"
                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'ID'">
                         </div>
                         <div class="col-md-6 form-group">
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Username"
+                            <input type="text" class="form-control" id="name" name="name"
+                                   th:value="${userRequest?.name ?: ''}" placeholder="Username"
                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'">
                         </div>
                         <div class="col-md-12 form-group">
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Email Address"
+                            <input type="email" class="form-control" id="email" name="email"
+                                   th:value="${userRequest?.email ?: ''}" placeholder="Email Address"
                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address'">
                         </div>
                         <div class="col-md-6 form-group">
@@ -149,12 +191,13 @@
                         </div>
                         <div class="col-md-12 form-group">
                             <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
-                                   placeholder="Phone Number" onfocus="this.placeholder = ''"
-                                   onblur="this.placeholder = 'Phone Number'">
+                                   th:value="${userRequest?.phoneNumber ?: ''}" placeholder="Phone Number"
+                                   onfocus="this.placeholder = ''" onblur="this.placeholder = 'Phone Number'">
                         </div>
                         <div class="col-md-12 form-group">
                             <input type="date" class="form-control" id="birth" name="birthday"
-                                   onfocus="this.placeholder = ''" onblur="this.placeholder = 'Birth'">
+                                   th:value="${userRequest?.birthday ?: ''}" onfocus="this.placeholder = ''"
+                                   onblur="this.placeholder = 'Birth'">
                         </div>
                         <div class="col-md-12 form-group">
                             <div class="creat_account">
@@ -290,8 +333,8 @@
             }
 
             // 길이 검증
-            if (userId.length < 4 || userId.length > 20) {
-                errorMessage.textContent = "사용자 아이디는 4자 이상 20자 이하로 입력해야 합니다.";
+            if (userId.length < 8 || userId.length > 20) {
+                errorMessage.textContent = "사용자 아이디는 8자 이상 20자 이하로 입력해야 합니다.";
                 valid = false;
             }
             if (name.length < 2 || name.length > 30) {
