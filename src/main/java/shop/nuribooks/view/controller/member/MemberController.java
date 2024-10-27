@@ -12,7 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.dto.member.request.MemberRegisterRequest;
-import shop.nuribooks.view.service.member.MemberServiceImpl;
+import shop.nuribooks.view.service.member.MemberService;
 
 /**
  * 회원 관련 Controller
@@ -28,7 +28,7 @@ import shop.nuribooks.view.service.member.MemberServiceImpl;
 @Slf4j
 public class MemberController {
 
-	private final MemberServiceImpl memberService;
+	private final MemberService memberService;
 
 	@Value("${error.message-key}")
 	private String errorMessageKey;
