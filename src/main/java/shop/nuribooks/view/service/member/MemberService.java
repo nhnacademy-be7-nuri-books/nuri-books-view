@@ -14,7 +14,7 @@ public interface MemberService {
 	 * 회원 등록
 	 *
 	 * @param userRequest 등록할 회원의 정보 {@link MemberRegisterRequest}
-	 * @return 등록 성곡 시 사용자 ID를 포함한 메세지,
+	 * @return 등록 성공 시 사용자 ID를 포함한 메세지,
 	 *         실패 시 오류 매세지
 	 */
 	String registerUser(@Valid MemberRegisterRequest userRequest);

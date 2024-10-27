@@ -20,6 +20,9 @@ eureka:
   instance:
     prefer-ip-address: true
 
+error:
+  message-key: errorMessage
+
 ---
 spring:
   config:
