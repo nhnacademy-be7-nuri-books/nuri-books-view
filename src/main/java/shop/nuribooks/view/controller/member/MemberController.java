@@ -1,5 +1,6 @@
 package shop.nuribooks.view.controller.member;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,6 +29,9 @@ import shop.nuribooks.view.service.member.MemberServiceImpl;
 public class MemberController {
 
 	private final MemberServiceImpl memberService;
+
+	@Value("${error.message-key}")
+	private String errorMessageKey;
 
 	/**
 	 * 회원가입 GET
@@ -65,8 +69,9 @@ public class MemberController {
 		if (returnMessage.startsWith("Success")) {
 			return "redirect:/login";
 		} else {
+			log.error("user register failed: {}", returnMessage);
 			redirectAttributes.addFlashAttribute("userRequest", userRequest);
-			redirectAttributes.addFlashAttribute("errorMessage", returnMessage);
+			redirectAttributes.addFlashAttribute(errorMessageKey, returnMessage);
 			return "redirect:/sign-up";
 		}
 	}
