@@ -31,12 +31,17 @@ public class ExceptionUtil {
 		log.info("{}", methodKey);
 
 		String responseBody = ex.contentUTF8();
+
+		String message = ex.getMessage();
 		JsonNode jsonNode = parseResponseBody(responseBody);
 
-		int statusCode = jsonNode.get("statusCode").asInt();
-		String message = jsonNode.get("message").asText();
+		if (jsonNode.has("message")) {
+			message = jsonNode.get("message").asText();
+		} else if (jsonNode.has("error")) {
+			message = jsonNode.get("error").asText();
+		}
 
-		return handleStatusCode(ex.status(), statusCode, message);
+		return handleStatusCode(ex.status(), message);
 
 	}
 
@@ -64,17 +69,16 @@ public class ExceptionUtil {
 	 * 상태 코드에 따라 적절한 메시지를 반환하거나 예외 처리
 	 *
 	 * @param status 실제 HTTP 상태 코드
-	 * @param statusCode 응답 JSON 에서 추출한 상태 코드
 	 * @param message 응답 JSON 에서 추출한 메시지
 	 * @return 상태 코드에 따른 처리 결과 메시지
 	 * @throws DefaultServerError 서버 오류가 발생한 경우
 	 */
-	private static String handleStatusCode(int status, int statusCode, String message) {
+	private static String handleStatusCode(int status, String message) {
 		switch (status) {
 			case 400, 401, 403, 409 -> {
 				return message;
 			}
-			default -> throw new DefaultServerError(statusCode, message);
+			default -> throw new DefaultServerError(status, message);
 		}
 	}
 }
