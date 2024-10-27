@@ -109,6 +109,39 @@
 </section>
 <!-- ================ end banner area ================= -->
 
+<!-- ================ end modal area ================= -->
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">오류</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p th:text="${errorMessage}">에러 메시지입니다.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:if="${errorMessage}">
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modalElement = document.getElementById('errorModal');
+            var modal = new bootstrap.Modal(modalElement);
+            modal.show();
+        });
+    </script>
+</div>
+
+<!-- ================ end modal area ================= -->
+
 <!--================Login Box Area =================-->
 <section class="login_box_area section-margin">
     <div class="container">
