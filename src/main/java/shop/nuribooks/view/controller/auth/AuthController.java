@@ -18,7 +18,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.dto.auth.request.LoginRequest;
-import shop.nuribooks.view.service.auth.AuthServiceImpl;
+import shop.nuribooks.view.service.auth.AuthService;
 
 /**
  * 인증 관련 Controller
@@ -30,7 +30,7 @@ import shop.nuribooks.view.service.auth.AuthServiceImpl;
 @Slf4j
 public class AuthController {
 
-	private final AuthServiceImpl authService;
+	private final AuthService authService;
 
 	@Value("${error.message-key}")
 	private String errorMessageKey;

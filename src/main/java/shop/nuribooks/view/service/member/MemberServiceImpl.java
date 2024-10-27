@@ -21,7 +21,7 @@ import shop.nuribooks.view.dto.member.response.MemberRegisterResponse;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class MemberServiceImpl {
+public class MemberServiceImpl implements MemberService {
 
 	private final MemberServiceClient memberServiceClient;
 

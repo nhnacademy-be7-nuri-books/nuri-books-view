@@ -17,7 +17,6 @@ import jakarta.servlet.http.HttpServletRequest;
 public class AuthTokenInterceptor implements RequestInterceptor {
 
 	private final HttpServletRequest request;
-	private final StringBuilder cookieHeader = new StringBuilder();
 
 	public AuthTokenInterceptor(HttpServletRequest request) {
 		this.request = request;
