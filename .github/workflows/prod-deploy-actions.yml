@@ -20,7 +20,7 @@ jobs:
         run: mvn -B package --file pom.xml
 
       - name: Run SonarQube
-        run: mvn sonar:sonar -Dsonar.projectKey=${{secrets.SONAR_KEY}} -Dsonar.host.url=${{secrets.SONAR_URL}} -Dsonar.login=${{secrets.SONAR_TOKEN}}
+        run: mvn sonar:sonar -Dsonar.projectKey=${{secrets.SONAR_KEY}} -Dsonar.projectName=${{secrets.SONAR_KEY}} -Dsonar.host.url=${{secrets.SONAR_URL}} -Dsonar.login=${{secrets.SONAR_TOKEN}}
 
       - name: upload file
         uses: appleboy/scp-action@master
