@@ -1,6 +1,11 @@
 spring:
-  application:
-    name: view
+  application: { name: view }
+  profiles:
+    active: dev
+
+thymeleaf:
+  prefix: classpath:/templates/
+  suffix: .html
 
 server:
   port: 3000
@@ -14,3 +19,16 @@ eureka:
       #,http://admin:1234@localhost:8762/eureka
   instance:
     prefer-ip-address: true
+
+error:
+  message-key: errorMessage
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+logging:
+  level:
+    root: debug
