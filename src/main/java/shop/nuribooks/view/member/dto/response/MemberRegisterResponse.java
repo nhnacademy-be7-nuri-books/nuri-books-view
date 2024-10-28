@@ -1,4 +1,4 @@
-package shop.nuribooks.view.dto.member.response;
+package shop.nuribooks.view.member.dto.response;
 
 import java.time.LocalDate;
 

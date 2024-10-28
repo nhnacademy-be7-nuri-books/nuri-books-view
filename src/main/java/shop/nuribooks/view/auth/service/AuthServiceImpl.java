@@ -1,4 +1,4 @@
-package shop.nuribooks.view.service.auth;
+package shop.nuribooks.view.auth.service;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -15,9 +15,9 @@ import feign.FeignException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import shop.nuribooks.view.auth.dto.request.LoginRequest;
 import shop.nuribooks.view.common.feign.AuthServiceClient;
 import shop.nuribooks.view.common.util.ExceptionUtil;
-import shop.nuribooks.view.dto.auth.request.LoginRequest;
 
 /**
  * 인증 서비스 구현체

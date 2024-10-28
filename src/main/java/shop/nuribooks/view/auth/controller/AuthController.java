@@ -1,4 +1,4 @@
-package shop.nuribooks.view.controller.auth;
+package shop.nuribooks.view.auth.controller;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,8 +17,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import shop.nuribooks.view.dto.auth.request.LoginRequest;
-import shop.nuribooks.view.service.auth.AuthService;
+import shop.nuribooks.view.auth.dto.request.LoginRequest;
+import shop.nuribooks.view.auth.service.AuthService;
 
 /**
  * 인증 관련 Controller

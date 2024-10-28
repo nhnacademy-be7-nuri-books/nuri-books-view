@@ -1,10 +1,10 @@
-package shop.nuribooks.view.service.auth;
+package shop.nuribooks.view.auth.service;
 
 import java.util.List;
 import java.util.Map;
 
 import jakarta.validation.Valid;
-import shop.nuribooks.view.dto.auth.request.LoginRequest;
+import shop.nuribooks.view.auth.dto.request.LoginRequest;
 
 /**
  * 인증 서비스 인터페이스.

@@ -1,7 +1,7 @@
-package shop.nuribooks.view.service.member;
+package shop.nuribooks.view.member.service;
 
 import jakarta.validation.Valid;
-import shop.nuribooks.view.dto.member.request.MemberRegisterRequest;
+import shop.nuribooks.view.member.dto.request.MemberRegisterRequest;
 
 /**
  * 회원 서비스 인터페이스.

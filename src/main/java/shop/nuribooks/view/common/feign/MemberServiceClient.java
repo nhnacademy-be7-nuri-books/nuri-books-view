@@ -5,8 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import shop.nuribooks.view.dto.member.request.MemberRegisterRequest;
-import shop.nuribooks.view.dto.member.response.MemberRegisterResponse;
+import shop.nuribooks.view.member.dto.request.MemberRegisterRequest;
+import shop.nuribooks.view.member.dto.response.MemberRegisterResponse;
 
 /**
  * member 관련 FeignClient

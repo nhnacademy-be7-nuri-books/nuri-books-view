@@ -1,4 +1,4 @@
-package shop.nuribooks.view.service.member;
+package shop.nuribooks.view.member.service;
 
 import java.util.Objects;
 
@@ -10,8 +10,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.common.feign.MemberServiceClient;
 import shop.nuribooks.view.common.util.ExceptionUtil;
-import shop.nuribooks.view.dto.member.request.MemberRegisterRequest;
-import shop.nuribooks.view.dto.member.response.MemberRegisterResponse;
+import shop.nuribooks.view.member.dto.request.MemberRegisterRequest;
+import shop.nuribooks.view.member.dto.response.MemberRegisterResponse;
 
 /**
  * 회원 서비스 구현체

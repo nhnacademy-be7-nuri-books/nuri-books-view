@@ -1,4 +1,4 @@
-package shop.nuribooks.view.dto;
+package shop.nuribooks.view.common.dto;
 
 /**
  * 오류 응답 데이터 전송 객체.

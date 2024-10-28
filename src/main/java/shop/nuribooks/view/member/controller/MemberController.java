@@ -1,4 +1,4 @@
-package shop.nuribooks.view.controller.member;
+package shop.nuribooks.view.member.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -11,8 +11,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import shop.nuribooks.view.dto.member.request.MemberRegisterRequest;
-import shop.nuribooks.view.service.member.MemberService;
+import shop.nuribooks.view.member.dto.request.MemberRegisterRequest;
+import shop.nuribooks.view.member.service.MemberService;
 
 /**
  * 회원 관련 Controller

@@ -1,4 +1,4 @@
-package shop.nuribooks.view.dto.auth.request;
+package shop.nuribooks.view.auth.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
