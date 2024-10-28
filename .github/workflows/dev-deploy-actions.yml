@@ -1,11 +1,11 @@
-name: deploy-actions
+name: dev-deploy-phase
 on:
   push:
     branches:
-      - "main"
+      - develop
 
 jobs:
-  deploy:
+  dev-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -19,16 +19,13 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file pom.xml
 
-      - name: Run SonarQube
-        run: mvn sonar:sonar -Dsonar.projectKey=${{secrets.SONAR_KEY}} -Dsonar.projectName=${{secrets.SONAR_KEY}} -Dsonar.host.url=${{secrets.SONAR_URL}} -Dsonar.login=${{secrets.SONAR_TOKEN}}
-
       - name: upload file
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.SSH_IP }}
-          username: ${{ secrets.SSH_ID }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
+          host: ${{ secrets.DEV_SSH_IP }}
+          username: ${{ secrets.DEV_SSH_ID }}
+          key: ${{ secrets.DEV_SSH_KEY }}
+          port: ${{ secrets.DEV_SSH_PORT }}
           source: "target/*.jar"
           target: "~/view/view.jar"
           rm: true
@@ -36,9 +33,9 @@ jobs:
       - name: execute shell script
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.SSH_IP }}
-          username: ${{ secrets.SSH_ID }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
+          host: ${{ secrets.DEV_SSH_IP }}
+          username: ${{ secrets.DEV_SSH_ID }}
+          key: ${{ secrets.DEV_SSH_KEY }}
+          port: ${{ secrets.DEV_SSH_PORT }}
           script_stop: true
-          script: "./view/startup.sh"
+          script: "./startup.sh 3000 view"
