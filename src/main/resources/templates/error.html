@@ -64,10 +64,10 @@
                                aria-haspopup="true"
                                aria-expanded="false">MyPages</a>
                             <ul class="dropdown-menu">
-                                <li class="nav-item" th:if="${!isLoggedIn}">
+                                <li class="nav-item" th:if="${isLoggedIn == null or isLoggedIn == false}">
                                     <a class="nav-link" th:href="@{/login}">Login</a>
                                 </li>
-                                <li class="nav-item" th:if="${!isLoggedIn}">
+                                <li class="nav-item" th:if="${isLoggedIn == null or isLoggedIn == false}">
                                     <a class="nav-link" th:href="@{/sign-up}">Register</a>
                                 </li>
                                 <li class="nav-item" th:if="${isLoggedIn}">
