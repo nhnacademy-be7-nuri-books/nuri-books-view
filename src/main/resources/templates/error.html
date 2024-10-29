@@ -62,11 +62,24 @@
                         <li class="nav-item active submenu dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
                                aria-haspopup="true"
-                               aria-expanded="false">Pages</a>
+                               aria-expanded="false">MyPages</a>
                             <ul class="dropdown-menu">
-                                <li class="nav-item"><a class="nav-link" th:href="@{/login.html}">Login</a></li>
-                                <li class="nav-item"><a class="nav-link" th:href="@{/register.html}">Register</a></li>
-                                <li class="nav-item"><a class="nav-link" th:href="@{/tracking-order.html}">Tracking</a>
+                                <li class="nav-item" th:if="${!isLoggedIn}">
+                                    <a class="nav-link" th:href="@{/login}">Login</a>
+                                </li>
+                                <li class="nav-item" th:if="${!isLoggedIn}">
+                                    <a class="nav-link" th:href="@{/sign-up}">Register</a>
+                                </li>
+                                <li class="nav-item" th:if="${isLoggedIn}">
+                                    <a class="nav-link" th:href="@{/me}">MyPage</a>
+                                </li>
+                                <li class="nav-item" th:if="${isLoggedIn}">
+                                    <form th:action="@{/logout}" method="post" style="display:inline;">
+                                        <button type="submit" class="nav-link"
+                                                style="border: none; background: none; padding: 0;">
+                                            Logout
+                                        </button>
+                                    </form>
                                 </li>
                             </ul>
                         </li>
@@ -114,7 +127,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="alert alert-danger" th:if="${errorMessage}" role="alert">
-                    <span th:text="${errorMessage}">Error message goes here.</span>
+                    <span th:text="${errorMessage}">Error가 발생하였습니다.</span>
                 </div>
                 <span>Error message goes here.</span>
                 <div class="text-center mt-4">
