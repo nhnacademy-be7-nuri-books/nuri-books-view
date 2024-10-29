@@ -1,6 +1,9 @@
 package shop.nuribooks.view.common.interceptor;
 
+import java.util.Objects;
+
 import org.springframework.http.HttpHeaders;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -13,6 +16,7 @@ import shop.nuribooks.view.common.util.CookieUtil;
  *
  * @author nuri
  */
+@Component
 public class TokenUpdateInterceptor implements HandlerInterceptor {
 
 	/**
@@ -31,16 +35,19 @@ public class TokenUpdateInterceptor implements HandlerInterceptor {
 		String refreshToken = "";
 		String acceptToken = response.getHeader(HttpHeaders.AUTHORIZATION);
 
-		String[] cookies = response.getHeader(HttpHeaders.SET_COOKIE).split(";");
+		if (Objects.nonNull(acceptToken)) {
 
-		for (String cookie : cookies) {
-			String[] cookieParse = cookie.split("=");
-			if (cookieParse[0].equals("Refresh")) {
-				refreshToken = cookieParse[1];
+			String[] cookies = response.getHeader(HttpHeaders.SET_COOKIE).split(";");
+
+			for (String cookie : cookies) {
+				String[] cookieParse = cookie.split("=");
+				if (cookieParse[0].equals("Refresh")) {
+					refreshToken = cookieParse[1];
+				}
 			}
-		}
 
-		CookieUtil.addCookie(response, HttpHeaders.AUTHORIZATION, acceptToken);
-		CookieUtil.addCookie(response, "Refresh", refreshToken);
+			CookieUtil.addCookie(response, HttpHeaders.AUTHORIZATION, acceptToken);
+			CookieUtil.addCookie(response, "Refresh", refreshToken);
+		}
 	}
 }
