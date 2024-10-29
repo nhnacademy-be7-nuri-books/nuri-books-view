@@ -1,5 +1,6 @@
 package shop.nuribooks.view.common.interceptor;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 import feign.RequestInterceptor;
@@ -32,8 +33,8 @@ public class AuthTokenInterceptor implements RequestInterceptor {
 		Cookie[] cookies = request.getCookies();
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
-				if (cookie.getName().equals("Authentication")) {
-					requestTemplate.header("Authentication", cookie.getValue());
+				if (cookie.getName().equals(HttpHeaders.AUTHORIZATION)) {
+					requestTemplate.header(HttpHeaders.AUTHORIZATION, cookie.getValue());
 				} else if (cookie.getName().equals("Refresh")) {
 					requestTemplate.header("Refresh", cookie.getValue());
 				}
