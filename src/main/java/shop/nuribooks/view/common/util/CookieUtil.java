@@ -18,4 +18,18 @@ public class CookieUtil {
 		cookie.setPath("/");
 		response.addCookie(cookie);
 	}
+
+	/**
+	 * 쿠키를 삭제
+	 *
+	 * @param response {@link HttpServletResponse} 응답 객체
+	 * @param cookieName 삭제할 쿠키의 이름
+	 */
+	public static void deleteCookie(HttpServletResponse response, String cookieName) {
+		Cookie cookie = new Cookie(cookieName, null);
+		cookie.setPath("/");
+		cookie.setMaxAge(0);
+		response.addCookie(cookie);
+	}
+
 }
