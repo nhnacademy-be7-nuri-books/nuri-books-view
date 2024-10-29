@@ -75,4 +75,17 @@ public class AuthServiceImpl implements AuthService {
 			return responseMap;
 		}
 	}
+
+	/**
+	 * 로그아웃
+	 */
+	@Override
+	public void logout() {
+		try {
+			ResponseEntity<Void> response = authServiceClient.logout();
+		} catch (FeignException ex) {
+			log.error("excepion :{}", ExceptionUtil.handleFeignException(ex));
+		}
+	}
+
 }

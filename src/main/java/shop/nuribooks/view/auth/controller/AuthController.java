@@ -88,6 +88,21 @@ public class AuthController {
 	}
 
 	/**
+	 * POST 로그아웃
+	 *
+	 * @return 반환 경로
+	 */
+	@PostMapping("/logout")
+	public String doLogout(HttpServletResponse response) {
+		authService.logout();
+
+		CookieUtil.deleteCookie(response, HttpHeaders.AUTHORIZATION);
+		CookieUtil.deleteCookie(response, "Refresh");
+		log.info("로그아웃 성공");
+		return "redirect:/";
+	}
+
+	/**
 	 * SET-COOKIE 로 얻어온 쿠키 목록을 처리
 	 *
 	 * @param cookies "name=value; attributes" 형식의 쿠키 목록
