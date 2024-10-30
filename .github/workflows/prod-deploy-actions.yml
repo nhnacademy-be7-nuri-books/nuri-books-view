@@ -30,8 +30,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           source: "target/*.jar"
-          target: "~/view/view.jar"
-          rm: true
+          target: "~/view"
 
       - name: execute shell script
         uses: appleboy/ssh-action@master
@@ -41,4 +40,4 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script_stop: true
-          script: "./view/startup.sh"
+          script: "./startup.sh 3000 view"
