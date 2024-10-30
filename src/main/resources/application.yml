@@ -23,6 +23,9 @@ eureka:
 error:
   message-key: errorMessage
 
+header:
+  refresh-key-name: Refresh
+
 ---
 spring:
   config:

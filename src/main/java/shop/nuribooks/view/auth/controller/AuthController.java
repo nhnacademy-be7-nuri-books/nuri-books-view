@@ -3,6 +3,7 @@ package shop.nuribooks.view.auth.controller;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -34,6 +35,8 @@ public class AuthController {
 
 	@Value("${error.message-key}")
 	private String errorMessageKey;
+	@Value("${header.refresh-key-name}")
+	private String refreshHeaderName;
 
 	/**
 	 * 로그인 GET
@@ -82,7 +85,9 @@ public class AuthController {
 		}
 
 		String authHeader = result.get("X-USER-ID").getFirst();
-		redirectAttributes.addFlashAttribute("userID", authHeader);
+		if (Objects.nonNull(authHeader)) {
+			redirectAttributes.addFlashAttribute("userID", authHeader);
+		}
 		return "redirect:/";
 
 	}
@@ -97,7 +102,7 @@ public class AuthController {
 		authService.logout();
 
 		CookieUtil.deleteCookie(response, HttpHeaders.AUTHORIZATION);
-		CookieUtil.deleteCookie(response, "Refresh");
+		CookieUtil.deleteCookie(response, refreshHeaderName);
 		log.info("로그아웃 성공");
 		return "redirect:/";
 	}

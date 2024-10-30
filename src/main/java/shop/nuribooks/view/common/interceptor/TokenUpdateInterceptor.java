@@ -19,6 +19,8 @@ import shop.nuribooks.view.common.util.CookieUtil;
 @Component
 public class TokenUpdateInterceptor implements HandlerInterceptor {
 
+	private String refreshHeaderName;
+
 	/**
 	 * 매 응답마다 토큰 재발행이 되었으면 이를 쿠키에 갱신
 	 *
@@ -47,7 +49,7 @@ public class TokenUpdateInterceptor implements HandlerInterceptor {
 			}
 
 			CookieUtil.addCookie(response, HttpHeaders.AUTHORIZATION, acceptToken);
-			CookieUtil.addCookie(response, "Refresh", refreshToken);
+			CookieUtil.addCookie(response, refreshHeaderName, refreshToken);
 		}
 	}
 }
