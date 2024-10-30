@@ -3,6 +3,7 @@ package shop.nuribooks.view.auth.controller;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -12,20 +13,20 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.auth.dto.request.LoginRequest;
 import shop.nuribooks.view.auth.service.AuthService;
+import shop.nuribooks.view.common.util.CookieUtil;
 
 /**
  * 인증 관련 Controller
  *
  * @author : nuri
  */
-@Controller()
+@Controller
 @RequiredArgsConstructor
 @Slf4j
 public class AuthController {
@@ -34,6 +35,8 @@ public class AuthController {
 
 	@Value("${error.message-key}")
 	private String errorMessageKey;
+	@Value("${header.refresh-key-name}")
+	private String refreshHeaderName;
 
 	/**
 	 * 로그인 GET
@@ -73,14 +76,35 @@ public class AuthController {
 			// accept jwt 쿠키로 저장
 			String authHeader = result.get(HttpHeaders.AUTHORIZATION).getFirst();
 			if (authHeader != null) {
-				addAuthCookie(response, authHeader);
+				// "Bearer "
+				String token = authHeader.substring(7);
+				addAuthCookie(response, token);
 			}
 
 			log.info("로그인 성공");
 		}
 
-		return "redirect:/index";
+		String authHeader = result.get("X-USER-ID").getFirst();
+		if (Objects.nonNull(authHeader)) {
+			redirectAttributes.addFlashAttribute("userID", authHeader);
+		}
+		return "redirect:/";
 
+	}
+
+	/**
+	 * POST 로그아웃
+	 *
+	 * @return 반환 경로
+	 */
+	@PostMapping("/logout")
+	public String doLogout(HttpServletResponse response) {
+		authService.logout();
+
+		CookieUtil.deleteCookie(response, HttpHeaders.AUTHORIZATION);
+		CookieUtil.deleteCookie(response, refreshHeaderName);
+		log.info("로그아웃 성공");
+		return "redirect:/";
 	}
 
 	/**
@@ -96,7 +120,7 @@ public class AuthController {
 				String[] keyValue = cookieParts[0].split("=");
 
 				if (keyValue.length == 2) {
-					addCookie(response, keyValue[0].trim(), keyValue[1].trim());
+					CookieUtil.addCookie(response, keyValue[0].trim(), keyValue[1].trim());
 				}
 			}
 		}
@@ -109,21 +133,7 @@ public class AuthController {
 	 * @param authHeader AUTHORIZATION 헤더 내용
 	 */
 	private void addAuthCookie(HttpServletResponse response, String authHeader) {
-		addCookie(response, HttpHeaders.AUTHORIZATION, authHeader);
-	}
-
-	/**
-	 * HTTP 응답에 쿠키 추가
-	 *
-	 * @param response 쿠키가 추가 될 HttpServletResponse
-	 * @param name 쿠키 이름
-	 * @param value 쿠키 값
-	 */
-	private void addCookie(HttpServletResponse response, String name, String value) {
-		Cookie cookie = new Cookie(name, value);
-		cookie.setHttpOnly(true);
-		cookie.setPath("/");
-		response.addCookie(cookie);
+		CookieUtil.addCookie(response, HttpHeaders.AUTHORIZATION, authHeader);
 	}
 
 }

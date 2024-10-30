@@ -24,8 +24,14 @@ public interface AuthServiceClient {
 	 * @return 응답 메시지
 	 */
 	@PostMapping("/api/auth/login")
-	ResponseEntity<Void> login(@RequestBody LoginRequest loginRequest);
+	ResponseEntity<String> login(@RequestBody LoginRequest loginRequest);
 
-	// todo 로그아웃 추가 예정
+	/**
+	 * POST 로그아웃
+	 *
+	 * @return 응답 메세지
+	 */
+	@PostMapping("/api/auth/logout")
+	ResponseEntity<Void> logout();
 }
 

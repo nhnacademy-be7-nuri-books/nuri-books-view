@@ -23,7 +23,7 @@ import shop.nuribooks.view.member.service.MemberService;
  *
  * @author : nuri
  */
-@Controller()
+@Controller
 @RequiredArgsConstructor
 @Slf4j
 public class MemberController {

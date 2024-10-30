@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import feign.FeignException;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.auth.dto.request.LoginRequest;
@@ -45,12 +44,12 @@ public class AuthServiceImpl implements AuthService {
 	 * @return 헤더 정보 반환,
 	 * 		   예외 발생 시 예외 메시지 반환
 	 */
-	public Map<String, List<String>> login(@Valid LoginRequest loginRequest) {
+	public Map<String, List<String>> login(/*@Valid*/ LoginRequest loginRequest) {
 
 		Map<String, List<String>> responseMap = new HashMap<>();
 
 		try {
-			ResponseEntity<Void> response = authServiceClient.login(loginRequest);
+			ResponseEntity<String> response = authServiceClient.login(loginRequest);
 			HttpHeaders headers = response.getHeaders();
 
 			// refresh jwt
@@ -64,6 +63,10 @@ public class AuthServiceImpl implements AuthService {
 				.ifPresent(
 					setAuthorizationHeaders -> responseMap.put(HttpHeaders.AUTHORIZATION, setAuthorizationHeaders));
 
+			Optional.ofNullable(headers.get("X-USER-ID"))
+				.filter(list -> !list.isEmpty())
+				.ifPresent(setCookieHeaders -> responseMap.put("X-USER-ID", setCookieHeaders));
+
 			return responseMap;
 
 		} catch (FeignException ex) {
@@ -72,4 +75,17 @@ public class AuthServiceImpl implements AuthService {
 			return responseMap;
 		}
 	}
+
+	/**
+	 * 로그아웃
+	 */
+	@Override
+	public void logout() {
+		try {
+			ResponseEntity<Void> response = authServiceClient.logout();
+		} catch (FeignException ex) {
+			log.error("excepion :{}", ExceptionUtil.handleFeignException(ex));
+		}
+	}
+
 }
