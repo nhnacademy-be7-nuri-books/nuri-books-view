@@ -1,392 +1,315 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!doctype html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Aroma Shop - Login</title>
-    <link rel="icon" th:href="@{/img/Fevicon.png}" type="image/png">
-    <link rel="stylesheet" th:href="@{/vendors/bootstrap/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{/vendors/fontawesome/css/all.min.css}">
-    <link rel="stylesheet" th:href="@{/vendors/themify-icons/themify-icons.css}">
-    <link rel="stylesheet" th:href="@{/vendors/linericon/style.css}">
-    <link rel="stylesheet" th:href="@{/vendors/owl-carousel/owl.theme.default.min.css}">
-    <link rel="stylesheet" th:href="@{/vendors/owl-carousel/owl.carousel.min.css}">
-    <link rel="stylesheet" th:href="@{/vendors/nice-select/nice-select.css}">
-    <link rel="stylesheet" th:href="@{/vendors/nouislider/nouislider.min.css}">
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-    <style>
-        .modal {
-            z-index: 1050;
-            position: fixed; /* 또는 absolute */
-        }
-    </style>
+    <title>E-Commerce Template</title>
+
+    <link href="//fonts.googleapis.com/css?family=Righteous" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300i,700" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i" rel="stylesheet">
+
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/all.min.css">
+    <link rel="stylesheet" href="../static/css/style.css">
 </head>
 <body>
-<!--================ Start Header Menu Area =================-->
-<header class="header_area">
-    <div class="main_menu">
-        <nav class="navbar navbar-expand-lg navbar-light">
-            <div class="container">
-                <a class="navbar-brand logo_h" th:href="@{/index.html}"><img src="/img/logo.png" alt=""></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse"
-                        data-target="#navbarSupportedContent"
-                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
-                    <ul class="nav navbar-nav menu_nav ml-auto mr-auto">
-                        <li class="nav-item"><a class="nav-link" th:href="@{/index.html}">Home</a></li>
-                        <li class="nav-item submenu dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-haspopup="true"
-                               aria-expanded="false">Shop</a>
-                            <ul class="dropdown-menu">
-                                <li class="nav-item"><a class="nav-link" th:href="@{/category.html}">Shop Category</a>
+<div class="container-fluid">
+    <div class="row min-vh-100">
+        <div class="col-12">
+            <header class="row">
+                <!-- Top Nav -->
+                <div class="col-12 bg-dark py-2 d-md-block d-none">
+                    <div class="row">
+                        <div class="col-auto me-auto">
+                            <ul class="top-nav">
+                                <li>
+                                    <a href="tel:+123-456-7890"><i class="fa fa-phone-square me-2"></i>+123-456-7890</a>
                                 </li>
-                                <li class="nav-item"><a class="nav-link" th:href="@{/single-product.html}">Blog
-                                    Details</a></li>
-                                <li class="nav-item"><a class="nav-link" th:href="@{/checkout.html}">Product
-                                    Checkout</a></li>
-                                <li class="nav-item"><a class="nav-link"
-                                                        th:href="@{/confirmation.html}">Confirmation</a></li>
-                                <li class="nav-item"><a class="nav-link" th:href="@{/cart.html}">Shopping Cart</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item submenu dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-haspopup="true"
-                               aria-expanded="false">Blog</a>
-                            <ul class="dropdown-menu">
-                                <li class="nav-item"><a class="nav-link" th:href="@{/blog.html}">Blog</a></li>
-                                <li class="nav-item"><a class="nav-link" th:href="@{/single-blog.html}">Blog Details</a>
+                                <li>
+                                    <a href="mailto:mail@ecom.com"><i class="fa fa-envelope me-2"></i>mail@ecom.com</a>
                                 </li>
                             </ul>
-                        </li>
-                        <li class="nav-item active submenu dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-haspopup="true"
-                               aria-expanded="false">Pages</a>
-                            <ul class="dropdown-menu">
-                                <li class="nav-item"><a class="nav-link" th:href="@{/login.html}">Login</a></li>
-                                <li class="nav-item"><a class="nav-link" th:href="@{/register.html}">Register</a></li>
-                                <li class="nav-item"><a class="nav-link" th:href="@{/tracking-order.html}">Tracking</a>
+                        </div>
+                        <div class="col-auto">
+                            <ul class="top-nav">
+                                <li>
+                                    <a href="register.html"><i class="fas fa-user-edit me-2"></i>Register</a>
+                                </li>
+                                <li>
+                                    <a href="login.html"><i class="fas fa-sign-in-alt me-2"></i>Login</a>
                                 </li>
                             </ul>
-                        </li>
-                        <li class="nav-item"><a class="nav-link" th:href="@{/contact.html}">Contact</a></li>
-                    </ul>
-
-                    <ul class="nav-shop">
-                        <li class="nav-item">
-                            <button><i class="ti-search"></i></button>
-                        </li>
-                        <li class="nav-item">
-                            <button><i class="ti-shopping-cart"></i><span class="nav-shop__circle">3</span></button>
-                        </li>
-                        <li class="nav-item"><a class="button button-header" href="#">Buy Now</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </div>
-</header>
-<!--================ End Header Menu Area =================-->
-
-<!-- ================ start banner area ================= -->
-<section class="blog-banner-area" id="category">
-    <div class="container h-100">
-        <div class="blog-banner">
-            <div class="text-center">
-                <h1>Register</h1>
-                <nav aria-label="breadcrumb" class="banner-breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Register</li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- ================ end banner area ================= -->
-
-<!-- ================ end modal area ================= -->
-<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="errorModalLabel">오류</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p th:text="${errorMessage}">에러 메시지입니다.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div th:if="${errorMessage}">
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var modalElement = document.getElementById('errorModal');
-            var modal = new bootstrap.Modal(modalElement);
-            modal.show();
-        });
-    </script>
-</div>
-
-<!-- ================ end modal area ================= -->
-
-<!--================Login Box Area =================-->
-<section class="login_box_area section-margin">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="login_box_img">
-                    <div class="hover">
-                        <h4>Already have an account?</h4>
-                        <p>There are advances being made in science and technology everyday, and a good example of this
-                            is the</p>
-                        <a class="button button-account" th:href="@{/login.html}">Login Now</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="login_form_inner register_form_inner">
-                    <h3>Create an account</h3>
-                    <form class="row login_form" th:action="@{/sign-up}" method="post" id="register_form">
-                        <div class="col-md-6 form-group">
-                            <input type="text" class="form-control" id="userId" name="userId"
-                                   th:value="${userRequest?.userId ?: ''}" placeholder="ID"
-                                   onfocus="this.placeholder = ''" onblur="this.placeholder = 'ID'">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <input type="text" class="form-control" id="name" name="name"
-                                   th:value="${userRequest?.name ?: ''}" placeholder="Username"
-                                   onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'">
-                        </div>
-                        <div class="col-md-12 form-group">
-                            <input type="email" class="form-control" id="email" name="email"
-                                   th:value="${userRequest?.email ?: ''}" placeholder="Email Address"
-                                   onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address'">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <input type="password" class="form-control" id="password" name="password"
-                                   placeholder="Password"
-                                   onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
-                                   placeholder="Confirm Password" onfocus="this.placeholder = ''"
-                                   onblur="this.placeholder = 'Confirm Password'">
-                        </div>
-                        <div class="col-md-12 form-group">
-                            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
-                                   th:value="${userRequest?.phoneNumber ?: ''}" placeholder="Phone Number"
-                                   onfocus="this.placeholder = ''" onblur="this.placeholder = 'Phone Number'">
-                        </div>
-                        <div class="col-md-12 form-group">
-                            <input type="date" class="form-control" id="birth" name="birthday"
-                                   th:value="${userRequest?.birthday ?: ''}" onfocus="this.placeholder = ''"
-                                   onblur="this.placeholder = 'Birth'">
-                        </div>
-                        <div class="col-md-12 form-group">
-                            <div class="creat_account">
-                                <input type="checkbox" id="f-option2" name="selector">
-                                <label for="f-option2">Keep me logged in</label>
+                <!-- Top Nav -->
+
+                <!-- Header -->
+                <div class="col-12 bg-white pt-4">
+                    <div class="row">
+                        <div class="col-lg-auto">
+                            <div class="site-logo text-center text-lg-left">
+                                <a href="index.html">E-Commerce</a>
                             </div>
                         </div>
-                        <div class="col-md-12 form-group">
-                            <button type="submit" class="button button-register w-100">Register</button>
+                        <div class="col-lg-5 mx-auto mt-4 mt-lg-0">
+                            <form action="#">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="search" class="form-control border-dark" placeholder="Search..."
+                                               required>
+                                        <button class="btn btn-outline-dark"><i class="fas fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                    </form>
-                    <div id="error-message" class="alert alert-danger mt-2" style="display: none;"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!--================End Login Box Area =================-->
-
-
-<!--================ Start footer Area  =================-->
-<footer>
-    <div class="footer-area footer-only">
-        <div class="container">
-            <div class="row section_gap">
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="single-footer-widget tp_widgets">
-                        <h4 class="footer_title large_title">Our Mission</h4>
-                        <p>
-                            So seed seed green that winged cattle in. Gathering thing made fly you're no
-                            divided deep moved us lan Gathering thing us land years living.
-                        </p>
-                        <p>
-                            So seed seed green that winged cattle in. Gathering thing made fly you're no divided deep
-                            moved
-                        </p>
-                    </div>
-                </div>
-                <div class="offset-lg-1 col-lg-2 col-md-6 col-sm-6">
-                    <div class="single-footer-widget tp_widgets">
-                        <h4 class="footer_title">Quick Links</h4>
-                        <ul class="list">
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#">Shop</a></li>
-                            <li><a href="#">Blog</a></li>
-                            <li><a href="#">Product</a></li>
-                            <li><a href="#">Brand</a></li>
-                            <li><a href="#">Contact</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6 col-sm-6">
-                    <div class="single-footer-widget instafeed">
-                        <h4 class="footer_title">Gallery</h4>
-                        <ul class="list instafeex flex-wrap">
-                            <li><img th:src="@{/img/gallery/r1.jpg}" alt=""></li>
-                            <li><img th:src="@{/img/gallery/r2.jpg}" alt=""></li>
-                            <li><img th:src="@{/img/gallery/r3.jpg}" alt=""></li>
-                            <li><img th:src="@{/img/gallery/r5.jpg}" alt=""></li>
-                            <li><img th:src="@{/img/gallery/r7.jpg}" alt=""></li>
-                            <li><img th:src="@{/img/gallery/r8.jpg}" alt=""></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="offset-lg-1 col-lg-3 col-md-6 col-sm-6">
-                    <div class="single-footer-widget tp_widgets">
-                        <h4 class="footer_title">Contact Us</h4>
-                        <div class="ml-40">
-                            <p class="sm-head">
-                                <span class="fa fa-location-arrow"></span>
-                                Head Office
-                            </p>
-                            <p>123, Main Street, Your City</p>
-
-                            <p class="sm-head">
-                                <span class="fa fa-phone"></span>
-                                Phone Number
-                            </p>
-                            <p>
-                                +123 456 7890 <br>
-                                +123 456 7890
-                            </p>
-
-                            <p class="sm-head">
-                                <span class="fa fa-envelope"></span>
-                                Email
-                            </p>
-                            <p>
-                                free@infoexample.com <br>
-                                www.infoexample.com
-                            </p>
+                        <div class="col-lg-auto text-center text-lg-left header-item-holder">
+                            <a href="#" class="header-item">
+                                <i class="fas fa-heart me-2"></i><span id="header-favorite">0</span>
+                            </a>
+                            <a href="cart.html" class="header-item">
+                                <i class="fas fa-shopping-bag me-2"></i><span id="header-qty" class="me-3">2</span>
+                                <i class="fas fa-money-bill-wave me-2"></i><span id="header-price">$4,000</span>
+                            </a>
                         </div>
                     </div>
+
+                    <!-- Nav -->
+                    <div class="row">
+                        <nav class="navbar navbar-expand-lg navbar-light bg-white col-12">
+                            <button class="navbar-toggler d-lg-none border-0" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#mainNav">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse" id="mainNav">
+                                <ul class="navbar-nav mx-auto mt-2 mt-lg-0">
+                                    <li class="nav-item active">
+                                        <a class="nav-link" href="index.html">Home <span
+                                                class="sr-only">(current)</span></a>
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="electronics"
+                                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Electronics</a>
+                                        <div class="dropdown-menu" aria-labelledby="electronics">
+                                            <a class="dropdown-item" href="category.html">Computers</a>
+                                            <a class="dropdown-item" href="category.html">Mobile Phones</a>
+                                            <a class="dropdown-item" href="category.html">Television Sets</a>
+                                            <a class="dropdown-item" href="category.html">DSLR Cameras</a>
+                                            <a class="dropdown-item" href="category.html">Projectors</a>
+                                        </div>
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="fashion"
+                                           data-bs-toggle="dropdown" aria-haspopup="true"
+                                           aria-expanded="false">Fashion</a>
+                                        <div class="dropdown-menu" aria-labelledby="fashion">
+                                            <a class="dropdown-item" href="category.html">Men's</a>
+                                            <a class="dropdown-item" href="category.html">Women's</a>
+                                            <a class="dropdown-item" href="category.html">Children's</a>
+                                            <a class="dropdown-item" href="category.html">Accessories</a>
+                                            <a class="dropdown-item" href="category.html">Footwear</a>
+                                        </div>
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="books"
+                                           data-bs-toggle="dropdown" aria-haspopup="true"
+                                           aria-expanded="false">Books</a>
+                                        <div class="dropdown-menu" aria-labelledby="books">
+                                            <a class="dropdown-item" href="category.html">Adventure</a>
+                                            <a class="dropdown-item" href="category.html">Horror</a>
+                                            <a class="dropdown-item" href="category.html">Romantic</a>
+                                            <a class="dropdown-item" href="category.html">Children's</a>
+                                            <a class="dropdown-item" href="category.html">Non-Fiction</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
+                    </div>
+                    <!-- Nav -->
+
+                </div>
+                <!-- Header -->
+
+            </header>
+        </div>
+
+        <div class="col-12">
+            <!-- Main Content -->
+            <div class="row">
+                <div class="col-12 mt-3 text-center text-uppercase">
+                    <h2>Register</h2>
                 </div>
             </div>
+
+            <main class="row">
+                <div class="col-lg-4 col-md-6 col-sm-8 mx-auto bg-white py-3 mb-4">
+                    <div class="row">
+                        <div class="col-12">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Name</label>
+                                    <input type="text" id="name" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" id="email" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" id="password" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password-confirm" class="form-label">Confirm Password</label>
+                                    <input type="password" id="password-confirm" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input type="checkbox" id="agree" class="form-check-input" required>
+                                        <label for="agree" class="form-check-label ml-2">I agree to Terms and
+                                            Conditions</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-outline-dark">Register</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+            <!-- Main Content -->
         </div>
-    </div>
 
-    <div class="footer-bottom">
-        <div class="container">
-            <div class="row d-flex">
-                <p class="col-lg-12 footer-text text-center">
-                    Copyright &copy;<script>document.write(new Date().getFullYear());</script>
-                    All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by
-                    <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                </p>
-            </div>
+        <div class="col-12 align-self-end">
+            <!-- Footer -->
+            <footer class="row">
+                <div class="col-12 bg-dark text-white pb-3 pt-5">
+                    <div class="row">
+                        <div class="col-lg-2 col-sm-4 text-center text-sm-left mb-sm-0 mb-3">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="footer-logo">
+                                        <a href="index.html">E-Commerce</a>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <address>
+                                        221B Baker Street<br>
+                                        London, England
+                                    </address>
+                                </div>
+                                <div class="col-12">
+                                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                                    <a href="#" class="social-icon"><i class="fab fa-pinterest-p"></i></a>
+                                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-8 text-center text-sm-left mb-sm-0 mb-3">
+                            <div class="row">
+                                <div class="col-12 text-uppercase">
+                                    <h4>Who are we?</h4>
+                                </div>
+                                <div class="col-12 text-justify">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam imperdiet vel
+                                        ligula vel sodales. Aenean vel ullamcorper purus, ac pharetra arcu. Nam enim
+                                        velit, ultricies eu orci nec, aliquam efficitur sem. Quisque in sapien a sem
+                                        vestibulum volutpat at eu nibh. Suspendisse eget est metus. Maecenas mollis quis
+                                        nisl ac malesuada. Donec gravida tortor massa, vitae semper leo sagittis a.
+                                        Donec augue turpis, rutrum vitae augue ut, venenatis auctor nulla. Sed posuere
+                                        at erat in consequat. Nunc congue justo ut ante sodales, bibendum blandit augue
+                                        finibus.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-sm-3 col-5 ms-lg-auto ms-sm-0 ms-auto mb-sm-0 mb-3">
+                            <div class="row">
+                                <div class="col-12 text-uppercase">
+                                    <h4>Quick Links</h4>
+                                </div>
+                                <div class="col-12">
+                                    <ul class="footer-nav">
+                                        <li>
+                                            <a href="#">Home</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Contact Us</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">About Us</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Privacy Policy</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Terms & Conditions</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-1 col-sm-2 col-4 me-auto mb-sm-0 mb-3">
+                            <div class="row">
+                                <div class="col-12 text-uppercase text-underline">
+                                    <h4>Help</h4>
+                                </div>
+                                <div class="col-12">
+                                    <ul class="footer-nav">
+                                        <li>
+                                            <a href="#">FAQs</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Shipping</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Returns</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Track Order</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Report Fraud</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 text-center text-sm-left">
+                            <div class="row">
+                                <div class="col-12 text-uppercase">
+                                    <h4>Newsletter</h4>
+                                </div>
+                                <div class="col-12">
+                                    <form action="#">
+                                        <div class="mb-3">
+                                            <input type="text" class="form-control" placeholder="Enter your email..."
+                                                   required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <button class="btn btn-outline-light text-uppercase">Subscribe</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+            <!-- Footer -->
         </div>
+
     </div>
-</footer>
-<!--================ End footer Area  =================-->
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const form = document.getElementById("register_form");
+</div>
 
-        form.addEventListener("submit", function (event) {
-            let valid = true;
-            const errorMessage = document.getElementById("error-message");
-            errorMessage.style.display = "none"; // 초기화
-
-            const userId = document.getElementById("userId").value;
-            const name = document.getElementById("name").value;
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
-            const confirmPassword = document.getElementById("confirmPassword").value;
-            const phoneNumber = document.getElementById("phoneNumber").value;
-            const birthday = document.getElementById("birth").value;
-
-            // 필수 입력 검증
-            if (!userId || !name || !email || !password || !confirmPassword || !phoneNumber || !birthday) {
-                errorMessage.textContent = "모든 필드를 입력해야 합니다.";
-                valid = false;
-            }
-
-            // 길이 검증
-            if (userId.length < 8 || userId.length > 20) {
-                errorMessage.textContent = "사용자 아이디는 8자 이상 20자 이하로 입력해야 합니다.";
-                valid = false;
-            }
-            if (name.length < 2 || name.length > 30) {
-                errorMessage.textContent = "사용자 이름은 2자 이상 30자 이하로 입력해야 합니다.";
-                valid = false;
-            }
-            if (password.length < 8 || password.length > 20) {
-                errorMessage.textContent = "비밀번호는 8자 이상 20자 이하로 입력해야 합니다.";
-                valid = false;
-            }
-            if (phoneNumber.length < 10 || phoneNumber.length > 13) {
-                errorMessage.textContent = "휴대폰 번호는 10자에서 13자 사이의 숫자로 입력해야 합니다.";
-                valid = false;
-            }
-
-            // 이메일 형식 검증
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (email && !emailPattern.test(email)) {
-                errorMessage.textContent = "유효한 이메일 주소를 입력하세요.";
-                valid = false;
-            }
-
-            // 비밀번호 일치 여부 검증
-            if (password !== confirmPassword) {
-                errorMessage.textContent = "비밀번호가 일치하지 않습니다.";
-                valid = false;
-            }
-
-            // 휴대전화 형식 검증
-            const phonePattern = /^\d{10,13}$/;
-            if (phoneNumber && !phonePattern.test(phoneNumber)) {
-                errorMessage.textContent = "유효한 휴대폰 번호를 입력하세요. (10~13자 숫자)";
-                valid = false;
-            }
-
-            // 유효하지 않으면 오류 메시지 표시하고 폼 제출 중지
-            if (!valid) {
-                event.preventDefault();
-                errorMessage.style.display = "block"; // 오류 메시지 표시
-            }
-        });
-    });
-</script>
-
-
-<script th:src="@{/vendors/jquery/jquery-3.2.1.min.js}"></script>
-<script th:src="@{/vendors/bootstrap/bootstrap.bundle.min.js}"></script>
-<script th:src="@{/vendors/skrollr.min.js}"></script>
-<script th:src="@{/vendors/owl-carousel/owl.carousel.min.js}"></script>
-<script th:src="@{/vendors/nice-select/jquery.nice-select.min.js}"></script>
-<script th:src="@{/vendors/jquery.ajaxchimp.min.js}"></script>
-<script th:src="@{/vendors/mail-script.js}"></script>
-<script th:src="@{/js/main.js}"></script>
+<script type="text/javascript" src="../static/js/jquery.min.js"></script>
+<script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../static/js/script.js"></script>
 </body>
 </html>
