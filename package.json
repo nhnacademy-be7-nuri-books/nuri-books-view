@@ -1,0 +1,19 @@
+{
+  "name": "nuri-books-view",
+  "version": "1.0.0",
+  "description": "\"# nuri-books-view\"",
+  "main": "index.js",
+  "scripts": {
+    "build:sass": "gulp buildSass"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^5.0.0",
+    "gulp-sass": "^5.1.0",
+    "sass": "^1.80.5"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.3"
+  }
+}
