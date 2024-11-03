@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layouts/layout1}">
+
+<!-- layout1.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
+<div layout:fragment="content">
+    <!-- Main Content -->
+    <div class="row">
+        <div class="col-12 mt-3 text-center text-uppercase">
+            <h2>Login</h2>
+        </div>
+    </div>
+
+    <main class="row">
+        <div class="col-lg-4 col-md-6 col-sm-8 mx-auto bg-light rounded shadow py-4 mb-4">
+            <div class="text-center mb-4">
+                <h4>환영합니다!</h4>
+                <p>Please enter your credentials to login.</p>
+            </div>
+            <form class="row" th:action="@{/login}" method="post" id="login_form">
+                <div class="mb-3">
+                    <label for="username" class="form-label">아이디</label>
+                    <input type="text" id="username" name="username" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">비밀번호</label>
+                    <input type="password" id="password" name="password" class="form-control" required>
+                </div>
+                <div class="mb-3 form-check">
+                    <input type="checkbox" id="remember" class="form-check-input">
+                    <label for="remember" class="form-check-label">Remember Me</label>
+                </div>
+                <div class="mb-3 text-center">
+                    <button type="submit" class="btn btn-primary w-100">Login</button>
+                </div>
+                <div class="text-center">
+                    <a href="#" class="text-secondary">Forgot Password?</a>
+                </div>
+            </form>
+        </div>
+    </main>
+    <!-- Main Content -->
+</div>
+
+<!-- Script -->
+<th:block layout:fragment="script">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("login_form");
+            const errorMessage = document.getElementById("errorMessage");
+            const errorToastElement = document.getElementById("errorToast")
+            const errorToast = new bootstrap.Toast(errorToastElement);
+            errorToast.hide();
+
+            form.addEventListener("submit", function (event) {
+                let valid = true;
+
+                const username = document.getElementById("username").value;
+                const password = document.getElementById("password").value;
+
+                // 필수 입력 검증
+                if (!username || !password) {
+                    errorMessage.textContent = "모든 필드를 입력해야 합니다.";
+                    valid = false;
+                }
+
+                // 길이 검증
+                if (username.length < 8 || username.length > 20) {
+                    errorMessage.textContent = "사용자 아이디는 8자 이상 20자 이하로 입력해야 합니다.";
+                    valid = false;
+                }
+                if (password.length < 8 || password.length > 20) {
+                    errorMessage.textContent = "비밀번호는 8자 이상 20자 이하로 입력해야 합니다.";
+                    valid = false;
+                }
+
+                // 유효하지 않으면 오류 메시지 표시하고 폼 제출 중지
+                if (!valid) {
+                    event.preventDefault();
+                    errorToastElement.style.display = "block";
+                    errorToast.show();
+                }
+
+            });
+        });
+    </script>
+</th:block>
+<!-- Script -->
+</html>
