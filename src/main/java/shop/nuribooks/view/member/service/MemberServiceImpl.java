@@ -2,6 +2,7 @@ package shop.nuribooks.view.member.service;
 
 import java.util.Objects;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import feign.FeignException;
@@ -25,6 +26,9 @@ public class MemberServiceImpl implements MemberService {
 
 	private final MemberServiceClient memberServiceClient;
 
+	@Value("${success.message-key}")
+	private String successMessageKey;
+
 	/**
 	 * 사용자를 등록하는 메소드.
 	 *
@@ -35,7 +39,7 @@ public class MemberServiceImpl implements MemberService {
 	public String registerUser(@Valid MemberRegisterRequest userRequest) {
 		try {
 			MemberRegisterResponse response = memberServiceClient.registerUser(userRequest).getBody();
-			return "Success: " + Objects.requireNonNull(response).userId();
+			return successMessageKey + Objects.requireNonNull(response).userId();
 		} catch (FeignException ex) {
 			return ExceptionUtil.handleFeignException(ex);
 		}
