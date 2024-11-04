@@ -18,9 +18,14 @@ public class AladinBookController {
 	private final AladinBookService aladinBookService;
 
 	@GetMapping("/books")
+	public String showAladinBookPage() {
+		return "book/aladinBookList";
+	}
+
+	@GetMapping("/books/list")
 	public String getAladinBookList(Model model) {
 		List<AladinBookListItemResponse> books = aladinBookService.getAladinBookList();
 		model.addAttribute("books", books);
-		return "aladinList";
+		return "book/aladinBookList";
 	}
 }

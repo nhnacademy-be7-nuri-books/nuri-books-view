@@ -16,9 +16,9 @@ public class AladinBookServiceImpl implements AladinBookService{
 
 	@Override
 	public List<AladinBookListItemResponse> getAladinBookList() {
-		AladinBookListResponse response = aladinBookServiceClient.getAladinBookList().getBody();
-		if(response != null && response.item() != null) {
-			return response.item();
+		List<AladinBookListItemResponse> response = aladinBookServiceClient.getAladinBookList().getBody();
+		if (response != null) {
+			return response;
 		}
 		return List.of();
 	}
