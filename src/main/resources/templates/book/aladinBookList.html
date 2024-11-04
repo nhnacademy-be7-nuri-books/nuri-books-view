@@ -20,49 +20,10 @@
         <small th:text="'저자: ' + ${book.author}">저자</small><br>
         <small th:text="'출판일: ' + ${book.pubDate}">출판일</small>
       </div>
-      <button class="btn btn-sm btn-secondary" onclick="showEditForm('[[${book.isbn}]]')">선택</button>
+      <a th:href="@{/api/view/aladin/book/edit/{isbn}(isbn=${book.isbn})}" class="btn btn-sm btn-secondary">선택</a>
     </li>
   </ul>
   <p th:if="${books == null || books.isEmpty()}" class="text-center text-muted mt-4">도서 목록이 없습니다.</p>
 </div>
-
-<!-- 도서 편집 폼 -->
-<div id="editForm" style="display: none;" class="mt-4">
-  <h3 class="text-center">도서 선택 및 편집</h3>
-  <form th:action="@{/api/books/aladin/save}" method="post" id="editBookForm">
-    <input type="hidden" name="isbn" id="isbn">
-    <div class="mb-3">
-      <label for="title" class="form-label">제목</label>
-      <input type="text" class="form-control" id="title" name="title" required>
-    </div>
-    <div class="mb-3">
-      <label for="author" class="form-label">저자</label>
-      <input type="text" class="form-control" id="author" name="author" required>
-    </div>
-    <div class="mb-3">
-      <label for="pubDate" class="form-label">출판일</label>
-      <input type="text" class="form-control" id="pubDate" name="pubDate" required>
-    </div>
-    <!-- 필요한 다른 필드들 추가 -->
-    <button type="submit" class="btn btn-success w-100">등록</button>
-  </form>
-</div>
-
-<script>
-  function showEditForm(isbn) {
-    // AJAX 요청을 통해 선택된 도서 정보를 가져옵니다.
-    fetch(`/api/view/aladin/books/${isbn}`)
-            .then(response => response.json())
-            .then(data => {
-              document.getElementById('editForm').style.display = 'block';
-              document.getElementById('isbn').value = data.isbn;
-              document.getElementById('title').value = data.title;
-              document.getElementById('author').value = data.author;
-              document.getElementById('pubDate').value = data.pubDate;
-              // 다른 필드들도 값 설정
-            })
-            .catch(error => console.error('도서 정보를 가져오는 중 오류 발생:', error));
-  }
-</script>
 </body>
 </html>

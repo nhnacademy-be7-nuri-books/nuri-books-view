@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.RequiredArgsConstructor;
@@ -27,5 +28,12 @@ public class AladinBookController {
 		List<AladinBookListItemResponse> books = aladinBookService.getAladinBookList();
 		model.addAttribute("books", books);
 		return "book/aladinBookList";
+	}
+
+	@GetMapping("/book/edit/{isbn}")
+	public String getEditBookByIsbn(@PathVariable String isbn, Model model) {
+		AladinBookListItemResponse book = aladinBookService.getAladinBookByIsbn(isbn);
+		model.addAttribute("book", book);
+		return "book/bookEdit";
 	}
 }

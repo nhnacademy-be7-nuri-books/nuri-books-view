@@ -22,4 +22,9 @@ public class AladinBookServiceImpl implements AladinBookService{
 		}
 		return List.of();
 	}
+
+	@Override
+	public AladinBookListItemResponse getAladinBookByIsbn(String isbn) {
+		return aladinBookServiceClient.getBookByIsbn(isbn).getBody();
+	}
 }
