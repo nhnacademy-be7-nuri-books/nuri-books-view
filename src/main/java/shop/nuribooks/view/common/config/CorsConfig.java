@@ -29,11 +29,11 @@ public class CorsConfig {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(true);
-		config.addAllowedOrigin("http://localhost:3000");
 		config.addAllowedOrigin("http://localhost:8080");
 		config.addAllowedOrigin("http://localhost:8081");
 		config.addAllowedOrigin("http://localhost:8083");
 		config.addAllowedOrigin("https://nuribooks.shop");
+		config.addAllowedOrigin("https://133.186.220.212:443");
 		config.addAllowedHeader("*");
 		config.addAllowedMethod("*");
 		source.registerCorsConfiguration("/**", config);
