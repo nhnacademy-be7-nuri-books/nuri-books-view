@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Aladin Book List</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css">
+  <script>
+    function fetchBookList() {
+      window.location.href = '/api/view/aladin/books'; // 버튼 클릭 시 조회 메서드 호출
+    }
+  </script>
+</head>
+<body class="container py-4">
+<h1 class="text-center mb-4">Aladin 도서 목록</h1>
+<div class="text-center mb-3">
+  <button class="btn btn-primary" onclick="fetchBookList()">도서 목록 조회</button>
+</div>
+
+<div>
+  <ul class="list-group" th:if="${books != null}" th:each="book : ${books}">
+    <li class="list-group-item">
+      <strong th:text="${book.title}">제목</strong> -
+      <span th:text="${book.author}">저자</span> -
+      <span th:text="${book.pubDate}">출판일</span>
+    </li>
+  </ul>
+  <p th:if="${books == null}" class="text-center text-muted">도서 목록이 없습니다.</p>
+</div>
+</body>
+</html>
