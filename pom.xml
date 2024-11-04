@@ -65,12 +65,6 @@
             <artifactId>feign-micrometer</artifactId>
         </dependency>
 
-        <!-- eureka client-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
-
         <!-- lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -92,6 +86,12 @@
             <version>2.1.0</version> <!-- check for the latest version -->
         </dependency>
 
+        <!-- swagger -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.1.0</version> <!-- check for the latest version -->
+        </dependency>
 
     </dependencies>
     <dependencyManagement>
