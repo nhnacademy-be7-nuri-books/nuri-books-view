@@ -16,7 +16,7 @@ public class AdminController {
 	 *
 	 * @return admin.html
 	 */
-	@Operation(summary = "로그인 폼", description = "로그인 페이지를 반환합니다.")
+	@Operation(summary = "관리자 페이지", description = "관리자 페이지를 반환합니다.")
 	@GetMapping("/admin")
 	public String adminHome() throws IOException {
 		return "admin/admin";
