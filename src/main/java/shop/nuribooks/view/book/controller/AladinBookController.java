@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
@@ -28,8 +29,11 @@ public class AladinBookController {
 	}
 
 	@GetMapping("/books/list")
-	public String getAladinBookList(Model model) {
-		List<AladinBookListItemResponse> books = aladinBookService.getAladinBookList();
+	public String getAladinBookList(@RequestParam(defaultValue = "ItemNewAll") String queryType,
+									@RequestParam(defaultValue = "Book") String searchTarget,
+									@RequestParam(defaultValue = "10") int maxResults,
+									Model model) {
+		List<AladinBookListItemResponse> books = aladinBookService.getAladinBookList(queryType, searchTarget, maxResults);
 		model.addAttribute("books", books);
 		return "book/aladinBookList";
 	}
