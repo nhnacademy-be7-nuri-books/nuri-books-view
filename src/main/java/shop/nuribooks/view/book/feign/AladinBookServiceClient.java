@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.validation.Valid;
 import shop.nuribooks.view.book.dto.AladinBookListItemResponse;
@@ -17,7 +18,9 @@ import shop.nuribooks.view.common.dto.ResponseMessage;
 @FeignClient(name = "aladinBook", url = "http://localhost:8083")
 public interface AladinBookServiceClient {
 	@GetMapping("/api/books/aladin")
-	ResponseEntity<List<AladinBookListItemResponse>> getAladinBookList();
+	ResponseEntity<List<AladinBookListItemResponse>> getAladinBookList(@RequestParam("queryType") String queryType,
+																@RequestParam("searchTarget") String searchTarget,
+																@RequestParam("maxResults") int maxResults);
 
 	@GetMapping("/api/books/aladin/{isbn}")
 	ResponseEntity<AladinBookListItemResponse> getBookByIsbn(@PathVariable String isbn);
