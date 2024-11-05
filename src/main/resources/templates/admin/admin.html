@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layouts/layout1}">
+
+<!-- layout1.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
+<div layout:fragment="content">
+    <div class="d-flex">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar bg-dark text-white" style="width: 250px; min-height: 100vh; position: sticky; top: 0;">
+            <ul class="nav flex-column px-3">
+                <li class="nav-item my-2">
+                    <a href="/admin/dashboard" class="nav-link text-white">
+                        <i class="fas fa-tachometer-alt me-2"></i>대시보드
+                    </a>
+                </li>
+                <li class="nav-item my-2">
+                    <a href="/admin/myinfo" class="nav-link text-white">
+                        <i class="fas fa-user me-2"></i>내 정보
+                    </a>
+                </li>
+                <hr class="sidebar-divider">
+                <li class="nav-item my-2">
+                    <a href="#" class="nav-link text-white" data-bs-toggle="collapse" data-bs-target="#accountMenu" aria-expanded="false">
+                        <i class="fas fa-users-cog me-2"></i>관리자 계정관리
+                    </a>
+                    <ul id="accountMenu" class="collapse nav flex-column ms-3">
+                        <li class="nav-item my-2">
+                            <a href="/admin/account" class="nav-link text-white">계정 관리</a>
+                        </li>
+                    </ul>
+                </li>
+                <hr class="sidebar-divider">
+                <li class="nav-item my-2">
+                    <a href="#" class="nav-link text-white" data-bs-toggle="collapse" data-bs-target="#memberMenu" aria-expanded="false">
+                        <i class="fas fa-users me-2"></i>회원
+                    </a>
+                    <ul id="memberMenu" class="collapse nav flex-column ms-3">
+                        <li class="nav-item my-2">
+                            <a href="/admin/member" class="nav-link text-white">회원 관리</a>
+                        </li>
+                        <li class="nav-item my-2">
+                            <a href="/admin/order" class="nav-link text-white">주문 관리</a>
+                        </li>
+                        <li class="nav-item my-2">
+                            <a href="/admin/shipping" class="nav-link text-white">배송 관리</a>
+                        </li>
+                        <li class="nav-item my-2">
+                            <a href="/admin/claim" class="nav-link text-white">클레임 관리</a>
+                        </li>
+                    </ul>
+                </li>
+                <hr class="sidebar-divider">
+                <li class="nav-item my-2">
+                    <a href="#" class="nav-link text-white" data-bs-toggle="collapse" data-bs-target="#sellerMenu" aria-expanded="false">
+                        <i class="fas fa-store me-2"></i>판매자
+                    </a>
+                    <ul id="sellerMenu" class="collapse nav flex-column ms-3">
+                        <li class="nav-item my-2">
+                            <a href="/admin/seller" class="nav-link text-white">판매자 관리</a>
+                        </li>
+                        <li class="nav-item my-2">
+                            <a href="/admin/product" class="nav-link text-white">상품 관리</a>
+                        </li>
+                        <li class="nav-item my-2">
+                            <a href="/admin/productInquiry" class="nav-link text-white">상품 문의 관리</a>
+                        </li>
+                        <li class="nav-item my-2">
+                            <a href="/admin/review" class="nav-link text-white">리뷰 관리</a>
+                        </li>
+                    </ul>
+                </li>
+                <hr class="sidebar-divider">
+                <li class="nav-item my-2">
+                    <a href="#" class="nav-link text-white" data-bs-toggle="collapse" data-bs-target="#settingsMenu" aria-expanded="false">
+                        <i class="fas fa-cogs me-2"></i>설정
+                    </a>
+                    <ul id="settingsMenu" class="collapse nav flex-column ms-3">
+                        <li class="nav-item my-2">
+                            <a href="/admin/category" class="nav-link text-white">카테고리 관리</a>
+                        </li>
+                        <li class="nav-item my-2">
+                            <a href="/admin/shippingFee" class="nav-link text-white">배송비 관리</a>
+                        </li>
+                    </ul>
+                </li>
+                <hr class="sidebar-divider">
+                <li class="nav-item my-2">
+                    <a href="#" class="nav-link text-white" data-bs-toggle="collapse" data-bs-target="#benefitMenu" aria-expanded="false">
+                        <i class="fas fa-gift me-2"></i>혜택
+                    </a>
+                    <ul id="benefitMenu" class="collapse nav flex-column ms-3">
+                        <li class="nav-item my-2">
+                            <a href="/admin/coupon" class="nav-link text-white">쿠폰 관리</a>
+                        </li>
+                        <li class="nav-item my-2">
+                            <a href="/admin/point" class="nav-link text-white">포인트 관리</a>
+                        </li>
+                    </ul>
+                </li>
+                <hr class="sidebar-divider">
+                <li class="nav-item my-2">
+                    <a href="#" class="nav-link text-white" data-bs-toggle="collapse" data-bs-target="#inquiryMenu" aria-expanded="false">
+                        <i class="fas fa-question-circle me-2"></i>고객응대
+                    </a>
+                    <ul id="inquiryMenu" class="collapse nav flex-column ms-3">
+                        <li class="nav-item my-2">
+                            <a href="/admin/onlineInquiry" class="nav-link text-white">온라인 문의</a>
+                        </li>
+                        <li class="nav-item my-2">
+                            <a href="/admin/message" class="nav-link text-white">메시지 관리</a>
+                        </li>
+                    </ul>
+                </li>
+                <hr class="sidebar-divider">
+                <li class="nav-item my-2">
+                    <a href="/admin/settlement" class="nav-link text-white">
+                        <i class="fas fa-calculator me-2"></i>정산 관리
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- Sidebar Navigation -->
+        <!-- Main Content -->
+        <div id="mainContent" class="container-fluid p-4" style="margin-left: 0px;">
+            <!-- 선택된 관리 페이지가 여기에 로드됩니다 -->
+        </div>
+
+        <script>
+            document.querySelectorAll('.nav-link').forEach(item => {
+                item.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const href = this.getAttribute('href');
+                    if (href !== "#") {
+                        // 메인 컨텐츠 영역에 선택된 페이지 로드
+                        document.getElementById('mainContent').innerHTML = '<iframe src="' + href + '" style="width: 100%; height: 80vh; border: none;"></iframe>';
+                    }
+                });
+            });
+        </script>
+
+    </div>
+</div>
+</html>
