@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>도서 목록</title>
+</head>
+<body>
+<h1>도서 목록</h1>
+<table>
+    <thead>
+    <tr>
+        <th>제목</th>
+        <th>저자</th>
+        <th>출판사</th>
+        <th>가격</th>
+        <th>이미지</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${books.content}">
+        <td th:text="${book.title}">제목</td>
+        <td th:text="${book.author}">저자</td>
+        <td th:text="${book.publisher}">출판사</td>
+        <td th:text="${book.price}">가격</td>
+        <td><img th:src="${book.thumbnailImageUrl}" alt="도서 이미지" width="100"></td>
+    </tr>
+    </tbody>
+</table>
+
+<div>
+    <a th:href="@{/books/list(page=${books.number - 1}, size=${books.size})}"
+       th:if="${books.hasPrevious()}">이전</a>
+    <span th:text="${books.number + 1}">1</span> / <span th:text="${books.totalPages}">1</span>
+    <a th:href="@{/books/list(page=${books.number + 1}, size=${books.size})}"
+       th:if="${books.hasNext()}">다음</a>
+</div>
+</body>
+</html>

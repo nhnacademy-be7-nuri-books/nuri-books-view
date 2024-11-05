@@ -19,20 +19,20 @@
         <input type="text" class="form-control" id="author" name="author" th:value="${book.author}" required>
     </div>
     <div class="mb-3">
-        <label for="publisher" class="form-label">출판사</label>
-        <input type="text" class="form-control" id="publisher" name="publisher" th:value="${book.publisher}" required>
+        <label for="publisherName" class="form-label">출판사</label>
+        <input type="text" class="form-control" id="publisherName" name="publisherName" th:value="${book.publisher}" required>
     </div>
     <div class="mb-3">
-        <label for="pubDate" class="form-label">출판일</label>
-        <input type="text" class="form-control" id="pubDate" name="pubDate" th:value="${book.pubDate}" required>
+        <label for="publicationDate" class="form-label">출판일</label>
+        <input type="text" class="form-control" id="publicationDate" name="publicationDate" th:value="${book.pubDate}" required>
     </div>
     <div class="mb-3">
         <label for="categoryName" class="form-label">카테고리</label>
         <input type="text" class="form-control" id="categoryName" name="categoryName" th:value="${book.categoryName}" required>
     </div>
     <div class="mb-3">
-        <label for="priceStandard" class="form-label">정가</label>
-        <input type="text" class="form-control" id="priceStandard" name="priceStandard" th:value="${book.priceStandard}" required>
+        <label for="price" class="form-label">정가</label>
+        <input type="text" class="form-control" id="price" name="price" th:value="${book.priceStandard}" required>
     </div>
     <div class="mb-3">
         <label for="discountRate" class="form-label">할인율</label>
@@ -43,12 +43,12 @@
         <input type="number" class="form-control" id="stock" name="stock" required>
     </div>
     <div class="mb-3">
-        <label for="stockStatus" class="form-label">재고상태</label>
-        <input type="text" class="form-control" id="stockStatus" name="stockStatus" th:value="${book.stockStatus}">
+        <label for="state" class="form-label">재고상태</label>
+        <input type="text" class="form-control" id="state" name="state" th:value="${book.stockStatus}">
     </div>
     <div class="mb-3">
-        <label for="cover" class="form-label">썸네일</label>
-        <input type="text" class="form-control" id="cover" name="cover" th:value="${book.cover}" required>
+        <label for="thumbnailImageUrl" class="form-label">썸네일</label>
+        <input type="text" class="form-control" id="thumbnailImageUrl" name="thumbnailImageUrl" th:value="${book.cover}" required>
     </div>
     <div class="mb-3">
         <label for="detailImageUrl" class="form-label">상세 이미지 URL</label>
