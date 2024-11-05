@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.RequiredArgsConstructor;
 import shop.nuribooks.view.book.dto.AladinBookListItemResponse;
+import shop.nuribooks.view.book.dto.AladinBookSaveRequest;
 import shop.nuribooks.view.book.service.AladinBookService;
 
 @RequiredArgsConstructor
@@ -36,5 +37,11 @@ public class AladinBookController {
 		AladinBookListItemResponse book = aladinBookService.getAladinBookByIsbn(isbn);
 		model.addAttribute("book", book);
 		return "book/bookEdit";
+	}
+
+	@PostMapping("/book/save")
+	public String saveBook(AladinBookSaveRequest aladinBookSaveRequest) {
+		aladinBookService.saveAladinBook(aladinBookSaveRequest);
+		return "redirect:/api/view/aladin/books";
 	}
 }
