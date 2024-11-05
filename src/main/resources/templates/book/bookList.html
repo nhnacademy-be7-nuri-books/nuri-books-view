@@ -8,6 +8,18 @@
 
 <div layout:fragment="content">
     <h1>도서 목록</h1>
+    <!-- 항목 개수 선택 드롭다운 -->
+    <form th:action="@{/api/view/books}" method="get">
+        <label for="sizeSelect">페이지 당 항목 수:</label>
+        <select name="size" id="sizeSelect" onchange="document.getElementById('pageInput').value = 0; this.form.submit()">
+            <option th:value="5" th:text="'5개씩 보기'" th:selected="${books.size == 5}"></option>
+            <option th:value="10" th:text="'10개씩 보기'" th:selected="${books.size == 10}"></option>
+            <option th:value="20" th:text="'20개씩 보기'" th:selected="${books.size == 20}"></option>
+        </select>
+        <input type="hidden" id="pageInput" name="page" th:value="${books.page}" />
+    </form>
+
+    <!-- 도서 목록 테이블 -->
     <table class="table">
         <thead>
         <tr>
@@ -33,6 +45,7 @@
         </tbody>
     </table>
 
+    <!-- 페이지 이동 -->
     <div>
         <a th:href="@{/api/view/books(page=${books.page - 1}, size=${books.size})}" th:if="${books.page > 0}">이전</a>
         <span th:text="${books.page + 1}">1</span> / <span th:text="${books.totalPages}">1</span>
