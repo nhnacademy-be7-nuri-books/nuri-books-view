@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -14,6 +15,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.member.dto.request.MemberRegisterRequest;
+import shop.nuribooks.view.member.dto.request.MemberUpdateRequest;
 import shop.nuribooks.view.member.service.MemberService;
 
 /**
@@ -92,4 +94,31 @@ public class MemberController {
 		}
 	}
 
+	/**
+	 * 마이 페이지 GET
+	 *
+	 * @return myPage.html
+	 */
+	@Operation(summary = "회원의 마이 페이지", description = "회원의 마이 페이지를 반환합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "마이 페이지 반환 성공")
+	})
+	@GetMapping("/myPage")
+	public String myPage() {
+		return "member/myPage";
+	}
+
+	/**
+	 * 마이 페이지 POST
+	 *
+	 * @param request 사용자가 입력한 데이터를 포함한 {@link MemberUpdateRequest} 객체
+	 * @return myPage.html
+	 */
+	@PostMapping("/myPage")
+    public String updateMyPage(@ModelAttribute MemberUpdateRequest userRequest, RedirectAttributes redirectAttributes) {
+		log.info("userRequest: {}", userRequest);
+        redirectAttributes.addFlashAttribute("userRequest", userRequest);
+        redirectAttributes.addFlashAttribute(successMessageKey, "회원정보 수정에 성공하였습니다.");
+        return "redirect:/myPage";
+    }
 }
