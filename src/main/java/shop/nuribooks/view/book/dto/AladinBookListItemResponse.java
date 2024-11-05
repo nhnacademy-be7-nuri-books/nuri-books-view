@@ -11,6 +11,7 @@ public record AladinBookListItemResponse(
 	String stockStatus,
 	String cover,
 	String publisher,
-	String categoryName
+	String categoryName,
+	String description
 ) {
 }
