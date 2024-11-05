@@ -9,7 +9,7 @@
     <h1 class="text-uppercase">도서 등록</h1>
 </div>
 
-<form th:action="@{/api/books/aladin/save}" method="post">
+<form th:action="@{/api/view/aladin/book/save}" method="post">
     <div class="mb-3">
         <label for="title" class="form-label">제목</label>
         <input type="text" class="form-control" id="title" name="title" th:value="${book.title}" required>

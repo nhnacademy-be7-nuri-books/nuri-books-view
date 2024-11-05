@@ -8,6 +8,10 @@
 <div class="text-center mb-4">
   <h1 class="text-uppercase">Aladin 도서 목록</h1>
 </div>
+<!-- 성공 메시지 표시 -->
+<div th:if="${successMessage}" class="alert alert-success" role="alert">
+  <p th:text="${successMessage}"></p>
+</div>
 <div class="text-center mb-3">
   <a href="/api/view/aladin/books/list" class="btn btn-primary">도서 목록 조회</a>
 </div>

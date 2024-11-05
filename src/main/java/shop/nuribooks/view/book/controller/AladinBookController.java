@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import shop.nuribooks.view.book.dto.AladinBookListItemResponse;
 import shop.nuribooks.view.book.dto.AladinBookSaveRequest;
@@ -40,8 +42,9 @@ public class AladinBookController {
 	}
 
 	@PostMapping("/book/save")
-	public String saveBook(AladinBookSaveRequest aladinBookSaveRequest) {
+	public String saveBook(@Valid AladinBookSaveRequest aladinBookSaveRequest, RedirectAttributes redirectAttributes) {
 		aladinBookService.saveAladinBook(aladinBookSaveRequest);
+		redirectAttributes.addFlashAttribute("successMessage", "도서 등록 성공");
 		return "redirect:/api/view/aladin/books";
 	}
 }
