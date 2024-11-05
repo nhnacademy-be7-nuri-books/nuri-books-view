@@ -11,6 +11,7 @@ public record AdminBookListResponse(
 	BigDecimal salePrice,
 	int discountRate,
 	boolean isPackageable,
-	int stock
+	int stock,
+	String thumbnailImageUrl
 ) {
 }
