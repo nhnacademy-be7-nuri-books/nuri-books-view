@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,6 +37,9 @@ public class AladinBookController {
 									Model model) {
 		List<AladinBookListItemResponse> books = aladinBookService.getAladinBookList(queryType, searchTarget, maxResults);
 		model.addAttribute("books", books);
+		model.addAttribute("queryType", queryType);
+		model.addAttribute("searchTarget", searchTarget);
+		model.addAttribute("maxResults", maxResults);
 		return "book/aladinBookList";
 	}
 
@@ -47,7 +51,7 @@ public class AladinBookController {
 	}
 
 	@PostMapping("/book/save")
-	public String saveBook(@Valid @RequestBody AladinBookSaveRequest aladinBookSaveRequest, RedirectAttributes redirectAttributes) {
+	public String saveBook(@ModelAttribute AladinBookSaveRequest aladinBookSaveRequest, RedirectAttributes redirectAttributes) {
 		aladinBookService.saveAladinBook(aladinBookSaveRequest);
 		redirectAttributes.addFlashAttribute("successMessage", "도서 등록 성공");
 		return "redirect:/api/view/aladin/books";
