@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -38,15 +39,15 @@ public class AladinBookController {
 		return "book/aladinBookList";
 	}
 
-	@GetMapping("/book/edit/{isbn}")
+	@GetMapping("/book/register/{isbn}")
 	public String getEditBookByIsbn(@PathVariable String isbn, Model model) {
 		AladinBookListItemResponse book = aladinBookService.getAladinBookByIsbn(isbn);
 		model.addAttribute("book", book);
-		return "book/bookEdit";
+		return "book/bookRegister";
 	}
 
 	@PostMapping("/book/save")
-	public String saveBook(@Valid AladinBookSaveRequest aladinBookSaveRequest, RedirectAttributes redirectAttributes) {
+	public String saveBook(@Valid @RequestBody AladinBookSaveRequest aladinBookSaveRequest, RedirectAttributes redirectAttributes) {
 		aladinBookService.saveAladinBook(aladinBookSaveRequest);
 		redirectAttributes.addFlashAttribute("successMessage", "도서 등록 성공");
 		return "redirect:/api/view/aladin/books";
