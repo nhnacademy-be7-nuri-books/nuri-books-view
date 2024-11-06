@@ -15,7 +15,7 @@ import shop.nuribooks.view.book.dto.AladinBookListItemResponse;
 import shop.nuribooks.view.book.dto.AladinBookSaveRequest;
 import shop.nuribooks.view.common.dto.ResponseMessage;
 
-@FeignClient(name = "aladinBook", url = "http://localhost:8083")
+@FeignClient(name = "aladinBook", url = "http://localhost:8080")
 public interface AladinBookServiceClient {
 	@GetMapping("/api/books/aladin")
 	ResponseEntity<List<AladinBookListItemResponse>> getAladinBookList(@RequestParam("queryType") String queryType,
