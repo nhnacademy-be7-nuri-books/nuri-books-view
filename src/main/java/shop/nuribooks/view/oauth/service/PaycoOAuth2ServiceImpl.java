@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.oauth.common.feign.PaycoTokenFeignClient;
 import shop.nuribooks.view.oauth.common.feign.PaycoUserInfoFeignClient;
 import shop.nuribooks.view.oauth.common.property.OAuth2ClientProperties;
-import shop.nuribooks.view.oauth.dto.PaycoUser;
+import shop.nuribooks.view.oauth.dto.OAuth2UserResponse;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -29,7 +29,7 @@ public class PaycoOAuth2ServiceImpl implements OAuth2Service{
 	}
 
 	@Override
-	public Optional<PaycoUser> login(String code) {
+	public Optional<OAuth2UserResponse> login(String code) {
 		Map<String, Object> tokenResponse = paycoTokenFeignClient.getToken(
 			oAuth2ClientProperties.getRegistration().getPayco().getClientId(),
 			oAuth2ClientProperties.getRegistration().getPayco().getClientSecret(),
@@ -43,12 +43,12 @@ public class PaycoOAuth2ServiceImpl implements OAuth2Service{
 			accessToken
 		);
 
-		Optional<PaycoUser> paycoUser = null;
+		Optional<OAuth2UserResponse> paycoUser = null;
 		if (isOAuth2Successful(userResponse)) {
 			paycoUser = Optional.of(getUserInfo(userResponse));
 		}
 
-		log.info("payco : {}", paycoUser.get());
+		log.info("payco : {}", paycoUser);
 		return paycoUser;
 	}
 
@@ -56,12 +56,12 @@ public class PaycoOAuth2ServiceImpl implements OAuth2Service{
 		return tokenResponse.get("access_token").toString();
 	}
 
-	private PaycoUser getUserInfo(Map<String, Object> userResponse) {
+	private OAuth2UserResponse getUserInfo(Map<String, Object> userResponse) {
 		Map<String, Object> member = Optional.ofNullable(userResponse)
 			.map(data -> (Map<String, Object>) data.get("data"))
 			.map(dataMap -> (Map<String, Object>) dataMap.get("member"))
 			.orElse(null);
-		return member != null ? new PaycoUser(member.get("idNo").toString(), member.get("email").toString()) : null;
+		return member != null ? new OAuth2UserResponse(member.get("idNo").toString(), member.get("email").toString()) : null;
 	}
 
 	private boolean isOAuth2Successful(Map<String, Object> userResponse) {
