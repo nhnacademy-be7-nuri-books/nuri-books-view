@@ -34,8 +34,16 @@
         </thead>
         <tbody>
         <tr th:each="book : ${books.content}">
-            <td><img th:src="${book.thumbnailImageUrl}" alt="도서 이미지" width="100"></td>
-            <td th:text="${book.title}">제목</td>
+            <!-- 이미지를 클릭하여 상세 페이지로 이동 -->
+            <td>
+                <a th:href="@{/api/view/book/details/{id}(id=${book.id})}">
+                    <img th:src="${book.thumbnailImageUrl}" alt="도서 이미지" width="100">
+                </a>
+            </td>
+            <!-- 제목을 클릭하여 상세 페이지로 이동 -->
+            <td>
+                <a th:href="@{/api/view/book/details/{id}(id=${book.id})}" th:text="${book.title}">제목</a>
+            </td>
             <td th:text="${book.publisherName}">출판사</td>
             <td th:text="${book.price}">정가</td>
             <td th:text="${book.salePrice}">할인가</td>
