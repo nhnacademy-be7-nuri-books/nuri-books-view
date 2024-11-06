@@ -1,17 +1,122 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout1}">
-
 <head>
     <title>도서 목록</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* 전체 배경과 제목 스타일 */
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .header-title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2em;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            color: #2c3e50;
+            letter-spacing: 1.5px;
+        }
+
+        /* 카드 스타일 */
+        .card {
+            margin: 10px;
+            border: none;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            max-width: 180px;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            height: 340px;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 이미지 스타일 */
+        .book-thumbnail {
+            height: 200px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .book-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.2s ease;
+        }
+        .book-thumbnail img:hover {
+            transform: scale(1.05);
+        }
+
+        /* 카드 내부 텍스트 스타일 */
+        .card-body {
+            padding: 10px;
+            text-align: center;
+            background-color: #fff;
+            flex-grow: 1;
+        }
+        .card-title {
+            font-size: 0.9em;
+            font-weight: bold;
+            color: #34495e;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            margin-bottom: 4px;
+        }
+        .card-text {
+            font-size: 0.8em;
+            color: #7f8c8d;
+            margin-bottom: 4px;
+        }
+        .card-price {
+            font-size: 0.9em;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 4px;
+        }
+
+        /* 페이지 네비게이션 스타일 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .pagination a, .pagination span {
+            margin: 0 5px;
+            font-size: 0.9em;
+            padding: 6px 10px;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #2c3e50;
+        }
+        .pagination .btn-secondary {
+            background-color: #3498db;
+            border: none;
+            color: white;
+        }
+        .pagination .btn-secondary:hover {
+            background-color: #2980b9;
+        }
+    </style>
 </head>
 
 <div layout:fragment="content">
-    <h1>도서 목록</h1>
+    <h1 class="header-title">📚 도서 목록 📚</h1>
+
     <!-- 항목 개수 선택 드롭다운 -->
-    <form th:action="@{/view/books}" method="get">
-        <label for="sizeSelect">페이지 당 항목 수:</label>
-        <select name="size" id="sizeSelect" onchange="document.getElementById('pageInput').value = 0; this.form.submit()">
+    <form th:action="@{/view/books}" method="get" class="form-inline justify-content-center mb-4">
+        <label for="sizeSelect" class="mr-2">페이지 당 항목 수:</label>
+        <select name="size" id="sizeSelect" class="form-control" onchange="document.getElementById('pageInput').value = 0; this.form.submit()">
             <option th:value="5" th:text="'5개씩 보기'" th:selected="${books.size == 5}"></option>
             <option th:value="10" th:text="'10개씩 보기'" th:selected="${books.size == 10}"></option>
             <option th:value="20" th:text="'20개씩 보기'" th:selected="${books.size == 20}"></option>
@@ -19,45 +124,38 @@
         <input type="hidden" id="pageInput" name="page" th:value="${books.page}" />
     </form>
 
-    <!-- 도서 목록 테이블 -->
-    <table class="table">
-        <thead>
-        <tr>
-            <th>이미지</th>
-            <th>제목</th>
-            <th>출판사</th>
-            <th>정가</th>
-            <th>할인가</th>
-            <th>상태</th>
-            <th>재고</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="book : ${books.content}">
-            <!-- 이미지를 클릭하여 상세 페이지로 이동 -->
-            <td>
-                <a th:href="@{/api/view/book/details/{id}(id=${book.id})}">
-                    <img th:src="${book.thumbnailImageUrl}" alt="도서 이미지" width="100">
-                </a>
-            </td>
-            <!-- 제목을 클릭하여 상세 페이지로 이동 -->
-            <td>
-                <a th:href="@{/api/view/book/details/{id}(id=${book.id})}" th:text="${book.title}">제목</a>
-            </td>
-            <td th:text="${book.publisherName}">출판사</td>
-            <td th:text="${book.price}">정가</td>
-            <td th:text="${book.salePrice}">할인가</td>
-            <td th:text="${book.state}">상태</td>
-            <td th:text="${book.stock}">재고</td>
-        </tr>
-        </tbody>
-    </table>
+    <!-- 도서 목록 카드형 스타일 -->
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2" th:each="book : ${books.content}">
+                <div class="card">
+                    <a th:href="@{/api/view/book/details/{id}(id=${book.id})}">
+                        <div class="book-thumbnail">
+                            <img th:src="${book.thumbnailImageUrl}" alt="도서 이미지">
+                        </div>
+                    </a>
+                    <div class="card-body">
+                        <a th:href="@{/api/view/book/details/{id}(id=${book.id})}">
+                            <h5 class="card-title" th:text="${book.title}">제목</h5>
+                        </a>
+                        <p class="card-text" th:text="${book.publisherName}">출판사</p>
+                        <p class="card-text" th:text="'정가: ' + ${book.price} + ' 원'">정가</p>
+                        <p class="card-price" th:text="'할인가: ' + ${book.salePrice} + ' 원'">할인가</p>
+                        <p class="card-text" th:text="${book.state}">상태</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- 페이지 이동 -->
-    <div>
-        <a th:href="@{/view/books(page=${books.page - 1}, size=${books.size})}" th:if="${books.page > 0}">이전</a>
-        <span th:text="${books.page + 1}">1</span> / <span th:text="${books.totalPages}">1</span>
-        <a th:href="@{/view/books(page=${books.page + 1}, size=${books.size})}" th:if="${books.page < books.totalPages - 1}">다음</a>
-    </div>
+    <nav class="pagination">
+        <a class="btn btn-secondary" th:href="@{/view/books(page=${books.page - 1}, size=${books.size})}" th:if="${books.page > 0}">이전</a>
+        <span class="btn btn-light" th:text="${books.page + 1}">1</span> / <span class="btn btn-light" th:text="${books.totalPages}">1</span>
+        <a class="btn btn-secondary" th:href="@{/view/books(page=${books.page + 1}, size=${books.size})}" th:if="${books.page < books.totalPages - 1}">다음</a>
+    </nav>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </html>
