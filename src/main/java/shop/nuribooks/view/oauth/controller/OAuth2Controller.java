@@ -11,22 +11,23 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.oauth.service.OAuth2Service;
+import shop.nuribooks.view.oauth.service.PaycoOAuth2ServiceImpl;
 
 @Slf4j
 @RequiredArgsConstructor
 @Controller
 public class OAuth2Controller {
-	private final OAuth2Service oAuth2Service;
+	private final PaycoOAuth2ServiceImpl oAuth2Service;
 
 	@GetMapping("/login/oauth2/payco")
 	public void paycoLogin(HttpServletResponse response) throws IOException {
-		response.sendRedirect(oAuth2Service.getPaycoLoginFormUri());
+		response.sendRedirect(oAuth2Service.getLoginFormUri());
 	}
 
 	@GetMapping("/custom-login/oauth2/code/payco")
 	@ResponseBody
 	public String doPaycoLogin(@RequestParam("code") String code) {
-		oAuth2Service.paycoLogin(code);
+		oAuth2Service.login(code);
 		return "ok";
 	}
 }
