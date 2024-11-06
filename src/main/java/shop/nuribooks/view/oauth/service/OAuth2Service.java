@@ -35,20 +35,20 @@ public class OAuth2Service {
 			code
 		);
 
-		String accessToken = getAccessToken(tokenResponse);
+		String accessToken = getPaycoAccessToken(tokenResponse);
 		Map<String, Object> userResponse = paycoUserInfoFeignClient.getUserRequest(
 			oAuth2ClientProperties.getRegistration().getPayco().getClientId(),
 			accessToken
 		);
 
 		Optional<PaycoUser> paycoUser = null;
-		if (isSuccessful(userResponse)) {
+		if (isPaycoSuccessful(userResponse)) {
 			paycoUser = Optional.of(getPaycoUser(userResponse));
 		}
 		return paycoUser;
 	}
 
-	private String getAccessToken(Map<String, Object> tokenResponse) {
+	private String getPaycoAccessToken(Map<String, Object> tokenResponse) {
 		return tokenResponse.get("access_token").toString();
 	}
 
@@ -57,7 +57,7 @@ public class OAuth2Service {
 		return new PaycoUser(member.get("idNo").toString(), member.get("email").toString());
 	}
 
-	private boolean isSuccessful(Map<String, Object> userResponse) {
+	private boolean isPaycoSuccessful(Map<String, Object> userResponse) {
 		return ((Map<String, Object>)userResponse.get("header")).get("isSuccessful").toString().equalsIgnoreCase("true");
 	}
 }
