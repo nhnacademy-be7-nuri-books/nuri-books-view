@@ -67,6 +67,7 @@
           <strong th:text="${book.title}">제목</strong><br>
           <small th:text="'저자: ' + ${book.author}">저자</small><br>
           <small th:text="'출판일: ' + ${book.pubDate}">출판일</small>
+          <small th:text="'ISBN: ' + ${book.isbn}">ISBN</small>
         </div>
         <a th:href="@{/api/view/aladin/book/edit/{isbn}(isbn=${book.isbn})}" class="btn btn-sm btn-secondary">선택</a>
       </li>

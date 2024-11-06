@@ -23,7 +23,7 @@ public interface AladinBookServiceClient {
 																@RequestParam("maxResults") int maxResults);
 
 	@GetMapping("/api/books/aladin/{isbn}")
-	ResponseEntity<AladinBookListItemResponse> getBookByIsbn(@PathVariable String isbn);
+	ResponseEntity<AladinBookListItemResponse> getBookByIsbnWithAladin(@PathVariable String isbn);
 
 	@PostMapping("api/books/aladin/save")
 	ResponseEntity<ResponseMessage> saveAladinBook(@Valid @RequestBody AladinBookSaveRequest saveRequest);

@@ -27,7 +27,7 @@ public class AladinBookServiceImpl implements AladinBookService{
 
 	@Override
 	public AladinBookListItemResponse getAladinBookByIsbn(String isbn) {
-		return aladinBookServiceClient.getBookByIsbn(isbn).getBody();
+		return aladinBookServiceClient.getBookByIsbnWithAladin(isbn).getBody();
 	}
 
 	@Override
