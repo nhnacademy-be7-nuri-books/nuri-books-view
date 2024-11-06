@@ -18,7 +18,7 @@ spring:
               - email
         provider:
           payco:
-            authorization-uri:  https://id.payco.com/oauth2.0/authorize?userLocale=ko_KR&serviceProviderCode=FRIEND
+            authorization-uri: https://id.payco.com/oauth2.0/authorize?userLocale=ko_KR&serviceProviderCode=FRIENDS
             token-uri: https://id.payco.com/oauth2.0/token
             user-info-uri: https://apis-payco.krp.toastoven.net/payco/friends/find_member_v2.json
 thymeleaf:

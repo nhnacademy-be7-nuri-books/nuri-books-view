@@ -29,6 +29,7 @@ public class OAuth2ClientProperties {
 		}
 	}
 
+	@Getter
 	public static class Provider {
 		private final Payco payco = new Payco();
 
