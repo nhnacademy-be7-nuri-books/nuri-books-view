@@ -51,11 +51,33 @@
                 </tbody>
             </table>
             <div class="text-right mt-3">
-                <button class="btn btn-primary" onclick="location.href='@{/categories/add}'">카테고리 추가</button>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#categoryModal">카테고리 추가</button>
             </div>
         </div>
     </div>
 </div>
+
+<!-- 카테고리 추가 모달 -->
+<div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="categoryModalLabel">새로운 대분류 등록</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/admin/category" method="post">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">카테고리 이름</label>
+                        <input type="text" class="form-control" id="name" name="name" required maxlength="30">
+                    </div>
+                    <button type="submit" class="btn btn-primary">저장</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script type="text/javascript" src="/js/jquery.min.js"></script>
 <script type="text/javascript" src="/js/bootstrap.min.js"></script>
