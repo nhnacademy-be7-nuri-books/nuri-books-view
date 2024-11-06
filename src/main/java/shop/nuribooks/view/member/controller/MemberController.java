@@ -15,7 +15,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.member.dto.request.MemberRegisterRequest;
-import shop.nuribooks.view.member.dto.request.MemberUpdateRequest;
 import shop.nuribooks.view.member.service.MemberService;
 
 /**
@@ -108,17 +107,4 @@ public class MemberController {
 		return "member/myPage";
 	}
 
-	/**
-	 * 마이 페이지 POST
-	 *
-	 * @param request 사용자가 입력한 데이터를 포함한 {@link MemberUpdateRequest} 객체
-	 * @return myPage.html
-	 */
-	@PostMapping("/myPage")
-    public String updateMyPage(@ModelAttribute MemberUpdateRequest userRequest, RedirectAttributes redirectAttributes) {
-		log.info("userRequest: {}", userRequest);
-        redirectAttributes.addFlashAttribute("userRequest", userRequest);
-        redirectAttributes.addFlashAttribute(successMessageKey, "회원정보 수정에 성공하였습니다.");
-        return "redirect:/myPage";
-    }
 }

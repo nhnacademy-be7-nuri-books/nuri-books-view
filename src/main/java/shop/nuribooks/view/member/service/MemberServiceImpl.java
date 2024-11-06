@@ -44,4 +44,5 @@ public class MemberServiceImpl implements MemberService {
 			return ExceptionUtil.handleFeignException(ex);
 		}
 	}
+	
 }
