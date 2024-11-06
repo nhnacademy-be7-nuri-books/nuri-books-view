@@ -38,7 +38,7 @@ public class PaycoOAuth2ServiceImpl implements OAuth2Service{
 		);
 
 		String accessToken = getAccessToken(tokenResponse);
-		Map<String, Object> userResponse = paycoUserInfoFeignClient.getUserRequest(
+		Map<String, Object> userResponse = paycoUserInfoFeignClient.getUserInfo(
 			oAuth2ClientProperties.getRegistration().getPayco().getClientId(),
 			accessToken
 		);

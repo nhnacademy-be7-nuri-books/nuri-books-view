@@ -16,10 +16,22 @@ public class OAuth2ClientProperties {
 	@Getter
 	public static class Registration {
 		private final Payco payco = new Payco();
+		private final Naver naver = new Naver();
 
 		@Getter
 		@Setter
 		public static class Payco {
+			private String clientName;
+			private String clientId;
+			private String clientSecret;
+			private String redirectUri;
+			private String authorizationGrantType;
+			private String scope;
+		}
+
+		@Getter
+		@Setter
+		public static class Naver {
 			private String clientName;
 			private String clientId;
 			private String clientSecret;
@@ -32,6 +44,7 @@ public class OAuth2ClientProperties {
 	@Getter
 	public static class Provider {
 		private final Payco payco = new Payco();
+		private final Naver naver = new Naver();
 
 		@Getter
 		@Setter
@@ -39,6 +52,15 @@ public class OAuth2ClientProperties {
 			private String authorizationUri;
 			private String tokenUri;
 			private String userInfoUri;
+		}
+
+		@Getter
+		@Setter
+		public static class Naver {
+			private String authorizationUri;
+			private String tokenUri;
+			private String userInfoUri;
+			private String userNameAttribute;
 		}
 	}
 }

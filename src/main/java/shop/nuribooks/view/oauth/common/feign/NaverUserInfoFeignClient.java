@@ -6,11 +6,10 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-@FeignClient(name = "paycoUserInfoFeignClient", url = "https://apis-payco.krp.toastoven.net")
-public interface PaycoUserInfoFeignClient {
-	@PostMapping("/payco/friends/find_member_v2.json")
+@FeignClient(name = "naverUserInfoFeignClient", url = "https://openapi.naver.com/v1")
+public interface NaverUserInfoFeignClient {
+	@PostMapping("/nid/me")
 	Map<String, Object> getUserInfo(
-		@RequestHeader("client_id") String clientId,
-		@RequestHeader("access_token") String accessToken
+		@RequestHeader("Authorization") String accessToken
 	);
 }
