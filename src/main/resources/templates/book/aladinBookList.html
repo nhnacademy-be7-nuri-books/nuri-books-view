@@ -18,7 +18,7 @@
 
   <!-- 검색 옵션 폼 -->
   <div class="text-center mb-4">
-    <form th:action="@{/api/view/aladin/books/list}" method="get" class="text-center">
+    <form th:action="@{/view/aladin/books/list}" method="get" class="text-center">
 
       <!-- 리스트 종류 -->
       <div class="form-group d-inline-block me-3">
@@ -66,7 +66,7 @@
           <small th:text="'출판일: ' + ${book.pubDate}">출판일</small>
           <small th:text="'ISBN: ' + ${book.isbn}">ISBN</small>
         </div>
-        <a th:href="@{/api/view/aladin/book/register/{isbn}(isbn=${book.isbn})}" class="btn btn-sm btn-secondary">선택</a>
+        <a th:href="@{/view/aladin/book/register/{isbn}(isbn=${book.isbn})}" class="btn btn-sm btn-secondary">선택</a>
       </li>
     </ul>
     <p th:if="${books == null || books.isEmpty()}" class="text-center text-muted mt-4">도서 목록이 없습니다.</p>

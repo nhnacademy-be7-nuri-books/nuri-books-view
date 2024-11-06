@@ -21,7 +21,7 @@ import shop.nuribooks.view.book.service.AladinBookService;
 
 @RequiredArgsConstructor
 @Controller
-@RequestMapping("/api/view/aladin")
+@RequestMapping("/view/aladin")
 public class AladinBookController {
 	private final AladinBookService aladinBookService;
 
@@ -54,6 +54,6 @@ public class AladinBookController {
 	public String saveBook(@ModelAttribute AladinBookSaveRequest aladinBookSaveRequest, RedirectAttributes redirectAttributes) {
 		aladinBookService.saveAladinBook(aladinBookSaveRequest);
 		redirectAttributes.addFlashAttribute("successMessage", "도서 등록 성공");
-		return "redirect:/api/view/aladin/books";
+		return "redirect:/view/aladin/books";
 	}
 }
