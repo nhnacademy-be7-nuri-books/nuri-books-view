@@ -1,8 +1,8 @@
-name: deploy-actions
+name: prod-deploy-actions
 on:
   push:
     branches:
-      - "main"
+      - main
 
 jobs:
   deploy:
