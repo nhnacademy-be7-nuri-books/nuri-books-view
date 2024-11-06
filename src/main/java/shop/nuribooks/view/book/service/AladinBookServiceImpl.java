@@ -17,12 +17,7 @@ public class AladinBookServiceImpl implements AladinBookService{
 
 	@Override
 	public List<AladinBookListItemResponse> getAladinBookList(String queryType, String searchTarget, int maxResults) {
-		List<AladinBookListItemResponse> response =
-			aladinBookServiceClient.getAladinBookList(queryType, searchTarget, maxResults).getBody();
-		if (response != null) {
-			return response;
-		}
-		return List.of();
+		return aladinBookServiceClient.getAladinBookList(queryType, searchTarget, maxResults).getBody();
 	}
 
 	@Override
