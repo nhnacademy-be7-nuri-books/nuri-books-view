@@ -35,7 +35,11 @@
                     <td th:text="${category.id}"></td>
                     <td th:text="${category.name}"></td>
                     <td>
-                        <button class="btn btn-outline-secondary btn-sm" th:onclick="|location.href='@{/categories/edit/{id}(id=${category.id})}'|">
+                        <!-- 수정 버튼 -->
+                        <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#editCategoryModal"
+                                th:data-category-id="${category.id}"
+                                th:data-category-name="${category.name}">
                             수정
                         </button>
                         <button class="btn btn-outline-danger btn-sm" th:onclick="|location.href='@{/categories/delete/{id}(id=${category.id})}'|">
@@ -77,6 +81,28 @@
         </div>
     </div>
 </div>
+
+<!--&lt;!&ndash; 카테고리 수정 모달 &ndash;&gt;-->
+<!--<div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">-->
+<!--    <div class="modal-dialog">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <h5 class="modal-title" id="editCategoryModalLabel">카테고리 수정</h5>-->
+<!--                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--            </div>-->
+<!--            <div class="modal-body">-->
+<!--                <form th:action="@{/admin/category/{categoryId}(categorId=${category.id})}" method=post>-->
+<!--                    <input type="hidden" name="_method" value="patch"> &lt;!&ndash; PATCH 요청을 위한 히든 필드 &ndash;&gt;-->
+<!--                    <div class="mb-3">-->
+<!--                        <label for="editName" class="form-label">카테고리 이름</label>-->
+<!--                        <input type="text" class="form-control" id="editName" name="name" required maxlength="30">-->
+<!--                    </div>-->
+<!--                    <button type="submit" class="btn btn-primary">수정</button>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
 
 <script type="text/javascript" src="/js/jquery.min.js"></script>

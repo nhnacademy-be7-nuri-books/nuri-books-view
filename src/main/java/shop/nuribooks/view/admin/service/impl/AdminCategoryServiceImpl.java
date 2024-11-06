@@ -32,4 +32,9 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
 		adminCategoryClient.registerMainCategory(categoryRequest);
 	}
 
+	@Override
+	public void updateCategory(Long categoryId, CategoryRequest categoryRequest) {
+		adminCategoryClient.updateCategory(categoryRequest, categoryId);
+	}
+
 }
