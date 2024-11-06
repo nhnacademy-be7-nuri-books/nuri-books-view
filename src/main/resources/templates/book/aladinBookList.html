@@ -24,11 +24,11 @@
       <div class="form-group d-inline-block me-3">
         <label for="queryType" class="me-1">리스트 종류</label>
         <select name="queryType" id="queryType" class="form-select d-inline-block" style="width: auto;">
-          <option value="ItemNewAll">신간 전체 리스트</option>
-          <option value="ItemNewSpecial">주목할 만한 신간 리스트</option>
-          <option value="ItemEditorChoice">편집자 추천 리스트</option>
-          <option value="Bestseller">베스트셀러</option>
-          <option value="BlogBest">블로거 베스트셀러</option>
+          <option value="ItemNewAll" th:selected="${queryType == 'ItemNewAll'}">신간 전체 리스트</option>
+          <option value="ItemNewSpecial" th:selected="${queryType == 'ItemNewSpecial'}">주목할 만한 신간 리스트</option>
+          <option value="ItemEditorChoice" th:selected="${queryType == 'ItemEditorChoice'}">편집자 추천 리스트</option>
+          <option value="Bestseller" th:selected="${queryType == 'Bestseller'}">베스트셀러</option>
+          <option value="BlogBest" th:selected="${queryType == 'BlogBest'}">블로거 베스트셀러</option>
         </select>
       </div>
 
@@ -36,20 +36,17 @@
       <div class="form-group d-inline-block me-3">
         <label for="searchTarget" class="me-1">조회 대상</label>
         <select name="searchTarget" id="searchTarget" class="form-select d-inline-block" style="width: auto;">
-          <option value="Book" selected>도서</option>
-          <option value="Foreign">외국도서</option>
-          <option value="Music">음반</option>
-          <option value="DVD">DVD</option>
-          <option value="Used">중고샵</option>
-          <option value="eBook">전자책</option>
-          <option value="All">모든 타겟</option>
+          <option value="Book" th:selected="${searchTarget == 'Book'}">도서</option>
+          <option value="Foreign" th:selected="${searchTarget == 'Foreign'}">외국도서</option>
+          <option value="eBook" th:selected="${searchTarget == 'eBook'}">전자책</option>
+          <option value="All" th:selected="${searchTarget == 'All'}">모든 타겟</option>
         </select>
       </div>
 
       <!-- 결과 수 -->
       <div class="form-group d-inline-block">
         <label for="maxResults" class="me-1">결과 수</label>
-        <input type="number" name="maxResults" id="maxResults" min="1" max="100" value="10" class="form-control d-inline-block" style="width: 80px;" />
+        <input type="number" name="maxResults" id="maxResults" min="1" max="100" th:value="${maxResults}" class="form-control d-inline-block" style="width: 80px;" />
       </div>
 
       <!-- 조회 버튼 -->
