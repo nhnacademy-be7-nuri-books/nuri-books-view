@@ -1,3 +1,8 @@
+# JWT를 위한 변수 설정
+jwt:
+  secret-key: tmvmfldtlzbflxldhodlfjgrpdjfudnsrjdpdywlsWKrmfoehwoalTJdydxor
+  issuer: nuribooks-auth
+
 spring:
   application: { name: view }
   profiles:
