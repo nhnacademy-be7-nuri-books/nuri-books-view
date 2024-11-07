@@ -1,15 +1,23 @@
 package shop.nuribooks.view.oauth.service;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import shop.nuribooks.view.common.feign.AuthServiceClient;
+import shop.nuribooks.view.common.feign.OAuth2FeignClient;
 import shop.nuribooks.view.oauth.common.feign.NaverTokenFeignClient;
 import shop.nuribooks.view.oauth.common.feign.NaverUserInfoFeignClient;
 import shop.nuribooks.view.oauth.common.property.OAuth2ClientProperties;
+import shop.nuribooks.view.oauth.dto.OAuth2ResultResponse;
 import shop.nuribooks.view.oauth.dto.OAuth2UserResponse;
 
 @Slf4j
@@ -19,6 +27,7 @@ public class NaverOAuth2ServiceImpl implements OAuth2Service{
 	private final OAuth2ClientProperties oAuth2ClientProperties;
 	private final NaverTokenFeignClient naverTokenFeignClient;
 	private final NaverUserInfoFeignClient naverUserInfoFeignClient;
+	private final OAuth2FeignClient oAuth2FeignClient;
 
 	@Override
 	public String getLoginFormUri() {
@@ -29,7 +38,7 @@ public class NaverOAuth2ServiceImpl implements OAuth2Service{
 	}
 
 	@Override
-	public Optional<OAuth2UserResponse> login(String code) {
+	public OAuth2ResultResponse login(String code) {
 		Map<String, Object> tokenResponse = naverTokenFeignClient.getToken(
 			oAuth2ClientProperties.getRegistration().getNaver().getClientId(),
 			oAuth2ClientProperties.getRegistration().getNaver().getClientSecret(),
@@ -47,8 +56,33 @@ public class NaverOAuth2ServiceImpl implements OAuth2Service{
 			naverUser = Optional.of(getUserInfo(userResponse));
 		}
 
-		log.info("naver : {}", naverUser);
-		return naverUser;
+		// 로그인
+		ResponseEntity<String> result = oAuth2FeignClient.oauth2Login(naverUser.get());
+		if (result.getBody().equals("LOGIN_SUCCESS")) {
+			Map<String, List<String>> responseMap = new HashMap<>();
+			setTokenToClient(result, responseMap);
+			return new OAuth2ResultResponse(responseMap, result.getBody());
+		} else {
+			return new OAuth2ResultResponse(null, result.getBody());
+		}
+	}
+
+	private void setTokenToClient(ResponseEntity<String> result, Map<String, List<String>> responseMap) {
+		HttpHeaders headers = result.getHeaders();
+		// refresh jwt
+		Optional.ofNullable(headers.get(HttpHeaders.SET_COOKIE))
+			.filter(list -> !list.isEmpty())
+			.ifPresent(setCookieHeaders -> responseMap.put(HttpHeaders.SET_COOKIE, setCookieHeaders));
+
+		// accept jwt
+		Optional.ofNullable(headers.get(HttpHeaders.AUTHORIZATION))
+			.filter(list -> !list.isEmpty())
+			.ifPresent(
+				setAuthorizationHeaders -> responseMap.put(HttpHeaders.AUTHORIZATION, setAuthorizationHeaders));
+
+		Optional.ofNullable(headers.get("X-USER-ID"))
+			.filter(list -> !list.isEmpty())
+			.ifPresent(setCookieHeaders -> responseMap.put("X-USER-ID", setCookieHeaders));
 	}
 
 	private String getAccessToken(Map<String, Object> tokenResponse) {

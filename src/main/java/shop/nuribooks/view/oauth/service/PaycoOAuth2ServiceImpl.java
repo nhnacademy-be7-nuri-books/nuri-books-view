@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.oauth.common.feign.PaycoTokenFeignClient;
 import shop.nuribooks.view.oauth.common.feign.PaycoUserInfoFeignClient;
 import shop.nuribooks.view.oauth.common.property.OAuth2ClientProperties;
+import shop.nuribooks.view.oauth.dto.OAuth2ResultResponse;
 import shop.nuribooks.view.oauth.dto.OAuth2UserResponse;
 
 @Slf4j
@@ -29,7 +30,7 @@ public class PaycoOAuth2ServiceImpl implements OAuth2Service{
 	}
 
 	@Override
-	public Optional<OAuth2UserResponse> login(String code) {
+	public OAuth2ResultResponse login(String code) {
 		Map<String, Object> tokenResponse = paycoTokenFeignClient.getToken(
 			oAuth2ClientProperties.getRegistration().getPayco().getClientId(),
 			oAuth2ClientProperties.getRegistration().getPayco().getClientSecret(),
@@ -49,7 +50,7 @@ public class PaycoOAuth2ServiceImpl implements OAuth2Service{
 		}
 
 		log.info("payco : {}", paycoUser);
-		return paycoUser;
+		return null;
 	}
 
 	private String getAccessToken(Map<String, Object> tokenResponse) {
