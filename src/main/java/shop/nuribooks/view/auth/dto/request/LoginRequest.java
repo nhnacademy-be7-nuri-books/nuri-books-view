@@ -10,7 +10,7 @@ import jakarta.validation.constraints.Size;
  * @param password 비밀번호
  */
 public record LoginRequest(
-	// todo : 왜 회원 등록할 떄는 userId 인데 로그인할때는 username 인지???
+
 	@NotBlank(message = "사용자 이름은 필수 입력입니다.")
 	@Size(min = 8, max = 20, message = "사용자 아이디는 8자 이상 20자 이하로 입력해야 합니다.")
 	String username,

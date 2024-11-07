@@ -20,7 +20,7 @@ public record MemberSearchResponse(
 	@JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	LocalDate birthday,
 
-	String userId,
+	String username,
 	BigDecimal point,
 	BigDecimal totalPaymentAmount,
 	String authority,
