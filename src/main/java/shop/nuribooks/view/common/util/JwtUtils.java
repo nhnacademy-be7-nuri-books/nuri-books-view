@@ -35,11 +35,11 @@ public class JwtUtils {
 		return null;
 	}
 
-	public String getUsername(String token) {
+	public String getUserId(String token) {
 		try {
-			return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("username", String.class);
+			return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("userId", String.class);
 		} catch (Exception ex) {
-			log.info("Username을 가져오는데 실패하였습니다.");
+			log.info("UserId을 가져오는데 실패하였습니다.");
 		}
 		return null;
 	}
@@ -62,10 +62,10 @@ public class JwtUtils {
 		return true;
 	}
 
-	public String createJwt(String tokenType, String username, String role, Long expiredMs) {
+	public String createJwt(String tokenType, String userId, String role, Long expiredMs) {
 		return Jwts.builder()
 			.claim("tokenType", tokenType)
-			.claim("username", username)
+			.claim("userId", userId)
 			.claim("role", role)
 			.issuedAt(new Date(System.currentTimeMillis()))
 			.expiration(new Date(System.currentTimeMillis() + expiredMs))
