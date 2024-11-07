@@ -15,9 +15,9 @@
             </div>
             <form class="row" th:action="@{/sign-up}" method="post" id="register_form">
                 <div class="col-md-12 form-group mb-3">
-                    <label for="userId">아이디</label>
-                    <input type="text" class="form-control" id="userId" name="userId"
-                           th:value="${userRequest?.userId ?: ''}" placeholder="아이디"
+                    <label for="username">아이디</label>
+                    <input type="text" class="form-control" id="username" name="username"
+                           th:value="${userRequest?.username ?: ''}" placeholder="아이디"
                            onfocus="this.placeholder = ''" onblur="this.placeholder = '아이디'" required>
                 </div>
                 <div class="col-md-12 form-group mb-3">
@@ -99,7 +99,7 @@
             form.addEventListener("submit", function (event) {
                 let valid = true;
 
-                const userId = document.getElementById("userId").value;
+                const username = document.getElementById("username").value;
                 const name = document.getElementById("name").value;
                 const email = document.getElementById("email").value;
                 const password = document.getElementById("password").value;
@@ -108,13 +108,13 @@
                 const birthday = document.getElementById("birth").value;
 
                 // 필수 입력 검증
-                if (!userId || !name || !email || !password || !confirmPassword || !phoneNumber || !birthday) {
+                if (!username || !name || !email || !password || !confirmPassword || !phoneNumber || !birthday) {
                     errorMessage.textContent = "모든 필드를 입력해야 합니다.";
                     valid = false;
                 }
 
                 // 길이 검증
-                if (userId.length < 8 || userId.length > 20) {
+                if (username.length < 8 || username.length > 20) {
                     errorMessage.textContent = "사용자 아이디는 8자 이상 20자 이하로 입력해야 합니다.";
                     valid = false;
                 }
