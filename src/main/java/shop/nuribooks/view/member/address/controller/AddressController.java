@@ -1,16 +1,17 @@
 package shop.nuribooks.view.member.address.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import shop.nuribooks.view.member.dto.request.AddressRegisterRequest;
+import shop.nuribooks.view.member.address.dto.request.AddressRegisterRequest;
 
-@Controller
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
+@Controller
 public class AddressController {
 
 
@@ -19,9 +20,9 @@ public class AddressController {
         return "member/address/address-register";
     }
 
-    @PostMapping("/address")
-    public String registerAddress(@ModelAttribute AddressRegisterRequest request) {
-        log.info("{}, {}, {}", request.zipcode(), request.address(), request.addressDetail());
+    @PostMapping("/address/register")
+    public String registerAddress(@ModelAttribute @Valid AddressRegisterRequest request) {
+        log.info("{}, {}, {}", request.zipcode(), request.address(), request.detailAddress());
 
         return "index";
     }

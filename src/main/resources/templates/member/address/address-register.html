@@ -63,7 +63,7 @@
             <div class="text-center mb-4">
                 <p>Please fill in your details to register.</p>
             </div>
-            <form class="row" th:action="@{/sign-up}" method="post" id="register_form">
+            <form class="row" th:action="@{/address/register}" method="post" id="register_form">
                 <div class="col-md-12 form-group mb-3">
                     <label for="zipcode">우편번호</label>
                     <input type="text" class="form-control" id="zipcode" name="zipcode" placeholder="우편번호"
@@ -79,12 +79,12 @@
                 </div>
                 <div class="col-md-12 form-group mb-3">
                     <label for="detailAddress">상세주소</label>
-                    <input type="text" class="form-control" id="detailAddress" name="addressDetail" placeholder="상세주소"
+                    <input type="text" class="form-control" id="detailAddress" name="detailAddress" placeholder="상세주소"
                            onfocus="this.placeholder = ''" onblur="this.placeholder = '상세주소'" required>
                 </div>
                 <div class="col-md-6 form-group mb-3">
                     <label for="name">별칭</label>
-                    <input type="text" class="form-control" id="name" name="extraAddress" placeholder="별칭"
+                    <input type="text" class="form-control" id="name" name="name" placeholder="별칭"
                            onfocus="this.placeholder = ''" onblur="this.placeholder = '별칭'" required>
                 </div>
                 <div class="col-md-12 form-group mb-3">
