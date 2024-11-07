@@ -6,11 +6,39 @@
     <link rel="stylesheet" href="/css/floating-label.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <title>회원 관리</title>
+    <style>
+        /* 전체 화면을 차지하도록 설정 */
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+        .container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* 상단 정렬 */
+        }
+        .card {
+            margin-bottom: 20px; /* 카드와 테이블 사이의 여백 */
+        }
+        .table-container {
+            width: 100%; /* 테이블이 전체 너비를 차지하도록 설정 */
+            overflow-x: auto; /* 가로 스크롤 */
+        }
+        .table {
+            width: 100%; /* 테이블을 전체 너비로 설정 */
+        }
+        .table th, .table td {
+            text-align: center; /* 제목과 데이터 모두 가운데 정렬 */
+            vertical-align: middle; /* 데이터도 세로 가운데 정렬 */
+            white-space: nowrap; /* 텍스트가 줄 바꿈되지 않도록 설정 */
+        }
+    </style>
 </head>
 <body>
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-lg-8 col-md-10 col-sm-12">
+        <div class="col-lg-12 col-md-12 col-sm-12"> <!-- 전체 너비를 차지하도록 수정 -->
             <div class="card shadow">
                 <div class="card-header text-center">
                     <h3>회원 정보 검색</h3>
@@ -67,25 +95,25 @@
             </div>
 
             <!-- members가 존재할 때만 테이블 보이기 -->
-            <div th:if="${not #lists.isEmpty(members)}">
+            <div th:if="${not #lists.isEmpty(members)}" class="table-container">
                 <table class="table table-striped table-bordered table-hover mt-4">
                     <thead class="thead-dark">
-                    <tr>
-                        <th>고객 ID</th>
-                        <th>이름</th>
-                        <th>성별</th>
-                        <th>전화번호</th>
-                        <th>이메일</th>
-                        <th>생일</th>
-                        <th>사용자 ID</th>
-                        <th>포인트</th>
-                        <th>총 결제 금액</th>
-                        <th>권한</th>
-                        <th>등급</th>
-                        <th>상태</th>
-                        <th>가입일</th>
-                        <th>최종 로그인 일시</th>
-                    </tr>
+                        <tr>
+                            <th>고객 ID</th>
+                            <th>이름</th>
+                            <th>성별</th>
+                            <th>전화번호</th>
+                            <th>이메일</th>
+                            <th>생일</th>
+                            <th>사용자 ID</th>
+                            <th>포인트</th>
+                            <th>총 결제 금액</th>
+                            <th>권한</th>
+                            <th>등급</th>
+                            <th>상태</th>
+                            <th>가입일</th>
+                            <th>최종 로그인 일시</th>
+                        </tr>
                     </thead>
                     <tbody>
                     <!-- 각 회원 데이터를 테이블에 출력 -->
@@ -114,7 +142,7 @@
                 <p class="text-center text-muted">검색된 회원이 없습니다.</p>
             </div>
 
-        </div> <!-- col-lg-8 col-md-10 col-sm-12 (End) -->
+        </div> <!-- col-lg-12 col-md-12 col-sm-12 (End) -->
     </div> <!-- row justify-content-center (End) -->
 </div> <!-- container (End) -->
 
