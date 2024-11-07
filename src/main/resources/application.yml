@@ -52,7 +52,6 @@ info:
 
 header:
   refresh-key-name: Refresh
-
 ---
 spring:
   config:
