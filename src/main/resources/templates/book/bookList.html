@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+
+<head>
+    <title>도서 목록</title>
+</head>
+
+<div layout:fragment="content">
+    <h1>도서 목록</h1>
+    <!-- 항목 개수 선택 드롭다운 -->
+    <form th:action="@{/view/books}" method="get">
+        <label for="sizeSelect">페이지 당 항목 수:</label>
+        <select name="size" id="sizeSelect" onchange="document.getElementById('pageInput').value = 0; this.form.submit()">
+            <option th:value="5" th:text="'5개씩 보기'" th:selected="${books.size == 5}"></option>
+            <option th:value="10" th:text="'10개씩 보기'" th:selected="${books.size == 10}"></option>
+            <option th:value="20" th:text="'20개씩 보기'" th:selected="${books.size == 20}"></option>
+        </select>
+        <input type="hidden" id="pageInput" name="page" th:value="${books.page}" />
+    </form>
+
+    <!-- 도서 목록 테이블 -->
+    <table class="table">
+        <thead>
+        <tr>
+            <th>이미지</th>
+            <th>제목</th>
+            <th>출판사</th>
+            <th>정가</th>
+            <th>할인가</th>
+            <th>상태</th>
+            <th>재고</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book : ${books.content}">
+            <!-- 이미지를 클릭하여 상세 페이지로 이동 -->
+            <td>
+                <a th:href="@{/api/view/book/details/{id}(id=${book.id})}">
+                    <img th:src="${book.thumbnailImageUrl}" alt="도서 이미지" width="100">
+                </a>
+            </td>
+            <!-- 제목을 클릭하여 상세 페이지로 이동 -->
+            <td>
+                <a th:href="@{/api/view/book/details/{id}(id=${book.id})}" th:text="${book.title}">제목</a>
+            </td>
+            <td th:text="${book.publisherName}">출판사</td>
+            <td th:text="${book.price}">정가</td>
+            <td th:text="${book.salePrice}">할인가</td>
+            <td th:text="${book.state}">상태</td>
+            <td th:text="${book.stock}">재고</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- 페이지 이동 -->
+    <div>
+        <a th:href="@{/view/books(page=${books.page - 1}, size=${books.size})}" th:if="${books.page > 0}">이전</a>
+        <span th:text="${books.page + 1}">1</span> / <span th:text="${books.totalPages}">1</span>
+        <a th:href="@{/view/books(page=${books.page + 1}, size=${books.size})}" th:if="${books.page < books.totalPages - 1}">다음</a>
+    </div>
+</div>
+</html>
