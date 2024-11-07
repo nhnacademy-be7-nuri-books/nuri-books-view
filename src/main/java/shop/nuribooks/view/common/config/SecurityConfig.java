@@ -16,7 +16,7 @@ import shop.nuribooks.view.common.filter.AdminCheckFilter;
 @EnableWebSecurity
 public class SecurityConfig {
 	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtUtils jwtUtils) throws Exception {
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
 			.csrf(AbstractHttpConfigurer::disable);
 
@@ -29,10 +29,9 @@ public class SecurityConfig {
 
 		http
 			.httpBasic(AbstractHttpConfigurer::disable);
-
-		// TODO: Decoder로 바꿔주세요!
+		
 		http
-			.addFilterBefore(new AdminCheckFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class);
+			.addFilterBefore(new AdminCheckFilter(), UsernamePasswordAuthenticationFilter.class);
 
 		http
 			.authorizeHttpRequests(auth -> auth
