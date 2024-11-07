@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>E-Commerce Template</title>
+
+    <link href="//fonts.googleapis.com/css?family=Righteous" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">카테고리 관리</h2>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead class="thead-light">
+                <tr>
+                    <th>ID</th>
+                    <th>이름</th>
+                    <th>수정, 삭제</th>
+                    <th>하위 카테고리 이동</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="category : ${categories}">
+                    <td th:text="${category.id}"></td>
+                    <td th:text="${category.name}"></td>
+                    <td>
+                        <!-- 수정 버튼 -->
+                        <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#editCategoryModal"
+                                th:data-category-id="${category.id}"
+                                th:data-category-name="${category.name}">
+                            수정
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm" th:onclick="|location.href='@{/categories/delete/{id}(id=${category.id})}'|">
+                            삭제
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-outline-info btn-sm" th:onclick="|location.href='@{/categories/subcategories/{id}(id=${category.id})}'|">
+                            하위 카테고리 보기
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="text-right mt-3">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#categoryModal">카테고리 추가</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 카테고리 추가 모달 -->
+<div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="categoryModalLabel">새로운 대분류 등록</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/admin/category" method="post">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">카테고리 이름</label>
+                        <input type="text" class="form-control" id="name" name="name" required maxlength="30">
+                    </div>
+                    <button type="submit" class="btn btn-primary">저장</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--&lt;!&ndash; 카테고리 수정 모달 &ndash;&gt;-->
+<!--<div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">-->
+<!--    <div class="modal-dialog">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <h5 class="modal-title" id="editCategoryModalLabel">카테고리 수정</h5>-->
+<!--                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--            </div>-->
+<!--            <div class="modal-body">-->
+<!--                <form th:action="@{/admin/category/{categoryId}(categorId=${category.id})}" method=post>-->
+<!--                    <input type="hidden" name="_method" value="patch"> &lt;!&ndash; PATCH 요청을 위한 히든 필드 &ndash;&gt;-->
+<!--                    <div class="mb-3">-->
+<!--                        <label for="editName" class="form-label">카테고리 이름</label>-->
+<!--                        <input type="text" class="form-control" id="editName" name="name" required maxlength="30">-->
+<!--                    </div>-->
+<!--                    <button type="submit" class="btn btn-primary">수정</button>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/script.js"></script>
+</body>
+</html>
