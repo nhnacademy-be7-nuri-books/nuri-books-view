@@ -29,13 +29,17 @@ public class SecurityConfig {
 
 		http
 			.httpBasic(AbstractHttpConfigurer::disable);
-		
+
 		http
 			.addFilterBefore(new AdminCheckFilter(), UsernamePasswordAuthenticationFilter.class);
 
 		http
 			.authorizeHttpRequests(auth -> auth
-				.anyRequest().permitAll());
+				.anyRequest().permitAll()
+			)
+			.logout(logout -> logout
+				.disable()
+			);
 
 		return http.build();
 	}
