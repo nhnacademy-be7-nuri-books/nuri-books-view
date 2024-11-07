@@ -11,7 +11,6 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import shop.nuribooks.view.common.filter.AdminCheckFilter;
-import shop.nuribooks.view.common.util.JwtUtils;
 
 @Configuration
 @EnableWebSecurity
@@ -31,6 +30,7 @@ public class SecurityConfig {
 		http
 			.httpBasic(AbstractHttpConfigurer::disable);
 
+		// TODO: Decoder로 바꿔주세요!
 		http
 			.addFilterBefore(new AdminCheckFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class);
 
