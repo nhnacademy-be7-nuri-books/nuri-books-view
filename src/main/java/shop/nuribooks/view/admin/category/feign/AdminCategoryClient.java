@@ -23,7 +23,7 @@ import shop.nuribooks.view.common.dto.ResponseMessage;
 @FeignClient(name = "categoryClient", url = "http://localhost:8080")
 public interface AdminCategoryClient {
 
-	@GetMapping("/api/categories")
+	@GetMapping("/admin/api/categories")
 	List<SimpleCategoryResponse> getAllCategories();
 
 	@GetMapping("/api/categories/{categoryId}")
@@ -33,7 +33,7 @@ public interface AdminCategoryClient {
 	ResponseEntity<ResponseMessage> registerMainCategory(@RequestBody CategoryRequest categoryRequest);
 
 	@PatchMapping("/api/categories/{categoryId}")
-	ResponseEntity<ResponseMessage> updateCategory(@RequestBody CategoryRequest categoryRequest, @PathVariable Long categoryId);
-
+	ResponseEntity<ResponseMessage> updateCategory(@RequestBody CategoryRequest categoryRequest,
+		@PathVariable Long categoryId);
 
 }

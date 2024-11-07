@@ -39,7 +39,7 @@ public class MemberServiceImpl implements MemberService {
 	public String registerUser(@Valid MemberRegisterRequest userRequest) {
 		try {
 			MemberRegisterResponse response = memberServiceClient.registerUser(userRequest).getBody();
-			return successMessageKey + Objects.requireNonNull(response).userId();
+			return successMessageKey + Objects.requireNonNull(response).username();
 		} catch (FeignException ex) {
 			return ExceptionUtil.handleFeignException(ex);
 		}
