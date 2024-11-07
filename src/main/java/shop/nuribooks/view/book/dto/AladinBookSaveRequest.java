@@ -2,6 +2,7 @@ package shop.nuribooks.view.book.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Max;
@@ -59,6 +60,9 @@ public record AladinBookSaveRequest(
 	@NotBlank(message = "ISBN은 필수입니다.")
 	String isbn,
 
-	boolean isPackageable
+	boolean isPackageable,
+
+	@Size(max = 5, message = "최대 5개의 태그를 등록할 수 있습니다.")
+	List<Long> tagIds
 ) {
 }

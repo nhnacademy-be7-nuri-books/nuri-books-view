@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import shop.nuribooks.view.book.dto.AdminBookListResponse;
+import shop.nuribooks.view.book.dto.BookContributorsResponse;
 import shop.nuribooks.view.book.feign.BookServiceClient;
 import shop.nuribooks.view.common.dto.PagedResponse;
 
@@ -12,7 +13,7 @@ import shop.nuribooks.view.common.dto.PagedResponse;
 public class BookServiceImpl implements BookService{
 	private final BookServiceClient bookServiceClient;
 	@Override
-	public PagedResponse<AdminBookListResponse> getBooks(int page, int size) {
+	public PagedResponse<BookContributorsResponse> getBooks(int page, int size) {
 		return bookServiceClient.getBooks(page, size);
 	}
 }
