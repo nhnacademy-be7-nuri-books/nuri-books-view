@@ -1,230 +1,29 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Aroma Shop - Login</title>
-    <link rel="icon" th:href="@{/img/Fevicon.png}" type="image/png">
-    <link rel="stylesheet" th:href="@{/vendors/bootstrap/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{/vendors/fontawesome/css/all.min.css}">
-    <link rel="stylesheet" th:href="@{/vendors/themify-icons/themify-icons.css}">
-    <link rel="stylesheet" th:href="@{/vendors/linericon/style.css}">
-    <link rel="stylesheet" th:href="@{/vendors/owl-carousel/owl.theme.default.min.css}">
-    <link rel="stylesheet" th:href="@{/vendors/owl-carousel/owl.carousel.min.css}">
-    <link rel="stylesheet" th:href="@{/vendors/nice-select/nice-select.css}">
-    <link rel="stylesheet" th:href="@{/vendors/nouislider/nouislider.min.css}">
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-</head>
-<body>
-<!--================ Start Header Menu Area =================-->
-<header class="header_area">
-    <div class="main_menu">
-        <nav class="navbar navbar-expand-lg navbar-light">
-            <div class="container">
-                <a class="navbar-brand logo_h" th:href="@{/index.html}"><img src="/img/logo.png" alt=""></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse"
-                        data-target="#navbarSupportedContent"
-                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
-                    <ul class="nav navbar-nav menu_nav ml-auto mr-auto">
-                        <li class="nav-item"><a class="nav-link" th:href="@{/index}">Home</a></li>
-                        <li class="nav-item submenu dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-haspopup="true"
-                               aria-expanded="false">Shop</a>
-                            <ul class="dropdown-menu">
-                                <li class="nav-item"><a class="nav-link" th:href="@{/category.html}">Shop Category</a>
-                                </li>
-                                <li class="nav-item"><a class="nav-link" th:href="@{/single-product.html}">Blog
-                                    Details</a></li>
-                                <li class="nav-item"><a class="nav-link" th:href="@{/checkout.html}">Product
-                                    Checkout</a></li>
-                                <li class="nav-item"><a class="nav-link"
-                                                        th:href="@{/confirmation.html}">Confirmation</a></li>
-                                <li class="nav-item"><a class="nav-link" th:href="@{/cart.html}">Shopping Cart</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item submenu dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-haspopup="true"
-                               aria-expanded="false">Blog</a>
-                            <ul class="dropdown-menu">
-                                <li class="nav-item"><a class="nav-link" th:href="@{/blog.html}">Blog</a></li>
-                                <li class="nav-item"><a class="nav-link" th:href="@{/single-blog.html}">Blog Details</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item active submenu dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-haspopup="true"
-                               aria-expanded="false">Pages</a>
-                            <ul class="dropdown-menu">
-                                <li class="nav-item"><a class="nav-link" th:href="@{/login.html}">Login</a></li>
-                                <li class="nav-item"><a class="nav-link" th:href="@{/register.html}">Register</a></li>
-                                <li class="nav-item"><a class="nav-link" th:href="@{/tracking-order.html}">Tracking</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item"><a class="nav-link" th:href="@{/contact.html}">Contact</a></li>
-                    </ul>
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layouts/layout1}">
 
-                    <ul class="nav-shop">
-                        <li class="nav-item">
-                            <button><i class="ti-search"></i></button>
-                        </li>
-                        <li class="nav-item">
-                            <button><i class="ti-shopping-cart"></i><span class="nav-shop__circle">3</span></button>
-                        </li>
-                        <li class="nav-item"><a class="button button-header" href="#">Buy Now</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </div>
-</header>
-<!--================ End Header Menu Area =================-->
-
-<!-- ================ start banner area ================= -->
-<section class="blog-banner-area" id="category">
-    <div class="container h-100">
-        <div class="blog-banner">
-            <div class="text-center">
-                <h1>Error</h1>
-                <nav aria-label="breadcrumb" class="banner-breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Error</li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- ================ end banner area ================= -->
-
-
-<!--================ Error Message Area =================-->
-<section class="error_message_area section-margin">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="alert alert-danger" th:if="${errorMessage}" role="alert">
-                    <span th:text="${errorMessage}">Error message goes here.</span>
-                </div>
-                <span>Error message goes here.</span>
-                <div class="text-center mt-4">
-                    <button class="button button-header" th:href="@{/}">홈으로 가기</button>
-                    <button class="button button-header" onclick="history.back()">뒤로 가기</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!--================ End Error Message Area =================-->
-
-<!--================ Start footer Area  =================-->
-<footer>
-    <div class="footer-area footer-only">
-        <div class="container">
-            <div class="row section_gap">
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="single-footer-widget tp_widgets">
-                        <h4 class="footer_title large_title">Our Mission</h4>
-                        <p>
-                            So seed seed green that winged cattle in. Gathering thing made fly you're no
-                            divided deep moved us lan Gathering thing us land years living.
-                        </p>
-                        <p>
-                            So seed seed green that winged cattle in. Gathering thing made fly you're no divided deep
-                            moved
-                        </p>
-                    </div>
-                </div>
-                <div class="offset-lg-1 col-lg-2 col-md-6 col-sm-6">
-                    <div class="single-footer-widget tp_widgets">
-                        <h4 class="footer_title">Quick Links</h4>
-                        <ul class="list">
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#">Shop</a></li>
-                            <li><a href="#">Blog</a></li>
-                            <li><a href="#">Product</a></li>
-                            <li><a href="#">Brand</a></li>
-                            <li><a href="#">Contact</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6 col-sm-6">
-                    <div class="single-footer-widget instafeed">
-                        <h4 class="footer_title">Gallery</h4>
-                        <ul class="list instafeex flex-wrap">
-                            <li><img th:src="@{/img/gallery/r1.jpg}" alt=""></li>
-                            <li><img th:src="@{/img/gallery/r2.jpg}" alt=""></li>
-                            <li><img th:src="@{/img/gallery/r3.jpg}" alt=""></li>
-                            <li><img th:src="@{/img/gallery/r5.jpg}" alt=""></li>
-                            <li><img th:src="@{/img/gallery/r7.jpg}" alt=""></li>
-                            <li><img th:src="@{/img/gallery/r8.jpg}" alt=""></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="offset-lg-1 col-lg-3 col-md-6 col-sm-6">
-                    <div class="single-footer-widget tp_widgets">
-                        <h4 class="footer_title">Contact Us</h4>
-                        <div class="ml-40">
-                            <p class="sm-head">
-                                <span class="fa fa-location-arrow"></span>
-                                Head Office
-                            </p>
-                            <p>123, Main Street, Your City</p>
-
-                            <p class="sm-head">
-                                <span class="fa fa-phone"></span>
-                                Phone Number
-                            </p>
-                            <p>
-                                +123 456 7890 <br>
-                                +123 456 7890
-                            </p>
-
-                            <p class="sm-head">
-                                <span class="fa fa-envelope"></span>
-                                Email
-                            </p>
-                            <p>
-                                free@infoexample.com <br>
-                                www.infoexample.com
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!-- layout1.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
+<div layout:fragment="content">
+    <!-- Main Content -->
+    <div class="row">
+        <div class="col-12 mt-3 text-center text-uppercase">
+            <h2>오류 발생</h2>
         </div>
     </div>
 
-    <div class="footer-bottom">
-        <div class="container">
-            <div class="row d-flex">
-                <p class="col-lg-12 footer-text text-center">
-                    Copyright &copy;<script>document.write(new Date().getFullYear());</script>
-                    All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by
-                    <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                </p>
+    <main class="row">
+        <div class="col-lg-6 col-md-8 mx-auto bg-light rounded py-4 mb-4">
+            <div class="text-center mb-4">
+                <h4>문제가 발생했습니다!</h4>
+                <p th:text="${errorMassage}">에러 메시지가 여기 표시됩니다.</p>
+            </div>
+            <div class="mb-3 text-center">
+                <a href="/" class="btn btn-primary mx-2">홈으로 가기</a>
+                <button onclick="history.back()" class="btn btn-secondary mx-2">뒤로 가기</button>
             </div>
         </div>
-    </div>
-</footer>
-<!--================ End footer Area  =================-->
-<script th:src="@{/vendors/jquery/jquery-3.2.1.min.js}"></script>
-<script th:src="@{/vendors/bootstrap/bootstrap.bundle.min.js}"></script>
-<script th:src="@{/vendors/skrollr.min.js}"></script>
-<script th:src="@{/vendors/owl-carousel/owl.carousel.min.js}"></script>
-<script th:src="@{/vendors/nice-select/jquery.nice-select.min.js}"></script>
-<script th:src="@{/vendors/jquery.ajaxchimp.min.js}"></script>
-<script th:src="@{/vendors/mail-script.js}"></script>
-<script th:src="@{/js/main.js}"></script>
-</body>
+    </main>
+    <!-- Main Content -->
+</div>
 </html>

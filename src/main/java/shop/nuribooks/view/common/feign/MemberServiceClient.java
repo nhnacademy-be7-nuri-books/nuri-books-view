@@ -19,7 +19,7 @@ import shop.nuribooks.view.member.dto.response.MemberRegisterResponse;
  *
  * @author nuri
  */
-@FeignClient(name = "gateway", contextId = "member")
+@FeignClient(name = "member", url = "http://localhost:8080")
 public interface MemberServiceClient {
 
 	/**

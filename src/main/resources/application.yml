@@ -3,26 +3,36 @@ spring:
   profiles:
     active: dev
 
-thymeleaf:
-  prefix: classpath:/templates/
-  suffix: .html
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+
+  #cloud:
+  #  openfeign:
+  #    client:
+  #      config:
+  #        default:
+  #          connect-timeout: 5000
+  #          read-timeout: 5000
+  #          logger-level: basic
 
 server:
   port: 3000
 
-eureka:
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone: http://admin:1234@localhost:8761/eureka
-      #,http://admin:1234@localhost:8762/eureka
-  instance:
-    prefer-ip-address: true
-
 error:
   message-key: errorMessage
 
+success:
+  message-key: successMessage
+
+warning:
+  message-key: warningMessage
+
+info:
+  message-key: infoMessage
+
+header:
+  refresh-key-name: Refresh
 ---
 spring:
   config:

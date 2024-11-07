@@ -22,4 +22,9 @@ public interface AuthService {
 	 *         실패 시 오류 매세지
 	 */
 	Map<String, List<String>> login(@Valid LoginRequest loginRequest);
+
+	/**
+	 * 로그아웃
+	 */
+	String logout();
 }

@@ -5,9 +5,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,14 +35,21 @@ public class MemberController {
 	@Value("${error.message-key}")
 	private String errorMessageKey;
 
+	@Value("${success.message-key}")
+	private String successMessageKey;
+
 	/**
 	 * 회원가입 GET
 	 *
-	 * @return register.html
+	 * @return sign-up.html
 	 */
+	@Operation(summary = "회원가입 페이지", description = "회원가입 양식을 반환합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "회원가입 페이지 반환 성공")
+	})
 	@GetMapping("/sign-up")
 	public String registerForm() {
-		return "register";
+		return "member/sign-up";
 	}
 
 	/**
@@ -57,18 +66,25 @@ public class MemberController {
 	 * @return 회원가입 성공 시 로그인 페이지로 리다이렉트하는 URL,
 	 *         실패 시 회원가입 페이지로 리다이렉트하는 URL
 	 */
+	@Operation(summary = "회원가입", description = "사용자의 회원가입 요청을 처리합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "302", description = "회원가입 성공 및 로그인 페이지로 리다이렉트"),
+		@ApiResponse(responseCode = "302", description = "회원가입 실패 및 회원가입 페이지로 리다이렉트"),
+		@ApiResponse(responseCode = "500", description = "서버 오류 : 회원가입 실패")
+	})
 	@PostMapping("/sign-up")
 	public String registerUser(
 		RedirectAttributes redirectAttributes,
 		@Valid @ModelAttribute MemberRegisterRequest userRequest
 	) {
-
 		String returnMessage = memberService.registerUser(userRequest);
-		ModelAndView modelAndView = new ModelAndView();
 
-		if (returnMessage.startsWith("Success")) {
+		if (returnMessage.startsWith(successMessageKey)) {
+			log.info("회원가입 성공");
+			redirectAttributes.addFlashAttribute(successMessageKey, "회원가입에 성공하였습니다.");
 			return "redirect:/login";
 		} else {
+			log.error("회원가입 실패");
 			log.error("user register failed: {}", returnMessage);
 			redirectAttributes.addFlashAttribute("userRequest", userRequest);
 			redirectAttributes.addFlashAttribute(errorMessageKey, returnMessage);
