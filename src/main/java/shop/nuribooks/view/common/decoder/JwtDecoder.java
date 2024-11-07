@@ -25,7 +25,7 @@ public class JwtDecoder {
 	 * @param accessToken 토큰값
 	 * @return 토큰에서 추출한 사용자 아이디
 	 */
-	public static String getUsername(String accessToken) {
+	public static String getUserId(String accessToken) {
 		return getClaimFromJwt(accessToken, "userId");
 	}
 
