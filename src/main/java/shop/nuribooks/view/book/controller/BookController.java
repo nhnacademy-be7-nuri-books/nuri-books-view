@@ -1,5 +1,8 @@
 package shop.nuribooks.view.book.controller;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,10 +29,10 @@ public class BookController {
 		return "book/bookList";
 	}
 
-	@GetMapping("/view/books/details/{bookId}")
+	@GetMapping("/view/book/details/{bookId}")
 	public String getBookById(@PathVariable Long bookId, Model model) {
 		BookResponse bookResponse = bookService.getBookById(bookId);
-		model.addAttribute("book", "book");
-		return "book";
+		model.addAttribute("book", bookResponse);
+		return "book/bookDetail";
 	}
 }
