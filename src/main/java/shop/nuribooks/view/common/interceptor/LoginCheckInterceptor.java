@@ -1,12 +1,14 @@
 package shop.nuribooks.view.common.interceptor;
 
+import java.util.Objects;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import shop.nuribooks.view.common.util.CookieUtil;
 
 /**
  * 로그인 체크하는 Interceptor
@@ -28,14 +30,10 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object object) {
 		boolean isLoggedIn = false;
 
-		Cookie[] cookies = request.getCookies();
-		if (cookies != null) {
-			for (Cookie cookie : cookies) {
-				if (HttpHeaders.AUTHORIZATION.equals(cookie.getName())) {
-					isLoggedIn = true;
-					break;
-				}
-			}
+		String accessToken = CookieUtil.findByCookieKey(request, HttpHeaders.AUTHORIZATION);
+
+		if (Objects.nonNull(accessToken)) {
+			isLoggedIn = true;
 		}
 
 		request.setAttribute("isLoggedIn", isLoggedIn);
