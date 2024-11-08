@@ -20,43 +20,27 @@
 <div class="container-fluid">
   <div class="row min-vh-100">
     <div class="col-12">
-      <div th:replace="admin/fragment/adminheader :: adminHeader"></div>
+      <div th:replace="~{admin/fragment/adminheader :: adminHeader}"></div>
     </div>
 
-    <div class="col-2">
-      <div th:replace="admin/fragment/adminsidebar :: sidebar"></div>
+    <div class="col-12 col-md-2 d-none d-md-block">
+      <div th:replace="~{admin/fragment/adminsidebar :: sidebar}"></div>
     </div>
 
-    <div class="col-10 d-flex flex-column">
+    <div class="col-12 col-md-10 d-flex flex-column">
       <!-- Main Content -->
       <div id="main-content" layout:fragment="content" class="flex-grow-1"></div>
+
+      <!-- Footer fixed at the bottom of the main content -->
+      <footer class="bg-light text-center py-3 w-100 mt-auto">
+        <div th:replace="~{admin/fragment/adminfooter :: adminFooter}"></div>
+      </footer>
     </div>
-    <!-- Footer fixed at the bottom of the main content -->
-    <footer class="bg-light text-center py-3 w-100 mt-auto">
-      <div th:replace="admin/fragment/adminfooter :: adminFooter"></div>
-    </footer>
   </div>
 </div>
 <script type="text/javascript" src="/js/jquery.min.js"></script>
 <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/publisher.js"></script>
 <script type="text/javascript" src="/js/script.js"></script>
-<script type="text/javascript">
-  document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.sidebar-item').forEach(item => {
-      item.addEventListener('click', function (event) {
-        event.preventDefault();
-        const url = this.dataset.url;
-        if (url) {
-          fetch(url)
-                  .then(response => response.text())
-                  .then(html => {
-                    document.getElementById('main-content').innerHTML = html;
-                  })
-                  .catch(error => console.error('Error loading content:', error));
-        }
-      });
-    });
-  });
-</script>
 </body>
 </html>
