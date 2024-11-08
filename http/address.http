@@ -1,0 +1,6 @@
+### 주소등록
+POST localhost:3000/api/member/address
+Content-Type: application/x-www-form-urlencoded
+X-USER-ID: 1
+
+zipcode=12345&address=address&detailAddress=detail&name=name

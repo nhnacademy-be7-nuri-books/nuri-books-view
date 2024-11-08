@@ -63,7 +63,7 @@
             <div class="text-center mb-4">
                 <p>Please fill in your details to register.</p>
             </div>
-            <form class="row" th:action="@{/address/register}" method="post" id="register_form">
+            <form class="row" th:action="@{/api/member/address}" method="post" id="register_form">
                 <div class="col-md-12 form-group mb-3">
                     <label for="zipcode">우편번호</label>
                     <input type="text" class="form-control" id="zipcode" name="zipcode" placeholder="우편번호"
