@@ -32,7 +32,7 @@ public interface AdminCategoryClient {
 	ResponseEntity<ResponseMessage> registerMainCategory(@RequestBody CategoryRequest categoryRequest);
 
 	@PatchMapping("/api/categories/{categoryId}")
-	ResponseEntity<ResponseMessage> updateCategory(@RequestBody CategoryRequest categoryRequest, @PathVariable Long categoryId);
-
+	ResponseEntity<ResponseMessage> updateCategory(@RequestBody CategoryRequest categoryRequest,
+		@PathVariable Long categoryId);
 
 }
