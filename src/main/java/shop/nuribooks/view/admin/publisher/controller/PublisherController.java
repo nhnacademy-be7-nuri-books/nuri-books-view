@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import shop.nuribooks.view.admin.publisher.dto.PublisherRequest;
 import shop.nuribooks.view.admin.publisher.dto.PublisherResponse;
 import shop.nuribooks.view.admin.publisher.service.PublisherService;
-import shop.nuribooks.view.common.util.ExceptionUtil;
+import shop.nuribooks.view.exception.ResourceAlreadyExistsException;
 
 import java.util.List;
 import java.util.Map;
@@ -30,7 +30,7 @@ public class PublisherController {
     @Value("${success.message-key}")
     private String successMessageKey;
 
-    //관리자 페이지 -> 출판사 페이지로 들어오면
+    //출판사 페이지
     @GetMapping
     public String showRegisterPublisherForm(Model model) {
         List<PublisherResponse> publishers = publisherService.getAllPublishers();
@@ -40,29 +40,36 @@ public class PublisherController {
 
     //출판사 등록 버튼
     @PostMapping
-    public String registerPublisher(PublisherRequest publisherRequest) {
-        publisherService.registerPublisher(publisherRequest);
-        return "redirect:/admin";
+    public ResponseEntity<Map<String, String>> registerPublisher(PublisherRequest publisherRequest) {
+        try {
+            publisherService.registerPublisher(publisherRequest);
+            return ResponseEntity.ok(Map.of(publisherRequest.name(), "등록 성공"));
+        }catch (ResourceAlreadyExistsException ex) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(Map.of(HttpStatus.CONFLICT.toString(), ex.getMessage()));
+        }
     }
 
     // 출판사 수정 처리
     @PostMapping("/edit/{id}")
-    public ResponseEntity<String> updatePublisher(@PathVariable Long id, @RequestBody PublisherRequest publisherRequest) {
-        publisherService.updatePublisher(id, publisherRequest);
-        return ResponseEntity.ok("Publisher updated successfully.");
+    public ResponseEntity<Map<String, String>> updatePublisher(@PathVariable Long id, @RequestBody PublisherRequest publisherRequest) {
+        try {
+            publisherService.updatePublisher(id, publisherRequest);
+            return ResponseEntity.ok(Map.of(publisherRequest.name(), "수정 성공"));
+        }catch (ResourceAlreadyExistsException ex) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(Map.of("status", "error", "message", ex.getMessage()));
+            }
     }
-
-
 
     //출판사 삭제
     @PostMapping("/delete/{publisherId}")
-    public ResponseEntity<String> deletePublisher(@PathVariable Long publisherId) {
+    public ResponseEntity<Map<String, String>> deletePublisher(@PathVariable Long publisherId) {
         try {
             publisherService.deletePublisher(publisherId);
-            return ResponseEntity.ok("Publisher deleted successfully.");
+            return ResponseEntity.ok(Map.of("data", "삭제 성공"));
         } catch (FeignException ex) {
-            String errorMessage = ExceptionUtil.handleFeignException(ex);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("status", "error", "message", ex.getMessage()));
         }
     }
 }

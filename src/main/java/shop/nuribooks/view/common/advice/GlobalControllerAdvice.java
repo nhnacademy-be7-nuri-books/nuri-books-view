@@ -7,6 +7,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.exception.CustomJsonProcessingException;
 import shop.nuribooks.view.exception.DefaultServerError;
+import shop.nuribooks.view.exception.ResourceAlreadyExistsException;
 
 /**
  * 공동 예외 처리
@@ -52,6 +53,12 @@ public class GlobalControllerAdvice {
 	@ExceptionHandler({CustomJsonProcessingException.class})
 	public String handlerDefaultServerError(CustomJsonProcessingException ex, RedirectAttributes redirectAttributes) {
 		redirectAttributes.addFlashAttribute(ex.getMessage());
+		return "redirect:/error";
+	}
+
+	@ExceptionHandler({ResourceAlreadyExistsException.class})
+	public String handlerPublisherAlreadyExists(ResourceAlreadyExistsException ex, RedirectAttributes redirectAttributes) {
+		redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
 		return "redirect:/error";
 	}
 
