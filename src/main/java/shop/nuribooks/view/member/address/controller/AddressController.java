@@ -36,7 +36,9 @@ public class AddressController {
 
     @GetMapping("/api/member/me/address")
     public String getAddressList(Model model) {
-        ResponseEntity<List<AddressResponse>> addressList = addressClientService.getAddressList();
-        return "index";
+        ResponseEntity<List<AddressResponse>> responseEntity = addressClientService.getAddressList();
+        List<AddressResponse> addressList = responseEntity.getBody();
+        model.addAttribute("addressList", addressList);
+        return "member/address/address-list";
     }
 }
