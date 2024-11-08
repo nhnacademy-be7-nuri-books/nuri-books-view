@@ -12,13 +12,9 @@ function openPublisherModal() {
         event.preventDefault();
 
         const formData = new FormData(publisherForm);
-        const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
 
         fetch('/admin/publisher', {
             method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': csrfToken
-            },
             body: formData
         })
             .then(response => {
@@ -63,7 +59,6 @@ function openEditModal(publisherId) {
         event.preventDefault();
 
         const formData = new FormData(editForm);
-        const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
         const updateName = document.getElementById('edit_name').value;
         const data = {
             name: updateName,
@@ -73,8 +68,7 @@ function openEditModal(publisherId) {
         fetch(`/admin/publisher/edit/` + publisherId, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
         })
@@ -106,7 +100,6 @@ function openEditModal(publisherId) {
 }
 
 function handleDeletePublisher(publisherId) {
-    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
     const deleteUrl = `/admin/publisher/delete/${publisherId}`;
 
     const confirmDeleteButton = document.getElementById('confirmDelete');
@@ -114,8 +107,7 @@ function handleDeletePublisher(publisherId) {
         fetch(deleteUrl, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({_method: 'DELETE'})
         })
