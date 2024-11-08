@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import shop.nuribooks.view.Tag.dto.TagResponse;
+import shop.nuribooks.view.Tag.service.TagService;
 import shop.nuribooks.view.book.dto.AladinBookListItemResponse;
 import shop.nuribooks.view.book.dto.AladinBookSaveRequest;
 import shop.nuribooks.view.book.service.AladinBookService;
@@ -24,6 +24,7 @@ import shop.nuribooks.view.book.service.AladinBookService;
 @RequestMapping("/view/aladin")
 public class AladinBookController {
 	private final AladinBookService aladinBookService;
+	private final TagService tagService;
 
 	@GetMapping("/books")
 	public String showAladinBookPage() {
@@ -44,9 +45,12 @@ public class AladinBookController {
 	}
 
 	@GetMapping("/book/register/{isbn}")
-	public String getEditBookByIsbn(@PathVariable String isbn, Model model) {
+	public String getRegisterBookByIsbn(@PathVariable String isbn, Model model) {
 		AladinBookListItemResponse book = aladinBookService.getAladinBookByIsbn(isbn);
+		List<TagResponse> tags = tagService.getAllTags();
+
 		model.addAttribute("book", book);
+		model.addAttribute("tags", tags);
 		return "book/bookRegister";
 	}
 

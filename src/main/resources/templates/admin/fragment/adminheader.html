@@ -1,35 +1,34 @@
 <div th:fragment="adminHeader">
-    <header class="admin-header d-flex justify-content-between align-items-center bg-light p-2">
-        <div class="d-flex align-items-center">
-            <a href="/admin/dashboard" class="logo text-dark me-3">
-                <img src="/images/logo.png" alt="Admin Logo" style="height: 40px;">
-                <span>Admin Dashboard</span>
-            </a>
-            <nav class="breadcrumb">
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="/admin/dashboard">대시보드</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">상품 관리</li>
-                </ol>
-            </nav>
-        </div>
-        <div class="header-icons d-flex align-items-center">
-            <input type="text" class="form-control me-3" placeholder="검색...">
-            <a href="#" class="me-3">
-                <i class="fas fa-bell"></i><span class="badge bg-danger">3</span>
-            </a>
-            <div class="dropdown">
-                <a href="#" class="dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="/images/profile.png" alt="Admin Profile" class="rounded-circle" style="height: 30px;">
-                    <span class="ms-2">관리자 이름</span>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="/admin/myinfo">내 정보</a></li>
-                    <li><a class="dropdown-item" href="/admin/settings">설정</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="/logout">로그아웃</a></li>
-                </ul>
+    <header class="admin-header d-flex justify-content-between align-items-center bg-light p-3 shadow-sm rounded text-dark">
+        <!-- Header -->
+        <div class="col-12 bg-white pt-3">
+            <div class="row">
+                <div class="col-lg-auto">
+                    <div class="site-logo text-center text-lg-left">
+                        <a th:href="@{/admin}">NURIBOOKS</a>
+                    </div>
+                </div>
+                <div class="col-lg-5 mx-auto mt-4 mt-lg-0">
+                    <form action="#">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="search" class="form-control border-dark" placeholder="Search..."
+                                       required>
+                                <button class="btn btn-outline-dark"><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-auto text-center text-lg-left header-item-holder">
+                    <a href="#" class="header-item">
+                        <i class="fas fa-heart me-2"></i><span id="header-favorite">0</span>
+                    </a>
+                    <a href="cart.html" class="header-item">
+                        <i class="fas fa-shopping-bag me-2"></i><span id="header-qty" class="me-3">2</span>
+                        <!--<i class="fas fa-money-bill-wave me-2"></i><span id="header-price">$4,000</span>-->
+                    </a>
+                </div>
             </div>
         </div>
     </header>
 </div>
-    >
