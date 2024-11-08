@@ -5,7 +5,6 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import shop.nuribooks.view.common.interceptor.LoginCheckInterceptor;
-import shop.nuribooks.view.common.interceptor.TokenUpdateInterceptor;
 
 /**
  * Spring Web 를 구성하는 설정 클래스
@@ -16,18 +15,14 @@ import shop.nuribooks.view.common.interceptor.TokenUpdateInterceptor;
 public class WebConfig implements WebMvcConfigurer {
 
 	private final LoginCheckInterceptor loginCheckInterceptor;
-	private final TokenUpdateInterceptor tokenUpdateInterceptor;
 
 	/**
 	 * 생성자
 	 *
 	 * @param loginCheckInterceptor 로그인 체크 인터셉터
-	 * @param tokenUpdateInterceptor 토큰 재발행 인터셉터
 	 */
-	public WebConfig(LoginCheckInterceptor loginCheckInterceptor,
-		TokenUpdateInterceptor tokenUpdateInterceptor) {
+	public WebConfig(LoginCheckInterceptor loginCheckInterceptor) {
 		this.loginCheckInterceptor = loginCheckInterceptor;
-		this.tokenUpdateInterceptor = tokenUpdateInterceptor;
 	}
 
 	/**
@@ -39,12 +34,7 @@ public class WebConfig implements WebMvcConfigurer {
 	public void addInterceptors(InterceptorRegistry registry) {
 		// 로그인 체크 인터셉터 등록
 		registry.addInterceptor(loginCheckInterceptor)
-			.excludePathPatterns("/eureka/**", "/static/**", "/error")
-			.addPathPatterns("/**");
-
-		// 토큰 재발행 인터셉터 등록
-		registry.addInterceptor(tokenUpdateInterceptor)
-			.excludePathPatterns("/eureka/**", "/static/**", "/error")
+			.excludePathPatterns("/eureka/**", "/static/**", "/css/**", "/js/**", "/webfonts/**")
 			.addPathPatterns("/**");
 
 	}
