@@ -209,6 +209,7 @@
                                     <!-- 총합 -->
                                     <div class="text-right">
                                         <p>총 주문 품목: <span id="total-items">2</span>개</p>
+                                        <p>배송비: <span id="shipping-cost">3,000원</span></p>
                                         <p>총 결제 금액: <span id="total-price">23,000원</span></p>
                                     </div>
                                 </div>
@@ -340,12 +341,17 @@
 
             // 토스 payments 결제
             async function main() {
+
+                const totalPrice = calculateTotalPrice();
+
                 const button = document.getElementById("payment-button");
                 const coupon = document.getElementById("order-coupon-list");
+
                 const amount = {
                     currency: "KRW",
-                    value: 50000,
+                    value: totalPrice,
                 };
+
                 // ------  결제위젯 초기화 ------
                 // TODO: clientKey는 개발자센터의 결제위젯 연동 키 > 클라이언트 키로 바꾸세요.
                 // TODO: 구매자의 고유 아이디를 불러와서 customerKey로 설정하세요. 이메일・전화번호와 같이 유추가 가능한 값은 안전하지 않습니다.
@@ -353,10 +359,12 @@
                 const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
                 const customerKey = generateRandomString();
                 const tossPayments = TossPayments(clientKey);
+
                 // 회원 결제
                 // const widgets = tossPayments.widgets({
                 //     customerKey,
                 // });
+
                 // 비회원 결제
                 const widgets = tossPayments.widgets({customerKey: TossPayments.ANONYMOUS});
 
@@ -405,11 +413,11 @@
                     await widgets.requestPayment({
                         orderId: generateRandomString(),
                         orderName: "토스 티셔츠 외 2건",
-                        successUrl: window.location.origin + "/success",
-                        failUrl: window.location.origin + "/fail",
-                        customerEmail: "customer123@gmail.com",
-                        customerName: "김토스",
-                        customerMobilePhone: "01012341234",
+                        successUrl: window.location.origin + "/orders/success",
+                        failUrl: window.location.origin + "/orders/fail",
+                        customerEmail: document.getElementById('customer-email').value,
+                        customerName: document.getElementById('customer').value,
+                        customerMobilePhone: document.getElementById('customer-phone').value,
                     });
                 });
             }
@@ -417,6 +425,36 @@
             // 주문번호 랜덤
             function generateRandomString() {
                 return window.btoa(Math.random()).slice(0, 20);
+            }
+
+            // 결제 금액 얻어오기
+            function getAllSalePrices() {
+                const salePriceElements = document.querySelectorAll('.sale-price');
+                const salePrices = Array.from(salePriceElements).map(element => {
+                    return parseInt(element.textContent.replace(/[^\d]/g, ''));
+                })
+
+                console.log("prices: " + salePrices);  // 예시: [15000, 15000]
+                return salePrices;
+            }
+
+            // 숫자 포맷팅 함수 (천 단위 구분자 추가)
+            function formatPrice(price) {
+                return price.toLocaleString() + "원";  // 예: 50000 => "50,000원"
+            }
+
+            // 총 결제 금액을 계산하고 input 필드에 값을 넣기
+            function calculateTotalPrice() {
+                const salePrices = getAllSalePrices();  // 모든 세일가 값을 가져옴
+                const totalPrice = salePrices.reduce((total, price) => total + price, 0);  // 총 결제 금액 계산
+
+                // 총 결제 금액을 포맷하여 input 필드에 넣기
+                const formattedPrice = formatPrice(totalPrice);  // 포맷된 가격
+                document.getElementById('total-amount').value = formattedPrice; // 최종값이라 쿠폰, 배송비도 지원할 것
+                document.getElementById('total-price').value = formattedPrice;
+
+                console.log("formattedPrice: " + formattedPrice);  // 예시: "50,000원"
+                return totalPrice;  // 포맷된 가격 반환
             }
 
             // 도로명 주소 처리
