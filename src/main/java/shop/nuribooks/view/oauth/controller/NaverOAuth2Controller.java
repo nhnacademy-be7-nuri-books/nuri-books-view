@@ -24,6 +24,9 @@ import shop.nuribooks.view.oauth.service.NaverOAuth2ServiceImpl;
 public class NaverOAuth2Controller {
 	private final NaverOAuth2ServiceImpl naverOAuth2Service;
 
+	@Value("${success.message-key}")
+	private String successMessageKey;
+
 	@Value("${error.message-key}")
 	private String errorMessageKey;
 
@@ -48,11 +51,13 @@ public class NaverOAuth2Controller {
 				String token = authHeader.substring(7);
 				CookieUtils.addAuthCookie(response, token);
 			}
+			redirectAttributes.addFlashAttribute(successMessageKey, "NAVER 소셜 로그인 성공!");
 			return "redirect:/";
 		} else if (result.getStatus().equals(OAuth2Status.NEED_REGISTER.toString())) {
 			// 회원가입
 			redirectAttributes.addFlashAttribute("id", result.getResponseMap().get("userInfo").get(0));
 			redirectAttributes.addFlashAttribute("email", result.getResponseMap().get("userInfo").get(1));
+			redirectAttributes.addFlashAttribute(successMessageKey, "소셜 로그인 첫 시도로 간편 회원가입이 필요합니다.");
 			return "redirect:/simple-signup";
 		} else {
 			// 이미 존재하는 정보
