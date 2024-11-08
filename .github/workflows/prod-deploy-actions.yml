@@ -1,8 +1,8 @@
-name: deploy-actions
+name: prod-deploy-actions
 on:
   push:
     branches:
-      - "main"
+      - main
 
 jobs:
   deploy:
@@ -41,4 +41,4 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script_stop: true
-          script: "./startup.sh 3000 view"
+          script: "./startup.sh view 3000 3001"

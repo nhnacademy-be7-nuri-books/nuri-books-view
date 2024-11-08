@@ -2,6 +2,7 @@ spring:
   application: { name: view }
   profiles:
     active: dev
+
   security:
     # OAuth2 인증을 위한 변수 설정 (PropZerties class에서 관리)
     oauth2:
@@ -52,7 +53,6 @@ info:
 
 header:
   refresh-key-name: Refresh
-
 ---
 spring:
   config:
