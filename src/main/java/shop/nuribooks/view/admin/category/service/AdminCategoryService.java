@@ -1,0 +1,17 @@
+package shop.nuribooks.view.admin.category.service;
+
+import java.util.List;
+
+import shop.nuribooks.view.admin.category.dto.CategoryRequest;
+import shop.nuribooks.view.admin.category.dto.CategoryResponse;
+
+public interface AdminCategoryService {
+
+	List<CategoryResponse> getAllCategories();
+
+	CategoryResponse getCategory(Long categoryId);
+
+	void registerMainCategory(CategoryRequest categoryRequest);
+
+	void updateCategory(Long categoryId, CategoryRequest categoryRequest);
+}
