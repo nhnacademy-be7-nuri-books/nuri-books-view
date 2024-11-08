@@ -25,8 +25,6 @@ public class AddressController {
 
     @PostMapping("api/member/address")
     public String registerAddress(@ModelAttribute @Valid AddressRegisterRequest request, HttpServletRequest httpServletRequest) {
-        log.info("{}, {}, {}", request.zipcode(), request.address(), request.detailAddress());
-        log.info(httpServletRequest.toString());
         addressClientService.registerAddress(request);
 
         return "index";
