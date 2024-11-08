@@ -16,6 +16,7 @@ import shop.nuribooks.view.oauth.common.feign.NaverUserInfoFeignClient;
 import shop.nuribooks.view.oauth.common.feign.OAuth2FeignClient;
 import shop.nuribooks.view.oauth.common.property.OAuth2ClientProperties;
 import shop.nuribooks.view.oauth.common.type.OAuth2ServicePrefix;
+import shop.nuribooks.view.oauth.common.type.OAuth2Status;
 import shop.nuribooks.view.oauth.dto.OAuth2ResultResponse;
 import shop.nuribooks.view.oauth.dto.OAuth2UserResponse;
 
@@ -55,28 +56,20 @@ public class NaverOAuth2ServiceImpl implements OAuth2Service{
 
 		// 로그인
 		ResponseEntity<String> result = oAuth2FeignClient.oauth2Login(naverUser.get());
-
-		if (result.getBody().equals("LOGIN_SUCCESS")) {
-			Map<String, List<String>> responseMap = new HashMap<>();
+		Map<String, List<String>> responseMap = new HashMap<>();
+		responseMap.put("userInfo", List.of(naverUser.get().getId(), naverUser.get().getEmail()));
+		if (result.getBody().equals(OAuth2Status.LOGIN_SUCCESS.toString())) {
 			setTokenToClient(result, responseMap);
-			responseMap.put("userInfo", List.of(naverUser.get().getId(), naverUser.get().getEmail()));
-			return new OAuth2ResultResponse(responseMap, result.getBody());
-		} else {
-			Map<String, List<String>> responseMap = new HashMap<>();
-			responseMap.put("userInfo", List.of(naverUser.get().getId(), naverUser.get().getEmail()));
-			return new OAuth2ResultResponse(responseMap, result.getBody());
 		}
+		return new OAuth2ResultResponse(responseMap, result.getBody());
 	}
 
 	private void setTokenToClient(ResponseEntity<String> result, Map<String, List<String>> responseMap) {
 		HttpHeaders headers = result.getHeaders();
-
-		// refresh jwt
 		Optional.ofNullable(headers.get(HttpHeaders.SET_COOKIE))
 			.filter(list -> !list.isEmpty())
 			.ifPresent(setCookieHeaders -> responseMap.put(HttpHeaders.SET_COOKIE, setCookieHeaders));
 
-		// accept jwt
 		Optional.ofNullable(headers.get(HttpHeaders.AUTHORIZATION))
 			.filter(list -> !list.isEmpty())
 			.ifPresent(
@@ -90,10 +83,6 @@ public class NaverOAuth2ServiceImpl implements OAuth2Service{
 	private OAuth2UserResponse getUserInfo(Map<String, Object> userResponse) {
 		Map<String, Object> data = (Map<String, Object>)userResponse.get("response");
 		return new OAuth2UserResponse(data.get("id").toString(), data.get("email").toString());
-	}
-
-	private boolean isOAuth2Successful(Map<String, Object> userResponse) {
-		return userResponse.get("message").toString().equalsIgnoreCase("success");
 	}
 }
 

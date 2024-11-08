@@ -37,7 +37,7 @@ public class OAuth2MemberController {
 			return "redirect:/login";
 		} else {
 			redirectAttributes.addFlashAttribute("userRequest", registerRequest);
-			redirectAttributes.addFlashAttribute(errorMessageKey, returnMessage);
+			redirectAttributes.addFlashAttribute(errorMessageKey, "회원가입에 실패하였습니다.");
 			return "redirect:/simple-signup";
 		}
 	}
