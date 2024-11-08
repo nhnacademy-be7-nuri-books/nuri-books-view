@@ -6,17 +6,16 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import shop.nuribooks.view.common.feign.AuthServiceClient;
-import shop.nuribooks.view.common.feign.OAuth2FeignClient;
 import shop.nuribooks.view.oauth.common.feign.NaverTokenFeignClient;
 import shop.nuribooks.view.oauth.common.feign.NaverUserInfoFeignClient;
+import shop.nuribooks.view.oauth.common.feign.OAuth2FeignClient;
 import shop.nuribooks.view.oauth.common.property.OAuth2ClientProperties;
+import shop.nuribooks.view.oauth.common.type.OAuth2ServicePrefix;
 import shop.nuribooks.view.oauth.dto.OAuth2ResultResponse;
 import shop.nuribooks.view.oauth.dto.OAuth2UserResponse;
 
@@ -48,27 +47,30 @@ public class NaverOAuth2ServiceImpl implements OAuth2Service{
 
 		String accessToken = getAccessToken(tokenResponse);
 		Map<String, Object> userResponse = naverUserInfoFeignClient.getUserInfo(
-			tokenResponse.get("token_type") + " " + accessToken
+			"Bearer " + accessToken
 		);
 
-		Optional<OAuth2UserResponse> naverUser = null;
-		if (isOAuth2Successful(userResponse)) {
-			naverUser = Optional.of(getUserInfo(userResponse));
-		}
+		Optional<OAuth2UserResponse> naverUser = Optional.of(getUserInfo(userResponse));
+		naverUser.get().setId(OAuth2ServicePrefix.NAVER + naverUser.get().getId());
 
 		// 로그인
 		ResponseEntity<String> result = oAuth2FeignClient.oauth2Login(naverUser.get());
+
 		if (result.getBody().equals("LOGIN_SUCCESS")) {
 			Map<String, List<String>> responseMap = new HashMap<>();
 			setTokenToClient(result, responseMap);
+			responseMap.put("userInfo", List.of(naverUser.get().getId(), naverUser.get().getEmail()));
 			return new OAuth2ResultResponse(responseMap, result.getBody());
 		} else {
-			return new OAuth2ResultResponse(null, result.getBody());
+			Map<String, List<String>> responseMap = new HashMap<>();
+			responseMap.put("userInfo", List.of(naverUser.get().getId(), naverUser.get().getEmail()));
+			return new OAuth2ResultResponse(responseMap, result.getBody());
 		}
 	}
 
 	private void setTokenToClient(ResponseEntity<String> result, Map<String, List<String>> responseMap) {
 		HttpHeaders headers = result.getHeaders();
+
 		// refresh jwt
 		Optional.ofNullable(headers.get(HttpHeaders.SET_COOKIE))
 			.filter(list -> !list.isEmpty())
@@ -79,10 +81,6 @@ public class NaverOAuth2ServiceImpl implements OAuth2Service{
 			.filter(list -> !list.isEmpty())
 			.ifPresent(
 				setAuthorizationHeaders -> responseMap.put(HttpHeaders.AUTHORIZATION, setAuthorizationHeaders));
-
-		Optional.ofNullable(headers.get("X-USER-ID"))
-			.filter(list -> !list.isEmpty())
-			.ifPresent(setCookieHeaders -> responseMap.put("X-USER-ID", setCookieHeaders));
 	}
 
 	private String getAccessToken(Map<String, Object> tokenResponse) {
