@@ -36,7 +36,6 @@ thymeleaf:
   prefix: classpath:/templates/
   suffix: .html
 
-
 server:
   port: 3000
 

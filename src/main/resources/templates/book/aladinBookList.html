@@ -4,16 +4,67 @@
 
 <head>
   <title>Aladin 도서 목록</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa; /* 연한 회색 배경 */
+      font-family: 'Arial', sans-serif;
+    }
+
+    h1 {
+      color: #007bff; /* 블루 색상 */
+    }
+
+    .alert {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+
+    .form-control, .form-select {
+      border-radius: 0.25rem;
+      box-shadow: none;
+    }
+
+    .list-group-item {
+      border: 1px solid #e0e0e0; /* 리스트 아이템 테두리 */
+      border-radius: 0.5rem;
+      margin-bottom: 10px;
+    }
+
+    .list-group-item:hover {
+      background-color: #f1f1f1; /* 호버 시 배경색 변화 */
+    }
+
+    .btn-secondary {
+      background-color: #6c757d; /* 기본 회색 버튼 */
+      border: none;
+    }
+
+    .btn-secondary:hover {
+      background-color: #5a6268; /* 호버 시 버튼 색 변화 */
+    }
+
+    .text-muted {
+      color: #6c757d; /* 회색 텍스트 */
+    }
+  </style>
+  <script>
+    // 페이지 로드 시 성공 메시지가 있을 경우 alert로 표시
+    window.onload = function() {
+      const successMessage = /*[[${successMessage}]]*/ '';
+      if (successMessage) {
+        alert(successMessage);
+      }
+    }
+  </script>
 </head>
 
+<body>
 <div layout:fragment="content">
   <div class="text-center mb-4">
     <h1 class="text-uppercase">Aladin 도서 목록</h1>
-  </div>
-
-  <!-- 성공 메시지 표시 -->
-  <div th:if="${successMessage}" class="alert alert-success" role="alert">
-    <p th:text="${successMessage}"></p>
   </div>
 
   <!-- 검색 옵션 폼 -->
@@ -46,7 +97,7 @@
       <!-- 결과 수 -->
       <div class="form-group d-inline-block">
         <label for="maxResults" class="me-1">결과 수</label>
-        <input type="number" name="maxResults" id="maxResults" min="1" max="100" th:value="${maxResults}" class="form-control d-inline-block" style="width: 80px;" />
+        <input type="number" name="maxResults" id="maxResults" min="1" max="100" value="10" class="form-control d-inline-block" style="width: 80px;" />
       </div>
 
       <!-- 조회 버튼 -->
@@ -63,13 +114,15 @@
         <div>
           <strong th:text="${book.title}">제목</strong><br>
           <small th:text="'저자: ' + ${book.author}">저자</small><br>
+          <small th:text="'출판사: ' + ${book.publisher}">출판사</small>
           <small th:text="'출판일: ' + ${book.pubDate}">출판일</small>
           <small th:text="'ISBN: ' + ${book.isbn}">ISBN</small>
         </div>
-        <a th:href="@{/view/aladin/book/register/{isbn}(isbn=${book.isbn})}" class="btn btn-sm btn-secondary">선택</a>
+        <a th:href="@{/view/aladin/book/register/{isbn}(isbn=${book.isbn}, queryType=${queryType}, searchTarget=${searchTarget}, maxResults=${maxResults})}" class="btn btn-sm btn-secondary">선택</a>
       </li>
     </ul>
     <p th:if="${books == null || books.isEmpty()}" class="text-center text-muted mt-4">도서 목록이 없습니다.</p>
   </div>
 </div>
+</body>
 </html>
