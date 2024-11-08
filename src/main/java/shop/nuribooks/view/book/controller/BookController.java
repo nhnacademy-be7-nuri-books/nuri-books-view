@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.RequiredArgsConstructor;
 import shop.nuribooks.view.book.dto.AdminBookListResponse;
+import shop.nuribooks.view.book.dto.BookContributorsResponse;
 import shop.nuribooks.view.book.service.BookService;
 import shop.nuribooks.view.common.dto.PagedResponse;
 
@@ -19,7 +20,7 @@ public class BookController {
 	public String getBooks(@RequestParam(defaultValue = "0") int page,
 							@RequestParam(defaultValue = "10") int size,
 							Model model) {
-		PagedResponse<AdminBookListResponse> books = bookService.getBooks(page, size);
+		PagedResponse<BookContributorsResponse> books = bookService.getBooks(page, size);
 		model.addAttribute("books", books);
 		return "book/bookList";
 	}
