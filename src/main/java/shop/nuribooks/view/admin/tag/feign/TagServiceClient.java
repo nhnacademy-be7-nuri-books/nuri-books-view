@@ -1,4 +1,4 @@
-package shop.nuribooks.view.admin.tag;
+package shop.nuribooks.view.admin.tag.feign;
 
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -12,12 +12,11 @@ import java.util.List;
 
 @FeignClient(name = "tag", url = "http://localhost:8080")
 public interface TagServiceClient {
+    @GetMapping("/api/books/tags")
+    ResponseEntity<List<TagResponse>> getAllTags();
 
     @PostMapping("/api/books/tags")
     ResponseEntity<TagResponse> registerTag(@Valid @RequestBody TagRequest request);
-
-    @GetMapping
-    ResponseEntity<List<TagResponse>> getAllTags();
 
     @GetMapping("/api/books/tags/{tagId}")
     ResponseEntity<TagResponse> getTag(@Valid @PathVariable Long tagId);
@@ -28,3 +27,4 @@ public interface TagServiceClient {
     @DeleteMapping("/api/books/tags/{tagId}")
     ResponseEntity<HttpStatus> deleteTag(@Valid @PathVariable Long tagId);
 }
+

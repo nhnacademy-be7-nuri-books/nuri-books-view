@@ -9,4 +9,8 @@ import java.util.List;
 public interface TagService {
     void registerTag(@Valid TagRequest tagRequest);
     List<TagResponse> getAllTags();
+
+    void updateTag(@Valid Long id, TagRequest request);
+
+    void deleteTag(@Valid Long id);
 }

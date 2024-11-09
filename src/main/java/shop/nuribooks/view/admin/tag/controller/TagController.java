@@ -1,5 +1,6 @@
 package shop.nuribooks.view.admin.tag.controller;
 
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -7,9 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import shop.nuribooks.view.admin.tag.dto.TagRequest;
 import shop.nuribooks.view.admin.tag.dto.TagResponse;
 import shop.nuribooks.view.admin.tag.service.TagService;
@@ -36,7 +35,7 @@ public class TagController {
     public String showRegisterTagForm(Model model) {
         List<TagResponse> tags = tagService.getAllTags();
         model.addAttribute("tags", tags);
-        return "/admin/tag";
+        return "admin/tag";
     }
 
     @PostMapping
@@ -49,5 +48,25 @@ public class TagController {
                     .body(Map.of(HttpStatus.CONFLICT.toString(), ex.getMessage()));
         }
     }
-    
+
+    @PostMapping("/edit/{id}")
+    public ResponseEntity<Map<String, String>> updateTag(@PathVariable Long id, @RequestBody TagRequest tagRequest) {
+        try {
+            tagService.updateTag(id, tagRequest);
+            return ResponseEntity.ok(Map.of(tagRequest.name(), "수정 성공"));
+        }catch (ResourceAlreadyExistsException ex) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(Map.of("status", "error", "message", ex.getMessage()));
+        }
+    }
+
+    @PostMapping("/delete/{id}")
+    public ResponseEntity<Map<String, String>> deleteTag(@PathVariable Long id) {
+        try {
+            tagService.deleteTag(id);
+            return ResponseEntity.ok(Map.of("data", "삭제 성공"));
+        } catch (FeignException ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("status", "error", "message", ex.getMessage()));
+        }
+    }
 }
