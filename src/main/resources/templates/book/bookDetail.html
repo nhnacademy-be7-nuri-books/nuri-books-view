@@ -143,6 +143,11 @@
           <span class="sale-price" th:text="'할인율: ' + ${book.discountRate} + ' %'">할인율</span>
         </div>
 
+        <div class="book-meta mt-3" th:if="${book.tagNames?.size() > 0}">
+          <strong>태그:</strong>
+          <span th:each="tag : ${book.tagNames}" th:text="${tag}" class="badge badge-secondary mr-1">태그</span>
+        </div>
+
         <!-- Buttons aligned to the right in one line -->
         <div class="button-group mt-3">
           <a href="#" class="btn btn-secondary btn-custom">바로 구매하기</a>

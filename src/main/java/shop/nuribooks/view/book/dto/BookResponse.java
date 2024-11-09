@@ -2,6 +2,7 @@ package shop.nuribooks.view.book.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -22,6 +23,7 @@ public record BookResponse(
 	boolean isPackageable,
 	int likeCount,
 	int stock,
-	Long viewCount
+	Long viewCount,
+	List<String> tagNames
 ) {
 }
