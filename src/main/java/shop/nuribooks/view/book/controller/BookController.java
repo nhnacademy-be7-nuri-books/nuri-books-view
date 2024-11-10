@@ -17,7 +17,7 @@ import shop.nuribooks.view.common.dto.PagedResponse;
 public class BookController {
 	private final BookService bookService;
 
-	@GetMapping("/view/books")
+	@GetMapping({"/view/books", "/admin/view/books"})
 	public String getBooks(@RequestParam(defaultValue = "0") int page,
 							@RequestParam(defaultValue = "10") int size,
 							Model model) {
