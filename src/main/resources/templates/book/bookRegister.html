@@ -2,8 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout1}">
 <head>
-    <title>도서 정보 등록</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.min.css"/>
+    <title>도서 정보 등록</title>
     <style>
         /* 전체 페이지 배경 및 레이아웃 스타일 */
         body {
@@ -11,7 +13,6 @@
             font-family: 'Noto Sans', Arial, sans-serif;
             color: #333;
         }
-
         /* 메인 카드 컨테이너 */
         .form-container {
             max-width: 700px;
@@ -21,7 +22,6 @@
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
-
         /* 헤더 스타일 */
         .header-title {
             font-size: 2em;
@@ -30,7 +30,6 @@
             text-align: center;
             margin-bottom: 20px;
         }
-
         /* 폼 레이블과 입력 필드 스타일 */
         .form-label {
             font-weight: 600;
@@ -48,12 +47,6 @@
             border-color: #2980b9;
             box-shadow: 0 0 5px rgba(41, 128, 185, 0.3);
         }
-
-        /* 입력 필드 설명 스타일 */
-        .form-text {
-            color: #7f8c8d;
-        }
-
         /* 제출 버튼 스타일 */
         .btn-primary {
             background-color: #3498db;
@@ -69,25 +62,34 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
-
         /* 라벨과 입력 간격 조절 */
         .mb-3 {
             margin-bottom: 1.5rem;
         }
-
+        .mb-3 textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1em;
+            color: #2c3e50;
+            transition: border-color 0.3s;
+        }
         /* 작은 도움말 텍스트 스타일 */
         .help-text {
             font-size: 0.9em;
             color: #95a5a6;
         }
     </style>
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 </head>
 <body>
 <div layout:fragment="content">
     <div class="form-container">
         <h1 class="header-title">도서 등록</h1>
 
-        <form th:action="@{/view/aladin/book/save}" method="post">
+        <form id="registerForm" th:action="@{/view/aladin/book/save}" method="post">
             <div class="mb-3">
                 <label for="title" class="form-label">제목</label>
                 <input type="text" class="form-control" id="title" name="title" th:value="${book.title}" required>
@@ -135,13 +137,42 @@
             </div>
             <div class="mb-3">
                 <label for="contents" class="form-label">목차</label>
-                <textarea class="form-control" id="contents" name="contents" rows="3" required></textarea>
+                <textarea class="form-control" id="contents" name="contents" style="display: none;"></textarea>
+                <div id ="contentEditor"></div>
+                <script>
+                    const contentEditor = new toastui.Editor({
+                        el: document.querySelector('#contentEditor'),
+                        height: '300px',
+                        initialEditType: 'wysiwyg',
+                        previewStyle: 'vertical',
+                        initialValue: document.getElementById('contents').value || '',
+                        events: {
+                            change: function() {
+                                document.getElementById('contents').value = contentEditor.getHTML();
+                            }
+                        }
+                    });
+                </script>
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label">설명</label>
-                <textarea class="form-control" id="description" name="description" rows="3" th:value="${book.description}" required></textarea>
+                <textarea id="description" name="description" style="display: none;">[[${book.description}]]</textarea>
+                <div id="descriptionEditor"></div>
+                <script>
+                    const descriptionEditor = new toastui.Editor({
+                        el: document.querySelector('#descriptionEditor'),
+                        height: '300px',
+                        initialEditType: 'wysiwyg',
+                        previewStyle: 'vertical',
+                        initialValue: document.getElementById('description').value || '',
+                        events: {
+                            change: function() {
+                                document.getElementById('description').value = descriptionEditor.getHTML();
+                            }
+                        }
+                    });
+                </script>
             </div>
-
             <div class="mb-3">
                 <label class="form-label">태그 선택 (최대 5개)</label>
                 <div th:each="tag : ${tags}" class="form-check">
@@ -149,7 +180,6 @@
                     <label class="form-check-label" th:for="'tag_' + ${tag.id}" th:text="${tag.name}"></label>
                 </div>
             </div>
-
             <div class="mb-3">
                 <label for="isPackageable" class="form-label">포장 가능 여부</label>
                 <select class="form-select" id="isPackageable" name="isPackageable" required>
@@ -163,10 +193,9 @@
                 <small class="help-text">ISBN은 자동으로 채워집니다</small>
             </div>
 
-            <button type="submit" class="btn btn-primary">저장</button>
+            <button type="submit" id="registerButton" class="btn btn-primary">저장</button>
         </form>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
