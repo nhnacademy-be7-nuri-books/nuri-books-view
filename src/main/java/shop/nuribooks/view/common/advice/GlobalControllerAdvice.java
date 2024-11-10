@@ -5,9 +5,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.extern.slf4j.Slf4j;
+import shop.nuribooks.view.exception.BadRequestException;
 import shop.nuribooks.view.exception.CustomJsonProcessingException;
 import shop.nuribooks.view.exception.DefaultServerError;
 import shop.nuribooks.view.exception.ResourceAlreadyExistsException;
+import shop.nuribooks.view.exception.ResourceNotFoundException;
 import shop.nuribooks.view.exception.UnauthorizedException;
 
 /**
@@ -58,11 +60,12 @@ public class GlobalControllerAdvice {
 	}
 
 	@ExceptionHandler({ResourceAlreadyExistsException.class})
-	public String handlerPublisherAlreadyExists(ResourceAlreadyExistsException ex, RedirectAttributes redirectAttributes) {
+	public String handlerPublisherAlreadyExists(ResourceAlreadyExistsException ex,
+		RedirectAttributes redirectAttributes) {
 		redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
 		return "redirect:/error";
 	}
-  
+
 	/**
 	 * 권한 없는 예외가 발생할 시 처리
 	 *
@@ -72,6 +75,18 @@ public class GlobalControllerAdvice {
 	 */
 	@ExceptionHandler({UnauthorizedException.class})
 	public String handlerUnauthorized(UnauthorizedException ex, RedirectAttributes redirectAttributes) {
+		redirectAttributes.addFlashAttribute(ex.getMessage());
+		return "redirect:/error";
+	}
+
+	@ExceptionHandler({ResourceNotFoundException.class})
+	public String handlerResourceNotFound(ResourceAlreadyExistsException ex, RedirectAttributes redirectAttributes) {
+		redirectAttributes.addFlashAttribute(ex.getMessage());
+		return "redirect:/error";
+	}
+
+	@ExceptionHandler({BadRequestException.class})
+	public String handlerBadRequest(BadRequestException ex, RedirectAttributes redirectAttributes) {
 		redirectAttributes.addFlashAttribute(ex.getMessage());
 		return "redirect:/error";
 	}
