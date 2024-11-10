@@ -1,0 +1,131 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout/adminlayout}">
+<body>
+
+<div layout:fragment="content">
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">태그 관리</h2>
+            </div>
+            <div class="card-body">
+                <div class="text-end mb-4">
+                    <button id="openTagModalBtn" class="btn btn-outline-secondary btn-sm" onclick="openTagModal()">
+                        <i class="fas fa-plus-circle me-2"></i>태그 등록
+                    </button>
+                </div>
+
+                <!-- 태그 목록 테이블 -->
+                <h2 class="text-center text-uppercase mb-4">태그 목록</h2>
+                <table class="table table-hover">
+                    <thead class="table-light">
+                    <tr>
+                        <th class="text-center">ID</th>
+                        <th class="text-center">태그 이름</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody id = "tag">
+                    <tr th:each="tag : ${tags}">
+                        <td class="text-center" th:text="${tag.id}">ID</td>
+                        <td class="text-center" th:text="${tag.name}">태그 이름</td>
+                        <td class="text-end">
+                            <!-- 수정 버튼 (수정 모달 트리거) -->
+                            <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#editTagModal"
+                                    th:data-id="${tag.id}" th:data-name="${tag.name}"
+                                    th:onclick="'openEditModal('+${tag.id}+')'">
+                                <i class="fas fa-edit me-2"></i>수정
+                            </button>
+
+                            <!-- 삭제 버튼 -->
+                            <a href="javascript:void(0);" class="btn btn-outline-secondary btn-sm"
+                               th:onclick="'handleDeleteTag(' + ${tag.id} + ')'">
+                                <i class="fas fa-trash-alt me-2"></i>삭제
+                            </a>
+                        </td>
+                    </tr>
+
+                    <tr th:if="${#lists.isEmpty(tags)}">
+                        <td colspan="2" class="text-center text-muted">등록된 태그가 없습니다.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 태그 등록 모달 -->
+    <div class="modal fade" id="tagModal" tabindex="-1" aria-labelledby="tagModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tagModalLabel">태그 등록</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- 태그 등록 폼 -->
+                    <form action="/admin/tag" method="post" id="tag_form">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">태그 이름</label>
+                            <input type="text" class="form-control" id="name" name="name" required placeholder="태그 이름">
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">태그 등록</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 태그 삭제 모달 -->
+    <div class="modal fade" id="deleteTagModal" tabindex="-1" aria-labelledby="deleteTagModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteTagModalLabel">태그 삭제</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>정말 이 태그를 삭제하시겠습니까?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="confirmDelete">예</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 태그 수정 모달 -->
+    <div id="editTagModal" class="modal fade" tabindex="-1" aria-labelledby="editTagModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editTagModalLabel">태그 수정</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit_tag_form" method="POST">
+                        <input type="hidden" id="edit_tag_id" name="id"/>
+                        <div class="mb-3">
+                            <label for="edit_name" class="form-label">새로운 태그 이름</label>
+                            <input type="text" id="edit_name" class="form-control" name="name" required/>
+                        </div>
+                        <div id="error_message" class="alert alert-danger d-none" role="alert">
+                            Tag name is already taken. Please choose another one.
+                        </div>
+                        <button type="submit" class="btn btn-primary">수정</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
