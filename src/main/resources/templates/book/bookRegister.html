@@ -100,6 +100,60 @@
             <label for="categoryName" class="form-label">카테고리</label>
             <input type="text" class="form-control" id="categoryName" name="categoryName" th:value="${book.categoryName}" required>
         </div>
+
+        <div class="mb-3">
+            <label class="form-label">카테고리 선택 (최대 10개의 최하위 카테고리 선택 가능)</label>
+            <!-- 첫 번째 레벨 카테고리 -->
+            <div th:each="category : ${categories}">
+                <div style="margin-left: 20px;">
+                    <input type="checkbox" th:id="'category_' + ${category.id}" th:value="${category.id}" name="categoryIds"
+                           th:if="${#lists.isEmpty(category.subCategories)}"
+                           onchange="handleCategorySelection(this)" class="form-check-input">
+                    <label th:for="'category_' + ${category.id}" th:text="${category.name}"></label>
+
+                    <!-- 두 번째 레벨 카테고리 -->
+                    <div th:each="subCategory : ${category.subCategories}">
+                        <div style="margin-left: 20px;">
+                            <input type="checkbox" th:id="'category_' + ${subCategory.id}" th:value="${subCategory.id}" name="categoryIds"
+                                   th:if="${#lists.isEmpty(subCategory.subCategories)}"
+                                   onchange="handleCategorySelection(this)" class="form-check-input">
+                            <label th:for="'category_' + ${subCategory.id}" th:text="${subCategory.name}"></label>
+
+                            <!-- 세 번째 레벨 카테고리 -->
+                            <div th:each="subSubCategory : ${subCategory.subCategories}">
+                                <div style="margin-left: 20px;">
+                                    <input type="checkbox" th:id="'category_' + ${subSubCategory.id}" th:value="${subSubCategory.id}" name="categoryIds"
+                                           th:if="${#lists.isEmpty(subSubCategory.subCategories)}"
+                                           onchange="handleCategorySelection(this)" class="form-check-input">
+                                    <label th:for="'category_' + ${subSubCategory.id}" th:text="${subSubCategory.name}"></label>
+
+                                    <!-- 네 번째 레벨 카테고리 -->
+                                    <div th:each="subSubSubCategory : ${subSubCategory.subCategories}">
+                                        <div style="margin-left: 20px;">
+                                            <input type="checkbox" th:id="'category_' + ${subSubSubCategory.id}" th:value="${subSubSubCategory.id}" name="categoryIds"
+                                                   th:if="${#lists.isEmpty(subSubSubCategory.subCategories)}"
+                                                   onchange="handleCategorySelection(this)" class="form-check-input">
+                                            <label th:for="'category_' + ${subSubSubCategory.id}" th:text="${subSubSubCategory.name}"></label>
+
+                                            <!-- 다섯 번째 레벨 카테고리 -->
+                                            <div th:each="subSubSubSubCategory : ${subSubSubCategory.subCategories}">
+                                                <div style="margin-left: 20px;">
+                                                    <input type="checkbox" th:id="'category_' + ${subSubSubSubCategory.id}" th:value="${subSubSubSubCategory.id}" name="categoryIds"
+                                                           th:if="${#lists.isEmpty(subSubSubSubCategory.subCategories)}"
+                                                           onchange="handleCategorySelection(this)" class="form-check-input">
+                                                    <label th:for="'category_' + ${subSubSubSubCategory.id}" th:text="${subSubSubSubCategory.name}"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="mb-3">
             <label for="price" class="form-label">정가</label>
             <input type="number" class="form-control" id="price" name="price" th:value="${book.priceStandard}" required>
@@ -185,5 +239,37 @@
         <button type="submit" id="registerButton" class="btn btn-primary">저장</button>
     </form>
 </div>
+<script>
+    const selectedCategories = new Set();
+
+    function handleCategorySelection(checkbox) {
+        if (checkbox.checked) {
+            if (selectedCategories.size >= 10) {
+                alert("최대 10개의 최하위 카테고리만 선택할 수 있습니다.");
+                checkbox.checked = false;
+                return;
+            }
+            selectedCategories.add(checkbox.value);
+        } else {
+            selectedCategories.delete(checkbox.value);
+        }
+    }
+</script>
+<script>
+    const selectedCategories = new Set();
+
+    function handleCategorySelection(checkbox) {
+        if (checkbox.checked) {
+            if (selectedCategories.size >= 10) {
+                alert("최대 10개의 최하위 카테고리만 선택할 수 있습니다.");
+                checkbox.checked = false;
+                return;
+            }
+            selectedCategories.add(checkbox.value);
+        } else {
+            selectedCategories.delete(checkbox.value);
+        }
+    }
+</script>
 </body>
 </html>
