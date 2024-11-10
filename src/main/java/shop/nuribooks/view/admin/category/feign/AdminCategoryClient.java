@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,8 +32,15 @@ public interface AdminCategoryClient {
 	@PostMapping("/api/categories")
 	ResponseEntity<ResponseMessage> registerMainCategory(@RequestBody CategoryRequest categoryRequest);
 
+	@PostMapping("/api/categories/{categoryId}")
+	ResponseEntity<ResponseMessage> registerSubCategory(@RequestBody CategoryRequest categoryRequest,
+		@PathVariable Long categoryId);
+
 	@PatchMapping("/api/categories/{categoryId}")
 	ResponseEntity<ResponseMessage> updateCategory(@RequestBody CategoryRequest categoryRequest,
 		@PathVariable Long categoryId);
+
+	@DeleteMapping("/api/categories/{categoryId}")
+	ResponseEntity<Void> deleteCategory(@PathVariable Long categoryId);
 
 }

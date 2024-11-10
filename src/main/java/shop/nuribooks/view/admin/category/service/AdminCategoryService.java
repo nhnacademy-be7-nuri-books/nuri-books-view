@@ -13,5 +13,9 @@ public interface AdminCategoryService {
 
 	void registerMainCategory(CategoryRequest categoryRequest);
 
+	void registerSubCategory(Long categoryId, CategoryRequest categoryRequest);
+
 	void updateCategory(Long categoryId, CategoryRequest categoryRequest);
+
+	void  deleteCategory(Long categoryId);
 }
