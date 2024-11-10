@@ -19,14 +19,19 @@ import shop.nuribooks.view.admin.category.service.AdminCategoryService;
 import shop.nuribooks.view.admin.tag.dto.TagResponse;
 import shop.nuribooks.view.admin.tag.service.TagService;
 import shop.nuribooks.view.book.dto.AladinBookListItemResponse;
+import shop.nuribooks.view.book.dto.AladinBookRegisterRequest;
 import shop.nuribooks.view.book.dto.AladinBookSaveRequest;
+import shop.nuribooks.view.book.dto.BaseBookRegisterRequest;
+import shop.nuribooks.view.book.dto.PersonallyBookRegisterRequest;
 import shop.nuribooks.view.book.service.AladinBookService;
+import shop.nuribooks.view.book.service.BookService;
 
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/admin/view")
 public class AdminBookController {
 	private final AladinBookService aladinBookService;
+	private final BookService bookService;
 	private final TagService tagService;
 	private final AdminCategoryService adminCategoryService;
 
@@ -77,6 +82,7 @@ public class AdminBookController {
 	public String getRegisterBookByIsbn(@PathVariable String isbn, Model model) {
 		AladinBookListItemResponse book = aladinBookService.getAladinBookByIsbn(isbn);
 		prepareBookRegisterForm(book, model);
+		model.addAttribute("isAladinMode", true);
 		return "/book/bookRegister";
 	}
 
@@ -88,23 +94,36 @@ public class AdminBookController {
 	public String showBookRegisterPage(Model model) {
 		AladinBookListItemResponse book = AladinBookListItemResponse.empty();
 		prepareBookRegisterForm(book, model);
+		model.addAttribute("isAladinMode", false);
 		return "/book/bookRegister";
 	}
 
 	/**
-	 *
-	 * @return 알라딘 api를 이용한 도서 목록 불러오기 페이지로 재이동
+	 * 알라딘 API를 이용한 도서 등록
 	 */
 	@PostMapping("/aladin/book/save")
-	public String saveBook(@ModelAttribute AladinBookSaveRequest aladinBookSaveRequest, RedirectAttributes redirectAttributes) {
+	public String registerAladinBook(@ModelAttribute AladinBookRegisterRequest aladinRegisterReq, RedirectAttributes redirectAttributes) {
 		try {
-			aladinBookService.saveAladinBook(aladinBookSaveRequest);
+			bookService.registerAladinBook(aladinRegisterReq);
 			redirectAttributes.addFlashAttribute("successMessage", "도서 등록 성공");
 		} catch (Exception ex) {
 			redirectAttributes.addFlashAttribute("errorMessage", "도서 등록 실패");
-			return "redirect:/admin/view/aladin/books";
 		}
 		return "redirect:/admin/view/aladin/books";
+	}
+
+	/**
+	 * 직접 도서 등록
+	 */
+	@PostMapping("/personally/book/save")
+	public String registerPersonallyBook(@ModelAttribute PersonallyBookRegisterRequest personallyRegisterReq, Model model) {
+		try {
+			bookService.registerPersonallyBook(personallyRegisterReq);
+			model.addAttribute("successMessage", "도서 등록 성공");
+		} catch (Exception ex) {
+			model.addAttribute("errorMessage", "도서 등록 실패");
+		}
+		return "/book/adminBookManage";
 	}
 
 	/**

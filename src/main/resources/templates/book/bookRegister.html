@@ -89,14 +89,16 @@
     <div class="main-card">
         <h1 class="header-title">도서 등록</h1>
 
-        <form id="registerForm" th:action="@{/admin/view/aladin/book/save}" method="post">
-            <div class="mb-3">
+        <form id="registerForm"  method="post">
+            <input type="hidden" id="formActionUrl" th:value="${isAladinMode ? '/admin/view/aladin/book/save' : '/admin/view/personally/book/save'}" />
+        <div class="mb-3">
                 <label for="title" class="form-label">제목</label>
                 <input type="text" class="form-control" id="title" name="title" th:value="${book.title}" required>
             </div>
             <div class="mb-3">
                 <label for="author" class="form-label">저자</label>
                 <input type="text" class="form-control" id="author" name="author" th:value="${book.author}" required>
+                <small class="help-text">형식: aaa, bbb (지은이), ccc (감수)</small>
             </div>
             <div class="mb-3">
                 <label for="publisherName" class="form-label">출판사</label>
@@ -107,12 +109,12 @@
                 <input type="date" class="form-control" id="publicationDate" name="publicationDate" th:value="${book.pubDate}" required>
                 <small class="help-text">형식: YYYY-MM-DD</small>
             </div>
-            <div class="mb-3">
+            <div class="mb-3" th:if="${isAladinMode}">
                 <label for="categoryName" class="form-label">카테고리</label>
                 <input type="text" class="form-control" id="categoryName" name="categoryName" th:value="${book.categoryName}" required>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-3" th:if="${!isAladinMode}">
                 <label class="form-label">카테고리 선택 (최대 10개의 최하위 카테고리 선택 가능)</label>
                 <!-- 첫 번째 레벨 카테고리 -->
                 <div th:each="category : ${categories}">
@@ -209,7 +211,15 @@
             </div>
             <div class="mb-3">
                 <label for="state" class="form-label">재고 상태</label>
-                <input type="text" class="form-control" id="state" name="state" th:value="${book.stockStatus}">
+                <select class="form-select" id="state" name="state">
+                    <option value="NORMAL" th:selected="${book.stockStatus == 'NORMAL'}">정상판매</option>
+                    <option value="PREORDER" th:selected="${book.stockStatus == 'PREORDER'}">예약판매</option>
+                    <option value="NEW" th:selected="${book.stockStatus == 'NEW'}">신간</option>
+                    <option value="NOT_PUBLISHED" th:selected="${book.stockStatus == 'NOT_PUBLISHED'}">미출간</option>
+                    <option value="OUT_OF_PRINT" th:selected="${book.stockStatus == 'OUT_OF_PRINT'}">절판</option>
+                    <option value="SOLD_OUT" th:selected="${book.stockStatus == 'SOLD_OUT'}">품절</option>
+                    <option value="USED" th:selected="${book.stockStatus == 'USED'}">중고</option>
+                </select>
             </div>
             <div class="mb-3">
                 <label for="thumbnailImageUrl" class="form-label">썸네일 이미지 URL</label>
@@ -279,6 +289,13 @@
 
             <button type="submit" id="registerButton" class="btn btn-primary">저장</button>
         </form>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const registerForm = document.getElementById("registerForm");
+                const formActionUrl = document.getElementById("formActionUrl").value;
+                registerForm.setAttribute("action", formActionUrl);
+            });
+        </script>
     </div>
 </div>
 </body>
