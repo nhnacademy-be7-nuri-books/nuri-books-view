@@ -27,4 +27,3 @@ public interface TagServiceClient {
     @DeleteMapping("/api/books/tags/{tagId}")
     ResponseEntity<HttpStatus> deleteTag(@Valid @PathVariable Long tagId);
 }
-
