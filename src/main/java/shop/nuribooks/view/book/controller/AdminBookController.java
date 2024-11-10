@@ -76,12 +76,7 @@ public class AdminBookController {
 	@GetMapping("/aladin/book/prepare-register/{isbn}")
 	public String getRegisterBookByIsbn(@PathVariable String isbn, Model model) {
 		AladinBookListItemResponse book = aladinBookService.getAladinBookByIsbn(isbn);
-		List<CategoryTreeResponse> categories = adminCategoryService.getAllCategoryTree();
-		List<TagResponse> tags = tagService.getAllTags();
-
-		model.addAttribute("book", book);
-		model.addAttribute("categories", categories);
-		model.addAttribute("tags", tags);
+		prepareBookRegisterForm(book, model);
 		return "/book/bookRegister";
 	}
 
@@ -92,12 +87,7 @@ public class AdminBookController {
 	@GetMapping("/book/register-personally")
 	public String showBookRegisterPage(Model model) {
 		AladinBookListItemResponse book = AladinBookListItemResponse.empty();
-		List<CategoryTreeResponse> categories = adminCategoryService.getAllCategoryTree();
-		List<TagResponse> tags = tagService.getAllTags();
-
-		model.addAttribute("book", book);
-		model.addAttribute("categories", categories);
-		model.addAttribute("tags", tags);
+		prepareBookRegisterForm(book, model);
 		return "/book/bookRegister";
 	}
 
@@ -115,5 +105,20 @@ public class AdminBookController {
 			return "redirect:/admin/view/aladin/books";
 		}
 		return "redirect:/admin/view/aladin/books";
+	}
+
+	/**
+	 * book 등록 폼에 필요한 공통 데이터를 설정합니다.
+	 *
+	 * @param book 책 정보 객체
+	 * @param model 모델 객체
+	 */
+	private void prepareBookRegisterForm(AladinBookListItemResponse book, Model model) {
+		List<CategoryTreeResponse> categories = adminCategoryService.getAllCategoryTree();
+		List<TagResponse> tags = tagService.getAllTags();
+
+		model.addAttribute("book", book);
+		model.addAttribute("categories", categories);
+		model.addAttribute("tags", tags);
 	}
 }
