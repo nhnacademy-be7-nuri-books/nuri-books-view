@@ -21,8 +21,8 @@ import shop.nuribooks.view.book.service.AladinBookService;
 
 @RequiredArgsConstructor
 @Controller
-@RequestMapping("/view/aladin")
-public class AladinBookController {
+@RequestMapping("/admin/view")
+public class AdminBookController {
 	private final AladinBookService aladinBookService;
 	private final TagService tagService;
 
@@ -31,7 +31,7 @@ public class AladinBookController {
 		return "book/aladinBookList";
 	}
 
-	@GetMapping("/books/list")
+	@GetMapping("/aladin/books/list")
 	public String getAladinBookList(@RequestParam(defaultValue = "ItemNewAll") String queryType,
 									@RequestParam(defaultValue = "Book") String searchTarget,
 									@RequestParam(defaultValue = "10") int maxResults,
@@ -44,7 +44,7 @@ public class AladinBookController {
 		return "book/aladinBookList";
 	}
 
-	@GetMapping("/book/register/{isbn}")
+	@GetMapping("/aladin/book/prepare-register/{isbn}")
 	public String getRegisterBookByIsbn(@PathVariable String isbn, Model model) {
 		AladinBookListItemResponse book = aladinBookService.getAladinBookByIsbn(isbn);
 		List<TagResponse> tags = tagService.getAllTags();
@@ -54,10 +54,10 @@ public class AladinBookController {
 		return "book/bookRegister";
 	}
 
-	@PostMapping("/book/save")
+	@PostMapping("/aladin/book/save")
 	public String saveBook(@ModelAttribute AladinBookSaveRequest aladinBookSaveRequest, RedirectAttributes redirectAttributes) {
 		aladinBookService.saveAladinBook(aladinBookSaveRequest);
 		redirectAttributes.addFlashAttribute("successMessage", "도서 등록 성공");
-		return "redirect:/view/aladin/books";
+		return "redirect:/admin/view/aladin/books";
 	}
 }

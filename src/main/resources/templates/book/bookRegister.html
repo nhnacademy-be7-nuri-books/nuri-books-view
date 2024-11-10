@@ -89,7 +89,7 @@
     <div class="form-container">
         <h1 class="header-title">도서 등록</h1>
 
-        <form id="registerForm" th:action="@{/view/aladin/book/save}" method="post">
+        <form id="registerForm" th:action="@{/admin/view/aladin/book/save}" method="post">
             <div class="mb-3">
                 <label for="title" class="form-label">제목</label>
                 <input type="text" class="form-control" id="title" name="title" th:value="${book.title}" required>

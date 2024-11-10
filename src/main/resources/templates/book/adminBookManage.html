@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{admin/layout/adminlayout}">
+<head>
+    <meta charset="UTF-8">
+    <title>도서 관리</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 800px;
+        }
+        .header-title {
+            color: #333;
+        }
+        .btn-custom {
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .btn-custom i {
+            margin-right: 8px;
+        }
+        .section-divider {
+            margin: 30px 0;
+            border-top: 2px solid #6c757d;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container mt-5">
+        <h1 class="header-title mb-4 text-center">도서 관리</h1>
+
+        <!-- 도서 등록 구분 -->
+        <div class="row mb-4">
+            <h4>도서 등록</h4>
+            <div class="col-md-6">
+                <a th:href="@{/admin/view/aladin/books/list}" class="btn btn-success btn-custom w-100">
+                    <i class="fas fa-cloud-download-alt"></i> 알라딘 API로 도서 등록
+                </a>
+            </div>
+            <div class="col-md-6">
+                <a th:href="@{/admin/view/aladin/book/register-manual}" class="btn btn-info btn-custom w-100">
+                    <i class="fas fa-plus-circle"></i> 직접 도서 등록
+                </a>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- 도서 관리 기능 버튼들 -->
+        <h4>도서 관리</h4>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <a th:href="@{/admin/view/aladin/books}" class="btn btn-primary btn-custom w-100">
+                    <i class="fas fa-list"></i> 도서 목록 조회
+                </a>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <a th:href="@{/admin/view/aladin/book/edit/{isbn}(isbn=${isbn})}" class="btn btn-warning btn-custom w-100">
+                    <i class="fas fa-edit"></i> 도서 수정
+                </a>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <a th:href="@{/admin/view/aladin/book/delete/{isbn}(isbn=${isbn})}" class="btn btn-danger btn-custom w-100">
+                    <i class="fas fa-trash-alt"></i> 도서 삭제
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
