@@ -26,7 +26,12 @@ public class AdminBookController {
 	private final AladinBookService aladinBookService;
 	private final TagService tagService;
 
-	@GetMapping("/books")
+	@GetMapping("/book/manage")
+	public String showBookManagePage() {
+		return "book/adminBookManage";
+	}
+
+	@GetMapping("/aladin/books")
 	public String showAladinBookPage() {
 		return "book/aladinBookList";
 	}
@@ -56,8 +61,13 @@ public class AdminBookController {
 
 	@PostMapping("/aladin/book/save")
 	public String saveBook(@ModelAttribute AladinBookSaveRequest aladinBookSaveRequest, RedirectAttributes redirectAttributes) {
-		aladinBookService.saveAladinBook(aladinBookSaveRequest);
-		redirectAttributes.addFlashAttribute("successMessage", "도서 등록 성공");
+		try {
+			aladinBookService.saveAladinBook(aladinBookSaveRequest);
+			redirectAttributes.addFlashAttribute("successMessage", "도서 등록 성공");
+		} catch (Exception ex) {
+			redirectAttributes.addFlashAttribute("errorMessage", "도서 등록 실패");
+			return "redirect:/admin/view/aladin/books";
+		}
 		return "redirect:/admin/view/aladin/books";
 	}
 }

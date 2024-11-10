@@ -49,21 +49,15 @@
       color: #6c757d; /* 회색 텍스트 */
     }
   </style>
-  <script>
-    // 페이지 로드 시 성공 메시지가 있을 경우 alert로 표시
-    window.onload = function() {
-      const successMessage = /*[[${successMessage}]]*/ '';
-      if (successMessage) {
-        alert(successMessage);
-      }
-    }
-  </script>
 </head>
 
 <body>
 <div layout:fragment="content" class="container">
   <div class="text-center mb-4">
-    <h1 class="text-uppercase">Aladin 도서 목록</h1>
+    <!-- 성공 및 오류 메시지 표시 -->
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+    <h1 class="text-uppercase mt-5">Aladin 도서 목록</h1>
   </div>
 
   <!-- 검색 옵션 폼 -->
@@ -96,7 +90,7 @@
       <!-- 결과 수 -->
       <div class="form-group d-inline-block">
         <label for="maxResults" class="me-1">결과 수</label>
-        <input type="number" name="maxResults" id="maxResults" min="1" max="100" value="10" class="form-control d-inline-block" style="width: 80px;" />
+        <input type="number" name="maxResults" id="maxResults" min="1" max="100" th:value="${maxResults}" class="form-control d-inline-block" style="width: 80px;" />
       </div>
 
       <!-- 조회 버튼 -->
