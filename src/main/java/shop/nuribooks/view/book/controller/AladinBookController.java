@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.RequiredArgsConstructor;
-import shop.nuribooks.view.Tag.dto.TagResponse;
-import shop.nuribooks.view.Tag.service.TagService;
+import shop.nuribooks.view.admin.tag.dto.TagResponse;
+import shop.nuribooks.view.admin.tag.service.TagService;
 import shop.nuribooks.view.book.dto.AladinBookListItemResponse;
 import shop.nuribooks.view.book.dto.AladinBookSaveRequest;
 import shop.nuribooks.view.book.service.AladinBookService;

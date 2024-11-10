@@ -1,4 +1,4 @@
-package shop.nuribooks.view.Tag.dto;
+package shop.nuribooks.view.admin.tag.dto;
 
 public record TagResponse(
 	Long id, String name
