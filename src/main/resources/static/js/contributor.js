@@ -61,12 +61,11 @@ function openEditModal(contributorId) {
         const formData = new FormData(editForm);
         const updateName = document.getElementById('edit_name').value;
         const data = {
-            name: updateName,
-            _method: 'PUT'
+            name: updateName
         };
 
-        fetch(`/admin/contributor/edit/` + contributorId, {
-            method: 'POST',
+        fetch(`/admin/contributor/` + contributorId, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -102,16 +101,16 @@ function openEditModal(contributorId) {
 }
 
 function handleDeleteContributor(contributorId) {
-    const deleteUrl = `/admin/contributor/delete/${contributorId}`;
+    const deleteUrl = `/admin/contributor/${contributorId}`;
 
     const confirmDeleteButton = document.getElementById('confirmDelete');
     confirmDeleteButton.onclick = function () {
         fetch(deleteUrl, {
-            method: 'POST',
+            method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({_method: 'DELETE'})
+            body: JSON.stringify({_method: 'POST'})
         })
             .then(response => {
                 if (!response.ok) {

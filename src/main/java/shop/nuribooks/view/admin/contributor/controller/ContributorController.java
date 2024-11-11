@@ -41,8 +41,8 @@ public class ContributorController {
     }
 
     // 기여자 수정 처리
-    @PostMapping("/edit/{id}")
-    public ResponseEntity<Map<String, String>> updateContributor(@PathVariable Long id, @RequestBody ContributorRequest contributorRequest) {
+    @PutMapping("/{contributor-id}")
+    public ResponseEntity<Map<String, String>> updateContributor(@PathVariable(name = "contributor-id") Long id, @RequestBody ContributorRequest contributorRequest) {
         try {
             contributorService.updateContributor(id, contributorRequest);
             return ResponseEntity.ok(Map.of(contributorRequest.name(), "수정 성공"));
@@ -52,8 +52,8 @@ public class ContributorController {
     }
 
     //기여자 삭제
-    @PostMapping("/delete/{contributorId}")
-    public ResponseEntity<Map<String, String>> deleteContributor(@PathVariable Long contributorId) {
+    @DeleteMapping("/{contributor-id}")
+    public ResponseEntity<Map<String, String>> deleteContributor(@PathVariable(name = "contributor-id") Long contributorId) {
         try {
             contributorService.deleteContributor(contributorId);
             return ResponseEntity.ok(Map.of("data", "삭제 성공"));
