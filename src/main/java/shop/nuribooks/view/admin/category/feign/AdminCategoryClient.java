@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import shop.nuribooks.view.admin.category.dto.CategoryRequest;
-import shop.nuribooks.view.admin.category.dto.CategoryRespose;
-import shop.nuribooks.view.admin.category.dto.SimpleCategoryResponse;
+import shop.nuribooks.view.admin.category.dto.CategoryResponse;
 import shop.nuribooks.view.common.dto.ResponseMessage;
 
 /**
@@ -24,16 +23,16 @@ import shop.nuribooks.view.common.dto.ResponseMessage;
 public interface AdminCategoryClient {
 
 	@GetMapping("/api/categories")
-	List<SimpleCategoryResponse> getAllCategories();
+	List<CategoryResponse> getAllCategories();
 
 	@GetMapping("/api/categories/{categoryId}")
-	CategoryRespose getCategory(@PathVariable Long categoryId);
+	CategoryResponse getCategory(@PathVariable Long categoryId);
 
 	@PostMapping("/api/categories")
 	ResponseEntity<ResponseMessage> registerMainCategory(@RequestBody CategoryRequest categoryRequest);
 
 	@PatchMapping("/api/categories/{categoryId}")
-	ResponseEntity<ResponseMessage> updateCategory(@RequestBody CategoryRequest categoryRequest, @PathVariable Long categoryId);
-
+	ResponseEntity<ResponseMessage> updateCategory(@RequestBody CategoryRequest categoryRequest,
+		@PathVariable Long categoryId);
 
 }

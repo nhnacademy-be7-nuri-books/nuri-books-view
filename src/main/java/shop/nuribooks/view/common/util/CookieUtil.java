@@ -1,8 +1,16 @@
 package shop.nuribooks.view.common.util;
 
+import java.util.Objects;
+
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * 쿠키 관련 유틸리티
+ *
+ * @author nuri
+ */
 public class CookieUtil {
 
 	/**
@@ -30,6 +38,26 @@ public class CookieUtil {
 		cookie.setPath("/");
 		cookie.setMaxAge(0);
 		response.addCookie(cookie);
+	}
+
+	/**
+	 * 특정 쿠키 찾기
+	 * @param request {@link HttpServletRequest}
+	 * @param key 쿠키 이름
+	 * @return 쿠키 값
+	 */
+	public static String findByCookieKey(HttpServletRequest request, String key) {
+		Cookie[] cookies = request.getCookies();
+
+		if (Objects.nonNull(cookies)) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals(key)) {
+					return cookie.getValue();
+				}
+			}
+		}
+
+		return null;
 	}
 
 }
