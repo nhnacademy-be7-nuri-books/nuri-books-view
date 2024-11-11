@@ -14,4 +14,9 @@ public record AladinBookListItemResponse(
 	String categoryName,
 	String description
 ) {
+	public static AladinBookListItemResponse empty() {
+		return new AladinBookListItemResponse(
+			null, null, null, null, BigDecimal.ZERO, null, null, null, null, null
+		);
+	}
 }
