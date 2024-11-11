@@ -35,7 +35,7 @@ public class PublisherController {
     public String showRegisterPublisherForm(Model model) {
         List<PublisherResponse> publishers = publisherService.getAllPublishers();
         model.addAttribute("publishers", publishers);
-        return "/admin/publisher";
+        return "admin/publisher";
     }
 
     //출판사 등록 버튼
