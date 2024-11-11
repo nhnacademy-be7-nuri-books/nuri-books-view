@@ -9,6 +9,7 @@ import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import shop.nuribooks.view.admin.category.dto.CategoryRequest;
 import shop.nuribooks.view.admin.category.dto.CategoryResponse;
+import shop.nuribooks.view.admin.category.dto.CategoryTreeResponse;
 import shop.nuribooks.view.admin.category.feign.AdminCategoryClient;
 import shop.nuribooks.view.admin.category.service.AdminCategoryService;
 import shop.nuribooks.view.common.util.ExceptionUtil;
@@ -91,6 +92,11 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
 			}
 			ExceptionUtil.handleFeignException(ex);
 		}
+	}
+
+	@Override
+	public List<CategoryTreeResponse> getAllCategoryTree() {
+		return adminCategoryClient.getAllCategoryTree();
 	}
 
 }
