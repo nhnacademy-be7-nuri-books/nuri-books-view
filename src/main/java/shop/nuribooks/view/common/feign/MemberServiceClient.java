@@ -40,7 +40,7 @@ public interface MemberServiceClient {
 	/**
 	 * 관리자가 다양한 검색 조건으로 회원 조회
 	 */
-	@GetMapping("/admin/api/member/members")
+	@GetMapping("/api/member/members")
 	ResponseEntity<Page<MemberSearchResponse>> memberSearchWithPaging(
 		@RequestParam(value = "name", required = false) String name,
 		@RequestParam(value = "email", required = false) String email,

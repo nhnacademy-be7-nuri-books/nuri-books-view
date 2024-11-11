@@ -107,4 +107,17 @@ public class MemberController {
 		return "member/myPage";
 	}
 
+	/**
+	 * 회원 정보 수정 페이지 GET
+	 *
+	 * @return edit.html
+	 */
+	// @Operation(summary = "회원의 마이 페이지", description = "회원의 마이 페이지를 반환합니다.")
+	// @ApiResponses(value = {
+	// 	@ApiResponse(responseCode = "200", description = "마이 페이지 반환 성공")
+	// })
+	// @GetMapping("/myPage")
+	// public String edit() {
+	// 	return "member/myPage/edit";
+	// }
 }

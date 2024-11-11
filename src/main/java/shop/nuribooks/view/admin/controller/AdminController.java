@@ -66,6 +66,6 @@ public class AdminController {
 			model.addAttribute("members", Collections.emptyList());  // 빈 리스트를 사용
 		}
 
-		return "admin/member"; // 결과를 보여줄 뷰 이름
+		return "admin/member";
 	}
 }
