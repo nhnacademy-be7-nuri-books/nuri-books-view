@@ -1,113 +1,122 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{admin/layout/adminlayout}">
+<html lang="en" layout:decorate="~{admin/layout/adminlayout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <body>
 
 <div layout:fragment="content">
 
-<div id="category-tables" class="container-fluid">
-    <div class="row">
-        <!-- 1 뎁스 테이블 -->
-        <div class="col-md-2 mb-4" id="depth-1-table">
-            <div class="card">
-                <div class="card-header">1 뎁스</div>
-                <div class="card-body">
-                    <table class="table table-bordered">
-                        <thead class="thead-light">
-                        <tr>
-                            <th>아이디</th>
-                            <th>이름</th>
-                            <th>액션</th>
-                        </tr>
-                        </thead>
-                        <tbody id="depth-1-tbody">
-                        </tbody>
-                    </table>
-                    <button class="btn btn-outline-primary btn-block mt-2" onclick="addCategory(1)">+ 카테고리 추가</button>
+    <div class="container-fluid" id="category-tables">
+        <div class="d-flex flex-nowrap overflow-auto text-nowrap">
+            <!-- 1 뎁스 테이블 -->
+            <div class="col-md-3 mb-4" id="depth-1-table">
+                <div class="card">
+                    <div class="card-header">1 뎁스</div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead class="thead-light">
+                            <tr>
+                                <th>아이디</th>
+                                <th>이름</th>
+                                <th>액션</th>
+                            </tr>
+                            </thead>
+                            <tbody id="depth-1-tbody">
+                            </tbody>
+                        </table>
+                        <button class="btn btn-outline-primary btn-block mt-2" onclick="addCategory(1)">+ 카테고리 추가
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 2 ~ 5 뎁스 테이블 -->
-        <div class="col-md-2 mb-4" id="depth-2-table">
-            <div class="card">
-                <div class="card-header">2 뎁스</div>
-                <div class="card-body">
-                    <table class="table table-bordered">
-                        <thead class="thead-light">
-                        <tr>
-                            <th>아이디</th>
-                            <th>이름</th>
-                            <th>액션</th>
-                        </tr>
-                        </thead>
-                        <tbody id="depth-2-tbody"></tbody>
-                    </table>
-                    <button class="btn btn-outline-primary btn-block mt-2" onclick="addCategory(2)">+ 카테고리 추가</button>
+            <!-- 2 ~ 5 뎁스 테이블 -->
+            <!-- 반복적인 설정을 통해 테이블 추가 -->
+            <!-- 2 뎁스 -->
+            <div class="col-md-3 mb-4" id="depth-2-table">
+                <div class="card">
+                    <div class="card-header">2 뎁스</div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead class="thead-light">
+                            <tr>
+                                <th>아이디</th>
+                                <th>이름</th>
+                                <th>액션</th>
+                            </tr>
+                            </thead>
+                            <tbody id="depth-2-tbody"></tbody>
+                        </table>
+                        <button class="btn btn-outline-primary btn-block mt-2" onclick="addCategory(2)">+ 카테고리 추가
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 나머지 3~5 뎁스 테이블 (반복적으로 설정) -->
-        <div class="col-md-2 mb-4" id="depth-3-table">
-            <div class="card">
-                <div class="card-header">3 뎁스</div>
-                <div class="card-body">
-                    <table class="table table-bordered">
-                        <thead class="thead-light">
-                        <tr>
-                            <th>아이디</th>
-                            <th>이름</th>
-                            <th>액션</th>
-                        </tr>
-                        </thead>
-                        <tbody id="depth-3-tbody"></tbody>
-                    </table>
-                    <button class="btn btn-outline-primary btn-block mt-2" onclick="addCategory(3)">+ 카테고리 추가</button>
+            <!-- 3 ~ 5 뎁스 -->
+            <!-- 반복해서 depth-3, depth-4, depth-5 설정 -->
+            <div class="col-md-3 mb-4" id="depth-3-table">
+                <div class="card">
+                    <div class="card-header">3 뎁스</div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead class="thead-light">
+                            <tr>
+                                <th>아이디</th>
+                                <th>이름</th>
+                                <th>액션</th>
+                            </tr>
+                            </thead>
+                            <tbody id="depth-3-tbody"></tbody>
+                        </table>
+                        <button class="btn btn-outline-primary btn-block mt-2" onclick="addCategory(3)">+ 카테고리 추가
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 4 뎁스 -->
-        <div class="col-md-2 mb-4" id="depth-4-table">
-            <div class="card">
-                <div class="card-header">4 뎁스</div>
-                <div class="card-body">
-                    <table class="table table-bordered">
-                        <thead class="thead-light">
-                        <tr>
-                            <th>아이디</th>
-                            <th>이름</th>
-                            <th>액션</th>
-                        </tr>
-                        </thead>
-                        <tbody id="depth-4-tbody"></tbody>
-                    </table>
-                    <button class="btn btn-outline-primary btn-block mt-2" onclick="addCategory(4)">+ 카테고리 추가</button>
+            <!-- 4 뎁스 -->
+            <div class="col-md-3 mb-4" id="depth-4-table">
+                <div class="card">
+                    <div class="card-header">4 뎁스</div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead class="thead-light">
+                            <tr>
+                                <th>아이디</th>
+                                <th>이름</th>
+                                <th>액션</th>
+                            </tr>
+                            </thead>
+                            <tbody id="depth-4-tbody"></tbody>
+                        </table>
+                        <button class="btn btn-outline-primary btn-block mt-2" onclick="addCategory(4)">+ 카테고리 추가
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 5 뎁스 -->
-        <div class="col-md-2 mb-4" id="depth-5-table">
-            <div class="card">
-                <div class="card-header">5 뎁스</div>
-                <div class="card-body">
-                    <table class="table table-bordered">
-                        <thead class="thead-light">
-                        <tr>
-                            <th>아이디</th>
-                            <th>이름</th>
-                            <th>액션</th>
-                        </tr>
-                        </thead>
-                        <tbody id="depth-5-tbody"></tbody>
-                    </table>
-                    <button class="btn btn-outline-primary btn-block mt-2" onclick="addCategory(5)">+ 카테고리 추가</button>
+            <!-- 5 뎁스 -->
+            <div class="col-md-3 mb-4" id="depth-5-table">
+                <div class="card">
+                    <div class="card-header">5 뎁스</div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead class="thead-light">
+                            <tr>
+                                <th>아이디</th>
+                                <th>이름</th>
+                                <th>액션</th>
+                            </tr>
+                            </thead>
+                            <tbody id="depth-5-tbody"></tbody>
+                        </table>
+                        <button class="btn btn-outline-primary btn-block mt-2" onclick="addCategory(5)">+ 카테고리 추가
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
     <script th:inline="javascript">
         // Thymeleaf 데이터를 전역 변수에 저장
@@ -149,11 +158,10 @@
                 const row = document.createElement('tr');
                 row.innerHTML = `
                 <td>${category.id}</td>
-                <td>${category.name}</td>
-                <td>
-                    ${category.subCategories && category.subCategories.length > 0 ? `
-                        <button class="btn btn-primary btn-sm" onclick='renderSubCategories(${JSON.stringify(category.subCategories)}, ${depth + 1})'>하위 보기</button>
-                    ` : ''}
+                <td onclick='renderSubCategories(${JSON.stringify(category.subCategories)}, ${depth + 1}, this)' style="cursor: pointer; white-space: nowrap; width: 70%;">${category.name}</td>
+                <td style="width: 30%;">
+                    <button class="btn btn-success btn-sm" onclick='editCategory(${category.id})'>수정</button>
+                    <button class="btn btn-danger btn-sm" onclick='deleteCategory(${category.id})'>삭제</button>
                 </td>
             `;
                 currentTableBody.appendChild(row);
@@ -161,11 +169,16 @@
         }
 
         // 선택한 카테고리의 자식만 렌더링
-        function renderSubCategories(subCategories, depth) {
+        function renderSubCategories(subCategories, depth, element) {
             if (!Array.isArray(subCategories)) {
                 console.error('Invalid subCategories data:', subCategories);
                 return;
             }
+
+            // 선택한 카테고리 강조 표시
+            const rows = element.parentNode.parentNode.querySelectorAll('tr');
+            rows.forEach(row => row.classList.remove('table-active'));
+            element.parentNode.classList.add('table-active');
 
             // 선택한 depth 이후의 모든 depth 테이블 초기화
             for (let i = depth; i <= 5; i++) {
@@ -190,21 +203,43 @@
                 const row = document.createElement('tr');
                 row.innerHTML = `
                 <td>${subCategory.id}</td>
-                <td>${subCategory.name}</td>
-                <td>
-                    ${subCategory.subCategories && subCategory.subCategories.length > 0 ? `
-                        <button class="btn btn-primary btn-sm" onclick='renderSubCategories(${JSON.stringify(subCategory.subCategories)}, ${depth + 1})'>하위 보기</button>
-                    ` : ''}
+                <td onclick='renderSubCategories(${JSON.stringify(subCategory.subCategories)}, ${depth + 1}, this)' style="cursor: pointer; white-space: nowrap; width: 70%;">${subCategory.name}</td>
+                <td style="width: 30%;">
+                    <button class="btn btn-success btn-sm" onclick='editCategory(${subCategory.id})'>수정</button>
+                    <button class="btn btn-danger btn-sm" onclick='deleteCategory(${subCategory.id})'>삭제</button>
                 </td>
             `;
                 nextTableBody.appendChild(row);
             });
         }
 
+        // 카테고리 추가
+        function addCategory(depth) {
+            const categoryName = prompt('추가할 카테고리 이름을 입력하세요:');
+            if (categoryName) {
+                console.log(`Adding category at depth ${depth} with name ${categoryName}`);
+                // 서버 API 호출 코드 추가 필요
+            }
+        }
+
+        // 카테고리 수정
+        function editCategory(categoryId) {
+            const newCategoryName = prompt('새로운 카테고리 이름을 입력하세요:');
+            if (newCategoryName) {
+                console.log(`Editing category with id ${categoryId}, new name: ${newCategoryName}`);
+                // 서버 API 호출 코드 추가 필요
+            }
+        }
+
+        // 카테고리 삭제
+        function deleteCategory(categoryId) {
+            if (confirm('정말로 이 카테고리를 삭제하시겠습니까?')) {
+                console.log(`Deleting category with id ${categoryId}`);
+                // 서버 API 호출 코드 추가 필요
+            }
+        }
     </script>
 </div>
 
-
 </body>
 </html>
-
