@@ -193,6 +193,18 @@
     <!-- Book Description -->
     <div class="book-description mt-5">
       <h2 class="book-section-title">책 소개</h2>
+      <div class="book-meta mt-3" th:if="${book.simpleCategories?.size() > 0}">
+        <strong>카테고리:</strong>
+        <div th:each="breadcrumb : ${book.simpleCategories}">
+    <span>
+      <span th:each="category, iterStat : ${breadcrumb}">
+        <a th:href="@{/view/books/categories/{categoryId}(categoryId=${category.id})}"
+           th:text="${category.name}"></a>
+        <span th:if="${!iterStat.last}"> > </span>
+      </span>
+    </span><br/>
+        </div>
+      </div>dd
       <p th:text="${book.description}">책 소개 내용</p>
     </div>
 

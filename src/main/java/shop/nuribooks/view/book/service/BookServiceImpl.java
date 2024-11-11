@@ -37,4 +37,9 @@ public class BookServiceImpl implements BookService{
 	public void registerPersonallyBook(PersonallyBookRegisterRequest personallyRequest) {
 		bookServiceClient.registerPersonallyBook(personallyRequest);
 	}
+
+	@Override
+	public PagedResponse<BookContributorsResponse> getBooksByCategoryId(Long categoryId, int page, int size) {
+		return bookServiceClient.getBooksByCategoryId(categoryId, page, size);
+	}
 }

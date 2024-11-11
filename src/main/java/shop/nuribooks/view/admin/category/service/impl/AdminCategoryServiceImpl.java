@@ -42,4 +42,9 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
 		return adminCategoryClient.getAllCategoryTree();
 	}
 
+	@Override
+	public CategoryRequest getCategoryName(Long categoryId) {
+		return adminCategoryClient.getCategoryName(categoryId);
+	}
+
 }

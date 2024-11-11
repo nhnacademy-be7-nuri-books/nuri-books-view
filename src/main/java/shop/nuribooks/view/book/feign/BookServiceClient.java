@@ -1,5 +1,6 @@
 package shop.nuribooks.view.book.feign;
 
+import org.springdoc.core.converters.models.Pageable;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +24,8 @@ public interface BookServiceClient {
 	@GetMapping("/api/books")
 	PagedResponse<BookContributorsResponse> getBooks(@RequestParam("page") int page, @RequestParam("size") int size);
 
-	@GetMapping("/api/books/{bookId}")
-	BookResponse getBookById(@PathVariable Long bookId);
+	@GetMapping("/api/books/{book-id}")
+	BookResponse getBookById(@PathVariable(name = "book-id") Long bookId);
 
 	// 알라딘 API 도서 등록
 	@PostMapping("/api/books/register/aladin")
@@ -33,4 +34,8 @@ public interface BookServiceClient {
 	// 직접 도서 등록
 	@PostMapping("/api/books/register/personal")
 	ResponseEntity<ResponseMessage> registerPersonallyBook(@Valid @RequestBody PersonallyBookRegisterRequest registerRequest);
+
+	@GetMapping("/api/books/category/{category-id}")
+	PagedResponse<BookContributorsResponse> getBooksByCategoryId(@PathVariable(name = "category-id") Long categoryId,
+		@RequestParam("page") int page, @RequestParam("size") int size);
 }

@@ -38,4 +38,7 @@ public interface AdminCategoryClient {
 
 	@GetMapping("/api/categories/tree")
 	List<CategoryTreeResponse> getAllCategoryTree();
+
+	@GetMapping("/api/categories/{category-id}/name")
+	CategoryRequest getCategoryName(@PathVariable(name = "category-id") Long categoryId);
 }
