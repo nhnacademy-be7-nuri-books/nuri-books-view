@@ -13,9 +13,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import shop.nuribooks.view.common.feign.MemberServiceClient;
 
-// @WebMvcTest(AdminController.class)
-// @EnableFeignClients(basePackages = "shop.nuribooks.view.common.feign")
-// class AdminControllerTest {
+@WebMvcTest(AdminController.class)
+@EnableFeignClients(basePackages = "shop.nuribooks.view.common.feign")
+class AdminControllerTest {
 //
 // 	@Autowired
 // 	private MockMvc mockMvc;
@@ -30,4 +30,4 @@ import shop.nuribooks.view.common.feign.MemberServiceClient;
 // 			.andExpect(status().isOk())
 // 			.andExpect(view().name("admin/admin"));
 // 	}
-// }
+}
