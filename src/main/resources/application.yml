@@ -26,14 +26,14 @@ spring:
             client-name: payco
             client-id: 3RDSu8vFgPGHMPosNIfuVN2
             client-secret: 6NB0t6Lw8Z0yaSHwYE_KtJZy
-            redirect-uri: http://nuribooks.shop/custom-login/oauth2/code/payco
+            redirect-uri: https://nuribooks.shop/custom-login/oauth2/code/payco
             authorization-grant-type: authorization_code
             scope: name, email
           naver:
             client-name: naver
             client-id: d6YdnepPmQ4bke5_WW60
             client-secret: CoGRw7Oq3U
-            redirect-uri: http://nuribooks.shop/custom-login/oauth2/code/naver
+            redirect-uri: https://nuribooks.shop/custom-login/oauth2/code/naver
             authorization-grant-type: authorization_code
             scope: name, email
         provider:
