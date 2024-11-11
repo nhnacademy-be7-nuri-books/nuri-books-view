@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import shop.nuribooks.view.admin.category.dto.CategoryRequest;
 import shop.nuribooks.view.admin.category.service.AdminCategoryService;
@@ -21,12 +22,25 @@ public class BookController {
 	private final BookService bookService;
 	private final AdminCategoryService adminCategoryService;
 
-	@GetMapping({"/view/books", "/admin/view/books"})
+	@GetMapping("/view/books")
 	public String getBooks(@RequestParam(defaultValue = "0") int page,
-							@RequestParam(defaultValue = "10") int size,
-							Model model) {
+		@RequestParam(defaultValue = "10") int size,
+		Model model) {
 		PagedResponse<BookContributorsResponse> books = bookService.getBooks(page, size);
 		model.addAttribute("books", books);
+		model.addAttribute("isAdmin", false);
+		model.addAttribute("layout", "layouts/layout1");  // 일반 사용자 레이아웃
+		return "book/bookList";
+	}
+
+	@GetMapping("/admin/view/books")
+	public String getAdminBooks(@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "10") int size,
+		Model model) {
+		PagedResponse<BookContributorsResponse> books = bookService.getBooks(page, size);
+		model.addAttribute("books", books);
+		model.addAttribute("isAdmin", true);
+		model.addAttribute("layout", "admin/layout/adminlayout");  // 관리자 레이아웃
 		return "book/bookList";
 	}
 
