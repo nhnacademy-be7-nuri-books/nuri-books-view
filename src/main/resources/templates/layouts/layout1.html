@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title th:text="${pageTitle}">Home</title>
+
+    <link href="//fonts.googleapis.com/css?family=Righteous" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+<body>
+<div class="container-fluid">
+
+    <div class="row min-vh-100">
+        <div class="col-12">
+            <div th:replace="fragments/header::header"></div>
+        </div>
+
+        <div class="col-12">
+            <!-- Main Content -->
+            <div layout:fragment="content"></div>
+            <!-- Main Content -->
+        </div>
+
+        <div class="col-12 align-self-end">
+            <!-- Footer -->
+            <div th:replace="fragments/footer::footer"></div>
+            <!-- Footer -->
+        </div>
+
+        <!-- Messages -->
+        <div class="toast-container position-fixed bottom-0 start-0 p-3">
+            <div class="toast align-items-center text-white bg-success border-0" id="successToast"
+                 style="display: none">
+                <div class="d-flex">
+                    <div class="toast-body" id="successMessage">
+                        <i class="fas fa-check-circle me-2"></i>
+                        <p th:text="${successMessage}"> 기본 성공 메시지입니다. </p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                            aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="toast align-items-center text-white bg-danger border-0" id="errorToast" style="display: none">
+                <div class="d-flex">
+                    <div class="toast-body" id="errorMessage">
+                        <i class="fas fa-times-circle me-2"></i>
+                        <p th:text="${errorMessage}"> 기본 오류 메시지입니다. </p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                            aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="toast align-items-center text-white bg-warning border-0" id="warningToast"
+                 style="display: none">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        <p th:text="${warningMessage}"> 기본 경고 메시지입니다. </p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                            aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="toast align-items-center text-white bg-info border-0" id="infoToast" style="display: none">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <p th:text="${infoMassage}"> 기본 정보 메시지입니다. </p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                            aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+        <!-- Messages -->
+
+        <!-- Script -->
+        <div th:if="${errorMessage}">
+            <script th:inline="javascript">
+                document.addEventListener('DOMContentLoaded', function () {
+                    const errorMessage = document.getElementById("errorMessage");
+                    const errorToastElement = document.getElementById("errorToast")
+                    const errorToast = new bootstrap.Toast();
+
+                    errorMessage.textContent = /*[[${errorMessage}]]*/ '실패';
+
+                    errorToastElement.style.display = "block";
+                    errorToast.show();
+                });
+            </script>
+        </div>
+
+        <div th:if="${successMessage}">
+            <script th:inline="javascript">
+                document.addEventListener('DOMContentLoaded', function () {
+                    const successMessage = document.getElementById("successMessage");
+                    const successToastElement = document.getElementById("successToast");
+                    const successToast = new bootstrap.Toast(successToastElement);
+
+                    successMessage.textContent = /*[[${successMessage}]]*/ '성공';
+
+                    successToastElement.style.display = "block";
+                    successToast.show();
+                });
+            </script>
+        </div>
+
+        <th:block layout:fragment="script"></th:block>
+        <!-- Script -->
+    </div>
+
+</div>
+
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/script.js"></script>
+<script type="text/javascript" src="/js/publisher.js"></script>
+</body>
+</html>

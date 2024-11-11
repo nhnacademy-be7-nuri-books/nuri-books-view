@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout1}">
+<div layout:fragment="content">
+    <!-- Main Content -->
+    <div class="row">
+        <div class="col-12 mt-3 text-center text-uppercase">
+            <h2>회원 가입</h2>
+        </div>
+    </div>
+
+    <main class="row">
+        <div class="col-lg-6 col-md-8 col-sm-10 mx-auto bg-light rounded shadow py-4 mb-4">
+            <div class="text-center mb-4">
+                <p>Please fill in your details to register.</p>
+            </div>
+            <form class="row" th:action="@{/sign-up}" method="post" id="register_form">
+                <div class="col-md-12 form-group mb-3">
+                    <label for="username">아이디</label>
+                    <input type="text" class="form-control" id="username" name="username"
+                           th:value="${userRequest?.username ?: ''}" placeholder="아이디"
+                           onfocus="this.placeholder = ''" onblur="this.placeholder = '아이디'" required>
+                </div>
+                <div class="col-md-12 form-group mb-3">
+                    <label>성별:</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="gender" id="male" value="MALE">
+                        <label class="form-check-label" for="male">남성</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="gender" id="female" value="FEMALE">
+                        <label class="form-check-label" for="female">여성</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="gender" id="other" value="OTHER" checked>
+                        <label class="form-check-label" for="other">기타</label>
+                    </div>
+                </div>
+                <div class="col-md-12 form-group mb-3">
+                    <label for="name">이름</label>
+                    <input type="text" class="form-control" id="name" name="name"
+                           th:value="${userRequest?.name ?: ''}" placeholder="이름"
+                           onfocus="this.placeholder = ''" onblur="this.placeholder = '이름'" required>
+                </div>
+                <div class="col-md-12 form-group mb-3">
+                    <label for="email">이메일 주소</label>
+                    <input type="email" class="form-control" id="email" name="email"
+                           th:value="${userRequest?.email ?: ''}" placeholder="이메일 주소"
+                           onfocus="this.placeholder = ''" onblur="this.placeholder = '이메일 주소'" required>
+                </div>
+                <div class="col-md-6 form-group mb-3">
+                    <label for="password">비밀번호</label>
+                    <input type="password" class="form-control" id="password" name="password"
+                           placeholder="비밀번호" onfocus="this.placeholder = ''"
+                           onblur="this.placeholder = '비밀번호'" required>
+                </div>
+                <div class="col-md-6 form-group mb-3">
+                    <label for="confirmPassword">비밀번호 확인</label>
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                           placeholder="비밀번호 확인" onfocus="this.placeholder = ''"
+                           onblur="this.placeholder = '비밀번호 확인'" required>
+                </div>
+                <div class="col-md-12 form-group mb-3">
+                    <label for="phoneNumber">전화번호</label>
+                    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
+                           th:value="${userRequest?.phoneNumber ?: ''}" placeholder="전화번호"
+                           onfocus="this.placeholder = ''" onblur="this.placeholder = '전화번호'" required>
+                </div>
+                <div class="col-md-12 form-group mb-3">
+                    <label for="birth">생일</label>
+                    <input type="date" class="form-control" id="birth" name="birthday"
+                           th:value="${userRequest?.birthday ?: ''}" onfocus="this.placeholder = ''"
+                           onblur="this.placeholder = '생일'" required>
+                </div>
+                <div class="col-md-12 form-group mb-3">
+                    <div class="creat_account">
+                        <input type="checkbox" id="f-option2" name="selector">
+                        <label for="f-option2">로그인 유지</label>
+                    </div>
+                </div>
+                <div class="col-md-12 form-group mb-3">
+                    <button type="submit" class="btn btn-primary w-100">회원가입</button>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
+<!-- Main Content -->
+
+<!-- Script -->
+<th:block layout:fragment="script">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("register_form");
+            const errorMessage = document.getElementById("errorMessage");
+            const errorToastElement = document.getElementById("errorToast")
+            const errorToast = new bootstrap.Toast(errorToastElement);
+            errorToast.hide();
+
+            form.addEventListener("submit", function (event) {
+                let valid = true;
+
+                const username = document.getElementById("username").value;
+                const name = document.getElementById("name").value;
+                const email = document.getElementById("email").value;
+                const password = document.getElementById("password").value;
+                const confirmPassword = document.getElementById("confirmPassword").value;
+                const phoneNumber = document.getElementById("phoneNumber").value;
+                const birthday = document.getElementById("birth").value;
+
+                // 필수 입력 검증
+                if (!username || !name || !email || !password || !confirmPassword || !phoneNumber || !birthday) {
+                    errorMessage.textContent = "모든 필드를 입력해야 합니다.";
+                    valid = false;
+                }
+
+                // 길이 검증
+                if (username.length < 8 || username.length > 20) {
+                    errorMessage.textContent = "사용자 아이디는 8자 이상 20자 이하로 입력해야 합니다.";
+                    valid = false;
+                }
+                if (name.length < 2 || name.length > 30) {
+                    errorMessage.textContent = "사용자 이름은 2자 이상 30자 이하로 입력해야 합니다.";
+                    valid = false;
+                }
+                if (password.length < 8 || password.length > 20) {
+                    errorMessage.textContent = "비밀번호는 8자 이상 20자 이하로 입력해야 합니다.";
+                    valid = false;
+                }
+                if (phoneNumber.length < 10 || phoneNumber.length > 13) {
+                    errorMessage.textContent = "휴대폰 번호는 10자에서 13자 사이의 숫자로 입력해야 합니다.";
+                    valid = false;
+                }
+
+                // 이메일 형식 검증
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (email && !emailPattern.test(email)) {
+                    errorMessage.textContent = "유효한 이메일 주소를 입력하세요.";
+                    valid = false;
+                }
+
+                // 비밀번호 일치 여부 검증
+                if (password !== confirmPassword) {
+                    errorMessage.textContent = "비밀번호가 일치하지 않습니다.";
+                    valid = false;
+                }
+
+                // 휴대전화 형식 검증
+                const phonePattern = /^\d{10,13}$/;
+                if (phoneNumber && !phonePattern.test(phoneNumber)) {
+                    errorMessage.textContent = "유효한 휴대폰 번호를 입력하세요. (10~13자 숫자)";
+                    valid = false;
+                }
+
+                // 유효하지 않으면 오류 메시지 표시하고 폼 제출 중지
+                if (!valid) {
+                    event.preventDefault();
+                    errorToastElement.style.display = "block";
+                    errorToast.show();
+                }
+
+            });
+        });
+    </script>
+</th:block>
+<!-- Script -->
+</html>

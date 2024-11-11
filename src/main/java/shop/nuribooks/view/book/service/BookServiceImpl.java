@@ -1,0 +1,40 @@
+package shop.nuribooks.view.book.service;
+
+import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
+import shop.nuribooks.view.book.dto.AdminBookListResponse;
+import shop.nuribooks.view.book.dto.AladinBookRegisterRequest;
+import shop.nuribooks.view.book.dto.BaseBookRegisterRequest;
+import shop.nuribooks.view.book.dto.BookContributorsResponse;
+import shop.nuribooks.view.book.dto.BookResponse;
+import shop.nuribooks.view.book.dto.PersonallyBookRegisterRequest;
+import shop.nuribooks.view.book.feign.BookServiceClient;
+import shop.nuribooks.view.common.dto.PagedResponse;
+
+@RequiredArgsConstructor
+@Service
+public class BookServiceImpl implements BookService{
+	private final BookServiceClient bookServiceClient;
+	@Override
+	public PagedResponse<BookContributorsResponse> getBooks(int page, int size) {
+		return bookServiceClient.getBooks(page, size);
+	}
+
+	@Override
+	public BookResponse getBookById(Long bookId) {
+		return bookServiceClient.getBookById(bookId);
+	}
+
+	// 알라딘 도서 등록
+	@Override
+	public void registerAladinBook(AladinBookRegisterRequest aladinRequest) {
+		bookServiceClient.registerAladinBook(aladinRequest);
+	}
+
+	// 직접 도서 등록
+	@Override
+	public void registerPersonallyBook(PersonallyBookRegisterRequest personallyRequest) {
+		bookServiceClient.registerPersonallyBook(personallyRequest);
+	}
+}

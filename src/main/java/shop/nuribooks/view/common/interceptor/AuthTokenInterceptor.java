@@ -1,5 +1,7 @@
 package shop.nuribooks.view.common.interceptor;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 import feign.RequestInterceptor;
@@ -17,6 +19,8 @@ import jakarta.servlet.http.HttpServletRequest;
 public class AuthTokenInterceptor implements RequestInterceptor {
 
 	private final HttpServletRequest request;
+	@Value("${header.refresh-key-name}")
+	private String refreshHeaderName;
 
 	public AuthTokenInterceptor(HttpServletRequest request) {
 		this.request = request;
@@ -29,13 +33,14 @@ public class AuthTokenInterceptor implements RequestInterceptor {
 	 */
 	@Override
 	public void apply(RequestTemplate requestTemplate) {
+		requestTemplate.header("X-USER-ID", request.getHeader("X-USER-ID"));
 		Cookie[] cookies = request.getCookies();
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
-				if (cookie.getName().equals("Authentication")) {
-					requestTemplate.header("Authentication", cookie.getValue());
-				} else if (cookie.getName().equals("Refresh")) {
-					requestTemplate.header("Refresh", cookie.getValue());
+				if (cookie.getName().equals(HttpHeaders.AUTHORIZATION)) {
+					requestTemplate.header(HttpHeaders.AUTHORIZATION, cookie.getValue());
+				} else if (cookie.getName().equals(refreshHeaderName)) {
+					requestTemplate.header(refreshHeaderName, cookie.getValue());
 				}
 			}
 		}

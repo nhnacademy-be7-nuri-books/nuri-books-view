@@ -4,9 +4,13 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import shop.nuribooks.view.member.dto.request.MemberRegisterRequest;
 import shop.nuribooks.view.member.dto.response.MemberRegisterResponse;
+import shop.nuribooks.view.admin.dto.response.MemberSearchResponse;
+import org.springframework.data.domain.Page;
 
 /**
  * member 관련 FeignClient
@@ -19,7 +23,7 @@ import shop.nuribooks.view.member.dto.response.MemberRegisterResponse;
  *
  * @author nuri
  */
-@FeignClient(name = "gateway", contextId = "member")
+@FeignClient(name = "member", url = "http://localhost:8080")
 public interface MemberServiceClient {
 
 	/**
@@ -32,5 +36,17 @@ public interface MemberServiceClient {
 	@PostMapping("/api/member")
 	ResponseEntity<MemberRegisterResponse> registerUser(@RequestBody MemberRegisterRequest userRequest);
 
-	// todo : 회원 관련 추가
+
+	/**
+	 * 관리자가 다양한 검색 조건으로 회원 조회
+	 */
+	@GetMapping("/api/member/members")
+	ResponseEntity<Page<MemberSearchResponse>> memberSearchWithPaging(
+		@RequestParam(value = "name", required = false) String name,
+		@RequestParam(value = "email", required = false) String email,
+		@RequestParam(value = "phoneNumber", required = false) String phoneNumber,
+		@RequestParam(value = "gender", required = false) String gender,
+		@RequestParam(value = "status", required = false) String status,
+		@RequestParam(value = "page") int page,
+		@RequestParam(value = "size") int size);
 }

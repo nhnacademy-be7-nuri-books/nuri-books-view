@@ -33,6 +33,8 @@ public class AuthServiceImpl implements AuthService {
 
 	@Value("${error.message-key}")
 	private String errorMessageKey;
+	@Value("${success.message-key}")
+	private String successMessageKey;
 
 	/**
 	 * 로그인을 처리하는 메서드
@@ -50,7 +52,7 @@ public class AuthServiceImpl implements AuthService {
 		Map<String, List<String>> responseMap = new HashMap<>();
 
 		try {
-			ResponseEntity<Void> response = authServiceClient.login(loginRequest);
+			ResponseEntity<String> response = authServiceClient.login(loginRequest);
 			HttpHeaders headers = response.getHeaders();
 
 			// refresh jwt
@@ -64,12 +66,30 @@ public class AuthServiceImpl implements AuthService {
 				.ifPresent(
 					setAuthorizationHeaders -> responseMap.put(HttpHeaders.AUTHORIZATION, setAuthorizationHeaders));
 
+			Optional.ofNullable(headers.get("X-USER-ID"))
+				.filter(list -> !list.isEmpty())
+				.ifPresent(setCookieHeaders -> responseMap.put("X-USER-ID", setCookieHeaders));
+
 			return responseMap;
 
 		} catch (FeignException ex) {
 			List<String> errorMessage = Collections.singletonList(ExceptionUtil.handleFeignException(ex));
 			responseMap.put(errorMessageKey, errorMessage);
 			return responseMap;
+		}
+	}
+
+	/**
+	 * 로그아웃
+	 */
+	@Override
+	public String logout() {
+		try {
+			ResponseEntity<Void> response = authServiceClient.logout();
+			return successMessageKey;
+		} catch (FeignException ex) {
+			log.error("excepion :{}", ExceptionUtil.handleFeignException(ex));
+			return ExceptionUtil.handleFeignException(ex);
 		}
 	}
 }
