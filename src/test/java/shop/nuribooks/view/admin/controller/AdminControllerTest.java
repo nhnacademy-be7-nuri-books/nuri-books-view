@@ -22,12 +22,14 @@ import shop.nuribooks.view.common.feign.MemberServiceClient;
 //
 // 	@Autowired
 // 	private MemberServiceClient memberServiceClient;
-//
-// 	@Test
-// 	@DisplayName("관리자 페이지 접근 테스트")
-// 	void adminHome_shouldReturnAdminView() throws Exception {
-// 		mockMvc.perform(get("/admin"))
-// 			.andExpect(status().isOk())
-// 			.andExpect(view().name("admin/admin"));
-// 	}
-// }
+
+	// admin filter를 추가해 ROLE_ADMIN이 아닌 경우 통과할 수 없는 테스트입니다.
+	// @Test
+	// @DisplayName("관리자 페이지 접근 테스트")
+	// void adminHome_shouldReturnAdminView() throws Exception {
+	// 	mockMvc.perform(get("/admin"))
+	// 		.andExpect(status().isOk())
+	// 		.andExpect(view().name("admin/admin"));
+	// }
+}
+

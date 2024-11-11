@@ -174,11 +174,11 @@
     <!-- 도서 목록 리스트형 스타일 -->
     <div class="container book-list">
         <div class="book-item" th:each="bookWithContributors : ${books.content}">
-            <a th:href="@{/api/view/book/details/{id}(id=${bookWithContributors.bookDetails.id})}" class="book-thumbnail">
+            <a th:href="@{/view/book/details/{bookId}(bookId=${bookWithContributors.bookDetails.id})}" class="book-thumbnail">
                 <img th:src="${bookWithContributors.bookDetails.thumbnailImageUrl}" alt="도서 이미지">
             </a>
             <div class="book-details">
-                <a th:href="@{/api/view/book/details/{id}(id=${bookWithContributors.bookDetails.id})}">
+                <a th:href="@{/view/book/details/{bookId}(bookId=${bookWithContributors.bookDetails.id})}">
                     <h5 class="book-title" th:text="${bookWithContributors.bookDetails.title}">제목</h5>
                 </a>
                 <p class="book-publisher" th:text="${bookWithContributors.bookDetails.publisherName}">출판사</p>
@@ -186,8 +186,13 @@
                     <span class="book-price" th:text="'정가: ' + ${bookWithContributors.bookDetails.price} + ' 원'">정가</span>
                     <span class="book-sale-price" th:text="'할인가: ' + ${bookWithContributors.bookDetails.salePrice} + ' 원'">할인가</span>
                 </p>
-                <div class="book-authors" th:each="contributor : ${bookWithContributors.contributors}">
-                    <span th:text="${contributor.contributorName} + ' - ' + ${contributor.contributorRoleName}"></span><br>
+                <div class="book-authors">
+                    <th:block th:each="entry : ${bookWithContributors.contributorsByRole}">
+                        <!-- 작가 이름들을 콤마로 구분하여 나열 -->
+                        <span th:each="name, iterStat : ${entry.value}" th:text="${name + (iterStat.last ? '' : ', ')}">작가 이름</span>
+                        <!-- 역할 표시 -->
+                        <span th:text="' - ' + ${entry.key}"> : 역할</span><br/>
+                    </th:block>
                 </div>
             </div>
         </div>
