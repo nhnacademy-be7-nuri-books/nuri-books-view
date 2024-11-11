@@ -1,0 +1,52 @@
+<div th:fragment="sidebar">
+    <nav class="sidebar bg-dark text-white" style="width: 250px; min-height: 100vh; position: sticky; top: 0;">
+        <ul class="nav flex-column px-3">
+            <!-- 회원 정보 조회 -->
+            <li class="nav-item my-2">
+                <a href="/myDetail" class="nav-link text-white sidebar-item" data-url="myDetail">
+                    <i class="fas fa-user-circle me-2"></i>회원 정보 조회
+                </a>
+            </li>
+
+            <!-- 회원 정보 수정 -->
+            <li class="nav-item my-2">
+                <a href="/myEdit" class="nav-link text-white sidebar-item" data-url="myEdit">
+                    <i class="fas fa-user-edit me-2"></i>회원 정보 수정
+                </a>
+            </li>
+
+            <hr class="sidebar-divider">
+
+            <!-- 나의 장바구니 -->
+            <li class="nav-item my-2">
+                <a href="/myCart" class="nav-link text-white sidebar-item" data-url="myCart">
+                    <i class="fas fa-shopping-cart me-2"></i>나의 장바구니
+                </a>
+            </li>
+
+            <!-- 나의 구매내역 -->
+            <li class="nav-item my-2">
+                <a href="/myOrders" class="nav-link text-white sidebar-item" data-url="myOrders">
+                    <i class="fas fa-boxes me-2"></i>나의 구매내역
+                </a>
+            </li>
+
+            <!-- 나의 쿠폰 -->
+            <li class="nav-item my-2">
+                <a href="/myCoupons" class="nav-link text-white sidebar-item" data-url="myCoupons">
+                    <i class="fas fa-gift me-2"></i>나의 쿠폰
+                </a>
+            </li>
+
+            <hr class="sidebar-divider">
+
+            <!-- 로그 아웃 -->
+            <li class="nav-item my-2">
+                <a href="#" class="nav-link text-white sidebar-item" data-url="/logout">
+                    <i class="fas fa-sign-out-alt me-2"></i>로그아웃
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <!-- Sidebar Navigation -->
+</div>

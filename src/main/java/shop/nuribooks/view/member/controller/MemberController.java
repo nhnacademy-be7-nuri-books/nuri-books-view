@@ -1,6 +1,7 @@
 package shop.nuribooks.view.member.controller;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,7 +15,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import shop.nuribooks.view.common.dto.ResponseMessage;
+import shop.nuribooks.view.common.feign.MemberServiceClient;
 import shop.nuribooks.view.member.dto.request.MemberRegisterRequest;
+import shop.nuribooks.view.member.dto.request.MemberUpdateRequest;
 import shop.nuribooks.view.member.service.MemberService;
 
 /**
@@ -32,6 +36,7 @@ import shop.nuribooks.view.member.service.MemberService;
 public class MemberController {
 
 	private final MemberService memberService;
+	private final MemberServiceClient memberServiceClient;
 
 	@Value("${error.message-key}")
 	private String errorMessageKey;
@@ -95,7 +100,6 @@ public class MemberController {
 
 	/**
 	 * 마이 페이지 GET
-	 *
 	 * @return myPage.html
 	 */
 	@Operation(summary = "회원의 마이 페이지", description = "회원의 마이 페이지를 반환합니다.")
@@ -108,16 +112,93 @@ public class MemberController {
 	}
 
 	/**
-	 * 회원 정보 수정 페이지 GET
-	 *
-	 * @return edit.html
+	 * 회원 정보 조회 페이지 GET
+	 * @return myDetail.html
 	 */
-	// @Operation(summary = "회원의 마이 페이지", description = "회원의 마이 페이지를 반환합니다.")
-	// @ApiResponses(value = {
-	// 	@ApiResponse(responseCode = "200", description = "마이 페이지 반환 성공")
-	// })
-	// @GetMapping("/myPage")
-	// public String edit() {
-	// 	return "member/myPage/edit";
-	// }
+	@Operation(summary = "회원 정보 조회 페이지", description = "회원 정보 조회 페이지를 반환합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "회원 정보 조회 페이지 반환 성공")
+	})
+	@GetMapping("/myDetail")
+	public String myDetail() {
+		return "member/myDetail";
+	}
+
+	/**
+	 * 회원 정보 수정 페이지 GET
+	 * @return myEdit.html
+	 */
+	@Operation(summary = "회원 정보 수정 페이지", description = "회원 정보 수정 페이지를 반환합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "회원 정보 수정 페이지 반환 성공")
+	})
+	@GetMapping("/myEdit")
+	public String myEdit() {
+		return "member/myEdit";
+	}
+
+	/**
+	 * 회원 정보 수정 페이지 GET
+	 */
+	@Operation(summary = "회원 정보 수정", description = "회원 정보를 수정합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "302", description = "회원 정보 수정 후 회원 정보 페이지로 리다이렉트"),
+		@ApiResponse(responseCode = "500", description = "서버 오류 : 회원 정보 수정 실패")
+	})
+	@PostMapping("/myEdit")
+	public String memberUpdate(RedirectAttributes redirectAttributes,
+		@Valid @ModelAttribute MemberUpdateRequest request) {
+
+		ResponseEntity<ResponseMessage> response = memberServiceClient.memberUpdate(request);
+
+		if (response.getBody() != null) {
+		redirectAttributes.addFlashAttribute("responseMessage", response.getBody().message());
+		} else {
+		redirectAttributes.addFlashAttribute("responseMessage", "응답이 없습니다.");
+		}
+
+		redirectAttributes.addFlashAttribute("request", request);
+
+		return "redirect:/myEdit";
+	}
+
+
+	/**
+	 * 나의 장바구니 페이지 GET
+	 * @return myCart.html
+	 */
+	@Operation(summary = "나의 장바구니 페이지", description = "나의 장바구니 페이지를 반환합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "나의 장바구니 페이지 반환 성공")
+	})
+	@GetMapping("/myCart")
+	public String myCart() {
+		return "member/myCart";
+	}
+
+	/**
+	 * 나의 구매내역 페이지 GET
+	 * @return myOrders.html
+	 */
+	@Operation(summary = "나의 구매내역 페이지", description = "나의 구매내역 페이지를 반환합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "나의 구매내역 페이지 반환 성공")
+	})
+	@GetMapping("/myOrders")
+	public String myOrders() {
+		return "member/myOrders";
+	}
+
+	/**
+	 * 나의 쿠폰 페이지 GET
+	 * @return myCoupons.html
+	 */
+	@Operation(summary = "나의 쿠폰 페이지", description = "나의 쿠폰 페이지를 반환합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "나의 쿠폰 페이지 반환 성공")
+	})
+	@GetMapping("/myCoupons")
+	public String myCoupons() {
+		return "member/myCoupons";
+	}
 }

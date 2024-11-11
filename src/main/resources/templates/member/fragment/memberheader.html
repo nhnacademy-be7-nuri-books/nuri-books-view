@@ -1,0 +1,34 @@
+<div th:fragment="memberHeader">
+  <header class="member-header d-flex justify-content-between align-items-center bg-light p-3 shadow-sm rounded text-dark">
+    <!-- Header -->
+    <div class="col-12 bg-white pt-3">
+      <div class="row">
+        <div class="col-lg-auto">
+          <div class="site-logo text-center text-lg-left">
+            <a th:href="@{/}">NURIBOOKS</a>
+          </div>
+        </div>
+        <div class="col-lg-5 mx-auto mt-4 mt-lg-0">
+          <form action="#">
+            <div class="form-group">
+              <div class="input-group">
+                <input type="search" class="form-control border-dark" placeholder="Search..."
+                       required>
+                <button class="btn btn-outline-dark"><i class="fas fa-search"></i></button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-lg-auto text-center text-lg-left header-item-holder">
+          <a href="#" class="header-item">
+            <i class="fas fa-heart me-2"></i><span id="header-favorite">0</span>
+          </a>
+          <a href="cart.html" class="header-item">
+            <i class="fas fa-shopping-bag me-2"></i><span id="header-qty" class="me-3">2</span>
+            <!--<i class="fas fa-money-bill-wave me-2"></i><span id="header-price">$4,000</span>-->
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+</div>

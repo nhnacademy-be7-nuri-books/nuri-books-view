@@ -2,12 +2,15 @@ package shop.nuribooks.view.common.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import shop.nuribooks.view.common.dto.ResponseMessage;
 import shop.nuribooks.view.member.dto.request.MemberRegisterRequest;
+import shop.nuribooks.view.member.dto.request.MemberUpdateRequest;
 import shop.nuribooks.view.member.dto.response.MemberRegisterResponse;
 import shop.nuribooks.view.admin.dto.response.MemberSearchResponse;
 import org.springframework.data.domain.Page;
@@ -40,7 +43,7 @@ public interface MemberServiceClient {
 	/**
 	 * 관리자가 다양한 검색 조건으로 회원 조회
 	 */
-	@GetMapping("/api/member/members")
+	@GetMapping("/api/members")
 	ResponseEntity<Page<MemberSearchResponse>> memberSearchWithPaging(
 		@RequestParam(value = "name", required = false) String name,
 		@RequestParam(value = "email", required = false) String email,
@@ -49,4 +52,10 @@ public interface MemberServiceClient {
 		@RequestParam(value = "status", required = false) String status,
 		@RequestParam(value = "page") int page,
 		@RequestParam(value = "size") int size);
+
+	/**
+	 * 회원 정보 수정
+	 */
+	@PatchMapping("/api/members/me")
+	ResponseEntity<ResponseMessage> memberUpdate(@RequestBody MemberUpdateRequest request);
 }
