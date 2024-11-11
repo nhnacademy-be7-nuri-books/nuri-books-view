@@ -21,12 +21,14 @@
             <table class="table table-hover">
                 <thead class="table-light">
                 <tr>
+                    <th class="text-center">ID</th>
                     <th class="text-center">출판사 이름</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody id="publisher">
                 <tr th:each="publisher : ${publishers}">
+                    <td class="text-center" th:text="${publisher.id}">ID</td>
                     <td class="text-center" th:text="${publisher.name}">출판사 이름</td>
                     <td class="text-end">
                         <!-- 수정 버튼 (수정 모달 트리거) -->
