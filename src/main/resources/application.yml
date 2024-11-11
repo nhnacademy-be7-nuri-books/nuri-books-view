@@ -2,6 +2,11 @@ spring:
   application: { name: view }
   profiles:
     active: dev
+  servlet:
+    session:
+      cookie:
+        same-site: None
+        secure: true
 
   thymeleaf:
     prefix: classpath:/templates/
@@ -16,7 +21,6 @@ spring:
   #          connect-timeout: 5000
   #          read-timeout: 5000
   #          logger-level: basic
-  
   security:
     # OAuth2 인증을 위한 변수 설정 (PropZerties class에서 관리)
     oauth2:
