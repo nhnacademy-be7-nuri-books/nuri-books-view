@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.RequiredArgsConstructor;
@@ -44,7 +45,7 @@ public class AdminCategoryController {
 	}
 
 	@PatchMapping("/{categoryId}")
-	public String updateCategory(@PathVariable Long categoryId, @ModelAttribute CategoryRequest categoryRequest) {
+	public String updateCategory(@PathVariable Long categoryId, @RequestBody CategoryRequest categoryRequest) {
 		adminCategoryService.updateCategory(categoryId, categoryRequest);
 		return "redirect:/admin/category";
 	}

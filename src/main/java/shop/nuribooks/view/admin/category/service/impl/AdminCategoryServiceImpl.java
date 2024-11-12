@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.admin.category.dto.CategoryRequest;
 import shop.nuribooks.view.admin.category.dto.CategoryResponse;
 import shop.nuribooks.view.admin.category.dto.CategoryTreeResponse;
@@ -14,9 +15,9 @@ import shop.nuribooks.view.admin.category.feign.AdminCategoryClient;
 import shop.nuribooks.view.admin.category.service.AdminCategoryService;
 import shop.nuribooks.view.common.util.ExceptionUtil;
 import shop.nuribooks.view.exception.BadRequestException;
-import shop.nuribooks.view.exception.ResourceAlreadyExistsException;
 import shop.nuribooks.view.exception.ResourceNotFoundException;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class AdminCategoryServiceImpl implements AdminCategoryService {
@@ -72,13 +73,15 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
 	public void updateCategory(Long categoryId, CategoryRequest categoryRequest) {
 		try {
 			adminCategoryClient.updateCategory(categoryRequest, categoryId);
-		} catch (FeignException ex) {
-			if (ex.status() == HttpStatus.NOT_FOUND.value()) {
-				throw new ResourceNotFoundException(ex.getMessage());
-			} else if (ex.status() == HttpStatus.BAD_REQUEST.value()) {
-				throw new BadRequestException(ex.getMessage());
-			}
-			ExceptionUtil.handleFeignException(ex);
+		} catch (FeignException.BadRequest e) {
+			log.error("Bad request when updating category: {}", e.getMessage());
+			throw new BadRequestException("잘못된 요청입니다.");
+		} catch (FeignException.NotFound e) {
+			log.error("Category not found: {}", e.getMessage());
+			throw new ResourceNotFoundException("해당 카테고리를 찾을 수 없습니다.");
+		} catch (FeignException e) {
+			log.error("Feign client exception: {}", e.getMessage());
+			throw new RuntimeException("Feign 클라이언트 호출 중 오류가 발생했습니다.");
 		}
 	}
 

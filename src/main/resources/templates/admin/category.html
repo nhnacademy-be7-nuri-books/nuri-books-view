@@ -250,12 +250,42 @@
             }
         }
 
-        // 카테고리 수정
         function editCategory(categoryId) {
             const newCategoryName = prompt('새로운 카테고리 이름을 입력하세요:');
-            if (newCategoryName) {
+            if (newCategoryName && newCategoryName.trim() !== '') {
                 console.log(`Editing category with id ${categoryId}, new name: ${newCategoryName}`);
-                // 서버 API 호출 코드 추가 필요
+                const requestPayload = {
+                    name: newCategoryName
+                };
+
+                console.log('Sending PATCH request:', requestPayload);
+
+                fetch(`/admin/category/${categoryId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestPayload)
+                })
+                    .then(response => {
+                        console.log("왜", ...response)
+                        if (response.ok) {
+                            alert('카테고리가 성공적으로 수정되었습니다.');
+                            // window.location.reload(); // 수정 후 페이지 새로고침
+                        } else if (response.status === 404) {
+                            alert('해당 ID의 카테고리를 찾을 수 없습니다.');
+                        } else if (response.status === 400) {
+                            alert('잘못된 요청입니다.');
+                        } else {
+                            alert('카테고리 수정에 실패했습니다.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error updating category:', error);
+                        alert('카테고리 수정 중 오류가 발생했습니다.');
+                    });
+            } else {
+                alert('카테고리 이름은 필수입니다.');
             }
         }
 
