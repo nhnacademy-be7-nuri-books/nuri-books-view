@@ -58,7 +58,6 @@ public class PublisherServiceImpl implements PublisherService {
             // Feign 호출
             return publisherServiceClient.getAllPublishers(pageable.getPageNumber(), pageable.getPageSize()).getBody();
         } catch (FeignException ex) {
-            log.error("FeignException occurred while fetching publishers: {}", ex.getMessage());
             throw new RuntimeException("Unknown error while fetching publishers", ex);
         }
     }

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -34,11 +36,11 @@ public class ContributorServiceImpl implements ContributorService {
 	}
 
 	@Override
-	public List<ContributorResponse> getAllContributors() {
+	public Page<ContributorResponse> getAllContributors(Pageable pageable) {
 		try {
-			return contributorServiceClient.getAllContributors().getBody();
+			return contributorServiceClient.getAllContributors(pageable.getPageNumber(), pageable.getPageSize()).getBody();
 		} catch (FeignException ex) {
-			return Collections.emptyList();
+			throw new RuntimeException("Unknown error while fetching contributors", ex);
 		}
 	}
 

@@ -25,12 +25,6 @@ import shop.nuribooks.view.admin.publisher.service.PublisherService;
 public class PublisherController {
 	private final PublisherService publisherService;
 
-	// @GetMapping
-	// public String showPublisherList(Model model) {
-	// 	List<PublisherResponse> publishers = publisherService.getAllPublishers();
-	// 	model.addAttribute("publishers", publishers);
-	// 	return "admin/publisher/publisher-list";
-	// }
 	@GetMapping
 	public String showRegisterPublisherForm(@PageableDefault Pageable pageable, Model model) {
 		Page<PublisherResponse> publishers = publisherService.getAllPublishers(pageable);
