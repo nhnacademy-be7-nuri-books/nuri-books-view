@@ -10,6 +10,8 @@ public interface TagService {
     void registerTag(@Valid TagRequest tagRequest);
     List<TagResponse> getAllTags();
 
+    TagResponse getTag(Long id);
+
     void updateTag(@Valid Long id, TagRequest request);
 
     void deleteTag(@Valid Long id);
