@@ -7,6 +7,8 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import shop.nuribooks.view.admin.category.dto.SimpleCategoryResponse;
+
 public record BookResponse(
 	Long id,
 	String publisherName,
@@ -27,6 +29,7 @@ public record BookResponse(
 	int stock,
 	Long viewCount,
 	List<String> tagNames,
-	Map<String, List<String>> contributorsByRole
+	Map<String, List<String>> contributorsByRole,
+	List<List<SimpleCategoryResponse>> simpleCategories
 ) {
 }

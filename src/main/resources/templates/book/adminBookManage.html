@@ -27,11 +27,25 @@
             margin: 30px 0;
             border-top: 2px solid #6c757d;
         }
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border-color: #c3e6cb;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
 <div layout:fragment="content">
     <div class="container mt-5">
+        <!-- 메시지 표시 영역 -->
+        <div th:if="${successMessage}" class="alert alert-success" role="alert">
+            <span th:text="${successMessage}"></span>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+            <span th:text="${errorMessage}"></span>
+        </div>
+
         <h1 class="header-title mb-4 text-center">도서 관리</h1>
 
         <!-- 도서 등록 구분 -->
@@ -54,21 +68,9 @@
         <!-- 도서 관리 기능 버튼들 -->
         <h4>도서 관리</h4>
         <div class="row">
-            <div class="col-md-6 mb-3">
-                <a th:href="@{/admin/view/aladin/books}" class="btn btn-primary btn-custom w-100">
-                    <i class="fas fa-list"></i> 도서 목록 조회
-                </a>
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <a th:href="@{/admin/view/aladin/book/edit/{isbn}(isbn=${isbn})}" class="btn btn-warning btn-custom w-100">
-                    <i class="fas fa-edit"></i> 도서 수정
-                </a>
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <a th:href="@{/admin/view/aladin/book/delete/{isbn}(isbn=${isbn})}" class="btn btn-danger btn-custom w-100">
-                    <i class="fas fa-trash-alt"></i> 도서 삭제
+            <div class="col-md-12 mb-3">
+                <a th:href="@{/admin/view/books}" class="btn btn-primary btn-custom w-100">
+                    <i class="fas fa-book"></i> 도서 관리 목록
                 </a>
             </div>
         </div>
