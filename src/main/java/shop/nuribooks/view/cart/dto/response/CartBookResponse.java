@@ -4,5 +4,6 @@ import java.math.BigDecimal;
 
 public record CartBookResponse(String title,
 							   BigDecimal price,
-							   int discountRate) {
+							   int discountRate,
+							   String thumbnailImageUrl) {
 }

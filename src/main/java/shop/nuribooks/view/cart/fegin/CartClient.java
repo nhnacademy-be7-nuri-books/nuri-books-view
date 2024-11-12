@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import shop.nuribooks.view.cart.dto.request.CartAddRequest;
+import shop.nuribooks.view.cart.dto.request.CartAddRequestToServer;
 import shop.nuribooks.view.cart.dto.response.CartResponse;
 import shop.nuribooks.view.common.dto.ResponseMessage;
 
@@ -15,7 +16,7 @@ import shop.nuribooks.view.common.dto.ResponseMessage;
 public interface CartClient {
 
     @PostMapping("/api/cart")
-    ResponseEntity<ResponseMessage> addCart(@RequestBody CartAddRequest request);
+    ResponseEntity<ResponseMessage> addCart(@RequestBody CartAddRequestToServer request);
 
     @GetMapping("/api/cart/{cart-id}")
     ResponseEntity<List<CartResponse>> getCart(@PathVariable("cart-id") String cartId);
