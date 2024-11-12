@@ -4,6 +4,7 @@ import java.util.List;
 
 import shop.nuribooks.view.admin.category.dto.CategoryRequest;
 import shop.nuribooks.view.admin.category.dto.CategoryResponse;
+import shop.nuribooks.view.admin.category.dto.CategoryTreeResponse;
 
 public interface AdminCategoryService {
 
@@ -14,4 +15,6 @@ public interface AdminCategoryService {
 	void registerMainCategory(CategoryRequest categoryRequest);
 
 	void updateCategory(Long categoryId, CategoryRequest categoryRequest);
+
+	List<CategoryTreeResponse> getAllCategoryTree();
 }

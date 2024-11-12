@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import shop.nuribooks.view.admin.category.dto.CategoryRequest;
 import shop.nuribooks.view.admin.category.dto.CategoryResponse;
+import shop.nuribooks.view.admin.category.dto.CategoryTreeResponse;
 import shop.nuribooks.view.common.dto.ResponseMessage;
 
 /**
@@ -35,4 +36,6 @@ public interface AdminCategoryClient {
 	ResponseEntity<ResponseMessage> updateCategory(@RequestBody CategoryRequest categoryRequest,
 		@PathVariable Long categoryId);
 
+	@GetMapping("/api/categories/tree")
+	List<CategoryTreeResponse> getAllCategoryTree();
 }

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{member/layout/memberlayout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원 정보 상세</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .profile-header {
+            background-color: #f8f9fa;
+            padding: 30px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-header h1 {
+            font-size: 2rem;
+            color: #343a40;
+        }
+
+        .profile-header .profile-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .profile-header .profile-info div {
+            flex: 1;
+            margin: 0 10px;
+        }
+
+        .profile-card {
+            margin-top: 30px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            background-color: #ffffff;
+        }
+
+        .profile-card .card-title {
+            font-size: 1.5rem;
+            color: #343a40;
+            margin-bottom: 20px;
+        }
+
+        .profile-card .card-body {
+            padding: 0;
+        }
+
+        .profile-item {
+            margin-bottom: 15px;
+        }
+
+        .profile-item span {
+            font-weight: bold;
+            color: #495057;
+        }
+
+        .profile-item .value {
+            color: #007bff;
+        }
+
+        .btn-back {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .btn-back:hover {
+            background-color: #0056b3;
+        }
+
+        @media (max-width: 768px) {
+            .profile-header .profile-info {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <!-- 회원 정보 헤더 -->
+    <div class="container mt-5">
+        <div class="profile-header">
+            <h1>회원 정보</h1>
+            <div class="profile-info">
+                <div>
+                    <span>이름:</span>
+                    <p class="value" th:text="${member.name}"></p>
+                </div>
+                <div>
+                    <span>전화번호:</span>
+                    <p class="value" th:text="${member.phoneNumber}"></p>
+                </div>
+                <div>
+                    <span>이메일:</span>
+                    <p class="value" th:text="${member.email}"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 상세 정보 카드 -->
+        <div class="profile-card">
+            <div class="card-title">회원 상세 정보</div>
+            <div class="card-body">
+                <div class="profile-item">
+<!--                    <span>포인트:</span>-->
+<!--                    <p class="value" th:text="${#numbers.formatDecimal(member.point, 0, 'COMMA')}"></p>-->
+<!--                </div>-->
+<!--                <div class="profile-item">-->
+<!--                    <span>총 결제 금액:</span>-->
+<!--                    <p class="value" th:text="${#numbers.formatDecimal(member.totalPaymentAmount, 0, 'COMMA')}"></p>-->
+<!--                </div>-->
+                <div class="profile-item">
+                    <span>회원 등급:</span>
+                    <p class="value" th:text="${member.gradeName}"></p>
+                </div>
+<!--                <div class="profile-item">-->
+<!--                    <span>가입일:</span>-->
+<!--                    <p class="value" th:text="${#dates.format(member.createdAt, 'yyyy-MM-dd HH:mm')}"></p>-->
+<!--                </div>-->
+            </div>
+        </div>
+
+        <!-- 돌아가기 버튼 -->
+        <button class="btn-back" onclick="window.history.back()">돌아가기</button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</div>
+</body>
+</html>

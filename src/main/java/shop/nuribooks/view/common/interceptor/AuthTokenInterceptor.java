@@ -33,6 +33,7 @@ public class AuthTokenInterceptor implements RequestInterceptor {
 	 */
 	@Override
 	public void apply(RequestTemplate requestTemplate) {
+		requestTemplate.header("X-USER-ID", request.getHeader("X-USER-ID"));
 		Cookie[] cookies = request.getCookies();
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {

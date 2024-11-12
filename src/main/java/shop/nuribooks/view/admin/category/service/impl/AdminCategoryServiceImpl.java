@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import shop.nuribooks.view.admin.category.dto.CategoryRequest;
 import shop.nuribooks.view.admin.category.dto.CategoryResponse;
+import shop.nuribooks.view.admin.category.dto.CategoryTreeResponse;
 import shop.nuribooks.view.admin.category.feign.AdminCategoryClient;
 import shop.nuribooks.view.admin.category.service.AdminCategoryService;
 
@@ -34,6 +35,11 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
 	@Override
 	public void updateCategory(Long categoryId, CategoryRequest categoryRequest) {
 		adminCategoryClient.updateCategory(categoryRequest, categoryId);
+	}
+
+	@Override
+	public List<CategoryTreeResponse> getAllCategoryTree() {
+		return adminCategoryClient.getAllCategoryTree();
 	}
 
 }
