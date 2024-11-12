@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{admin/layout/adminlayout}">
+<head>
+    <meta charset="UTF-8">
+    <title>도서 관리</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 800px;
+        }
+        .header-title {
+            color: #333;
+        }
+        .btn-custom {
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .btn-custom i {
+            margin-right: 8px;
+        }
+        .section-divider {
+            margin: 30px 0;
+            border-top: 2px solid #6c757d;
+        }
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border-color: #c3e6cb;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container mt-5">
+        <!-- 메시지 표시 영역 -->
+        <div th:if="${successMessage}" class="alert alert-success" role="alert">
+            <span th:text="${successMessage}"></span>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+            <span th:text="${errorMessage}"></span>
+        </div>
+
+        <h1 class="header-title mb-4 text-center">도서 관리</h1>
+
+        <!-- 도서 등록 구분 -->
+        <div class="row mb-4">
+            <h4>도서 등록</h4>
+            <div class="col-md-6">
+                <a th:href="@{/admin/view/aladin/books/list}" class="btn btn-success btn-custom w-100">
+                    <i class="fas fa-cloud-download-alt"></i> 알라딘 API로 도서 등록
+                </a>
+            </div>
+            <div class="col-md-6">
+                <a th:href="@{/admin/view/book/register-personally}" class="btn btn-info btn-custom w-100">
+                    <i class="fas fa-plus-circle"></i> 직접 도서 등록
+                </a>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- 도서 관리 기능 버튼들 -->
+        <h4>도서 관리</h4>
+        <div class="row">
+            <div class="col-md-12 mb-3">
+                <a th:href="@{/admin/view/books}" class="btn btn-primary btn-custom w-100">
+                    <i class="fas fa-book"></i> 도서 관리 목록
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
