@@ -36,9 +36,9 @@ public class BookController {
 	public String getBookById(@PathVariable Long bookId, Model model, @PageableDefault Pageable pageable) {
 		BookResponse bookResponse = bookService.getBookById(bookId);
 		model.addAttribute("book", bookResponse);
-
 		Page<ReviewMemberResponse> pages = reviewService.getReviewsByBookId(bookId, pageable);
 		model.addAttribute("pages", pages);
+		model.addAttribute("type", "member");
 		return "book/bookDetail";
 	}
 }
