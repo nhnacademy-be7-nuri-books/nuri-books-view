@@ -17,4 +17,6 @@ public interface AdminCategoryService {
 	void updateCategory(Long categoryId, CategoryRequest categoryRequest);
 
 	List<CategoryTreeResponse> getAllCategoryTree();
+
+	CategoryRequest getCategoryName(Long categoryId);
 }

@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import shop.nuribooks.view.book.dto.AladinBookListItemResponse;
-import shop.nuribooks.view.book.dto.AladinBookSaveRequest;
-import shop.nuribooks.view.book.dto.BaseBookRegisterRequest;
 import shop.nuribooks.view.book.feign.AladinBookServiceClient;
 
 @RequiredArgsConstructor
