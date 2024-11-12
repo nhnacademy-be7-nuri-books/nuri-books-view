@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import shop.nuribooks.view.admin.contributor.dto.ContributorResponse;
 import shop.nuribooks.view.admin.publisher.PublisherServiceClient;
 import shop.nuribooks.view.admin.publisher.dto.PublisherRequest;
 import shop.nuribooks.view.admin.publisher.dto.PublisherResponse;
@@ -25,7 +27,6 @@ public class PublisherServiceImpl implements PublisherService {
     @Value("${success.message-key}")
     private String successMessageKey;
 
-    //출판사 등록
     @Override
     public void registerPublisher(PublisherRequest publisherRequest) {
         try {
@@ -39,7 +40,6 @@ public class PublisherServiceImpl implements PublisherService {
         }
     }
 
-    //출판사 목록 조회
     @Override
     public List<PublisherResponse> getAllPublishers() {
         try {
@@ -49,7 +49,16 @@ public class PublisherServiceImpl implements PublisherService {
         }
     }
 
-    // 출판사 수정
+    @Override
+    public PublisherResponse getPublisher(Long publisherId) {
+        try {
+            return publisherServiceClient.getPublisherById(publisherId).getBody();
+        } catch (FeignException ex) {
+            String errorMessage = ExceptionUtil.handleFeignException(ex);
+            return PublisherResponse.error(errorMessage);
+        }
+    }
+
     public void updatePublisher(Long id, PublisherRequest publisherRequest) {
         try {
             PublisherResponse response = publisherServiceClient.updatePublisher(id, publisherRequest).getBody();
@@ -62,7 +71,6 @@ public class PublisherServiceImpl implements PublisherService {
         }
     }
 
-    //출판사 삭제
     @Override
     public void deletePublisher(Long id) {
         try {
