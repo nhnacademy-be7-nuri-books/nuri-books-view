@@ -1,0 +1,55 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout/adminlayout}">
+<body>
+
+<div layout:fragment="content">
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">출판사 관리</h2>
+            </div>
+            <div class="card-body">
+                <div class="text-end mb-4">
+                    <a href="/admin/publisher/register" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-plus-circle me-2"></i>출판사 등록
+                    </a>
+                    <h2 class="text-center text-uppercase mb-4">출판사 목록</h2>
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                        <tr>
+                            <th class="text-center">ID</th>
+                            <th class="text-center">출판사 이름</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <th:block th:each="publisher : ${publishers}">
+                            <tr>
+                                <td class="text-center" th:text="${publisher.id}"></td>
+                                <td class="text-center" th:text="${publisher.name}"></td>
+                                <td>
+                                    <!-- 수정 버튼 -->
+                                    <a th:href="@{/admin/publisher/{publisher-id}(publisher-id=${publisher.id})}"
+                                       class="btn btn-outline-secondary btn-sm">
+                                        <i class="fas fa-edit me-2"></i>수정
+                                    </a>
+                                    <!-- 삭제 버튼 -->
+                                    <form th:action="@{/admin/publisher/{publisher-id}(publisher-id=${publisher.id})}"
+                                          method="post" style="display:inline;">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button type="submit" class="btn btn-outline-secondary btn-sm">
+                                            <i class="fas fa-trash-alt me-2"></i>삭제
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </th:block>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
