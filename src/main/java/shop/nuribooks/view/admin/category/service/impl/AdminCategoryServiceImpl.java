@@ -46,5 +46,4 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
 	public CategoryRequest getCategoryName(Long categoryId) {
 		return adminCategoryClient.getCategoryName(categoryId);
 	}
-
 }

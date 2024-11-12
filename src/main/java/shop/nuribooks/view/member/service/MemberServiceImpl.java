@@ -9,7 +9,7 @@ import feign.FeignException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import shop.nuribooks.view.common.feign.MemberServiceClient;
+import shop.nuribooks.view.member.feign.MemberServiceClient;
 import shop.nuribooks.view.common.util.ExceptionUtil;
 import shop.nuribooks.view.member.dto.request.MemberRegisterRequest;
 import shop.nuribooks.view.member.dto.response.MemberRegisterResponse;
@@ -44,4 +44,5 @@ public class MemberServiceImpl implements MemberService {
 			return ExceptionUtil.handleFeignException(ex);
 		}
 	}
+	
 }

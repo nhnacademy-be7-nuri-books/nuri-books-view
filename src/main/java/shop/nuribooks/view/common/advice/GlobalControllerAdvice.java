@@ -62,7 +62,6 @@ public class GlobalControllerAdvice {
 		redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
 		return "redirect:/error";
 	}
-  
 	/**
 	 * 권한 없는 예외가 발생할 시 처리
 	 *

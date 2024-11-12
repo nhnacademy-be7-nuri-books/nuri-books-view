@@ -40,4 +40,11 @@ public interface BookServiceClient {
 	@DeleteMapping("/api/books/{book-id}")
 	Void deleteBook(@PathVariable(name = "book-id") Long bookId);
 
+	// 알라딘 API 도서 등록
+	@PostMapping("/api/books/register/aladin")
+	ResponseEntity<ResponseMessage> registerAladinBook(@Valid @RequestBody AladinBookRegisterRequest registerRequest);
+
+	// 직접 도서 등록
+	@PostMapping("/api/books/register/personal")
+	ResponseEntity<ResponseMessage> registerPersonallyBook(@Valid @RequestBody PersonallyBookRegisterRequest registerRequest);
 }

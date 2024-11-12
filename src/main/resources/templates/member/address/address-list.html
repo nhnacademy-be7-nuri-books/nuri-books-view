@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout1}">
+<head>
+    <title>주소 목록</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<div layout:fragment="content">
+    <div class="header-container">
+    </div>
+
+    <div class="container address-list">
+        <div class="address-list" th:each="address : ${addressList}">
+            <div class="address-details">
+<!--                <a th:href="@{/api/view/book/details/{id}(id=${bookWithContributors.bookDetails.id})}">-->
+<!--                    <h5 class="book-title" th:text="${bookWithContributors.bookDetails.title}">제목</h5>-->
+<!--                </a>-->
+                    <span class="address-zipcode" th:text="'우편번호: ' + ${address.zipcode()}">우편번호</span>
+                    <span class="address-address" th:text="'주소: ' + ${address.address()}">주소</span>
+                    <span class="address-detail-address" th:text="'상세주소: ' + ${address.detailAddress()}">상세주소</span>
+                    <span class="address-name" th:text="'별칭: ' + ${address.name()}">별칭</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</html>
