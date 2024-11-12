@@ -1,7 +1,10 @@
 package shop.nuribooks.view.member.service;
 
 import jakarta.validation.Valid;
+import shop.nuribooks.view.common.dto.ResponseMessage;
 import shop.nuribooks.view.member.dto.request.MemberRegisterRequest;
+import shop.nuribooks.view.member.dto.request.MemberUpdateRequest;
+import shop.nuribooks.view.member.dto.response.MemberDetailsResponse;
 
 /**
  * 회원 서비스 인터페이스.
@@ -18,4 +21,10 @@ public interface MemberService {
 	 *         실패 시 오류 매세지
 	 */
 	String registerUser(@Valid MemberRegisterRequest userRequest);
+
+	MemberDetailsResponse getMemberDetails();
+
+	MemberUpdateRequest getMemberDetailsBeforeUpdate();
+
+	ResponseMessage memberUpdate(MemberUpdateRequest request);
 }

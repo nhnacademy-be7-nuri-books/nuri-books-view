@@ -3,12 +3,16 @@ package shop.nuribooks.view.member.service;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import feign.FeignException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import shop.nuribooks.view.common.dto.ResponseMessage;
+import shop.nuribooks.view.member.dto.request.MemberUpdateRequest;
+import shop.nuribooks.view.member.dto.response.MemberDetailsResponse;
 import shop.nuribooks.view.member.feign.MemberServiceClient;
 import shop.nuribooks.view.common.util.ExceptionUtil;
 import shop.nuribooks.view.member.dto.request.MemberRegisterRequest;
@@ -44,5 +48,30 @@ public class MemberServiceImpl implements MemberService {
 			return ExceptionUtil.handleFeignException(ex);
 		}
 	}
-	
+
+	@Override
+	public MemberDetailsResponse getMemberDetails() {
+
+		ResponseEntity<MemberDetailsResponse> response = memberServiceClient.getMemberDetails();
+
+		return response.getBody();
+	}
+
+	@Override
+	public MemberUpdateRequest getMemberDetailsBeforeUpdate() {
+
+		ResponseEntity<MemberDetailsResponse> response = memberServiceClient.getMemberDetails();
+
+		return MemberUpdateRequest.builder()
+			.username(response.getBody().username())
+			.name(response.getBody().name())
+			.build();
+	}
+
+	@Override
+	public ResponseMessage memberUpdate(MemberUpdateRequest request) {
+
+		return memberServiceClient.memberUpdate(request).getBody();
+	}
+
 }

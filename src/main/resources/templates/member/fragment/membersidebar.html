@@ -42,16 +42,18 @@
 
             <!-- 회원 탈퇴 -->
             <li class="nav-item my-2">
-                <a href="/" class="nav-link text-white sidebar-item" data-url="deleteAccount">
+                <a href="/myGoodbye" class="nav-link text-white sidebar-item" data-url="myGoodbye">
                     <i class="fas fa-user-times me-2"></i>회원 탈퇴
                 </a>
             </li>
 
             <!-- 로그아웃 -->
             <li class="nav-item my-2">
-                <a href="#" class="nav-link text-white sidebar-item" data-url="logout">
-                    <i class="fas fa-sign-out-alt me-2"></i>로그아웃
-                </a>
+                <form action="/logout" method="POST" style="display:inline;">
+                    <button type="submit" class="nav-link text-white sidebar-item" style="background: none; border: none;">
+                        <i class="fas fa-sign-out-alt me-2"></i>로그아웃
+                    </button>
+                </form>
             </li>
         </ul>
     </nav>
