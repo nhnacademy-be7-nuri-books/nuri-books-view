@@ -11,7 +11,7 @@
 // import org.springframework.cloud.openfeign.EnableFeignClients;
 // import org.springframework.test.web.servlet.MockMvc;
 //
-// import shop.nuribooks.view.common.feign.MemberServiceClient;
+// import shop.nuribooks.view.member.feign.MemberServiceClient;
 //
 // @WebMvcTest(AdminController.class)
 // @EnableFeignClients(basePackages = "shop.nuribooks.view.common.feign")
