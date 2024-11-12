@@ -1,0 +1,9 @@
+### 비회원 장바구니 담기
+POST localhost:3000/api/cart/1
+Content-Type: application/x-www-form-urlencoded
+
+quantity=3
+
+### 비회원 장바구니 가져오기
+GET localhost:3000/api/cart
+Cookie: cart-id=2eccdc5c-0fe7-40d1-8c07-798512d61d0a;
