@@ -213,7 +213,15 @@
       <h2 class="book-section-title">목차</h2>
       <p th:text="${book.contents}">목차 내용</p>
     </div>
+    <div class="mt-5">
+      <h2 class="book-section-title">리뷰</h2>
+
+      <div th:replace="book/review/list::reviews"></div>
+
+    </div>
   </div>
+    <div th:replace="fragments/page::page(url=${'/view/book/details/'+ book.id})"></div>
+
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -234,4 +242,5 @@
   }
 </script>
 </body>
+
 </html>
