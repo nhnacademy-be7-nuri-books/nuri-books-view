@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.admin.dto.request.MemberSearchRequest;
 import shop.nuribooks.view.admin.dto.response.MemberSearchResponse;
-import shop.nuribooks.view.common.feign.MemberServiceClient;
+import shop.nuribooks.view.member.feign.MemberServiceClient;
 
 @Controller
 @RequiredArgsConstructor
