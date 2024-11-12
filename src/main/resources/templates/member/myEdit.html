@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{member/layout/memberlayout}">
+<head>
+    <title>회원 정보 수정</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* 회원 정보 수정 영역을 화면 높이의 10%만큼 아래로 밀기 */
+        .content-section {
+            margin-top: 10vh; /* 화면 높이의 10%만큼 내려요 */
+        }
+
+        /* placeholder 텍스트 스타일을 회색으로 */
+        ::placeholder {
+            color: #6c757d; /* 옅은 회색 */
+            opacity: 1; /* 기본 불투명도 설정 */
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <!-- 마이 페이지 본문 -->
+    <main class="row content-section">
+        <div class="col-lg-8 col-md-10 col-sm-12 mx-auto bg-light rounded shadow py-4 mb-4">
+            <div class="text-center mb-4">
+                <p>회원님의 정보를 확인하고 수정하세요.</p>
+            </div>
+            <form class="row" th:action="@{/myEdit}" method="post" id="my_page_form">
+                <div class="col-md-12 form-group mb-3">
+                    <label for="userId">아이디</label>
+                    <input type="text" class="form-control" id="userId" name="userId"
+                           th:value="${request?.userId ?: ''}" placeholder="회원 아이디" readonly>
+                </div>
+                <div class="col-md-12 form-group mb-3">
+                    <label for="name">이름</label>
+                    <input type="text" class="form-control" id="name" name="name"
+                           th:value="${request?.name ?: ''}" placeholder="회원 이름" required>
+                    <small id="nameError" class="form-text text-muted error" style="display:none;"></small>
+                </div>
+                <div class="col-md-12 form-group mb-3">
+                    <label for="password">새 비밀번호</label>
+                    <input type="password" class="form-control" id="password" name="password"
+                           placeholder="새 비밀번호" required>
+                    <small id="passwordError" class="form-text text-muted error" style="display:none;"></small>
+                </div>
+                <div class="col-md-12 form-group mb-3">
+                    <label for="confirmPassword">새 비밀번호 확인</label>
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                           placeholder="새 비밀번호 확인" required>
+                </div>
+                <div id="passwordMatchError" class="text-danger" style="display:none;">
+                    비밀번호가 일치하지 않습니다.
+                </div>
+                <div class="col-md-12 form-group mb-3">
+                    <button type="submit" class="btn btn-primary w-100">정보 수정</button>
+                </div>
+            </form>
+            <div id="alertMessage" class="alert alert-danger" style="display:none;"></div> <!-- 오류 메시지 표시 영역 -->
+        </div>
+    </main>
+
+    <!-- Bootstrap JS, Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom Modal for ResponseMessage -->
+    <div class="modal fade" id="responseModal" tabindex="-1" aria-labelledby="responseModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="responseModalLabel">확인</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modalMessage" th:text="${responseMessage}">
+                    <!-- 서버에서 전달된 메시지가 여기에 동적으로 삽입됩니다 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="responseBtn">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Modal for Confirmation -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmationModalLabel">회원 정보 수정</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    입력하신 정보로 수정하시겠습니까?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-primary" id="confirmBtn">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 비밀번호 조건을 확인하는 함수
+        function validatePassword() {
+            const passwordField = document.getElementById('password');
+            const passwordError = document.getElementById('passwordError');
+            const password = passwordField.value;
+
+            // 비밀번호가 8자 이상 20자 이하인지 확인
+            if (password.length < 8 || password.length > 20) {
+                passwordError.style.display = 'block';
+                passwordError.textContent = "비밀번호는 8자 이상 20자 이하로 입력해야 합니다.";
+                passwordField.style.borderColor = "red";
+                return false;
+            } else {
+                passwordError.style.display = 'none';
+                passwordField.style.borderColor = "";
+                return true;
+            }
+        }
+
+        // 이름 조건을 확인하는 함수
+        function validateName() {
+            const nameField = document.getElementById('name');
+            const nameError = document.getElementById('nameError');
+            const name = nameField.value;
+
+            // 이름이 2자 이상 30자 이하인지 확인
+            if (name.length < 2 || name.length > 30) {
+                nameError.style.display = 'block';
+                nameError.textContent = "사용자 이름은 2자 이상 30자 이하로 입력해야 합니다.";
+                nameField.style.borderColor = "red";
+                return false;
+            } else {
+                nameError.style.display = 'none';
+                nameField.style.borderColor = "";
+                return true;
+            }
+        }
+
+        // 비밀번호 일치 여부 확인
+        function validatePasswordMatch() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const passwordMatchError = document.getElementById('passwordMatchError');
+
+            if (password !== confirmPassword) {
+                passwordMatchError.style.display = 'block';
+                return false;
+            } else {
+                passwordMatchError.style.display = 'none';
+                return true;
+            }
+        }
+
+        // 페이지가 로드되면 메시지가 있으면 모달을 띄운다.
+        document.addEventListener("DOMContentLoaded", function() {
+            const message = /*[[${responseMessage}]]*/ '';
+            if (message) {
+                // 모달에 메시지 삽입
+                document.getElementById('modalMessage').textContent = message;
+                // 모달 표시
+                var modal = new bootstrap.Modal(document.getElementById('responseModal'));
+                modal.show();
+            }
+        });
+
+        // 폼 제출 전 확인
+        document.getElementById('my_page_form').addEventListener('submit', function (e) {
+            if (!validatePassword() || !validateName() || !validatePasswordMatch()) {
+                showAlert("입력 정보가 올바르지 않습니다.");
+                e.preventDefault(); // 폼 제출 방지
+            } else {
+                // 유효성 통과 시, 모달 띄우기
+                e.preventDefault(); // 폼 제출 방지 (모달 확인 후에 제출)
+                var modal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+                modal.show();
+
+                // 확인 버튼 클릭 시 폼 제출
+                document.getElementById('confirmBtn').addEventListener('click', function () {
+                    modal.hide();
+                    document.getElementById('my_page_form').submit(); // 폼 제출
+                });
+            }
+        });
+
+        // 실시간 유효성 검사
+        document.getElementById('password').addEventListener('input', validatePassword);
+        document.getElementById('name').addEventListener('input', validateName);
+        document.getElementById('confirmPassword').addEventListener('input', validatePasswordMatch);
+
+        // 오류 메시지 보여주는 함수
+        function showAlert(message) {
+            var alertMessage = document.getElementById("alertMessage");
+            alertMessage.style.display = "block";
+            alertMessage.textContent = message;
+
+            // 몇 초 후에 경고 메시지 숨기기
+            setTimeout(function() {
+                alertMessage.style.display = "none";
+            }, 5000);
+        }
+    </script>
+</div>
+</body>
+</html>
