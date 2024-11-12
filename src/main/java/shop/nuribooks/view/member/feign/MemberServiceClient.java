@@ -1,4 +1,4 @@
-package shop.nuribooks.view.common.feign;
+package shop.nuribooks.view.member.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import shop.nuribooks.view.common.dto.ResponseMessage;
 import shop.nuribooks.view.member.dto.request.MemberRegisterRequest;
 import shop.nuribooks.view.member.dto.request.MemberUpdateRequest;
+import shop.nuribooks.view.member.dto.response.MemberDetailsResponse;
 import shop.nuribooks.view.member.dto.response.MemberRegisterResponse;
 import shop.nuribooks.view.admin.dto.response.MemberSearchResponse;
 import org.springframework.data.domain.Page;
@@ -36,7 +37,7 @@ public interface MemberServiceClient {
 	 * @return 응답 메시지 {@link MemberRegisterResponse},
 	 * 		   예외 발생 시 feignException 으로 처리
 	 */
-	@PostMapping("/api/member")
+	@PostMapping("/api/members")
 	ResponseEntity<MemberRegisterResponse> registerUser(@RequestBody MemberRegisterRequest userRequest);
 
 
@@ -58,4 +59,10 @@ public interface MemberServiceClient {
 	 */
 	@PatchMapping("/api/members/me")
 	ResponseEntity<ResponseMessage> memberUpdate(@RequestBody MemberUpdateRequest request);
+
+	/**
+	 * 회원 정보 조회
+	 */
+	@GetMapping("/api/members/me")
+	ResponseEntity<MemberDetailsResponse> getMemberDetails();
 }

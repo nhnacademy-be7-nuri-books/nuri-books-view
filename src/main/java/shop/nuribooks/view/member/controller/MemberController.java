@@ -3,11 +3,11 @@ package shop.nuribooks.view.member.controller;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -16,9 +16,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.common.dto.ResponseMessage;
-import shop.nuribooks.view.common.feign.MemberServiceClient;
+import shop.nuribooks.view.member.feign.MemberServiceClient;
 import shop.nuribooks.view.member.dto.request.MemberRegisterRequest;
 import shop.nuribooks.view.member.dto.request.MemberUpdateRequest;
+import shop.nuribooks.view.member.dto.response.MemberDetailsResponse;
 import shop.nuribooks.view.member.service.MemberService;
 
 /**
@@ -120,7 +121,23 @@ public class MemberController {
 		@ApiResponse(responseCode = "200", description = "회원 정보 조회 페이지 반환 성공")
 	})
 	@GetMapping("/myDetail")
-	public String myDetail() {
+	public String myDetail(Model model) {
+
+		ResponseEntity<MemberDetailsResponse> response = memberServiceClient.getMemberDetails();
+
+		// MemberDetailsResponse response = MemberDetailsResponse.builder()
+		// 	.name("누리")
+		// 	.phoneNumber("042-8282-8282")
+		// 	.email("nuri@nhnacademy.com")
+		// 	.point(BigDecimal.valueOf(10000))
+		// 	.totalPaymentAmount(BigDecimal.valueOf(170000))
+		// 	.gradeName("STANDARD")
+		// 	.pointRate(1)
+		// 	.createdAt(LocalDateTime.now())
+		// 	.build();
+
+		model.addAttribute("member", response);
+
 		return "member/myDetail";
 	}
 
