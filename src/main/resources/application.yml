@@ -83,3 +83,12 @@ spring:
 logging:
   level:
     root: debug
+    javax:
+      management:
+        remote:
+          rmi: off
+    sun:
+      rmi:
+        transport:
+          tcp: off
+        loader: off
