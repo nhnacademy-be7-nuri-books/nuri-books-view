@@ -3,6 +3,7 @@ package shop.nuribooks.view.admin.category.service.impl;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import feign.FeignException;
@@ -13,6 +14,7 @@ import shop.nuribooks.view.admin.category.dto.CategoryResponse;
 import shop.nuribooks.view.admin.category.dto.CategoryTreeResponse;
 import shop.nuribooks.view.admin.category.feign.AdminCategoryClient;
 import shop.nuribooks.view.admin.category.service.AdminCategoryService;
+import shop.nuribooks.view.common.dto.ResponseMessage;
 import shop.nuribooks.view.common.util.ExceptionUtil;
 import shop.nuribooks.view.exception.BadRequestException;
 import shop.nuribooks.view.exception.ResourceNotFoundException;
@@ -70,9 +72,10 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
 	}
 
 	@Override
-	public void updateCategory(Long categoryId, CategoryRequest categoryRequest) {
+	public ResponseEntity<ResponseMessage> updateCategory(Long categoryId, CategoryRequest categoryRequest) {
+		ResponseEntity<ResponseMessage> message;
 		try {
-			adminCategoryClient.updateCategory(categoryRequest, categoryId);
+			message = adminCategoryClient.updateCategory(categoryRequest, categoryId);
 		} catch (FeignException.BadRequest e) {
 			log.error("Bad request when updating category: {}", e.getMessage());
 			throw new BadRequestException("잘못된 요청입니다.");
@@ -83,6 +86,7 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
 			log.error("Feign client exception: {}", e.getMessage());
 			throw new RuntimeException("Feign 클라이언트 호출 중 오류가 발생했습니다.");
 		}
+		return message;
 	}
 
 	@Override
