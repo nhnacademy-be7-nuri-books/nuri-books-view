@@ -23,42 +23,39 @@ public class ContributorController {
     private final ContributorService contributorService;
 
     @GetMapping
-    public String showRegisterContributorForm(Model model) {
+    public String showContributorList(Model model) {
         List<ContributorResponse> contributors = contributorService.getAllContributors();
         model.addAttribute("contributors", contributors);
-        return "admin/contributor";
+        return "admin/contributor/contributor-list";
     }
 
-    //기여자 등록
+    @GetMapping("/register")
+    public String showContributorRegisterPage() {
+        return "admin/contributor/contributor-register";
+    }
+
     @PostMapping
-    public ResponseEntity<Map<String, String>> registerContributor(ContributorRequest contributorRequest) {
-        try {
-            contributorService.registerContributor(contributorRequest);
-            return ResponseEntity.ok(Map.of(contributorRequest.name(), "등록 성공"));
-        } catch (FeignException ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("status", "error", "message", ex.getMessage()));
-        }
+    public String registerContributor(ContributorRequest contributorRequest) {
+        contributorService.registerContributor(contributorRequest);
+        return "redirect:/admin/contributor";
     }
 
-    // 기여자 수정 처리
+    @GetMapping("/{contributor-id}")
+    public String showEditContributorPage(@PathVariable("contributor-id") Long id, Model model) {
+        ContributorResponse contributor = contributorService.getContributor(id);
+        model.addAttribute("contributor", contributor);
+        return "admin/contributor/contributor-edit";
+    }
+
     @PutMapping("/{contributor-id}")
-    public ResponseEntity<Map<String, String>> updateContributor(@PathVariable(name = "contributor-id") Long id, @RequestBody ContributorRequest contributorRequest) {
-        try {
-            contributorService.updateContributor(id, contributorRequest);
-            return ResponseEntity.ok(Map.of(contributorRequest.name(), "수정 성공"));
-        } catch (FeignException ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("status", "error", "message", ex.getMessage()));
-        }
+    public String updateContributor(@PathVariable("contributor-id") Long id, ContributorRequest contributorRequest) {
+        contributorService.updateContributor(id, contributorRequest);
+        return "redirect:/admin/contributor";
     }
 
-    //기여자 삭제
     @DeleteMapping("/{contributor-id}")
-    public ResponseEntity<Map<String, String>> deleteContributor(@PathVariable(name = "contributor-id") Long contributorId) {
-        try {
-            contributorService.deleteContributor(contributorId);
-            return ResponseEntity.ok(Map.of("data", "삭제 성공"));
-        } catch (FeignException ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("status", "error", "message", ex.getMessage()));
-        }
+    public String deleteContributor(@PathVariable("contributor-id") Long id) {
+        contributorService.deleteContributor(id);
+        return "redirect:/admin/contributor";
     }
 }
