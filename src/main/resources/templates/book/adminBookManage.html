@@ -27,11 +27,26 @@
             margin: 30px 0;
             border-top: 2px solid #6c757d;
         }
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border-color: #c3e6cb;
+            font-weight: bold;
+        }
+
     </style>
 </head>
 <body>
 <div layout:fragment="content">
     <div class="container mt-5">
+        <!-- 메시지 표시 영역 -->
+        <div th:if="${successMessage}" class="alert alert-success" role="alert">
+            <span th:text="${successMessage}"></span>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+            <span th:text="${errorMessage}"></span>
+        </div>
+
         <h1 class="header-title mb-4 text-center">도서 관리</h1>
 
         <!-- 도서 등록 구분 -->

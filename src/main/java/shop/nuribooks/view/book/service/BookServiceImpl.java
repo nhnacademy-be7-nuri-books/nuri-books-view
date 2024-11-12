@@ -3,9 +3,7 @@ package shop.nuribooks.view.book.service;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import shop.nuribooks.view.book.dto.AdminBookListResponse;
 import shop.nuribooks.view.book.dto.AladinBookRegisterRequest;
-import shop.nuribooks.view.book.dto.BaseBookRegisterRequest;
 import shop.nuribooks.view.book.dto.BookContributorsResponse;
 import shop.nuribooks.view.book.dto.BookResponse;
 import shop.nuribooks.view.book.dto.PersonallyBookRegisterRequest;
@@ -41,5 +39,10 @@ public class BookServiceImpl implements BookService{
 	@Override
 	public PagedResponse<BookContributorsResponse> getBooksByCategoryId(Long categoryId, int page, int size) {
 		return bookServiceClient.getBooksByCategoryId(categoryId, page, size);
+	}
+
+	@Override
+	public void deleteBook(Long bookId) {
+		bookServiceClient.deleteBook(bookId);
 	}
 }

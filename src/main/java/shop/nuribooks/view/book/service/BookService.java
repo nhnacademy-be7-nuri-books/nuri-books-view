@@ -12,4 +12,5 @@ public interface BookService {
 	void registerAladinBook(AladinBookRegisterRequest aladinRequest);
 	void registerPersonallyBook(PersonallyBookRegisterRequest personallyRequest);
 	PagedResponse<BookContributorsResponse> getBooksByCategoryId(Long categoryId, int page, int size);
+	void deleteBook(Long bookId);
 }

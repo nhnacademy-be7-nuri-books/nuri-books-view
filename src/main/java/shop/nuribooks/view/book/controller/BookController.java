@@ -33,17 +33,6 @@ public class BookController {
 		return "book/bookList";
 	}
 
-	@GetMapping("/admin/view/books")
-	public String getAdminBooks(@RequestParam(defaultValue = "0") int page,
-		@RequestParam(defaultValue = "10") int size,
-		Model model) {
-		PagedResponse<BookContributorsResponse> books = bookService.getBooks(page, size);
-		model.addAttribute("books", books);
-		model.addAttribute("isAdmin", true);
-		model.addAttribute("layout", "admin/layout/adminlayout");  // 관리자 레이아웃
-		return "book/bookList";
-	}
-
 	@GetMapping("/view/book/details/{book-id}")
 	public String getBookById(@PathVariable(name = "book-id") Long bookId, Model model) {
 		BookResponse bookResponse = bookService.getBookById(bookId);

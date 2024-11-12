@@ -176,7 +176,7 @@
         }
     </style>
 </head>
-
+<body>
 <div layout:fragment="content">
     <div class="header-container">
         <h1 class="header-title" th:text="${isAdmin} ? '관리자 도서 관리' : '추천 도서 목록'">추천 도서 목록</h1>
@@ -197,42 +197,92 @@
     <!-- 도서 목록 리스트형 스타일 -->
     <div class="container book-list">
         <div class="book-item" th:each="bookWithContributors : ${books.content}">
-            <a th:href="@{/view/book/details/{bookId}(bookId=${bookWithContributors.bookDetails.id})}" class="book-thumbnail">
-                <img th:src="${bookWithContributors.bookDetails.thumbnailImageUrl}" alt="도서 이미지">
-            </a>
+            <<a th:href="@{/view/book/details/{bookId}(bookId=${bookWithContributors.bookDetails.id})}" class="book-thumbnail">
+            <img th:src="${bookWithContributors.bookDetails.thumbnailImageUrl}" alt="도서 이미지">
+        </a>
             <div class="book-details">
                 <a th:href="@{/view/book/details/{bookId}(bookId=${bookWithContributors.bookDetails.id})}">
                     <h5 class="book-title" th:text="${bookWithContributors.bookDetails.title}">제목</h5>
                 </a>
-                <p class="book-publisher" th:text="${bookWithContributors.bookDetails.publisherName}">출판사</p>
-                <p>
-                    <span class="book-price" th:text="'정가: ' + ${bookWithContributors.bookDetails.price} + ' 원'">정가</span>
-                    <span class="book-discount" th:if="${bookWithContributors.bookDetails.discountRate > 0}" th:text="'할인율' + ${bookWithContributors.bookDetails.discountRate} + '%'">할인율</span>
-                    <span class="book-sale-price" th:text="'할인가: ' + ${bookWithContributors.bookDetails.salePrice} + ' 원'">판매가</span>
-                </p>
                 <div class="book-authors">
                     <th:block th:each="entry : ${bookWithContributors.contributorsByRole}">
                         <span th:each="name, iterStat : ${entry.value}" th:text="${name + (iterStat.last ? '' : ', ')}">작가 이름</span>
                         <span th:text="' - ' + ${entry.key}"> : 역할</span><br/>
                     </th:block>
                 </div>
+                <p class="book-publisher" th:text="${bookWithContributors.bookDetails.publisherName}">출판사</p>
+                <p>
+                    <span class="book-price" th:text="'정가: ' + ${bookWithContributors.bookDetails.price} + ' 원'">정가</span>
+                    <span class="book-discount" th:if="${bookWithContributors.bookDetails.discountRate > 0}" th:text="'할인율' + ${bookWithContributors.bookDetails.discountRate} + '%'">할인율</span>
+                    <span class="book-sale-price" th:text="'판매가: ' + ${bookWithContributors.bookDetails.salePrice} + ' 원'">판매가</span>
+                </p>
                 <!-- 관리자 버튼 (isAdmin인 경우에만 표시) -->
                 <div class="book-actions" th:if="${isAdmin}">
                     <button type="button" class="btn-edit">수정</button>
-                    <button type="button" class="btn-delete">삭제</button>
+                    <button type="button" class="btn-delete" th:attr="data-book-id=${bookWithContributors.bookDetails.id}" onclick="deleteBook(this)">삭제</button>
+                    <script>
+                        function deleteBook(button) {
+                            const bookId = button.getAttribute("data-book-id");
+
+                            if (confirm("이 도서를 정말 삭제하시겠습니까?")) {
+                                fetch(`/admin/view/book/${bookId}`, {
+                                    method: 'DELETE'
+                                })
+                                    .then(response => {
+                                        if (response.ok) {
+                                            alert("도서 삭제 성공");
+                                            location.reload(); // 페이지 새로고침
+                                        } else {
+                                            alert("도서 삭제 실패");
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error("Error:", error);
+                                        alert("도서 삭제 중 오류가 발생했습니다.");
+                                    });
+                            }
+                        }
+                    </script>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 페이지 이동 -->
     <nav class="pagination">
-        <a class="btn btn-secondary" th:href="@{/view/books(page=${books.page - 1}, size=${books.size})}" th:if="${books.page > 0}">이전</a>
+        <!-- 이전 버튼 -->
+        <a class="btn btn-secondary"
+           th:if="${books.page > 0} and ${isAdmin}"
+           th:href="@{/admin/view/books(page=${books.page - 1}, size=${books.size})}">
+            이전
+        </a>
+        <a class="btn btn-secondary"
+           th:if="${books.page > 0} and !${isAdmin}"
+           th:href="@{/view/books(page=${books.page - 1}, size=${books.size})}">
+            이전
+        </a>
+
+        <!-- 페이지 번호 링크 -->
         <span th:each="i : ${#numbers.sequence(1, books.totalPages)}" th:if="${i >= books.page - 2 && i <= books.page + 3}">
-            <a th:href="@{/view/books(page=${i - 1}, size=${books.size})}"
-               th:text="${i}" th:classappend="${i == books.page + 1} ? 'current-page' : ''"></a>
-        </span>
-        <a class="btn btn-secondary" th:href="@{/view/books(page=${books.page + 1}, size=${books.size})}" th:if="${books.page < books.totalPages - 1}">다음</a>
+        <a th:if="${isAdmin}" th:href="@{/admin/view/books(page=${i - 1}, size=${books.size})}"
+           th:text="${i}" th:classappend="${i == books.page + 1} ? 'current-page' : ''">
+        </a>
+        <a th:unless="${isAdmin}" th:href="@{/view/books(page=${i - 1}, size=${books.size})}"
+           th:text="${i}" th:classappend="${i == books.page + 1} ? 'current-page' : ''">
+        </a>
+    </span>
+
+        <!-- 다음 버튼 -->
+        <a class="btn btn-secondary"
+           th:if="${books.page < books.totalPages - 1} and ${isAdmin}"
+           th:href="@{/admin/view/books(page=${books.page + 1}, size=${books.size})}">
+            다음
+        </a>
+        <a class="btn btn-secondary"
+           th:if="${books.page < books.totalPages - 1} and !${isAdmin}"
+           th:href="@{/view/books(page=${books.page + 1}, size=${books.size})}">
+            다음
+        </a>
     </nav>
 </div>
+</body>
 </html>
