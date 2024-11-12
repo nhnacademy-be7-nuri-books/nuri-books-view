@@ -2,14 +2,17 @@ package shop.nuribooks.view.book.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.RequiredArgsConstructor;
@@ -20,11 +23,11 @@ import shop.nuribooks.view.admin.tag.dto.TagResponse;
 import shop.nuribooks.view.admin.tag.service.TagService;
 import shop.nuribooks.view.book.dto.AladinBookListItemResponse;
 import shop.nuribooks.view.book.dto.AladinBookRegisterRequest;
-import shop.nuribooks.view.book.dto.AladinBookSaveRequest;
-import shop.nuribooks.view.book.dto.BaseBookRegisterRequest;
+import shop.nuribooks.view.book.dto.BookContributorsResponse;
 import shop.nuribooks.view.book.dto.PersonallyBookRegisterRequest;
 import shop.nuribooks.view.book.service.AladinBookService;
 import shop.nuribooks.view.book.service.BookService;
+import shop.nuribooks.view.common.dto.PagedResponse;
 
 @RequiredArgsConstructor
 @Controller
@@ -101,7 +104,7 @@ public class AdminBookController {
 	/**
 	 * 알라딘 API를 이용한 도서 등록
 	 */
-	@PostMapping("/aladin/book/save")
+	@PostMapping("/aladin/book")
 	public String registerAladinBook(@ModelAttribute AladinBookRegisterRequest aladinRegisterReq, RedirectAttributes redirectAttributes) {
 		try {
 			bookService.registerAladinBook(aladinRegisterReq);
@@ -115,15 +118,32 @@ public class AdminBookController {
 	/**
 	 * 직접 도서 등록
 	 */
-	@PostMapping("/personally/book/save")
-	public String registerPersonallyBook(@ModelAttribute PersonallyBookRegisterRequest personallyRegisterReq, Model model) {
+	@PostMapping("/personally/book")
+	public String registerPersonallyBook(@ModelAttribute PersonallyBookRegisterRequest personallyRegisterReq, RedirectAttributes redirectAttributes) {
 		try {
 			bookService.registerPersonallyBook(personallyRegisterReq);
-			model.addAttribute("successMessage", "도서 등록 성공");
+			redirectAttributes.addFlashAttribute("successMessage", "도서 등록 성공");
 		} catch (Exception ex) {
-			model.addAttribute("errorMessage", "도서 등록 실패");
+			redirectAttributes.addFlashAttribute("errorMessage", "도서 등록 실패");
 		}
-		return "/book/adminBookManage";
+		return "redirect:/admin/book/adminBookManage";
+	}
+
+	@GetMapping("/books")
+	public String getAdminBooks(@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "10") int size,
+		Model model) {
+		PagedResponse<BookContributorsResponse> books = bookService.getBooks(page, size);
+		model.addAttribute("books", books);
+		model.addAttribute("isAdmin", true);
+		model.addAttribute("layout", "admin/layout/adminlayout");
+		return "book/bookList";
+	}
+
+	@DeleteMapping("/book/{book-id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deleteBook(@PathVariable(name = "book-id") Long bookId) {
+		bookService.deleteBook(bookId);
 	}
 
 	/**

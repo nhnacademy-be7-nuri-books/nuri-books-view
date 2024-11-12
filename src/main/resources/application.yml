@@ -18,6 +18,12 @@ spring:
     hidden-method:
       filter:
         enabled: true
+  data:
+    redis:
+      host: 133.186.241.167
+      port: 6379
+      password: "*N2vya7H@muDTwdNMR!"
+      database: 139
 
   #cloud:
   #  openfeign:
