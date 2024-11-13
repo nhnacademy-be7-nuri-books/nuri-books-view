@@ -84,4 +84,9 @@ public class MemberServiceImpl implements MemberService {
 		return point != null ? point.intValue() : 0;
 	}
 
+	@Override
+	public ResponseMessage memberWithdraw() {
+
+		return memberServiceClient.memberWithdraw().getBody();
+	}
 }

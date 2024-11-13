@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import shop.nuribooks.view.cart.dto.request.CartAddRequest;
+
 import shop.nuribooks.view.cart.dto.request.CartAddRequestToServer;
+import shop.nuribooks.view.cart.dto.request.CartLoadRequest;
 import shop.nuribooks.view.cart.dto.response.CartResponse;
 import shop.nuribooks.view.common.dto.ResponseMessage;
 
@@ -20,4 +21,7 @@ public interface CartClient {
 
     @GetMapping("/api/cart/{cart-id}")
     ResponseEntity<List<CartResponse>> getCart(@PathVariable("cart-id") String cartId);
+
+    @PostMapping("/api/cart/load-to-redis")
+    ResponseEntity<Void> loadCartToRedis(@RequestBody CartLoadRequest request);
 }

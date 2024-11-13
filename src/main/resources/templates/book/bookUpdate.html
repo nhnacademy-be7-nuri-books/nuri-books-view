@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{admin/layout/adminlayout}">
+<head>
+    <title>도서 수정</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.min.css"/>
+    <style>
+        /* 전체 페이지 배경 및 기본 폰트 */
+        body {
+            background-color: #e9ecef;
+            font-family: 'Noto Sans', Arial, sans-serif;
+            color: #333;
+        }
+        /* 메인 카드 컨테이너 스타일 */
+        .main-card {
+            max-width: 1100px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 제목 스타일 */
+        h2, h1.header-title {
+            font-weight: bold;
+            color: #34495e;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        /* 폼 레이블과 입력 필드 스타일 */
+        .form-label {
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 8px;
+        }
+
+        .form-control, .form-select {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 10px;
+            border: 1px solid #dcdde1;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #2980b9;
+            box-shadow: 0 0 5px rgba(41, 128, 185, 0.3);
+        }
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px; /* 태그 간격 조절 */
+        }
+
+        /* 한 줄에 여러 개 나열하도록 */
+        .form-check-inline {
+            display: flex;
+            align-items: center;
+        }
+        /* 버튼 스타일 */
+        .btn-primary {
+            background-color: #3498db;
+            border: none;
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 8px;
+            width: 100%;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 라벨과 입력 간격 조절 */
+        .mb-3 {
+            margin-bottom: 1.5rem;
+        }
+
+        .mb-3 textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1em;
+            color: #2c3e50;
+            transition: border-color 0.3s;
+        }
+
+        /* 도움말 텍스트 스타일 */
+        .help-text {
+            font-size: 0.9em;
+            color: #95a5a6;
+        }
+
+        /* 토글 버튼 스타일 */
+        .toggle-btn {
+            cursor: pointer;
+            margin-right: 5px;
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        /* 숨김 클래스 */
+        .hidden {
+            display: none;
+        }
+
+        /* 체크박스 목록 */
+        .form-check {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+</head>
+<body>
+<div layout:fragment="content" class="main-card">
+    <div>
+        <h2>도서 수정</h2>
+    </div>
+
+    <div class="text-center mb-4">
+        <!-- 성공 및 오류 메시지 표시 -->
+        <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+        <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+    </div>
+
+    <!-- 수정 폼 -->
+    <form th:action="@{/admin/view/book/{book-id}(book-id=${book.id})}" method="post" th:object="${book}">
+        <input type="hidden" name="_method" value="put"/> <!-- PUT 메서드 지정 -->
+
+        <!-- 제목 필드 -->
+        <div class="mb-3">
+            <label class="form-label">제목</label>
+            <p th:text="${book.title}" class="form-control-plaintext"></p>
+        </div>
+
+        <!-- 저자 필드 -->
+        <div class="mb-3">
+            <label class="form-label">저자</label>
+            <div th:each="entry : ${book.contributorsByRole}">
+                <p><strong th:text="${entry.key}">역할</strong></p>
+                <ul>
+                    <li th:each="name : ${entry.value}" th:text="${name}">Contributor Name</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 출판사 필드 -->
+        <div class="mb-3">
+            <label class="form-label">출판사</label>
+            <p th:text="${book.publisherName}" class="form-control-plaintext"></p>
+        </div>
+
+        <div class="mb-3">
+            <label for="publicationDate" class="form-label">출판일</label>
+            <input type="date" class="form-control" id="publicationDate" name="publicationDate" th:value="${book.publicationDate}" disabled>
+            <small class="help-text">형식: YYYY-MM-DD</small>
+        </div>
+
+        <!-- 카테고리 선택 -->
+        <div class="mb-3">
+            <label class="form-label">카테고리 선택 (최대 10개의 최하위 카테고리 선택 가능)</label>
+            <!-- 첫 번째 레벨 카테고리 -->
+            <div th:each="category : ${categories}">
+                <div style="margin-left: 20px;">
+                    <span class="toggle-btn" onclick="toggleVisibility(this)">+</span>
+                    <input type="checkbox" th:id="'category_' + ${category.id}" th:value="${category.id}" name="categoryIds"
+                           th:if="${#lists.isEmpty(category.subCategories)}"
+                           onchange="handleCategorySelection(this)" class="form-check-input">
+                    <label th:for="'category_' + ${category.id}" th:text="${category.name}"></label>
+
+                    <!-- 두 번째 레벨 카테고리 -->
+                    <div th:each="subCategory : ${category.subCategories}" class="hidden">
+                        <div style="margin-left: 20px;">
+                            <span class="toggle-btn" onclick="toggleVisibility(this)">+</span>
+                            <input type="checkbox" th:id="'category_' + ${subCategory.id}" th:value="${subCategory.id}" name="categoryIds"
+                                   th:if="${#lists.isEmpty(subCategory.subCategories)}"
+                                   onchange="handleCategorySelection(this)" class="form-check-input">
+                            <label th:for="'category_' + ${subCategory.id}" th:text="${subCategory.name}"></label>
+
+                            <!-- 세 번째 레벨 카테고리 -->
+                            <div th:each="subSubCategory : ${subCategory.subCategories}" class="hidden">
+                                <div style="margin-left: 20px;">
+                                    <span class="toggle-btn" onclick="toggleVisibility(this)">+</span>
+                                    <input type="checkbox" th:id="'category_' + ${subSubCategory.id}" th:value="${subSubCategory.id}" name="categoryIds"
+                                           th:if="${#lists.isEmpty(subSubCategory.subCategories)}"
+                                           onchange="handleCategorySelection(this)" class="form-check-input">
+                                    <label th:for="'category_' + ${subSubCategory.id}" th:text="${subSubCategory.name}"></label>
+
+                                    <!-- 네 번째 레벨 카테고리 -->
+                                    <div th:each="subSubSubCategory : ${subSubCategory.subCategories}" class="hidden">
+                                        <div style="margin-left: 20px;">
+                                            <span class="toggle-btn" onclick="toggleVisibility(this)">+</span>
+                                            <input type="checkbox" th:id="'category_' + ${subSubSubCategory.id}" th:value="${subSubSubCategory.id}" name="categoryIds"
+                                                   th:if="${#lists.isEmpty(subSubSubCategory.subCategories)}"
+                                                   onchange="handleCategorySelection(this)" class="form-check-input">
+                                            <label th:for="'category_' + ${subSubSubCategory.id}" th:text="${subSubSubCategory.name}"></label>
+
+                                            <!-- 다섯 번째 레벨 카테고리 -->
+                                            <div th:each="subSubSubSubCategory : ${subSubSubCategory.subCategories}" class="hidden">
+                                                <div style="margin-left: 20px;">
+                                                    <span class="toggle-btn" onclick="toggleVisibility(this)">+</span>
+                                                    <input type="checkbox" th:id="'category_' + ${subSubSubSubCategory.id}" th:value="${subSubSubSubCategory.id}" name="categoryIds"
+                                                           th:if="${#lists.isEmpty(subSubSubSubCategory.subCategories)}"
+                                                           onchange="handleCategorySelection(this)" class="form-check-input">
+                                                    <label th:for="'category_' + ${subSubSubSubCategory.id}" th:text="${subSubSubSubCategory.name}"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                const selectedCategories = new Set();
+
+                function handleCategorySelection(checkbox) {
+                    if (checkbox.checked) {
+                        if (selectedCategories.size >= 10) {
+                            alert("최대 10개의 최하위 카테고리만 선택할 수 있습니다.");
+                            checkbox.checked = false;
+                            return;
+                        }
+                        selectedCategories.add(checkbox.value);
+                    } else {
+                        selectedCategories.delete(checkbox.value);
+                    }
+                }
+
+                // 확장/축소 기능을 위한 함수
+                function toggleVisibility(button) {
+                    const container = button.parentElement; // 클릭된 버튼의 상위 div
+                    const subCategories = container.querySelectorAll(":scope > div"); // 모든 하위 div 요소들
+
+                    subCategories.forEach(div => div.classList.toggle("hidden"));
+                    button.textContent = button.textContent === "+" ? "-" : "+";
+                }
+            </script>
+        </div>
+
+        <!-- 정가 -->
+        <div class="mb-3">
+            <label for="price" class="form-label">정가</label>
+            <input type="number" id="price" th:field="*{price}" class="form-control" required/>
+        </div>
+
+        <!-- 할인율 -->
+        <div class="mb-3">
+            <label for="discountRate" class="form-label">할인율 (%)</label>
+            <input type="number" id="discountRate" th:field="*{discountRate}" class="form-control" min="0" max="100" placeholder="0-100%" required/>
+        </div>
+
+        <!-- 재고 -->
+        <div class="mb-3">
+            <label for="stock" class="form-label">재고</label>
+            <input type="number" id="stock" th:field="*{stock}" class="form-control" required/>
+        </div>
+
+        <!-- 재고 상태 -->
+        <div class="mb-3">
+            <label for="state" class="form-label">재고 상태</label>
+            <select id="state" th:field="*{state}" class="form-select">
+                <option value="NORMAL" th:selected="${book.state == 'NORMAL'}">정상판매</option>
+                <option value="PREORDER" th:selected="${book.state == 'PREORDER'}">예약판매</option>
+                <option value="NEW" th:selected="${book.state == 'NEW'}">신간</option>
+                <option value="NOT_PUBLISHED" th:selected="${book.state == 'NOT_PUBLISHED'}">미출간</option>
+                <option value="OUT_OF_PRINT" th:selected="${book.state == 'OUT_OF_PRINT'}">절판</option>
+                <option value="SOLD_OUT" th:selected="${book.state == 'SOLD_OUT'}">품절</option>
+                <option value="USED" th:selected="${book.state == 'USED'}">중고</option>
+            </select>
+        </div>
+
+        <!-- 썸네일 이미지 URL -->
+        <div class="mb-3">
+            <label for="thumbnailImageUrl" class="form-label">썸네일 이미지 URL</label>
+            <input type="text" id="thumbnailImageUrl" th:field="*{thumbnailImageUrl}" class="form-control" required/>
+        </div>
+
+        <!-- 상세 이미지 URL -->
+        <div class="mb-3">
+            <label for="detailImageUrl" class="form-label">상세 이미지 URL</label>
+            <input type="text" id="detailImageUrl" th:field="*{detailImageUrl}" class="form-control"/>
+        </div>
+
+        <!-- 목차 -->
+        <div class="mb-3">
+            <label for="contents" class="form-label">목차</label>
+            <textarea id="contents" name="contents" style="display: none;" th:field="*{contents}"></textarea>
+            <div id="contentEditor"></div>
+            <script>
+                const contentEditor = new toastui.Editor({
+                    el: document.querySelector('#contentEditor'),
+                    height: '300px',
+                    initialEditType: 'wysiwyg',
+                    previewStyle: 'vertical',
+                    initialValue: document.getElementById('contents').value || '',
+                    events: {
+                        change: function() {
+                            document.getElementById('contents').value = contentEditor.getHTML();
+                        }
+                    }
+                });
+            </script>
+        </div>
+
+        <!-- 설명 -->
+        <div class="mb-3">
+            <label for="description" class="form-label">설명</label>
+            <textarea id="description" name="description" style="display: none;" th:field="*{description}"></textarea>
+            <div id="descriptionEditor"></div>
+            <script>
+                const descriptionEditor = new toastui.Editor({
+                    el: document.querySelector('#descriptionEditor'),
+                    height: '300px',
+                    initialEditType: 'wysiwyg',
+                    previewStyle: 'vertical',
+                    initialValue: document.getElementById('description').value || '',
+                    events: {
+                        change: function() {
+                            document.getElementById('description').value = descriptionEditor.getHTML();
+                        }
+                    }
+                });
+            </script>
+        </div>
+
+        <!-- 태그 선택 -->
+        <div class="mb-3">
+            <label class="form-label">태그 선택 (최대 5개)</label>
+            <div class="tag-container">
+                <div th:each="tag : ${tags}" class="form-check-inline">
+                    <input class="form-check-input" type="checkbox" th:id="'tag_' + ${tag.id}" name="tagIds" th:value="${tag.id}">
+                    <label class="form-check-label" th:for="'tag_' + ${tag.id}" th:text="${tag.name}"></label>
+                </div>
+            </div>
+        </div>
+
+        <!-- 포장 가능 여부 -->
+        <div class="mb-3">
+            <label for="isPackageable" class="form-label">포장 가능 여부</label>
+            <select class="form-select" id="isPackageable" name="isPackageable" required>
+                <option value="true">가능</option>
+                <option value="false">불가능</option>
+            </select>
+        </div>
+
+        <!-- ISBN -->
+        <div class="mb-3">
+            <label class="form-label">ISBN</label>
+            <p th:text="${book.isbn}" class="form-control-plaintext"></p>
+        </div>
+
+        <button type="submit" class="btn btn-primary">저장</button>
+    </form>
+</div>
+</body>
+</html>
