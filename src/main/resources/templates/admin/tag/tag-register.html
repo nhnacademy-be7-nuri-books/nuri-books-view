@@ -1,0 +1,52 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout/adminlayout}">
+<body>
+<div layout:fragment="content">
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">태그 등록</h2>
+            </div>
+            <div class="card-body">
+                <form action="/admin/tag" method="post" id="tag_form">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">태그 이름</label>
+                        <input type="text" class="form-control" id="name" name="name" required placeholder="태그 이름">
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">태그 등록</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById('tag_form').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const formData = new FormData(this);
+
+        fetch('/admin/tag', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('태그 등록 실패');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('태그 등록 성공:', data);
+                alert('태그가 성공적으로 등록되었습니다.');
+                window.location.href = '/admin/tag';
+            })
+            .catch(error => {
+                console.error('태그 등록 오류:', error);
+                alert('다시 작성해 주세요.');
+            });
+    });
+</script>
+</body>
+</html>

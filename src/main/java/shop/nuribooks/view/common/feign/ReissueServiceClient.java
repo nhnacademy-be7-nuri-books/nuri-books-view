@@ -3,6 +3,7 @@ package shop.nuribooks.view.common.feign;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 /**
  * auth 관련 FeignClient
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
  */
 @FeignClient(name = "reissue", url = "http://localhost:8080")
 public interface ReissueServiceClient {
-	
+
 	@PostMapping("/api/auth/reissue")
-	ResponseEntity<String> reissue();
+	ResponseEntity<String> reissue(@RequestHeader("Refresh") String prevRefreshToken);
 }
