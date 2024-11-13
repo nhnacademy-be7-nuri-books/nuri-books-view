@@ -5,12 +5,16 @@ import shop.nuribooks.view.admin.contributor.dto.ContributorResponse;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 public interface ContributorService {
-    List<ContributorResponse> getAllContributors();
+    Page<ContributorResponse> getAllContributors(Pageable pageable);
 
-    void registerContributor(ContributorRequest contributorRequest);
+    ContributorResponse getContributor(Long contributorId);
+    String registerContributor(ContributorRequest contributorRequest);
 
-    void updateContributor(Long id, ContributorRequest contributorRequest);
+    String updateContributor(Long id, ContributorRequest contributorRequest);
 
-    void deleteContributor(Long contributorId);
+    String deleteContributor(Long contributorId);
 }

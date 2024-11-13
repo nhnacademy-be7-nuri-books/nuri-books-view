@@ -36,6 +36,32 @@
         <div th:replace="~{admin/fragment/adminfooter :: adminFooter}"></div>
       </footer>
     </div>
+    <!-- Messages -->
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-white bg-success border-0" id="successToast"
+           style="display: none">
+        <div class="d-flex">
+          <div class="toast-body" id="successMessage">
+            <i class="fas fa-check-circle me-2"></i>
+            <p th:text="${successMessage}"> 기본 성공 메시지입니다. </p>
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                  aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="toast align-items-center text-white bg-danger border-0" id="errorToast"
+           style="display: none">
+        <div class="d-flex">
+          <div class="toast-body" id="errorMessage">
+            <i class="fas fa-times-circle me-2"></i>
+            <p th:text="${errorMessage}"> 기본 오류 메시지입니다. </p>
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                  aria-label="Close"></button>
+        </div>
+      </div>
+    </div>
+    <!-- Messages -->
   </div>
 </div>
 <script type="text/javascript" src="/js/jquery.min.js"></script>
