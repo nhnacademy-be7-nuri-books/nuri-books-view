@@ -1,5 +1,6 @@
 package shop.nuribooks.view.member.service;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -72,6 +73,15 @@ public class MemberServiceImpl implements MemberService {
 	public ResponseMessage memberUpdate(MemberUpdateRequest request) {
 
 		return memberServiceClient.memberUpdate(request).getBody();
+	}
+
+	@Override
+	public Integer getMemberDetailsBeforeWithdraw() {
+
+		BigDecimal point = memberServiceClient.getMemberDetails().getBody().point();
+
+		// point가 null일 경우 0 반환
+		return point != null ? point.intValue() : 0;
 	}
 
 }

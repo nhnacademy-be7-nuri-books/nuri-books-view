@@ -209,7 +209,27 @@ public class MemberController {
 		@ApiResponse(responseCode = "200", description = "회원 탈퇴 페이지 반환 성공")
 	})
 	@GetMapping("/myGoodbye")
-	public String myGoodbye() {
+	public String myGoodbye(Model model) {
+
+		Integer point = memberService.getMemberDetailsBeforeWithdraw();
+		model.addAttribute("point", point);
+
 		return "member/myGoodbye";
+	}
+
+	/**
+	 * 회원 탈퇴 진행
+	 */
+	@Operation(summary = "회원 탈퇴 진행", description = "회원 탈퇴를 진행합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "회원 탈퇴가 성공적으로 진행되었습니다."),
+		@ApiResponse(responseCode = "500", description = "서버 오류 : 회원 탈퇴 실패")
+	})
+	@PostMapping("/myGoodbye")
+	public String memberWithdraw() {
+
+
+
+		return "redirect:/";
 	}
 }
