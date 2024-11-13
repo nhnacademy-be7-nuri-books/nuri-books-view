@@ -1,7 +1,6 @@
 package shop.nuribooks.view.member.controller;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import shop.nuribooks.view.common.dto.ResponseMessage;
-import shop.nuribooks.view.member.feign.MemberServiceClient;
 import shop.nuribooks.view.member.dto.request.MemberRegisterRequest;
 import shop.nuribooks.view.member.dto.request.MemberUpdateRequest;
 import shop.nuribooks.view.member.dto.response.MemberDetailsResponse;
@@ -37,7 +34,6 @@ import shop.nuribooks.view.member.service.MemberService;
 public class MemberController {
 
 	private final MemberService memberService;
-	private final MemberServiceClient memberServiceClient;
 
 	@Value("${error.message-key}")
 	private String errorMessageKey;
@@ -123,9 +119,9 @@ public class MemberController {
 	@GetMapping("/myDetail")
 	public String myDetail(Model model) {
 
-		ResponseEntity<MemberDetailsResponse> response = memberServiceClient.getMemberDetails();
+		MemberDetailsResponse member = memberService.getMemberDetails();
 
-		model.addAttribute("member", response.getBody());
+		model.addAttribute("member", member);
 
 		return "member/myDetail";
 	}
@@ -141,14 +137,10 @@ public class MemberController {
 	@GetMapping("/myEdit")
 	public String myEdit(Model model) {
 
-		ResponseEntity<MemberDetailsResponse> response = memberServiceClient.getMemberDetails();
-		MemberDetailsResponse member = response.getBody();
-
-		MemberUpdateRequest memberUpdateRequest = MemberUpdateRequest.builder()
-			.name(member.name())
-			.build();
+		MemberUpdateRequest memberUpdateRequest = memberService.getMemberDetailsBeforeUpdate();
 
 		model.addAttribute("MemberUpdateRequest", memberUpdateRequest);
+
 		return "member/myEdit";
 	}
 
@@ -161,16 +153,9 @@ public class MemberController {
 		@ApiResponse(responseCode = "500", description = "서버 오류 : 회원 정보 수정 실패")
 	})
 	@PostMapping("/myEdit")
-	public String memberUpdate(RedirectAttributes redirectAttributes,
-		@Valid @ModelAttribute MemberUpdateRequest request) {
+	public String memberUpdate(@Valid @ModelAttribute MemberUpdateRequest request) {
 
-		ResponseEntity<ResponseMessage> response = memberServiceClient.memberUpdate(request);
-
-		if (response.getBody() != null) {
-		redirectAttributes.addFlashAttribute("responseMessage", response.getBody().message());
-		} else {
-		redirectAttributes.addFlashAttribute("responseMessage", "응답이 없습니다.");
-		}
+		memberService.memberUpdate(request);
 
 		return "redirect:/myEdit";
 	}
@@ -213,5 +198,38 @@ public class MemberController {
 	@GetMapping("/myCoupons")
 	public String myCoupons() {
 		return "member/myCoupons";
+	}
+
+	/**
+	 * 회원 탈퇴 페이지 GET
+	 * @return myGoodbye.html
+	 */
+	@Operation(summary = "회원 탈퇴 페이지", description = "회원 탈퇴 페이지를 반환합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "회원 탈퇴 페이지 반환 성공")
+	})
+	@GetMapping("/myGoodbye")
+	public String myGoodbye(Model model) {
+
+		Integer point = memberService.getMemberDetailsBeforeWithdraw();
+		model.addAttribute("point", point);
+
+		return "member/myGoodbye";
+	}
+
+	/**
+	 * 회원 탈퇴 진행
+	 */
+	@Operation(summary = "회원 탈퇴 진행", description = "회원 탈퇴를 진행합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "회원 탈퇴가 성공적으로 진행되었습니다."),
+		@ApiResponse(responseCode = "500", description = "서버 오류 : 회원 탈퇴 실패")
+	})
+	@PostMapping("/myGoodbye")
+	public String memberWithdraw() {
+
+
+
+		return "redirect:/";
 	}
 }
