@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +17,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.auth.dto.request.LoginRequest;
+import shop.nuribooks.view.cart.service.CartClientService;
+import shop.nuribooks.view.common.decoder.JwtDecoder;
 import shop.nuribooks.view.common.feign.AuthServiceClient;
 import shop.nuribooks.view.common.util.ExceptionUtil;
 
@@ -28,8 +31,10 @@ import shop.nuribooks.view.common.util.ExceptionUtil;
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
+	public static final String X_USER_ID = "X-USER-ID";
 
 	private final AuthServiceClient authServiceClient;
+	private final CartClientService cartClientService;
 
 	@Value("${error.message-key}")
 	private String errorMessageKey;
@@ -66,10 +71,15 @@ public class AuthServiceImpl implements AuthService {
 				.ifPresent(
 					setAuthorizationHeaders -> responseMap.put(HttpHeaders.AUTHORIZATION, setAuthorizationHeaders));
 
-			Optional.ofNullable(headers.get("X-USER-ID"))
+			Optional.ofNullable(headers.get(X_USER_ID))
 				.filter(list -> !list.isEmpty())
-				.ifPresent(setCookieHeaders -> responseMap.put("X-USER-ID", setCookieHeaders));
+				.ifPresent(setCookieHeaders -> responseMap.put(X_USER_ID, setCookieHeaders));
 
+			// 여기다가 작성
+			String userId = response.getHeaders().getFirst(X_USER_ID);
+			if (Objects.nonNull(userId)) {
+				cartClientService.loadCartToRedis(userId);
+			}
 			return responseMap;
 
 		} catch (FeignException ex) {

@@ -10,4 +10,6 @@ public interface CartClientService {
     void addCart(CartAddRequestToServer request);
 
     List<CartResponse> getCart(String cartId);
+
+    void loadCartToRedis(String userId);
 }
