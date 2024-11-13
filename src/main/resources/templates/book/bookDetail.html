@@ -187,9 +187,6 @@
             <input type="hidden" name="bookId" th:value="${book.id}">
             <button type="submit" class="btn btn-secondary btn-custom">장바구니에 담기</button>
           </form>
-          <div th:if="${successMessage}" class="alert alert-success">
-            <p th:text="${successMessage}"></p>
-          </div>
         </div>
 
         <!-- Like button aligned to the right -->

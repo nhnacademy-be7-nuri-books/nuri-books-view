@@ -1,5 +1,7 @@
 package shop.nuribooks.view.book.controller;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -9,11 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import shop.nuribooks.view.admin.category.dto.CategoryRequest;
+import shop.nuribooks.view.admin.category.dto.CategoryResponse;
 import shop.nuribooks.view.admin.category.service.AdminCategoryService;
-import shop.nuribooks.view.book.dto.AdminBookListResponse;
 import shop.nuribooks.view.book.dto.BookContributorsResponse;
 import shop.nuribooks.view.book.dto.BookResponse;
 import shop.nuribooks.view.book.service.BookService;
@@ -28,7 +29,7 @@ public class BookController {
 	private final ReviewService reviewService;
 	private final AdminCategoryService adminCategoryService;
 
-	@GetMapping({"/view/books", "/admin/view/books"})
+	@GetMapping("/view/books")
 	public String getBooks(@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "10") int size,
 		Model model) {
@@ -51,13 +52,21 @@ public class BookController {
 
 	@GetMapping("/view/books/categories/{category-id}")
 	public String getBooksByCategoryId(@PathVariable(name = "category-id") Long categoryId,
-								@RequestParam(defaultValue = "0") int page,
-								@RequestParam(defaultValue = "10") int size, Model model) {
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "10") int size, Model model) {
 		CategoryRequest categoryName = adminCategoryService.getCategoryName(categoryId);
-		PagedResponse<BookContributorsResponse> bookCategories = bookService.getBooksByCategoryId(categoryId, page, size);
+		PagedResponse<BookContributorsResponse> bookCategories = bookService.getBooksByCategoryId(categoryId, page,
+			size);
 		model.addAttribute("bookCategories", bookCategories);
 		model.addAttribute("categoryName", categoryName);
 		model.addAttribute("categoryId", categoryId);
 		return "book/bookCategoryList";
+	}
+
+	@GetMapping("/view/categories")
+	public String getAllCategories(Model model) {
+		List<CategoryResponse> categoryList = adminCategoryService.getAllCategories();
+		model.addAttribute("categories", categoryList);
+		return "book/category/all-category";
 	}
 }

@@ -2,6 +2,7 @@ package shop.nuribooks.view.member.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -65,4 +66,10 @@ public interface MemberServiceClient {
 	 */
 	@GetMapping("/api/members/me")
 	ResponseEntity<MemberDetailsResponse> getMemberDetails();
+
+	/**
+	 * 회원 탈퇴
+	 */
+	@DeleteMapping("/api/members/me")
+	ResponseEntity<ResponseMessage> memberWithdraw();
 }

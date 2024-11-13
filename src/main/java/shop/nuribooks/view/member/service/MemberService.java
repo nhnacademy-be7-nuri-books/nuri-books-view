@@ -29,4 +29,6 @@ public interface MemberService {
 	ResponseMessage memberUpdate(MemberUpdateRequest request);
 
 	Integer getMemberDetailsBeforeWithdraw();
+
+	ResponseMessage memberWithdraw();
 }

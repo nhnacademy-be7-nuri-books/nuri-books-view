@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="header">
     <header class="row">
         <!-- Top Nav -->
@@ -50,15 +50,15 @@
                     <form action="#">
                         <div class="form-group">
                             <div class="input-group">
-                                <input type="search" class="form-control border-dark" placeholder="Search..."
-                                       required>
+                                <input class="form-control border-dark" placeholder="Search..." required
+                                       type="search">
                                 <button class="btn btn-outline-dark"><i class="fas fa-search"></i></button>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="col-lg-auto text-center text-lg-left header-item-holder">
-                    <a href="#" class="header-item">
+                    <a class="header-item" href="#">
                         <i class="fas fa-heart me-2"></i><span id="header-favorite">0</span>
                     </a>
                     <a th:href="@{/api/cart}" class="header-item">
@@ -100,9 +100,9 @@
                         <nav class="navbar navbar-light bg-white">
                             <ul class="navbar-nav mt-2 mt-lg-0">
                                 <li class="nav-item d-flex align-items-center">
-                                    <span class="navbar-toggler-icon" style="cursor: pointer;"
-                                          onclick="toggleMenu()"></span>
-                                    <a class="nav-link" href="category.html"> 전체 카테고리</a>
+                                    <span class="navbar-toggler-icon" onclick="toggleMenu()"
+                                          style="cursor: pointer;"></span>
+                                    <a class="nav-link" href="/view/categories"> 전체 카테고리</a>
                                 </li>
                             </ul>
                         </nav>
