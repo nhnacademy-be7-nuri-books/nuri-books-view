@@ -1,39 +1,3 @@
-function openRegisterModal(url) {
-    const modal = document.getElementById('register_modal');
-    const errorMessage = document.getElementById('error_message');
-    const form = document.getElementById('register_form');
-
-    errorMessage.classList.add('d-none');
-    const bootModal = new bootstrap.Modal(modal);
-
-    form.addEventListener('submit', function (event) {
-        event.preventDefault();
-
-        const formData = new FormData(form);
-        console.log(formData)
-        fetch(url, {
-            method: 'POST',
-            body: formData
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('등록 실패');
-                }
-                return response.json();
-            })
-            .then(data => {
-                alert('성공적으로 등록되었습니다.');
-                bootModal.hide('hide');
-                refreshList();
-            })
-            .catch(error => {
-                console.error('출판사 등록 오류:', error);
-                errorMessage.show('이미 존재하는 출판사 입니다.');
-            });
-    });
-
-    bootModal.show();
-}
 
 function openEditModal(pointPolicyId) {
     const editPointPolicyModal = document.getElementById('editPointPolicyModal');
