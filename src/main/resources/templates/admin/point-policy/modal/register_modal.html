@@ -1,0 +1,69 @@
+<div th:fragment="register_modal">
+    <script>
+        const submitHandler = (url) => {
+            const form = document.getElementById('register_form');
+
+            const formData = new FormData(form);
+
+            fetch(url, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(response.status, "등록 실패");
+                    }
+                    refreshList();
+                    showMessage();
+                })
+                .catch(error => {
+                    showMessage(error);
+                });
+            form.reset();
+            $('#register-modal').modal('hide');
+        }
+    </script>
+
+    <div>
+        <!-- 포인트 정책 등록 버튼 -->
+        <div class="text-end mb-4">
+            <button id="openModalBtn" class="btn btn-outline-secondary btn-sm" onclick="openModal('register-modal')">
+                <i class="fas fa-plus-circle me-2"></i>새로 만들기
+            </button>
+        </div>
+
+        <!-- 포인트 정책 등록 모달 -->
+        <div id="register-modal" class="modal fade" tabindex="-1" aria-labelledby="policyModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="policyModalLabel">포인트 정책 등록</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <!-- 포인트 정책 등록 폼 -->
+                        <form action="#" method="post" id="register_form">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">정책 이름</label>
+                                <input type="text" class="form-control" id="name" name="name" required placeholder="포인트 정책 이름">
+                                <label for="policyType" class="form-label">정책 타입</label>
+                                <select id="policyType" name="policyType" class="form-select">
+                                    <option th:each="policyType : ${policyTypes}" th:value="${policyType}"
+                                            th:text="${policyType.toKorName()}"></option>
+                                </select>
+                                <label for="amount" class="form-label">포인트 정책 값</label>
+                                <input type="text" class="form-control" id="amount" name="amount" required placeholder="포인트 정책 값">
+                            </div>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-primary" onclick="submitHandler('/admin/point-policy')">등록</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

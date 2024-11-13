@@ -1,0 +1,57 @@
+<div th:fragment="update_modal">
+<script>
+    const updateHandler = (url) => {
+        // url과 id로 이루어진 path로 api 요청 보냄. 다른 url 형식일 땐 수정하여야함.
+        const form = document.getElementById('update-form');
+
+        const formData = new FormData(form);
+
+        fetch(url + "/" + data, {
+            method: 'PUT',
+            body: formData
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.status, "등록 실패");
+                }
+                refreshList();
+                showMessage();
+            })
+            .catch(error => {
+                showMessage(error);
+            });
+        form.reset();
+        $('#update-modal').modal('hide');
+    }
+</script>
+    <!-- 포인트 정책 수정 모달 -->
+    <div id="update-modal" class="modal fade" tabindex="-1" aria-labelledby="editPolicyModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editPolicyModalLabel">포인트 정책 수정</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="#" method="post" id="update-form">
+                        <div class="mb-3">
+                            <input type="hidden" value="update" class="form-control" id="update-name" name="name" required placeholder="포인트 정책 이름">
+                            <label for="update-policyType" class="form-label">정책 타입</label>
+                            <select id="update-policyType" name="policyType" class="form-select">
+                                <option th:each="policyType : ${policyTypes}" th:value="${policyType}"
+                                        th:text="${policyType.toKorName()}"></option>
+                            </select>
+                            <label for="update-amount" class="form-label">포인트 정책 값</label>
+                            <input type="text" class="form-control" id="update-amount" name="amount" required placeholder="포인트 정책 값">
+                        </div>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-primary" onclick="updateHandler('/admin/point-policy')">수정</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

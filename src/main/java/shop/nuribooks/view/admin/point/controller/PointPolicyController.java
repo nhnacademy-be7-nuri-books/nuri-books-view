@@ -1,7 +1,5 @@
 package shop.nuribooks.view.admin.point.controller;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -36,7 +34,7 @@ public class PointPolicyController {
 		Page<PointPolicyResponse> policies = this.pointPolicyService.getPointPolicies(pageable);
 		model.addAttribute("pages", policies);
 		model.addAttribute("policyTypes", PolicyType.values());
-		return "admin/point_policy";
+		return "admin/point-policy/point_policy";
 	}
 
 	@PostMapping
