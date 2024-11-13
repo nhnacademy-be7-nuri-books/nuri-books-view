@@ -1,5 +1,7 @@
 package shop.nuribooks.view.book.feign;
 
+import java.util.List;
+
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.validation.Valid;
+import shop.nuribooks.view.admin.category.dto.CategoryResponse;
 import shop.nuribooks.view.book.dto.AladinBookRegisterRequest;
 import shop.nuribooks.view.book.dto.BookContributorsResponse;
 import shop.nuribooks.view.book.dto.BookResponse;
@@ -27,13 +30,17 @@ public interface BookServiceClient {
 	@GetMapping("/api/books/{book-id}")
 	BookResponse getBookById(@PathVariable(name = "book-id") Long bookId);
 
+	@GetMapping("/api/categories")
+	List<CategoryResponse> getAllCategories();
+
 	// 알라딘 API 도서 등록
 	@PostMapping("/api/books/register/aladin")
 	ResponseEntity<ResponseMessage> registerAladinBook(@Valid @RequestBody AladinBookRegisterRequest registerRequest);
 
 	// 직접 도서 등록
 	@PostMapping("/api/books/register/personal")
-	ResponseEntity<ResponseMessage> registerPersonallyBook(@Valid @RequestBody PersonallyBookRegisterRequest registerRequest);
+	ResponseEntity<ResponseMessage> registerPersonallyBook(
+		@Valid @RequestBody PersonallyBookRegisterRequest registerRequest);
 
 	@GetMapping("/api/books/category/{category-id}")
 	PagedResponse<BookContributorsResponse> getBooksByCategoryId(@PathVariable(name = "category-id") Long categoryId,
