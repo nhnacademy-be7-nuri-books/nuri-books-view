@@ -26,12 +26,10 @@
                         <td class="text-center" th:text="${policy.id}">ID</td>
                         <td class="text-center" th:text="${policy.name}">정책 이름</td>
                         <td class="text-center" th:text="${policy.policyType.toKorName()}">정책 유형</td>
-                        <td class="text-center" th:text="${policy.amount}">정책 할당량</td>
+                        <td class="text-center" th:text="${policy.amount.intValue() + ' ' + (policy.policyType.toString().equals('RATED') ? '%' : '₩')}">정책 할당량</td>
                         <td class="text-end">
                             <!-- 수정 버튼 (수정 모달 트리거) -->
                             <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#updatePolicyModal"
-                                    th:data-id="${policy.id}" th:data-name="${policy.name}"
                                     th:onclick="'openModal(\'update-modal\', '+ ${policy.id} +')'">
                                 <i class="fas fa-edit me-2"></i>수정
                             </button>

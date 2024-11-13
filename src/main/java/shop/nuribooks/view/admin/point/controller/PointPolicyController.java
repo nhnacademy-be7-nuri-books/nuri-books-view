@@ -1,5 +1,8 @@
 package shop.nuribooks.view.admin.point.controller;
 
+import java.math.BigDecimal;
+import java.security.Policy;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -39,12 +42,18 @@ public class PointPolicyController {
 
 	@PostMapping
 	public ResponseEntity<ResponseMessage> registerPointPolicy(@Valid @ModelAttribute PointPolicyRequest pointPolicyRequest){
+		if(pointPolicyRequest.amount().compareTo(BigDecimal.valueOf(100)) > 0 && pointPolicyRequest.policyType().equals(PolicyType.RATED)){
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(HttpStatus.BAD_REQUEST.value(),"100%를 넘을 수 없습니다."));
+		}
 		ResponseMessage message = this.pointPolicyService.registerPointPolicy(pointPolicyRequest);
 		return ResponseEntity.status(HttpStatus.CREATED).body(message);
 	}
 
 	@PutMapping("/{point-policy-id}")
 	public ResponseEntity<ResponseMessage> updatePointPolicy(@PathVariable("point-policy-id") long id, @Valid @ModelAttribute PointPolicyRequest pointPolicyRequest){
+		if(pointPolicyRequest.amount().compareTo(BigDecimal.valueOf(100)) > 0 && pointPolicyRequest.policyType().equals(PolicyType.RATED)){
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(HttpStatus.BAD_REQUEST.value(),"100%를 넘을 수 없습니다."));
+		}
 		ResponseMessage message = this.pointPolicyService.updatePointPolicy(id, pointPolicyRequest);
 		return ResponseEntity.status(HttpStatus.OK ).body(message);
 	}

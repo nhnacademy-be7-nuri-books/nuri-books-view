@@ -7,11 +7,13 @@
             })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error(
-                            response.statusText, "삭제 실패");
+                        response.json().then(data => {
+                            showMessage("삭제 실패 \n"+ data.message)
+                        });
+                    }else{
+                        refreshList();
+                        showMessage();
                     }
-                    refreshList();
-                    showMessage();
                 })
                 .catch(error => {
                     showMessage(error);

@@ -15,7 +15,7 @@
             else{
                 message = document.getElementById("errorMessage");
                 toastElement = document.getElementById("errorToast");
-                message.textContent = '요청이 실패되었습니다. ' + error;
+                message.textContent = error;
             }
             toast = new bootstrap.Toast(toastElement);
 

@@ -11,16 +11,32 @@
             })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error(response.status, "등록 실패");
+                        response?.json().then(data => {
+                            showMessage("등록 실패 \n"+ data.message)
+                        });
+                    }else{
+                        refreshList();
+                        showMessage();
                     }
-                    refreshList();
-                    showMessage();
                 })
                 .catch(error => {
                     showMessage(error);
                 });
             form.reset();
             $('#register-modal').modal('hide');
+        }
+
+        function setMaxAmount() {
+            const policyType = document.getElementById("policyType").value;
+            const amountInput = document.getElementById("amount");
+
+            if (policyType === 'RATED') { // Adjust according to actual value for Type 1
+                amountInput.setAttribute("max", "100");
+                amountInput.value = 0;
+            } else {
+                amountInput.removeAttribute("max");
+                amountInput.value = 0;
+            }
         }
     </script>
 
@@ -48,12 +64,22 @@
                                 <label for="name" class="form-label">정책 이름</label>
                                 <input type="text" class="form-control" id="name" name="name" required placeholder="포인트 정책 이름">
                                 <label for="policyType" class="form-label">정책 타입</label>
-                                <select id="policyType" name="policyType" class="form-select">
+                                <select id="policyType" name="policyType" class="form-select" onchange="setMaxAmount()">
                                     <option th:each="policyType : ${policyTypes}" th:value="${policyType}"
                                             th:text="${policyType.toKorName()}"></option>
                                 </select>
                                 <label for="amount" class="form-label">포인트 정책 값</label>
-                                <input type="text" class="form-control" id="amount" name="amount" required placeholder="포인트 정책 값">
+                                <input type="number" min="0" class="form-control" id="amount" name="amount" required placeholder="포인트 정책 값">
+                                <script>
+                                    document.getElementById('amount').addEventListener('input', function() {
+                                        const maxAmount = this.getAttribute('max');
+                                        console.log(this.value)
+                                        if (maxAmount && this.value > Number(maxAmount)) {
+                                            this.value = maxAmount;
+                                        }
+                                    });
+
+                                </script>
                             </div>
                             <div class="text-center">
                                 <button type="button" class="btn btn-primary" onclick="submitHandler('/admin/point-policy')">등록</button>
