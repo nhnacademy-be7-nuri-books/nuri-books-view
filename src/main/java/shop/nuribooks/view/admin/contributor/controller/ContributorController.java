@@ -2,6 +2,9 @@ package shop.nuribooks.view.admin.contributor.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,9 +27,9 @@ public class ContributorController {
 	private final ContributorService contributorService;
 
 	@GetMapping
-	public String showContributorList(Model model) {
-		List<ContributorResponse> contributors = contributorService.getAllContributors();
-		model.addAttribute("contributors", contributors);
+	public String showContributorList(@PageableDefault Pageable pageable, Model model) {
+		Page<ContributorResponse> contributors = contributorService.getAllContributors(pageable);
+		model.addAttribute("pages", contributors);
 		return "admin/contributor/contributor-list";
 	}
 

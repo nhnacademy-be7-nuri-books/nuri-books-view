@@ -3,6 +3,7 @@ package shop.nuribooks.view.member.controller;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import shop.nuribooks.view.auth.service.AuthService;
 import shop.nuribooks.view.common.util.CookieUtil;
 import shop.nuribooks.view.member.dto.request.MemberRegisterRequest;
@@ -41,6 +43,7 @@ public class MemberController {
 
 	private final MemberService memberService;
 	private final AuthService authService;
+
 
 	@Value("${error.message-key}")
 	private String errorMessageKey;
@@ -253,6 +256,4 @@ public class MemberController {
 			log.info("로그아웃 실패");
 			return "redirect:/";
 		}
-
-	}
 }

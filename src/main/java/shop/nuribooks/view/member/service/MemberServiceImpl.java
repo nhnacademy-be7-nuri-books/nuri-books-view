@@ -89,5 +89,4 @@ public class MemberServiceImpl implements MemberService {
 
 		return memberServiceClient.memberWithdraw().getBody();
 	}
-
 }

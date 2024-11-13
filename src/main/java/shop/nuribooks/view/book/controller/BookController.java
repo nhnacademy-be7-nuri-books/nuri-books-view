@@ -9,11 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import shop.nuribooks.view.admin.category.dto.CategoryRequest;
 import shop.nuribooks.view.admin.category.service.AdminCategoryService;
-import shop.nuribooks.view.book.dto.AdminBookListResponse;
 import shop.nuribooks.view.book.dto.BookContributorsResponse;
 import shop.nuribooks.view.book.dto.BookResponse;
 import shop.nuribooks.view.book.service.BookService;
@@ -28,7 +26,7 @@ public class BookController {
 	private final ReviewService reviewService;
 	private final AdminCategoryService adminCategoryService;
 
-	@GetMapping({"/view/books", "/admin/view/books"})
+	@GetMapping("/view/books")
 	public String getBooks(@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "10") int size,
 		Model model) {
