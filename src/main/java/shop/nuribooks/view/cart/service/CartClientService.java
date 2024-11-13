@@ -1,15 +1,15 @@
 package shop.nuribooks.view.cart.service;
 
 import java.util.List;
-import shop.nuribooks.view.cart.dto.request.CartAddRequest;
-import shop.nuribooks.view.cart.dto.request.CartAddRequestToServer;
-import shop.nuribooks.view.cart.dto.response.CartResponse;
+
+import shop.nuribooks.view.cart.dto.request.CartRequestToServer;
+import shop.nuribooks.view.cart.dto.response.CartBookResponse;
 
 public interface CartClientService {
 
-    void addCart(CartAddRequestToServer request);
+    void addCart(CartRequestToServer request);
 
-    List<CartResponse> getCart(String cartId);
+    List<CartBookResponse> getCart(String cartId);
 
     void loadCartToRedis(String userId);
 }
