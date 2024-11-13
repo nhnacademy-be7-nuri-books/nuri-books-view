@@ -11,17 +11,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import feign.FeignException;
-import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.common.decoder.JwtDecoder;
 import shop.nuribooks.view.common.feign.ReissueServiceClient;
 import shop.nuribooks.view.common.util.CookieUtil;
@@ -35,7 +34,8 @@ import shop.nuribooks.view.common.util.ExceptionUtil;
 @Component
 @WebFilter(urlPatterns = "/**")
 @RequiredArgsConstructor
-public class TokenReissueFilter implements Filter {
+@Slf4j
+public class TokenReissueFilter extends OncePerRequestFilter {
 
 	private final ReissueServiceClient reissueServiceClient;
 
@@ -43,20 +43,18 @@ public class TokenReissueFilter implements Filter {
 	private String refreshHeaderName;
 
 	@Override
-	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
-		throws IOException, ServletException {
-
-		HttpServletRequest request = (HttpServletRequest)req;
-		HttpServletResponse response = (HttpServletResponse)resp;
-
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+		FilterChain filterChain) throws ServletException, IOException {
 		String prevAccessToken = CookieUtil.findByCookieKey(request, HttpHeaders.AUTHORIZATION);
 		String prevRefreshToken = CookieUtil.findByCookieKey(request, refreshHeaderName);
 
+
 		if (Objects.nonNull(prevRefreshToken)) {
-			if (Objects.isNull(prevAccessToken) || JwtDecoder.isExpired(prevAccessToken) && !JwtDecoder.isExpired(
-				prevRefreshToken)) {
+			if (Objects.isNull(prevAccessToken) || (JwtDecoder.isExpired(prevAccessToken) && !JwtDecoder.isExpired(
+				prevRefreshToken))) {
 
 				try {
+					log.info("필터 타고 간 URL 이다 : {}", request.getRequestURI());
 
 					ResponseEntity<String> reissueResponse = reissueServiceClient.reissue(prevRefreshToken);
 					HttpHeaders headers = reissueResponse.getHeaders();
@@ -72,13 +70,19 @@ public class TokenReissueFilter implements Filter {
 					handleCookies(cookies, response);
 					CookieUtil.addCookie(response, HttpHeaders.AUTHORIZATION, accessToken);
 				} catch (FeignException e) {
-					ExceptionUtil.handleFeignException(e);
-					response.sendRedirect("/error");
+					logout(response);
+					response.sendRedirect("/login");
+					return;
 				}
 			}
 		}
 
-		chain.doFilter(request, response);
+		filterChain.doFilter(request, response);
+	}
+
+	private void logout(HttpServletResponse response) {
+		CookieUtil.deleteCookie(response, "Authorization");
+		CookieUtil.deleteCookie(response, "Refresh");
 	}
 
 	private void handleCookies(List<String> cookies, HttpServletResponse response) {
