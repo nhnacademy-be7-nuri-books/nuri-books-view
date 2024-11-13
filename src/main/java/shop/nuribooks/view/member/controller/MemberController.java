@@ -1,6 +1,7 @@
 package shop.nuribooks.view.member.controller;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,9 +12,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import shop.nuribooks.view.auth.service.AuthService;
+import shop.nuribooks.view.common.util.CookieUtil;
 import shop.nuribooks.view.member.dto.request.MemberRegisterRequest;
 import shop.nuribooks.view.member.dto.request.MemberUpdateRequest;
 import shop.nuribooks.view.member.dto.response.MemberDetailsResponse;
@@ -34,12 +38,16 @@ import shop.nuribooks.view.member.service.MemberService;
 public class MemberController {
 
 	private final MemberService memberService;
+	private final AuthService authService;
 
 	@Value("${error.message-key}")
 	private String errorMessageKey;
 
 	@Value("${success.message-key}")
 	private String successMessageKey;
+
+	@Value("${header.refresh-key-name}")
+	private String refreshHeaderName;
 
 	/**
 	 * 회원가입 GET
@@ -226,10 +234,23 @@ public class MemberController {
 		@ApiResponse(responseCode = "500", description = "서버 오류 : 회원 탈퇴 실패")
 	})
 	@PostMapping("/myGoodbye")
-	public String memberWithdraw() {
+	public String memberWithdraw(HttpServletResponse response, RedirectAttributes redirectAttributes) {
 
+		memberService.memberWithdraw();
 
+		String result = authService.logout();
 
-		return "redirect:/";
+		if (result.equals(successMessageKey)) {
+			CookieUtil.deleteCookie(response, HttpHeaders.AUTHORIZATION);
+			CookieUtil.deleteCookie(response, refreshHeaderName);
+			redirectAttributes.addFlashAttribute(successMessageKey, "로그아웃에 성공하였습니다.");
+			log.info("로그아웃 성공");
+			return "redirect:/";
+		} else {
+			redirectAttributes.addFlashAttribute(errorMessageKey, "로그아웃 실패: " + result);
+			log.info("로그아웃 실패");
+			return "redirect:/";
+		}
+
 	}
 }
