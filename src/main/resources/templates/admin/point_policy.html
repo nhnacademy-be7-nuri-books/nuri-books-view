@@ -1,7 +1,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{admin/layout/adminlayout}">
 <body>
 <div layout:fragment="content">
-    <script>
+    <script th:inline="javascript">
         let data;
         const showMessage = (error) =>{
             let message;
@@ -41,9 +41,6 @@
                 if (!response.ok) {
                     throw new Error(response.status, "등록 실패");
                 }
-                return response.json();
-            })
-            .then(data => {
                 refreshList();
                 showMessage();
             })
@@ -51,22 +48,39 @@
                 showMessage(error);
             });
             form.reset();
-            $('#register_modal').modal('hide');
+            $('#register-modal').modal('hide');
         }
 
-
         const deleteHandler = (url) => {
-            fetch(url, {
-                method: 'POST',
+            fetch(url + "/" + data, {
+                method: 'DELETE'
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(response.status, "삭제 실패");
+                    }
+                    refreshList();
+                    showMessage();
+                })
+                .catch(error => {
+                    showMessage(error);
+                });
+            $('#delete-modal').modal('hide');
+        }
+
+        const updateHandler = (url) => {
+            const form = document.getElementById('update-form');
+
+            const formData = new FormData(form);
+
+            fetch(url + "/" + data, {
+                method: 'PUT',
                 body: formData
             })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(response.status, "등록 실패");
                     }
-                    return response.json();
-                })
-                .then(data => {
                     refreshList();
                     showMessage();
                 })
@@ -74,14 +88,13 @@
                     showMessage(error);
                 });
             form.reset();
-            $('#register_modal').modal('hide');
+            $('#update-modal').modal('hide');
         }
 
         const openModal = (name, inData) => {
             const modal = document.getElementById(name);
             const bootModal = new bootstrap.Modal(modal);
             data = inData;
-            console.assert(data)
             bootModal.show();
         }
     </script>
@@ -98,7 +111,6 @@
                         <i class="fas fa-plus-circle me-2"></i>새로 만들기
                     </button>
                 </div>
-
 
                 <!-- 포인트 정책 목록 테이블 -->
                 <table class="table table-hover" id="data-table">
@@ -120,16 +132,14 @@
                         <td class="text-end">
                             <!-- 수정 버튼 (수정 모달 트리거) -->
                             <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editPolicyModal"
+                                    data-bs-target="#updatePolicyModal"
                                     th:data-id="${policy.id}" th:data-name="${policy.name}"
-                                    th:onclick="'openEditModal('+${policy.id}+')'">
+                                    th:onclick="'openModal(\'update-modal\', '+ ${policy.id} +')'">
                                 <i class="fas fa-edit me-2"></i>수정
                             </button>
 
-                            <!-- 삭제 버튼 -->
-<!--                            TODO:: 안돼-->
                             <a class="btn btn-outline-secondary btn-sm"
-                               onclick="openModal('deleteModal', [[ ${policy} ]] )">
+                               th:onclick="'openModal(\'delete-modal\', '+ ${policy.id} +')'">
                                 <i class="fas fa-trash-alt me-2"></i>삭제
                             </a>
                         </td>
@@ -146,7 +156,7 @@
     </div>
 
     <!-- 포인트 정책 등록 모달 -->
-    <div class="modal fade" id="register_modal" tabindex="-1" aria-labelledby="policyModalLabel" aria-hidden="true">
+    <div class="modal fade" id="register-modal" tabindex="-1" aria-labelledby="policyModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -169,6 +179,7 @@
                         </div>
                         <div class="text-center">
                             <button type="button" class="btn btn-primary" onclick="submitHandler('/admin/point-policy')">등록</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
                         </div>
                     </form>
                 </div>
@@ -177,7 +188,7 @@
     </div>
 
     <!-- 포인트 정책 삭제 모달 -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
+    <div class="modal fade" id="delete-modal" tabindex="-1" aria-labelledby="deleteModalLabel"
          aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -198,7 +209,7 @@
 
 
     <!-- 포인트 정책 수정 모달 -->
-    <div id="editPolicyModal" class="modal fade" tabindex="-1" aria-labelledby="editPolicyModalLabel"
+    <div id="update-modal" class="modal fade" tabindex="-1" aria-labelledby="editPolicyModalLabel"
          aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -207,13 +218,21 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="edit_policy_form" method="POST">
-                        <input type="hidden" id="edit_policy_id" name="id"/>
+                    <form action="#" method="post" id="update-form">
                         <div class="mb-3">
-                            <label for="edit_name" class="form-label">새로운 포인트 정책 이름</label>
-                            <input type="text" id="edit_name" class="form-control" name="name" required/>
+                            <input type="hidden" value="update" class="form-control" id="update-name" name="name" required placeholder="포인트 정책 이름">
+                            <label for="update-policyType" class="form-label">정책 타입</label>
+                            <select id="update-policyType" name="policyType" class="form-select">
+                                <option th:each="policyType : ${policyTypes}" th:value="${policyType}"
+                                        th:text="${policyType.toKorName()}"></option>
+                            </select>
+                            <label for="update-amount" class="form-label">포인트 정책 값</label>
+                            <input type="text" class="form-control" id="update-amount" name="amount" required placeholder="포인트 정책 값">
                         </div>
-                        <button type="submit" class="btn btn-primary">수정</button>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-primary" onclick="updateHandler('/admin/point-policy')">수정</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
+                        </div>
                     </form>
                 </div>
             </div>

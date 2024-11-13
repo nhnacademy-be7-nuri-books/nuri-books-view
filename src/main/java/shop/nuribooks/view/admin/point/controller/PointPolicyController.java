@@ -9,9 +9,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.validation.Valid;
@@ -40,5 +43,17 @@ public class PointPolicyController {
 	public ResponseEntity<ResponseMessage> registerPointPolicy(@Valid @ModelAttribute PointPolicyRequest pointPolicyRequest){
 		ResponseMessage message = this.pointPolicyService.registerPointPolicy(pointPolicyRequest);
 		return ResponseEntity.status(HttpStatus.CREATED).body(message);
+	}
+
+	@PutMapping("/{point-policy-id}")
+	public ResponseEntity<ResponseMessage> updatePointPolicy(@PathVariable("point-policy-id") long id, @Valid @ModelAttribute PointPolicyRequest pointPolicyRequest){
+		ResponseMessage message = this.pointPolicyService.updatePointPolicy(id, pointPolicyRequest);
+		return ResponseEntity.status(HttpStatus.OK ).body(message);
+	}
+	
+	@DeleteMapping("/{point-policy-id}")
+	public ResponseEntity<ResponseMessage> deletePointPolicy(@PathVariable("point-policy-id") long id){
+		ResponseMessage message = this.pointPolicyService.deletePointPolicy(id);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(message);
 	}
 }
