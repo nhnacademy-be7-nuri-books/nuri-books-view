@@ -1,11 +1,13 @@
 package shop.nuribooks.view.member.controller;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -226,10 +228,9 @@ public class MemberController {
 		@ApiResponse(responseCode = "500", description = "서버 오류 : 회원 탈퇴 실패")
 	})
 	@PostMapping("/myGoodbye")
-	public String memberWithdraw() {
+	public void memberWithdraw() {
 
-
-
-		return "redirect:/";
+		memberService.memberWithdraw();
+		
 	}
 }
