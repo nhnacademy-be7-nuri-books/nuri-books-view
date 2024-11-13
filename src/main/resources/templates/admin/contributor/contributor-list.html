@@ -23,7 +23,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <th:block th:each="contributor : ${contributors}">
+                        <th:block th:each="contributor : ${pages}">
                             <tr>
                                 <td class="text-center" th:text="${contributor.id}"></td>
                                 <td class="text-center" th:text="${contributor.name}"></td>
@@ -46,6 +46,8 @@
                         </th:block>
                         </tbody>
                     </table>
+                    <div th:replace="fragments/page::page(url=${'/admin/contributor'})"></div>
+
                 </div>
             </div>
         </div>

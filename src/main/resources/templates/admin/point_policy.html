@@ -1,0 +1,224 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{admin/layout/adminlayout}">
+<body>
+<div layout:fragment="content">
+    <script>
+        let data;
+        const showMessage = (error) =>{
+            let message;
+            let toastElement;
+            let toast;
+
+            if(error == null) {
+                message = document.getElementById("successMessage");
+                toastElement = document.getElementById("successToast");
+                message.textContent = '요청이 완료되었습니다.';
+            }
+            else{
+                message = document.getElementById("errorMessage");
+                toastElement = document.getElementById("errorToast");
+                message.textContent = '요청이 실패되었습니다. ' + error;
+            }
+            toast = new bootstrap.Toast(toastElement);
+
+            toastElement.style.display = "block";
+            toast.show();
+        }
+
+        const refreshList = () => {
+            $("#data-table").load(window.location.href + " #data-table");
+        }
+
+        const submitHandler = (url) => {
+            const form = document.getElementById('register_form');
+
+            const formData = new FormData(form);
+
+            fetch(url, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.status, "등록 실패");
+                }
+                return response.json();
+            })
+            .then(data => {
+                refreshList();
+                showMessage();
+            })
+            .catch(error => {
+                showMessage(error);
+            });
+            form.reset();
+            $('#register_modal').modal('hide');
+        }
+
+
+        const deleteHandler = (url) => {
+            fetch(url, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(response.status, "등록 실패");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    refreshList();
+                    showMessage();
+                })
+                .catch(error => {
+                    showMessage(error);
+                });
+            form.reset();
+            $('#register_modal').modal('hide');
+        }
+
+        const openModal = (name, inData) => {
+            const modal = document.getElementById(name);
+            const bootModal = new bootstrap.Modal(modal);
+            data = inData;
+            console.assert(data)
+            bootModal.show();
+        }
+    </script>
+
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">포인트 정책 관리</h2>
+            </div>
+            <div class="card-body">
+                <!-- 포인트 정책 등록 버튼 -->
+                <div class="text-end mb-4">
+                    <button id="openModalBtn" class="btn btn-outline-secondary btn-sm" onclick="openModal('register_modal')">
+                        <i class="fas fa-plus-circle me-2"></i>새로 만들기
+                    </button>
+                </div>
+
+
+                <!-- 포인트 정책 목록 테이블 -->
+                <table class="table table-hover" id="data-table">
+                    <thead class="table-light">
+                    <tr>
+                        <th class="text-center">ID</th>
+                        <th class="text-center">정책 이름</th>
+                        <th class="text-center">정책 유형</th>
+                        <th class="text-center">정책 할당량</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="policy : ${pages.content}">
+                        <td class="text-center" th:text="${policy.id}">ID</td>
+                        <td class="text-center" th:text="${policy.name}">정책 이름</td>
+                        <td class="text-center" th:text="${policy.policyType.toKorName()}">정책 유형</td>
+                        <td class="text-center" th:text="${policy.amount}">정책 할당량</td>
+                        <td class="text-end">
+                            <!-- 수정 버튼 (수정 모달 트리거) -->
+                            <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#editPolicyModal"
+                                    th:data-id="${policy.id}" th:data-name="${policy.name}"
+                                    th:onclick="'openEditModal('+${policy.id}+')'">
+                                <i class="fas fa-edit me-2"></i>수정
+                            </button>
+
+                            <!-- 삭제 버튼 -->
+<!--                            TODO:: 안돼-->
+                            <a class="btn btn-outline-secondary btn-sm"
+                               onclick="openModal('deleteModal', [[ ${policy} ]] )">
+                                <i class="fas fa-trash-alt me-2"></i>삭제
+                            </a>
+                        </td>
+                    </tr>
+
+                    <tr th:if="${#lists.isEmpty(pages.content)}">
+                        <td colspan="2" class="text-center text-muted">등록된 포인트 정책이 없습니다.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:replace="fragments/page::page(url=${'/admin/point-policy'})"></div>
+        </div>
+    </div>
+
+    <!-- 포인트 정책 등록 모달 -->
+    <div class="modal fade" id="register_modal" tabindex="-1" aria-labelledby="policyModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="policyModalLabel">포인트 정책 등록</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- 포인트 정책 등록 폼 -->
+                    <form action="#" method="post" id="register_form">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">정책 이름</label>
+                            <input type="text" class="form-control" id="name" name="name" required placeholder="포인트 정책 이름">
+                            <label for="policyType" class="form-label">정책 타입</label>
+                            <select id="policyType" name="policyType" class="form-select">
+                                <option th:each="policyType : ${policyTypes}" th:value="${policyType}"
+                                        th:text="${policyType.toKorName()}"></option>
+                            </select>
+                            <label for="amount" class="form-label">포인트 정책 값</label>
+                            <input type="text" class="form-control" id="amount" name="amount" required placeholder="포인트 정책 값">
+                        </div>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-primary" onclick="submitHandler('/admin/point-policy')">등록</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 포인트 정책 삭제 모달 -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">삭제</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>정말 삭제하시겠습니까?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="confirmDelete" onclick="deleteHandler('/admin/point-policy')">예</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 포인트 정책 수정 모달 -->
+    <div id="editPolicyModal" class="modal fade" tabindex="-1" aria-labelledby="editPolicyModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editPolicyModalLabel">포인트 정책 수정</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit_policy_form" method="POST">
+                        <input type="hidden" id="edit_policy_id" name="id"/>
+                        <div class="mb-3">
+                            <label for="edit_name" class="form-label">새로운 포인트 정책 이름</label>
+                            <input type="text" id="edit_name" class="form-control" name="name" required/>
+                        </div>
+                        <button type="submit" class="btn btn-primary">수정</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
