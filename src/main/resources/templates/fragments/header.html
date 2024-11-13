@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="header">
     <header class="row">
         <!-- Top Nav -->
@@ -24,9 +24,9 @@
                             <a th:href="@{/login}"><i class="fas fa-sign-in-alt me-2"></i>Login</a>
                         </li>
                         <li class="nav-item" th:if="${isLoggedIn}">
-                            <form th:action="@{/logout}" method="post" style="display:inline;">
-                                <button type="submit" class="nav-link text-white"
-                                        style="border: none; background: none; padding: 0;">
+                            <form method="post" style="display:inline;" th:action="@{/logout}">
+                                <button class="nav-link text-white" style="border: none; background: none; padding: 0;"
+                                        type="submit">
                                     <i class="fas fa-sign-out-alt me-2"></i> Logout
                                 </button>
                             </form>
@@ -50,19 +50,19 @@
                     <form action="#">
                         <div class="form-group">
                             <div class="input-group">
-                                <input type="search" class="form-control border-dark" placeholder="Search..."
-                                       required>
+                                <input class="form-control border-dark" placeholder="Search..." required
+                                       type="search">
                                 <button class="btn btn-outline-dark"><i class="fas fa-search"></i></button>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="col-lg-auto text-center text-lg-left header-item-holder">
-                    <a href="#" class="header-item">
+                    <a class="header-item" href="#">
                         <i class="fas fa-heart me-2"></i><span id="header-favorite">0</span>
                     </a>
-                    <a href="cart.html" class="header-item">
-                        <i class="fas fa-shopping-bag me-2"></i><span id="header-qty" class="me-3">2</span>
+                    <a class="header-item" href="cart.html">
+                        <i class="fas fa-shopping-bag me-2"></i><span class="me-3" id="header-qty">2</span>
                         <!--<i class="fas fa-money-bill-wave me-2"></i><span id="header-price">$4,000</span>-->
                     </a>
                 </div>
@@ -100,9 +100,9 @@
                         <nav class="navbar navbar-light bg-white">
                             <ul class="navbar-nav mt-2 mt-lg-0">
                                 <li class="nav-item d-flex align-items-center">
-                                    <span class="navbar-toggler-icon" style="cursor: pointer;"
-                                          onclick="toggleMenu()"></span>
-                                    <a class="nav-link" href="category.html"> 전체 카테고리</a>
+                                    <span class="navbar-toggler-icon" onclick="toggleMenu()"
+                                          style="cursor: pointer;"></span>
+                                    <a class="nav-link" href="/view/categories"> 전체 카테고리</a>
                                 </li>
                             </ul>
                         </nav>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layouts/layout1}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>카테고리 탐색</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <ul>
+        <li th:each="category : ${categories}">
+            <a th:href="@{/view/books/categories/{categoryId}(categoryId=${category.id})}"
+               th:text="${category.name}"></a>
+            <ul th:if="${category.subCategories != null}">
+                <li th:each="sub1 : ${category.subCategories}">
+                    <a th:href="@{/view/books/categories/{categoryId}(categoryId=${sub1.id})}"
+                       th:text="${sub1.name}"></a>
+                    <ul th:if="${sub1.subCategories != null}">
+                        <li th:each="sub2 : ${sub1.subCategories}">
+                            <a th:href="@{/view/books/categories/{categoryId}(categoryId=${sub2.id})}"
+                               th:text="${sub2.name}"></a>
+                            <ul th:if="${sub2.subCategories != null}">
+                                <li th:each="sub3 : ${sub2.subCategories}">
+                                    <a th:href="@{/view/books/categories/{categoryId}(categoryId=${sub3.id})}"
+                                       th:text="${sub3.name}"></a>
+                                    <ul th:if="${sub3.subCategories != null}">
+                                        <li th:each="sub4 : ${sub3.subCategories}">
+                                            <a th:href="@{/view/books/categories/{categoryId}(categoryId=${sub4.id})}"
+                                               th:text="${sub4.name}"></a>
+                                            <!-- 여기까지 5단계 -->
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
