@@ -74,6 +74,7 @@ public class CartController {
                     String userId = JwtDecoder.getUserId(cookie.getValue());
                     List<CartResponse> cart = cartClientService.getCart(userId);
                     model.addAttribute("cartResponseList", cart);
+
                     return "cart";
                 }
                 // 비회원인데 카트가 이미 있는 경우

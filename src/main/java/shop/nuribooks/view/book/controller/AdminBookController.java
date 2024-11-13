@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -24,6 +26,8 @@ import shop.nuribooks.view.admin.tag.service.TagService;
 import shop.nuribooks.view.book.dto.AladinBookListItemResponse;
 import shop.nuribooks.view.book.dto.AladinBookRegisterRequest;
 import shop.nuribooks.view.book.dto.BookContributorsResponse;
+import shop.nuribooks.view.book.dto.BookResponse;
+import shop.nuribooks.view.book.dto.BookUpdateRequest;
 import shop.nuribooks.view.book.dto.PersonallyBookRegisterRequest;
 import shop.nuribooks.view.book.service.AladinBookService;
 import shop.nuribooks.view.book.service.BookService;
@@ -140,6 +144,29 @@ public class AdminBookController {
 		return "book/bookList";
 	}
 
+	@GetMapping("/book/update-form/{book-id}")
+	public String showBookUpdatePage(@PathVariable(name = "book-id") Long bookId, Model model) {
+		BookResponse book = bookService.getBookById(bookId);
+		prepareBookUpdateForm(book, model);
+		return "book/bookUpdate";
+	}
+
+	@PutMapping("/book/{book-id}")
+	public String updateBook(
+		@PathVariable(name = "book-id") Long bookId,
+		@ModelAttribute BookUpdateRequest bookUpdateRequest,
+		RedirectAttributes redirectAttributes) {
+		try {
+			bookService.updateBook(bookId, bookUpdateRequest);
+			redirectAttributes.addFlashAttribute("successMessage", "도서 수정 성공");
+			return "redirect:/admin/view/books";
+		} catch (Exception ex) {
+			redirectAttributes.addFlashAttribute("errorMessage", "도서 수정 실패");
+
+			return "redirect:/admin/view/book/update-form/" + bookId;
+		}
+	}
+
 	@DeleteMapping("/book/{book-id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteBook(@PathVariable(name = "book-id") Long bookId) {
@@ -153,6 +180,15 @@ public class AdminBookController {
 	 * @param model 모델 객체
 	 */
 	private void prepareBookRegisterForm(AladinBookListItemResponse book, Model model) {
+		List<CategoryTreeResponse> categories = adminCategoryService.getAllCategoryTree();
+		List<TagResponse> tags = tagService.getAllTags();
+
+		model.addAttribute("book", book);
+		model.addAttribute("categories", categories);
+		model.addAttribute("tags", tags);
+	}
+
+	private void prepareBookUpdateForm(BookResponse book, Model model) {
 		List<CategoryTreeResponse> categories = adminCategoryService.getAllCategoryTree();
 		List<TagResponse> tags = tagService.getAllTags();
 
