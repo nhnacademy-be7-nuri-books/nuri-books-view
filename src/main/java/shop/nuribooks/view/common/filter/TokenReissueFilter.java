@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import feign.FeignException;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -24,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import shop.nuribooks.view.common.decoder.JwtDecoder;
 import shop.nuribooks.view.common.feign.ReissueServiceClient;
 import shop.nuribooks.view.common.util.CookieUtil;
+import shop.nuribooks.view.common.util.ExceptionUtil;
 
 /**
  * 토큰 재발행 검사 로직
@@ -39,7 +41,7 @@ public class TokenReissueFilter implements Filter {
 
 	@Value("${header.refresh-key-name}")
 	private String refreshHeaderName;
-	
+
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
 		throws IOException, ServletException {
@@ -53,19 +55,25 @@ public class TokenReissueFilter implements Filter {
 		if (Objects.nonNull(prevRefreshToken)) {
 			if (Objects.isNull(prevAccessToken) || JwtDecoder.isExpired(prevAccessToken) && !JwtDecoder.isExpired(
 				prevRefreshToken)) {
-				ResponseEntity<String> reissueResponse = reissueServiceClient.reissue();
-				HttpHeaders headers = reissueResponse.getHeaders();
 
-				String accessToken = headers.getFirst(HttpHeaders.AUTHORIZATION);
+				try {
+					ResponseEntity<String> reissueResponse = reissueServiceClient.reissue();
+					HttpHeaders headers = reissueResponse.getHeaders();
 
-				Map<String, List<String>> responseMap = new HashMap<>();
-				Optional.ofNullable(headers.get(HttpHeaders.SET_COOKIE))
-					.filter(list -> !list.isEmpty())
-					.ifPresent(setCookieHeaders -> responseMap.put(HttpHeaders.SET_COOKIE, setCookieHeaders));
+					String accessToken = headers.getFirst(HttpHeaders.AUTHORIZATION);
 
-				List<String> cookies = responseMap.get(HttpHeaders.SET_COOKIE);
-				handleCookies(cookies, response);
-				CookieUtil.addCookie(response, HttpHeaders.AUTHORIZATION, accessToken);
+					Map<String, List<String>> responseMap = new HashMap<>();
+					Optional.ofNullable(headers.get(HttpHeaders.SET_COOKIE))
+						.filter(list -> !list.isEmpty())
+						.ifPresent(setCookieHeaders -> responseMap.put(HttpHeaders.SET_COOKIE, setCookieHeaders));
+
+					List<String> cookies = responseMap.get(HttpHeaders.SET_COOKIE);
+					handleCookies(cookies, response);
+					CookieUtil.addCookie(response, HttpHeaders.AUTHORIZATION, accessToken);
+				} catch (FeignException e) {
+					ExceptionUtil.handleFeignException(e);
+					response.sendRedirect("/error");
+				}
 			}
 		}
 
