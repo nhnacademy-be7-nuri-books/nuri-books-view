@@ -39,4 +39,9 @@ public class CartClientServiceImpl implements CartClientService{
             log.debug("변환할 수 없습니다.");
 		}
     }
+
+    @Override
+    public void removeCartItem(String cartId, Long bookId) {
+        cartClient.removeCartItem(cartId, bookId);
+    }
 }

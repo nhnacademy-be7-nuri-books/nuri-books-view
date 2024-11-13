@@ -12,4 +12,6 @@ public interface CartClientService {
     List<CartBookResponse> getCart(String cartId);
 
     void loadCartToRedis(String userId);
+
+    void removeCartItem(String cartId, Long bookId);
 }

@@ -41,6 +41,7 @@
                                             <th>할인률</th>
                                             <th>할인가</th>
                                             <th>합계</th>
+                                            <th>삭제</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -54,7 +55,7 @@
                                                     ? cartBookResponse.price + '원' : '가격 정보 없음'}"></span>
                                                 </td>
                                                 <td>
-                                                    <form th:action="@{/api/updateQuantity}" method="post">
+                                                    <form th:action="@{/api/cart/updateQuantity}" method="post">
                                                         <input type="number" min="1" th:value="${cartBookResponse.quantity != null ? cartBookResponse.quantity : 1}"
                                                                th:name="quantity" th:id="quantity"/>
                                                         <input type="hidden" th:name="bookId" th:value="${cartBookResponse.bookId}" />
@@ -71,6 +72,10 @@
                                                 <td>
                                                     <span th:text="${cartBookResponse != null && cartBookResponse.totalPrice != null
                                                     ? cartBookResponse.totalPrice + '원' : '가격 정보 없음'}"></span>
+                                                </td>
+                                                <td>
+                                                    <button th:if="${cartBookResponse != null}" th:attr="data-book-id=${cartBookResponse.bookId}"
+                                                            onclick="deleteBookFromCart(this)">삭제</button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -100,6 +105,20 @@
             <!-- Main Content -->
         </div>
     </div>
+    <script>
+        function deleteBookFromCart(button) {
+            const bookId = button.getAttribute("data-book-id");
+
+            if (!bookId) {
+                alert("책 ID를 찾을 수 없습니다.");
+                return;
+            }
+            fetch(`/api/cart/book/${bookId}`, {
+                method: 'DELETE'
+            })
+        }
+    </script>
 </div>
+
 </body>
 </html>

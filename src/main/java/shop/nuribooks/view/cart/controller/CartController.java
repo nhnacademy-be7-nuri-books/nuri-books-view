@@ -13,10 +13,13 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -47,34 +50,22 @@ public class CartController {
 		HttpServletResponse response, RedirectAttributes redirectAttributes) {
 
 		String cartId;
-		Optional<String> memberId = Optional.empty();
-		Optional<String> customerId = Optional.empty();
-		Cookie[] cookies = request.getCookies();
-		if (cookies != null) {
-			for (Cookie cookie : cookies) {
-				if (cookie.getName().equals(HttpHeaders.AUTHORIZATION)) {
-					memberId = Optional.of(JwtDecoder.getUserId(cookie.getValue()));
-				}
-				if (cookie.getName().equals(CART_COOKIE_ID)) {
-					customerId = Optional.of(cookie.getValue());
-				}
-			}
+		CartIdentifiers cartIdentifiers = getCartIdentifiers(request);
+		if (cartIdentifiers.memberId.isPresent()) {
+			cartId = cartIdentifiers.memberId.get();
 		}
-		if (memberId.isPresent()) {
-			cartId = memberId.get();
-		}
-		else if (customerId.isPresent()) {
-			cartId = customerId.get();
+		else if (cartIdentifiers.customerId.isPresent()) {
+			cartId = cartIdentifiers.customerId.get();
 		} else {
-			cartId = UUID.randomUUID().toString();
+			cartId = UUID.randomUUID() .toString();
 			Cookie cookie = new Cookie("cart-id", cartId);
 			cookie.setPath("/");
 			cookie.setMaxAge(3600);
 			response.addCookie(cookie);
 		}
-		CartRequestToServer cartAddRequestToServer = new CartRequestToServer(cartId,
+		CartRequestToServer cartRequestToServer = new CartRequestToServer(cartId,
 			cartAddRequest.bookId(), cartAddRequest.quantity());
-		cartClientService.addCart(cartAddRequestToServer);
+		cartClientService.addCart(cartRequestToServer);
 		redirectAttributes.addFlashAttribute(successMessageKey, "상품이 장바구니에 담겼습니다.");
 		return "redirect:/view/book/details/" + cartAddRequest.bookId();
 	}
@@ -82,6 +73,64 @@ public class CartController {
 	@GetMapping("/api/cart")
 	public String getCart(HttpServletRequest request, Model model) {
 		String cartId;
+		CartIdentifiers cartIdentifiers = getCartIdentifiers(request);
+		if (cartIdentifiers.memberId.isPresent()) {
+			cartId = cartIdentifiers.memberId.get();
+		}
+		else if (cartIdentifiers.customerId.isPresent()) {
+			cartId = cartIdentifiers.customerId.get();
+		} else {
+			return "cart";
+		}
+		List<CartBookResponse> cart = cartClientService.getCart(cartId);
+		BigDecimal totalPrice = getTotalPrice(cart);
+		model.addAttribute("cartBookResponseList", cart);
+		model.addAttribute("totalPrice", totalPrice);
+		return "cart";
+	}
+
+	@PostMapping("/api/cart/updateQuantity")
+	public String updateCart(@ModelAttribute CartUpdateRequest cartUpdateRequest, HttpServletRequest request,
+		HttpServletResponse response, RedirectAttributes redirectAttributes) {
+
+		String cartId;
+		CartIdentifiers cartIdentifiers = getCartIdentifiers(request);
+		if (cartIdentifiers.memberId.isPresent()) {
+			cartId = cartIdentifiers.memberId.get();
+		}
+		else if (cartIdentifiers.customerId.isPresent()) {
+			cartId = cartIdentifiers.customerId.get();
+		} else {
+			return "cart";
+		}
+		CartRequestToServer cartRequestToServer = new CartRequestToServer(cartId,
+			cartUpdateRequest.bookId(), cartUpdateRequest.quantity());
+		cartClientService.addCart(cartRequestToServer);
+		redirectAttributes.addFlashAttribute(successMessageKey, "수량이 변경되었습니다");
+		return "redirect:/api/cart";
+	}
+
+	@DeleteMapping("/api/cart/book/{book-id}")
+	public String removeCartItem(@PathVariable("book-id") Long bookId, HttpServletRequest request) {
+
+		String cartId;
+		CartIdentifiers cartIdentifiers = getCartIdentifiers(request);
+		if (cartIdentifiers.memberId.isPresent()) {
+			cartId = cartIdentifiers.memberId.get();
+		}
+		else if (cartIdentifiers.customerId.isPresent()) {
+			cartId = cartIdentifiers.customerId.get();
+		} else {
+			return "cart";
+		}
+		cartClientService.removeCartItem(cartId, bookId);
+		return "redirect:/api/cart";
+	}
+
+	private record CartIdentifiers(Optional<String> memberId, Optional<String> customerId) {
+	}
+
+	private CartIdentifiers getCartIdentifiers(HttpServletRequest request) {
 		Optional<String> memberId = Optional.empty();
 		Optional<String> customerId = Optional.empty();
 		Cookie[] cookies = request.getCookies();
@@ -97,52 +146,7 @@ public class CartController {
 				}
 			}
 		}
-		if (memberId.isPresent()) {
-			cartId = memberId.get();
-		}
-		else if (customerId.isPresent()) {
-			cartId = customerId.get();
-		} else {
-			return "cart";
-		}
-		List<CartBookResponse> cart = cartClientService.getCart(cartId);
-		BigDecimal totalPrice = getTotalPrice(cart);
-		model.addAttribute("cartBookResponseList", cart);
-		model.addAttribute("totalPrice", totalPrice);
-		return "cart";
-	}
-
-	@PostMapping("/api/updateQuantity")
-	public String updateCart(@ModelAttribute CartUpdateRequest cartUpdateRequest, HttpServletRequest request,
-		HttpServletResponse response, RedirectAttributes redirectAttributes) {
-
-		String cartId;
-		Optional<String> memberId = Optional.empty();
-		Optional<String> customerId = Optional.empty();
-		Cookie[] cookies = request.getCookies();
-		if (cookies != null) {
-			for (Cookie cookie : cookies) {
-				if (cookie.getName().equals(HttpHeaders.AUTHORIZATION)) {
-					memberId = Optional.of(JwtDecoder.getUserId(cookie.getValue()));
-				}
-				if (cookie.getName().equals(CART_COOKIE_ID)) {
-					customerId = Optional.of(cookie.getValue());
-				}
-			}
-		}
-		if (memberId.isPresent()) {
-			cartId = memberId.get();
-		}
-		else if (customerId.isPresent()) {
-			cartId = customerId.get();
-		} else {
-			return "cart";
-		}
-		CartRequestToServer cartRequestToServer = new CartRequestToServer(cartId,
-			cartUpdateRequest.bookId(), cartUpdateRequest.quantity());
-		cartClientService.addCart(cartRequestToServer);
-		redirectAttributes.addFlashAttribute(successMessageKey, "수량이 변경되었습니다");
-		return "redirect:/api/cart";
+		return new CartIdentifiers(memberId, customerId);
 	}
 
 	private static BigDecimal getTotalPrice(List<CartBookResponse> cart) {
