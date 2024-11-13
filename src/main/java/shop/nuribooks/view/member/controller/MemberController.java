@@ -125,18 +125,7 @@ public class MemberController {
 
 		ResponseEntity<MemberDetailsResponse> response = memberServiceClient.getMemberDetails();
 
-		// MemberDetailsResponse response = MemberDetailsResponse.builder()
-		// 	.name("누리")
-		// 	.phoneNumber("042-8282-8282")
-		// 	.email("nuri@nhnacademy.com")
-		// 	.point(BigDecimal.valueOf(10000))
-		// 	.totalPaymentAmount(BigDecimal.valueOf(170000))
-		// 	.gradeName("STANDARD")
-		// 	.pointRate(1)
-		// 	.createdAt(LocalDateTime.now())
-		// 	.build();
-
-		model.addAttribute("member", response);
+		model.addAttribute("member", response.getBody());
 
 		return "member/myDetail";
 	}
@@ -150,12 +139,21 @@ public class MemberController {
 		@ApiResponse(responseCode = "200", description = "회원 정보 수정 페이지 반환 성공")
 	})
 	@GetMapping("/myEdit")
-	public String myEdit() {
+	public String myEdit(Model model) {
+
+		ResponseEntity<MemberDetailsResponse> response = memberServiceClient.getMemberDetails();
+		MemberDetailsResponse member = response.getBody();
+
+		MemberUpdateRequest memberUpdateRequest = MemberUpdateRequest.builder()
+			.name(member.name())
+			.build();
+
+		model.addAttribute("MemberUpdateRequest", memberUpdateRequest);
 		return "member/myEdit";
 	}
 
 	/**
-	 * 회원 정보 수정 페이지 GET
+	 * 회원 정보 수정 진행
 	 */
 	@Operation(summary = "회원 정보 수정", description = "회원 정보를 수정합니다.")
 	@ApiResponses(value = {
@@ -173,8 +171,6 @@ public class MemberController {
 		} else {
 		redirectAttributes.addFlashAttribute("responseMessage", "응답이 없습니다.");
 		}
-
-		redirectAttributes.addFlashAttribute("request", request);
 
 		return "redirect:/myEdit";
 	}

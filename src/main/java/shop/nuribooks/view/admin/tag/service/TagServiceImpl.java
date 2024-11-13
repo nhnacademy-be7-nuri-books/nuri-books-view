@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import shop.nuribooks.view.admin.contributor.dto.ContributorResponse;
 import shop.nuribooks.view.admin.tag.dto.TagRequest;
 import shop.nuribooks.view.admin.tag.dto.TagResponse;
 import shop.nuribooks.view.admin.tag.feign.TagServiceClient;
@@ -43,6 +45,16 @@ public class TagServiceImpl implements TagService {
             return tagServiceClient.getAllTags().getBody();
         } catch (FeignException ex) {
             return Collections.emptyList();
+        }
+    }
+
+    @Override
+    public TagResponse getTag(Long contributorId) {
+        try {
+            return tagServiceClient.getTag(contributorId).getBody();
+        } catch (FeignException ex) {
+            String errorMessage = ExceptionUtil.handleFeignException(ex);
+            return TagResponse.error(errorMessage);
         }
     }
 
