@@ -2,6 +2,9 @@ package shop.nuribooks.view.admin.tag.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,10 +28,17 @@ public class TagController {
 
 	private final TagService tagService;
 
-	@GetMapping
+	@GetMapping("/all")
 	public String showTagList(Model model) {
 		List<TagResponse> tags = tagService.getAllTags();
 		model.addAttribute("tags", tags);
+		return "admin/tag/tag-list";
+	}
+
+	@GetMapping
+	public String showTagList(@PageableDefault Pageable pageable, Model model) {
+		Page<TagResponse> tags = tagService.getAllTags(pageable);
+		model.addAttribute("pages", tags);
 		return "admin/tag/tag-list";
 	}
 
