@@ -3,28 +3,64 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>카테고리 탐색</title>
+    <!-- 스타일 추가 -->
+    <style>
+        .category-menu {
+            list-style-type: none;
+            padding-left: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .category-item {
+            margin: 5px 0;
+        }
+
+        .category-link {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            display: block;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .category-link:hover {
+            background-color: #f0f0f0;
+        }
+
+        .sub-category {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+    </style>
 </head>
 <body>
 <div layout:fragment="content">
-    <ul>
-        <li th:each="category : ${categories}">
-            <a th:href="@{/view/books/categories/{categoryId}(categoryId=${category.id})}"
+    <ul class="category-menu">
+        <li class="category-item" th:each="category : ${categories}">
+            <a class="category-link"
+               th:href="@{/view/books/categories/{categoryId}(categoryId=${category.id})}"
                th:text="${category.name}"></a>
-            <ul th:if="${category.subCategories != null}">
-                <li th:each="sub1 : ${category.subCategories}">
-                    <a th:href="@{/view/books/categories/{categoryId}(categoryId=${sub1.id})}"
+            <ul class="sub-category" th:if="${category.subCategories != null}">
+                <li class="category-item" th:each="sub1 : ${category.subCategories}">
+                    <a class="category-link"
+                       th:href="@{/view/books/categories/{categoryId}(categoryId=${sub1.id})}"
                        th:text="${sub1.name}"></a>
-                    <ul th:if="${sub1.subCategories != null}">
-                        <li th:each="sub2 : ${sub1.subCategories}">
-                            <a th:href="@{/view/books/categories/{categoryId}(categoryId=${sub2.id})}"
+                    <ul class="sub-category" th:if="${sub1.subCategories != null}">
+                        <li class="category-item" th:each="sub2 : ${sub1.subCategories}">
+                            <a class="category-link"
+                               th:href="@{/view/books/categories/{categoryId}(categoryId=${sub2.id})}"
                                th:text="${sub2.name}"></a>
-                            <ul th:if="${sub2.subCategories != null}">
-                                <li th:each="sub3 : ${sub2.subCategories}">
-                                    <a th:href="@{/view/books/categories/{categoryId}(categoryId=${sub3.id})}"
+                            <ul class="sub-category" th:if="${sub2.subCategories != null}">
+                                <li class="category-item" th:each="sub3 : ${sub2.subCategories}">
+                                    <a class="category-link"
+                                       th:href="@{/view/books/categories/{categoryId}(categoryId=${sub3.id})}"
                                        th:text="${sub3.name}"></a>
-                                    <ul th:if="${sub3.subCategories != null}">
-                                        <li th:each="sub4 : ${sub3.subCategories}">
-                                            <a th:href="@{/view/books/categories/{categoryId}(categoryId=${sub4.id})}"
+                                    <ul class="sub-category" th:if="${sub3.subCategories != null}">
+                                        <li class="category-item" th:each="sub4 : ${sub3.subCategories}">
+                                            <a class="category-link"
+                                               th:href="@{/view/books/categories/{categoryId}(categoryId=${sub4.id})}"
                                                th:text="${sub4.name}"></a>
                                             <!-- 여기까지 5단계 -->
                                         </li>
