@@ -12,7 +12,7 @@ import java.util.List;
 
 @FeignClient(name = "tag", url = "http://localhost:8080")
 public interface TagServiceClient {
-    @GetMapping("/api/books/tags")
+    @GetMapping("/api/books/tags/all")
     ResponseEntity<List<TagResponse>> getAllTags();
 
     @PostMapping("/api/books/tags")
