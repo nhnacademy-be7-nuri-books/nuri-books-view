@@ -218,7 +218,10 @@
                 </p>
                 <!-- 관리자 버튼 (isAdmin인 경우에만 표시) -->
                 <div class="book-actions" th:if="${isAdmin}">
-                    <button type="button" class="btn-edit">수정</button>
+                    <a th:href="@{/admin/view/book/update-form/{bookId}(bookId=${bookWithContributors.bookDetails.id})}"
+                       class="btn btn-edit">
+                        수정
+                    </a>
                     <button type="button" class="btn-delete" th:attr="data-book-id=${bookWithContributors.bookDetails.id}" onclick="deleteBook(this)">삭제</button>
                     <script>
                         function deleteBook(button) {
