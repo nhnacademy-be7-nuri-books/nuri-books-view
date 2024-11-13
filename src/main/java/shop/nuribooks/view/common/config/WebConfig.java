@@ -1,6 +1,8 @@
 package shop.nuribooks.view.common.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -15,6 +17,11 @@ import shop.nuribooks.view.common.interceptor.LoginCheckInterceptor;
 public class WebConfig implements WebMvcConfigurer {
 
 	private final LoginCheckInterceptor loginCheckInterceptor;
+
+	@Bean
+	public HiddenHttpMethodFilter hiddenHttpMethodFilter() {
+		return new HiddenHttpMethodFilter();
+	}
 
 	/**
 	 * 생성자

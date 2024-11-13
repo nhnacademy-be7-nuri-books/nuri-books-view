@@ -23,7 +23,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <th:block th:each="publisher : ${publishers}">
+                        <th:block th:each="publisher : ${pages}">
                             <tr>
                                 <td class="text-center" th:text="${publisher.id}"></td>
                                 <td class="text-center" th:text="${publisher.name}"></td>
@@ -46,6 +46,8 @@
                         </th:block>
                         </tbody>
                     </table>
+
+                    <div th:replace="fragments/page::page(url=${'/admin/publisher'})"></div>
                 </div>
             </div>
         </div>

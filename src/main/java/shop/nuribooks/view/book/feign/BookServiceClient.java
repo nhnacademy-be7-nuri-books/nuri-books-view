@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -13,6 +14,7 @@ import jakarta.validation.Valid;
 import shop.nuribooks.view.book.dto.AladinBookRegisterRequest;
 import shop.nuribooks.view.book.dto.BookContributorsResponse;
 import shop.nuribooks.view.book.dto.BookResponse;
+import shop.nuribooks.view.book.dto.BookUpdateRequest;
 import shop.nuribooks.view.book.dto.PersonallyBookRegisterRequest;
 import shop.nuribooks.view.common.dto.PagedResponse;
 import shop.nuribooks.view.common.dto.ResponseMessage;
@@ -36,6 +38,10 @@ public interface BookServiceClient {
 	@GetMapping("/api/books/category/{category-id}")
 	PagedResponse<BookContributorsResponse> getBooksByCategoryId(@PathVariable(name = "category-id") Long categoryId,
 		@RequestParam("page") int page, @RequestParam("size") int size);
+	
+	@PutMapping("/api/books/{book-id}")
+	ResponseEntity<ResponseMessage> updateBook(@PathVariable(name = "book-id") Long bookId,
+		@Valid @RequestBody BookUpdateRequest bookUpdateRequest);
 
 	@DeleteMapping("/api/books/{book-id}")
 	Void deleteBook(@PathVariable(name = "book-id") Long bookId);
