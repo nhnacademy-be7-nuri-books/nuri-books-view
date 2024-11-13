@@ -57,7 +57,8 @@ public class TokenReissueFilter implements Filter {
 				prevRefreshToken)) {
 
 				try {
-					ResponseEntity<String> reissueResponse = reissueServiceClient.reissue();
+
+					ResponseEntity<String> reissueResponse = reissueServiceClient.reissue(prevRefreshToken);
 					HttpHeaders headers = reissueResponse.getHeaders();
 
 					String accessToken = headers.getFirst(HttpHeaders.AUTHORIZATION);
