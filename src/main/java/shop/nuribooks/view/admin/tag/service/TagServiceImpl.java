@@ -3,10 +3,12 @@ package shop.nuribooks.view.admin.tag.service;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import shop.nuribooks.view.admin.contributor.dto.ContributorResponse;
 import shop.nuribooks.view.admin.tag.dto.TagRequest;
 import shop.nuribooks.view.admin.tag.dto.TagResponse;
 import shop.nuribooks.view.admin.tag.feign.TagServiceClient;
@@ -45,6 +47,15 @@ public class TagServiceImpl implements TagService {
             return tagServiceClient.getAllTags().getBody();
         } catch (FeignException ex) {
             return Collections.emptyList();
+        }
+    }
+
+    @Override
+    public Page<TagResponse> getAllTags(Pageable pageable) {
+        try {
+            return tagServiceClient.getAllTags(pageable.getPageNumber(), pageable.getPageSize()).getBody();
+        } catch (FeignException ex) {
+            throw new RuntimeException(ex.getMessage(), ex);
         }
     }
 
