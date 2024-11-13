@@ -29,7 +29,7 @@ public class BookController {
 	private final ReviewService reviewService;
 	private final AdminCategoryService adminCategoryService;
 
-	@GetMapping({"/view/books", "/admin/view/books"})
+	@GetMapping("/view/books")
 	public String getBooks(@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "10") int size,
 		Model model) {

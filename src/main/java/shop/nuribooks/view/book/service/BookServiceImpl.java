@@ -9,6 +9,7 @@ import shop.nuribooks.view.admin.category.dto.CategoryResponse;
 import shop.nuribooks.view.book.dto.AladinBookRegisterRequest;
 import shop.nuribooks.view.book.dto.BookContributorsResponse;
 import shop.nuribooks.view.book.dto.BookResponse;
+import shop.nuribooks.view.book.dto.BookUpdateRequest;
 import shop.nuribooks.view.book.dto.PersonallyBookRegisterRequest;
 import shop.nuribooks.view.book.feign.BookServiceClient;
 import shop.nuribooks.view.common.dto.PagedResponse;
@@ -43,6 +44,11 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public PagedResponse<BookContributorsResponse> getBooksByCategoryId(Long categoryId, int page, int size) {
 		return bookServiceClient.getBooksByCategoryId(categoryId, page, size);
+	}
+
+	@Override
+	public void updateBook(Long bookId, BookUpdateRequest bookUpdateRequest) {
+		bookServiceClient.updateBook(bookId, bookUpdateRequest);
 	}
 
 	@Override
