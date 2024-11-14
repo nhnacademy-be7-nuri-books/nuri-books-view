@@ -22,7 +22,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <th:block th:each="tag : ${tags}">
+                        <th:block th:each="tag : ${pages}">
                             <tr>
                                 <td class="text-center" th:text="${tag.id}"></td>
                                 <td class="text-center" th:text="${tag.name}"></td>
@@ -45,6 +45,9 @@
                         </th:block>
                         </tbody>
                     </table>
+
+                    <div th:replace="fragments/page::page(url=${'/admin/tag'})"></div>
+
                 </div>
             </div>
         </div>
