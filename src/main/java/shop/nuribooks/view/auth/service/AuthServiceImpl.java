@@ -77,9 +77,9 @@ public class AuthServiceImpl implements AuthService {
 
 			// 여기다가 작성
 			String userId = response.getHeaders().getFirst(X_USER_ID);
-			if (Objects.nonNull(userId)) {
-				cartClientService.loadCartToRedis(userId);
-			}
+			// if (Objects.nonNull(userId)) {
+			// 	cartClientService.loadCartToRedis(userId);
+			// }
 			return responseMap;
 
 		} catch (FeignException ex) {

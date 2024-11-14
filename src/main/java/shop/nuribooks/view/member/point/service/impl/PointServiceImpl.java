@@ -19,6 +19,6 @@ public class PointServiceImpl implements PointService {
 	@Override
 	public Page<PointHistoryResponse> getPointHistories(HistoryType type, Pageable pageable,
 		PointHistoryPeriodRequest pointHistoryPeriodRequest) {
-		return pointServiceClient.getPointHistories(type, pageable, pointHistoryPeriodRequest);
+		return pointServiceClient.getPointHistories(type, pageable, pointHistoryPeriodRequest).getBody();
 	}
 }

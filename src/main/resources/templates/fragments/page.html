@@ -7,7 +7,7 @@
 
             <!-- 페이지 번호 목록 (5개씩 표시) -->
             <a class="page-link btn btn-light mr-1" th:each="i : ${#numbers.sequence(1, pages.totalPages)}"
-               th:if="${i >= pages.number - 2 && i <= pages.number + 3}"
+               th:if="${i > 0 && i >= pages.number - 2 && i <= pages.number + 3}"
                th:href="@{${url}(page=${i - 1})}"
                th:classappend="${i == pages.number + 1} ? 'active btn-primary' : ''"
                th:text="${i}">1</a>

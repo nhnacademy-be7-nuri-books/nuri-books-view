@@ -23,18 +23,16 @@ import shop.nuribooks.view.member.point.service.PointService;
 public class PointController {
 	private final PointService pointService;
 
-	@GetMapping("/myPoint")
+	@GetMapping("/myPoints")
 	public String getPointHistories(
 		Model model,
 		@RequestParam(value = "type") HistoryType type,
 		Pageable pageable,
 		PointHistoryPeriodRequest pointHistoryPeriodRequest){
-		log.info("{}", type);
-		log.info("{}", pointHistoryPeriodRequest);
 		Page<PointHistoryResponse> points = pointService.getPointHistories(type, pageable, pointHistoryPeriodRequest);
 		model.addAttribute("pages", points);
-		model.addAttribute("types", HistoryType.values());
-
+		model.addAttribute("type", type);
+		model.addAttribute("period", pointHistoryPeriodRequest);
 		return "member/point/history";
 	}
 }
