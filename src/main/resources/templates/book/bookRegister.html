@@ -270,12 +270,12 @@
                                 formData.append("file", blob);
 
                                 try {
-                                    const response = await fetch("http://localhost:8080/api/books/uploadImage", {
+                                    const response = await fetch("/admin/view/image", {
                                         method: "POST",
                                         body: formData
                                     });
-                                    const imageUrl = await response.text();
-                                    console.log(imageUrl)
+                                    const data = await response.json();
+                                    const imageUrl = data.imageUrl;
                                     callback(imageUrl, "alt text");
                                 } catch (error) {
                                     console.error("Image upload failed", error);
