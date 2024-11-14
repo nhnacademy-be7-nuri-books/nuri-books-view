@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum PolicyType {
-	RATED("비율(%)"), FIXED("정량(+)");
+	FIXED("정량(+)"), RATED("비율(%)");
 
 	String kor;
 
