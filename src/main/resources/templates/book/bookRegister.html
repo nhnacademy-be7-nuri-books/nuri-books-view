@@ -255,13 +255,31 @@
                 <script>
                     const descriptionEditor = new toastui.Editor({
                         el: document.querySelector('#descriptionEditor'),
-                        height: '300px',
+                        height: '500px',
                         initialEditType: 'wysiwyg',
                         previewStyle: 'vertical',
                         initialValue: document.getElementById('description').value || '',
                         events: {
                             change: function() {
                                 document.getElementById('description').value = descriptionEditor.getHTML();
+                            }
+                        },
+                        hooks: {
+                            addImageBlobHook: async (blob, callback) => {
+                                const formData = new FormData();
+                                formData.append("file", blob);
+
+                                try {
+                                    const response = await fetch("http://localhost:8080/api/books/uploadImage", {
+                                        method: "POST",
+                                        body: formData
+                                    });
+                                    const imageUrl = await response.text();
+                                    console.log(imageUrl)
+                                    callback(imageUrl, "alt text");
+                                } catch (error) {
+                                    console.error("Image upload failed", error);
+                                }
                             }
                         }
                     });

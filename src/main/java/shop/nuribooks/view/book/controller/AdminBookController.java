@@ -119,6 +119,8 @@ public class AdminBookController {
 		return "redirect:/admin/view/aladin/books";
 	}
 
+	
+
 	/**
 	 * 직접 도서 등록
 	 */
