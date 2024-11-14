@@ -1,5 +1,7 @@
 package shop.nuribooks.view.member.point.controller;
 
+import java.time.LocalDateTime;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +25,7 @@ import shop.nuribooks.view.member.point.service.PointService;
 public class PointController {
 	private final PointService pointService;
 
-	@GetMapping("/myPoints")
+	@GetMapping("/my-points")
 	public String getPointHistories(
 		Model model,
 		@RequestParam(value = "type") HistoryType type,

@@ -7,7 +7,7 @@
             const start = document.getElementById('start').value;
             const end = document.getElementById('end').value;
             console.log(start)
-            window.location.href = "/myPoints?type=" + type + "&start=" + start + "&end=" + end;
+            window.location.href = "/my-points?type=" + type + "&start=" + start + "&end=" + end;
         }
     </script>
 
@@ -20,11 +20,11 @@
                 <!-- Filter Section -->
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <div>
-                        <a href="/myPoints?type=ALL" class="btn btn-outline-secondary me-2"
+                        <a href="/my-points?type=ALL" class="btn btn-outline-secondary me-2"
                            th:classappend="${type} == 'ALL' ? 'active text-white bg-primary' : ''">전체</a>
-                        <a href="/myPoints?type=USED" class="btn btn-outline-secondary me-2"
+                        <a href="/my-points?type=USED" class="btn btn-outline-secondary me-2"
                            th:classappend="${type} == 'USED' ? 'active text-white bg-primary' : ''">사용</a>
-                        <a href="/myPoints?type=SAVED" class="btn btn-outline-secondary"
+                        <a href="/my-points?type=SAVED" class="btn btn-outline-secondary"
                            th:classappend="${type} == 'SAVED' ? 'active text-white bg-primary' : ''">적립</a>
                     </div>
                     <div class="d-flex">
@@ -49,7 +49,7 @@
                     <tbody>
                     <tr th:each="point : ${pages.content}">
                         <td class="text-center" th:text="${point.description}">설명</td>
-                        <td class="text-center" th:text="${point.createdAt}">발생일시</td>
+                        <td class="text-center" th:text="${point.createdAt.toLocalDate()}">발생일시</td>
                         <td class="text-center" th:text="${point.amount.intValue()}">포인트</td>
                     </tr>
                     <tr th:if="${#lists.isEmpty(pages.content)}">
@@ -59,7 +59,7 @@
                 </table>
 
                 <!-- Pagination -->
-                <div th:replace="fragments/page::page(url=@{'/myPoints'(type=${type}, start=${period.start}, end=${period.end})})"></div>
+                <div th:replace="fragments/page::page(url=@{'/my-points'(type=${type}, start=${period.start}, end=${period.end})})"></div>
             </div>
         </div>
     </div>
