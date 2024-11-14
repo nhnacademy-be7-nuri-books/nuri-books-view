@@ -1,30 +1,63 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout1}">
-<head>
-    <title>주소 목록</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{member/layout/memberlayout}">
+<body>
 
 <div layout:fragment="content">
-    <div class="header-container">
-    </div>
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">나의 주소 목록</h2>
+            </div>
+            <div class="card-body">
+                <div class="text-end mb-4">
+                    <a href="/api/member/address" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-plus-circle me-2"></i>주소 등록
+                    </a>
+                    <h2 class="text-center text-uppercase mb-4">주소 목록</h2>
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                        <tr>
+                            <th class="text-center">ID</th>
+                            <th class="text-center">별칭</th>
+                            <th class="text-center">우편번호</th>
+                            <th class="text-center">도로명주소</th>
+                            <th class="text-center">상세주소</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
 
-    <div class="container address-list">
-        <div class="address-list" th:each="address : ${addressList}">
-            <div class="address-details">
-<!--                <a th:href="@{/api/view/book/details/{id}(id=${bookWithContributors.bookDetails.id})}">-->
-<!--                    <h5 class="book-title" th:text="${bookWithContributors.bookDetails.title}">제목</h5>-->
-<!--                </a>-->
-                    <span class="address-zipcode" th:text="'우편번호: ' + ${address.zipcode()}">우편번호</span>
-                    <span class="address-address" th:text="'주소: ' + ${address.address()}">주소</span>
-                    <span class="address-detail-address" th:text="'상세주소: ' + ${address.detailAddress()}">상세주소</span>
-                    <span class="address-name" th:text="'별칭: ' + ${address.name()}">별칭</span>
+                        <th:block th:each="address : ${addressList}">
+                            <tr>
+                                <td class="text-center" th:text="${address.id}"></td>
+                                <td class="text-center" th:text="${address.name}"></td>
+                                <td class="text-center" th:text="${address.zipcode}"></td>
+                                <td class="text-center" th:text="${address.address}"></td>
+                                <td class="text-center" th:text="${address.detailAddress}"></td>
+                                <td>
+                                    <!-- 수정 버튼 -->
+                                    <a th:href="@{/admin/contributor/{contributor-id}(contributor-id=${contributor.id})}"
+                                       class="btn btn-outline-secondary btn-sm">
+                                        <i class="fas fa-edit me-2"></i>수정
+                                    </a>
+                                    <!-- 삭제 버튼 -->
+                                    <form th:action="@{/admin/contributor/{contributor-id}(contributor-id=${contributor.id})}"
+                                          method="post" style="display:inline;">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button type="submit" class="btn btn-outline-secondary btn-sm">
+                                            <i class="fas fa-trash-alt me-2"></i>삭제
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </th:block>
+                        </tbody>
+                    </table>
+<!--                    <div th:replace="fragments/page::page(url=${'/api/member/me/address'})"></div>-->
+                </div>
             </div>
         </div>
     </div>
-
 </div>
-
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
