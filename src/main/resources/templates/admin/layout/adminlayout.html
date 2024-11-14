@@ -22,19 +22,20 @@
     <div class="col-12">
       <div th:replace="~{admin/fragment/adminheader :: adminHeader}"></div>
     </div>
+    <div class="container-fluid d-flex">
+      <div class="d-none d-md-block" style="width: 250px;">
+        <div th:replace="~{admin/fragment/adminsidebar :: sidebar}"></div>
+      </div>
 
-    <div class="col-12 col-md-2 d-none d-md-block">
-      <div th:replace="~{admin/fragment/adminsidebar :: sidebar}"></div>
-    </div>
+      <div class="flex-grow-1 d-flex flex-column overflow-auto">
+        <!-- Main Content -->
+        <div id="main-content" layout:fragment="content" class="container flex-grow-1"></div>
 
-    <div class="col-12 col-md-10 d-flex flex-column">
-      <!-- Main Content -->
-      <div id="main-content" layout:fragment="content" class="container flex-grow-1"></div>
-
-      <!-- Footer fixed at the bottom of the main content -->
-      <footer class="bg-light text-center py-3 w-100 mt-auto">
-        <div th:replace="~{admin/fragment/adminfooter :: adminFooter}"></div>
-      </footer>
+        <!-- Footer fixed at the bottom of the main content -->
+        <footer class="bg-light text-center py-3 w-100 mt-auto">
+          <div th:replace="~{admin/fragment/adminfooter :: adminFooter}"></div>
+        </footer>
+      </div>
     </div>
     <!-- Messages -->
     <div class="toast-container position-fixed bottom-0 start-0 p-3">
