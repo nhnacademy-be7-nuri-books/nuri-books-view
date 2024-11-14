@@ -2,76 +2,58 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="header">
     <header class="row">
-        <!-- Top Nav -->
-        <div class="col-12 bg-primary py-2 d-md-block d-none">
-            <div class="row">
-                <div class="col-auto me-auto">
-                    <ul class="top-nav">
-                        <li>
-                            <a href="tel:+123-456-7890"><i class="fa fa-phone-square me-2"></i>+123-456-7890</a>
-                        </li>
-                        <li>
-                            <a href="mailto:mail@ecom.com"><i class="fa fa-envelope me-2"></i>mail@ecom.com</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-auto">
-                    <ul class="top-nav">
-                        <li>
-                            <a th:href="@{/sign-up}"><i class="fas fa-user-edit me-2"></i>Register</a>
-                        </li>
-                        <li class="nav-item" th:if="${isLoggedIn == null or isLoggedIn == false}">
-                            <a th:href="@{/login}"><i class="fas fa-sign-in-alt me-2"></i>Login</a>
-                        </li>
-                        <li class="nav-item" th:if="${isLoggedIn}">
-                            <form th:action="@{/logout}" method="post" style="display:inline;">
-                                <button type="submit" class="nav-link text-white"
-                                        style="border: none; background: none; padding: 0;">
-                                    <i class="fas fa-sign-out-alt me-2"></i> Logout
-                                </button>
-                            </form>
-                        </li>
-
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <!-- Top Nav -->
-
-        <!-- Header -->
         <div class="col-12 bg-white pt-4">
             <div class="row">
+                <!-- Logo Section -->
                 <div class="col-lg-auto">
                     <div class="site-logo text-center text-lg-left">
                         <a th:href="@{/}">NURIBOOKS</a>
                     </div>
                 </div>
+
+                <!-- Search Bar -->
                 <div class="col-lg-5 mx-auto mt-4 mt-lg-0">
                     <form action="#">
                         <div class="form-group">
                             <div class="input-group">
-                                <input class="form-control border-dark" placeholder="Search..." required
-                                       type="search">
+                                <input class="form-control border-dark" placeholder="Search..." required type="search">
                                 <button class="btn btn-outline-dark"><i class="fas fa-search"></i></button>
                             </div>
                         </div>
                     </form>
                 </div>
-                <div class="col-lg-auto text-center text-lg-left header-item-holder">
-                    <a class="header-item" href="#">
-                        <i class="fas fa-heart me-2"></i><span id="header-favorite">0</span>
-                    </a>
-                    <a th:href="@{/api/cart}" class="header-item">
-                        <i class="fas fa-shopping-bag me-2"></i><span id="header-qty" class="me-3">2</span>
-                        <!--<i class="fas fa-money-bill-wave me-2"></i><span id="header-price">$4,000</span>-->
-                    </a>
+
+                <!-- User & Cart Section -->
+                <div class="col-lg-auto d-flex justify-content-between align-items-center">
+                    <div th:if="${isLoggedIn == null or isLoggedIn == false}">
+                        <a th:href="@{/api/cart}" class="header-item">
+                            <i class="fas fa-shopping-bag me-2"></i><span id="header-qty1" class="me-3">2</span>
+                        </a>
+                        <a th:href="@{/login}" class="header-item">
+                            <i class="fas fa-sign-in-alt me-2"></i> 로그인
+                        </a>
+                        <a th:href="@{/sign-up}" class="header-item">
+                            <i class="fas fa-user-edit me-2"></i> 회원가입
+                        </a>
+                    </div>
+                    <div th:if="${isLoggedIn}">
+                        <a th:href="@{/api/cart}" class="header-item">
+                            <i class="fas fa-shopping-bag me-2"></i><span id="header-qty2" class="me-3">2</span>
+                        </a>
+                        <form th:action="@{/logout}" method="post" style="display:inline;">
+                            <button type="submit" class="header-item"
+                                    style="border: none; background: none; padding: 0;">
+                                <i class="fas fa-sign-out-alt me-2"></i> 로그아웃
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
 
-            <!-- Nav -->
+            <!-- Main Navigation (Menu) -->
             <div class="container-fluid">
                 <div class="row">
-                    <!-- 왼쪽 주 메뉴 -->
+                    <!-- Left Side Menu -->
                     <div class="col-lg-6 col-md-12 d-flex justify-content-start p-3">
                         <nav class="navbar navbar-expand-lg navbar-light bg-white">
                             <ul class="navbar-nav">
@@ -87,15 +69,15 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">베스트</a>
                                 </li>
-
                                 <li class="nav-item">
-                                    <a th:href="${isLoggedIn == true ? '/myPage' : '/login'}" class="nav-link">마이 페이지</a>
+                                    <a th:href="${isLoggedIn == true ? '/myPage' : '/login'}" class="nav-link">마이
+                                        페이지</a>
                                 </li>
                             </ul>
                         </nav>
                     </div>
 
-                    <!-- 오른쪽 전체 카테고리 - 페이지로 이동-->
+                    <!-- Right Side Category Menu -->
                     <div class="col-lg-6 col-md-12 d-flex justify-content-end">
                         <nav class="navbar navbar-light bg-white">
                             <ul class="navbar-nav mt-2 mt-lg-0">
@@ -109,11 +91,8 @@
                     </div>
                 </div>
             </div>
-            <!-- Nav -->
-
+            <!-- Main Navigation End -->
         </div>
-        <!-- Header -->
-
     </header>
 </div>
 </html>
