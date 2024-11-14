@@ -1,0 +1,37 @@
+<div th:fragment="utils">
+    <script th:inline="javascript">
+        let data;
+
+        const showMessage = (error) =>{
+            let message;
+            let toastElement;
+            let toast;
+
+            if(error == null) {
+                message = document.getElementById("successMessage");
+                toastElement = document.getElementById("successToast");
+                message.textContent = '요청이 완료되었습니다.';
+            }
+            else{
+                message = document.getElementById("errorMessage");
+                toastElement = document.getElementById("errorToast");
+                message.textContent = error;
+            }
+            toast = new bootstrap.Toast(toastElement);
+
+            toastElement.style.display = "block";
+            toast.show();
+        }
+
+        const refreshList = () => {
+            $("#data-table").load(window.location.href + " #data-table");
+        }
+
+        const openModal = (name, id) => {
+            const modal = document.getElementById(name);
+            const bootModal = new bootstrap.Modal(modal);
+            data = id;
+            bootModal.show();
+        }
+    </script>
+</div>
