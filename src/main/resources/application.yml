@@ -24,6 +24,9 @@ spring:
       port: 6379
       password: "*N2vya7H@muDTwdNMR!"
       database: 139
+jwt:
+  secret-key: "tmvmfldtlzbflxldhodlfjgrpdjfudnsrjdpdywlsWKrmfoehwoalTJdydxor"
+  issuer: "nuribooks-auth"
 
   #cloud:
   #  openfeign:

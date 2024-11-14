@@ -90,7 +90,7 @@ public class AdminBookController {
 		AladinBookListItemResponse book = aladinBookService.getAladinBookByIsbn(isbn);
 		prepareBookRegisterForm(book, model);
 		model.addAttribute("isAladinMode", true);
-		return "/book/bookRegister";
+		return "book/bookRegister";
 	}
 
 	/**
@@ -102,7 +102,7 @@ public class AdminBookController {
 		AladinBookListItemResponse book = AladinBookListItemResponse.empty();
 		prepareBookRegisterForm(book, model);
 		model.addAttribute("isAladinMode", false);
-		return "/book/bookRegister";
+		return "book/bookRegister";
 	}
 
 	/**
