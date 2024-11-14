@@ -7,12 +7,14 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -111,7 +113,8 @@ public class CartController {
 	}
 
 	@DeleteMapping("/api/cart/book/{book-id}")
-	public String removeCartItem(@PathVariable("book-id") Long bookId, HttpServletRequest request) {
+	@RequestBody
+	public ResponseEntity<Void> removeCartItem(@PathVariable("book-id") Long bookId, HttpServletRequest request) {
 
 		String cartId;
 		CartIdentifiers cartIdentifiers = getCartIdentifiers(request);
@@ -121,10 +124,9 @@ public class CartController {
 		else if (cartIdentifiers.customerId.isPresent()) {
 			cartId = cartIdentifiers.customerId.get();
 		} else {
-			return "cart";
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
-		cartClientService.removeCartItem(cartId, bookId);
-		return "redirect:/api/cart";
+		return cartClientService.removeCartItem(cartId, bookId);
 	}
 
 	private record CartIdentifiers(Optional<String> memberId, Optional<String> customerId) {

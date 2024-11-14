@@ -19,8 +19,9 @@ public class CartClientServiceImpl implements CartClientService{
     private final CartClient cartClient;
 
     @Override
-    public void addCart(CartRequestToServer request) {
-        cartClient.addCart(request);
+    public ResponseEntity<Void> addCart(CartRequestToServer request) {
+
+        return cartClient.addCart(request);
     }
 
     @Override
@@ -41,7 +42,7 @@ public class CartClientServiceImpl implements CartClientService{
     }
 
     @Override
-    public void removeCartItem(String cartId, Long bookId) {
-        cartClient.removeCartItem(cartId, bookId);
+    public ResponseEntity<Void> removeCartItem(String cartId, Long bookId) {
+        return cartClient.removeCartItem(cartId, bookId);
     }
 }
