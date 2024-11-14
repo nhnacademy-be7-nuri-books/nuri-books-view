@@ -212,13 +212,13 @@
     </span><br/>
         </div>
       </div>dd
-      <p th:text="${book.description}">책 소개 내용</p>
+      <p th:utext="${book.description}">책 소개 내용</p>
     </div>
 
     <!-- Book Contents -->
     <div class="book-contents mt-5">
       <h2 class="book-section-title">목차</h2>
-      <p th:text="${book.contents}">목차 내용</p>
+      <p th:utext="${book.contents}">목차 내용</p>
     </div>
     <div class="mt-5">
       <h2 class="book-section-title">리뷰</h2>
