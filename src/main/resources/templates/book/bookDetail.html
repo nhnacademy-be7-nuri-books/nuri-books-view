@@ -199,33 +199,6 @@
                     <strong>태그:</strong>
                     <span th:each="tag : ${book.tagNames}" th:text="${tag}" class="badge badge-secondary mr-1">태그</span>
                 </div>
-
-    <!-- Book Description -->
-    <div class="book-description mt-5">
-      <h2 class="book-section-title">책 소개</h2>
-      <div class="book-meta mt-3" th:if="${book.simpleCategories?.size() > 0}">
-        <strong>카테고리:</strong>
-        <div th:each="breadcrumb : ${book.simpleCategories}">
-    <span>
-      <span th:each="category, iterStat : ${breadcrumb}">
-        <a th:href="@{/view/books/categories/{categoryId}(categoryId=${category.id})}"
-           th:text="${category.name}"></a>
-        <span th:if="${!iterStat.last}"> > </span>
-      </span>
-    </span><br/>
-        </div>
-      </div>dd
-      <p th:utext="${book.description}">책 소개 내용</p>
-    </div>
-
-    <!-- Book Contents -->
-    <div class="book-contents mt-5">
-      <h2 class="book-section-title">목차</h2>
-      <p th:utext="${book.contents}">목차 내용</p>
-    </div>
-    <div class="mt-5">
-      <h2 class="book-section-title">리뷰</h2>
-
                 <!-- Buttons aligned to the right in one line -->
                 <div class="button-group mt-3">
                     <form th:action="@{/orders/{book-id}(book-id=${book.id})}" method="get">
@@ -244,6 +217,35 @@
                     <i class="fas fa-heart"></i>
                     <span th:text="${book.likeCount}" class="like-count">0</span>
                 </div>
+            </div>
+
+    <!-- Book Description -->
+            <div class="book-description mt-5">
+              <h2 class="book-section-title">책 소개</h2>
+              <div class="book-meta mt-3" th:if="${book.simpleCategories?.size() > 0}">
+                <strong>카테고리:</strong>
+                <div th:each="breadcrumb : ${book.simpleCategories}">
+                    <span>
+                      <span th:each="category, iterStat : ${breadcrumb}">
+                        <a th:href="@{/view/books/categories/{categoryId}(categoryId=${category.id})}"
+                           th:text="${category.name}"></a>
+                        <span th:if="${!iterStat.last}"> > </span>
+                      </span>
+                    </span><br/>
+                </div>
+              </div>
+              <p th:utext="${book.description}">책 소개 내용</p>
+            </div>
+
+            <!-- Book Contents -->
+            <div class="book-contents mt-5">
+              <h2 class="book-section-title">목차</h2>
+              <p th:utext="${book.contents}">목차 내용</p>
+            </div>
+            <div class="mt-5">
+              <h2 class="book-section-title">리뷰</h2>
+                <div th:replace="book/review/list::reviews"></div>
+                <div th:replace="fragments/page::page(url=${'/view/book/details/'+ book.id})"></div>
             </div>
         </div>
     </div>

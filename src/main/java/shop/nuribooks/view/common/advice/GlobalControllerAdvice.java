@@ -116,9 +116,6 @@ public class GlobalControllerAdvice {
 		if(ex.status() >= 500){
 			log.error(ex.getMessage());
 		}
-		else if(ex.status() == 401){
-			response.sendRedirect("/logout");
-		}
 		return ResponseEntity.status(ex.status()).body(new ResponseMessage(ex.status(), ExceptionUtil.handleFeignException(ex)));
 	}
 
