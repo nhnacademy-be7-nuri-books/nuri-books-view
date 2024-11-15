@@ -8,39 +8,40 @@
     <!-- Main Content -->
     <div class="row">
         <div class="col-12 mt-3 text-center text-uppercase">
-            <h2>Login</h2>
         </div>
     </div>
 
     <main class="row">
         <div class="col-lg-4 col-md-6 col-sm-8 mx-auto bg-light rounded shadow py-4 mb-4">
-            <div class="text-center mb-4">
-                <h4>환영합니다!</h4>
-                <p>Please enter your credentials to login.</p>
+            <div class="text-left mb-4">
+                <h4>Nuribooks</h4>
             </div>
             <form class="row" th:action="@{/login}" method="post" id="login_form">
                 <div class="mb-3">
-                    <label for="username" class="form-label">아이디</label>
-                    <input type="text" id="username" name="username" class="form-control" required>
+                    <input type="text" id="username" name="username" class="form-control" placeholder="아이디" required>
                 </div>
                 <div class="mb-3">
-                    <label for="password" class="form-label">비밀번호</label>
-                    <input type="password" id="password" name="password" class="form-control" required>
+                    <input type="password" id="password" name="password" class="form-control" PLACEHOLDER="비밀번호" required>
                 </div>
-                <div class="mb-3 form-check">
-                    <input type="checkbox" id="remember" class="form-check-input">
-                    <label for="remember" class="form-check-label">Remember Me</label>
-                </div>
+                <p class="text-center" id="signup-text"><a th:href="@{/sign-up}">아직 회원이 아니신가요?</a></p>
                 <div class="mb-3 text-center">
-                    <button type="submit" class="btn btn-primary w-100">Login</button>
-                </div>
-                <div class="text-center">
-                    <a href="#" class="text-secondary">Forgot Password?</a>
+                    <button type="submit" class="btn btn-primary w-100">일반 로그인</button>
                 </div>
             </form>
 
-            <a href="/login/oauth2/payco">Payco 로그인</a> <br>
-            <a href="/login/oauth2/naver">Naver 로그인</a> <br>
+            <p id="social-login-text">소셜 로그인</p>
+            <div id="oauth-list">
+                <div>
+                    <a href="/login/oauth2/payco">
+                        <img src="/images/payco-logo.png" alt="Payco Oauth2 Login ICON">
+                    </a>
+                </div>
+                    <div>
+                        <a href="/login/oauth2/naver">
+                            <img src="/images/naver-logo.png" alt="Naver Oauth2 Login ICON">
+                        </a>
+                    </div>
+            </div>
         </div>
     </main>
     <!-- Main Content -->

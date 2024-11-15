@@ -17,9 +17,6 @@
                 </div>
                 <div class="col-auto">
                     <ul class="top-nav">
-                        <li>
-                            <a th:href="@{/sign-up}"><i class="fas fa-user-edit me-2"></i>Register</a>
-                        </li>
                         <li class="nav-item" th:if="${isLoggedIn == null or isLoggedIn == false}">
                             <a th:href="@{/login}"><i class="fas fa-sign-in-alt me-2"></i>Login</a>
                         </li>
