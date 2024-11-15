@@ -1,4 +1,4 @@
-package shop.nuribooks.view.member.feign;
+package shop.nuribooks.view.member.member.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import shop.nuribooks.view.common.dto.ResponseMessage;
-import shop.nuribooks.view.member.dto.request.MemberRegisterRequest;
-import shop.nuribooks.view.member.dto.request.MemberPasswordUpdateRequest;
-import shop.nuribooks.view.member.dto.response.MemberDetailsResponse;
-import shop.nuribooks.view.member.dto.response.MemberRegisterResponse;
+import shop.nuribooks.view.member.member.dto.request.MemberRegisterRequest;
+import shop.nuribooks.view.member.member.dto.request.MemberPasswordUpdateRequest;
+import shop.nuribooks.view.member.member.dto.response.MemberDetailsResponse;
+import shop.nuribooks.view.member.member.dto.response.MemberRegisterResponse;
 
 /**
  * member 관련 FeignClient

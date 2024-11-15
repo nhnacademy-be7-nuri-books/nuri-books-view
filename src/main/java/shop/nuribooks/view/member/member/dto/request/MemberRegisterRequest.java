@@ -1,4 +1,4 @@
-package shop.nuribooks.view.member.dto.request;
+package shop.nuribooks.view.member.member.dto.request;
 
 import static com.fasterxml.jackson.annotation.JsonFormat.Shape.*;
 
@@ -12,7 +12,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
-import shop.nuribooks.view.member.entity.GenderType;
+import shop.nuribooks.view.member.member.entity.GenderType;
 
 @Builder
 public record MemberRegisterRequest(

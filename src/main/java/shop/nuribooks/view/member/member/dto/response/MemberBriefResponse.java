@@ -1,4 +1,4 @@
-package shop.nuribooks.view.member.dto.response;
+package shop.nuribooks.view.member.member.dto.response;
 
 import lombok.Builder;
 

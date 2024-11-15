@@ -1,10 +1,10 @@
-package shop.nuribooks.view.member.dto.response;
+package shop.nuribooks.view.member.member.dto.response;
 
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import shop.nuribooks.view.member.entity.GenderType;
+import shop.nuribooks.view.member.member.entity.GenderType;
 
 /**
  * 회원 등록 응답 데이터 전송 객체.

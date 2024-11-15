@@ -1,12 +1,10 @@
 package shop.nuribooks.view.admin.grade.service;
 
-import static org.springframework.http.HttpStatus.*;
-
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import shop.nuribooks.view.common.dto.ResponseMessage;
 import shop.nuribooks.view.admin.grade.dto.GradeDetailsResponse;
@@ -48,13 +46,27 @@ public class AdminGradeServiceImpl implements AdminGradeService {
 	@Override
 	public String deleteGrade(String name) {
 
-		ResponseEntity<ResponseMessage> response = gradeServiceClient.deleteGrade(name);
-
-		return switch (response.getStatusCode()) {
-			case NO_CONTENT -> "등급이 성공적으로 삭제되었습니다.";
-			case CONFLICT -> "해당 등급을 가진 회원이 존재하여 삭제할 수 없습니다.";
-			default -> "서버 오류로 인해 요청을 처리하지 못했습니다. 잠시 후에 다시 시도하십시오.";
-		};
+		try {
+			return gradeServiceClient.deleteGrade(name).getBody().message();
+		} catch (FeignException e) {
+			return extractMessage(e.getMessage());
+		}
 	}
 
+
+	/**
+	 * json 형식의 response에서 message의 value만을 추출
+	 */
+	private static String extractMessage(String jsonResponse) {
+		// "message"라는 키를 찾고, 해당 값 추출
+		int messageStartIndex = jsonResponse.indexOf("\"message\":") + 11; // "message": 의 뒤부터 시작
+		int messageEndIndex = jsonResponse.indexOf("\"", messageStartIndex); // " 이후로 끝
+
+		if (!jsonResponse.contains("\"message\":")) {
+			return "메시지 추출 실패";  // message가 없거나 JSON 형식이 이상한 경우
+		}
+
+		// "message" 값 추출
+		return jsonResponse.substring(messageStartIndex, messageEndIndex);
+	}
 }

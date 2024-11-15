@@ -1,10 +1,9 @@
 package shop.nuribooks.view.review.dto.response;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import lombok.Builder;
-import shop.nuribooks.view.member.dto.response.MemberBriefResponse;
+import shop.nuribooks.view.member.member.dto.response.MemberBriefResponse;
 
 /**
  * 작성자 정보를 함께 담은 review dto

@@ -1,4 +1,4 @@
-package shop.nuribooks.view.member.controller;
+package shop.nuribooks.view.member.member.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -18,10 +18,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.auth.service.AuthService;
 import shop.nuribooks.view.common.util.CookieUtil;
-import shop.nuribooks.view.member.dto.request.MemberRegisterRequest;
-import shop.nuribooks.view.member.dto.request.MemberPasswordUpdateRequest;
-import shop.nuribooks.view.member.dto.response.MemberDetailsResponse;
-import shop.nuribooks.view.member.service.MemberService;
+import shop.nuribooks.view.member.member.dto.request.MemberRegisterRequest;
+import shop.nuribooks.view.member.member.dto.request.MemberPasswordUpdateRequest;
+import shop.nuribooks.view.member.member.dto.response.MemberDetailsResponse;
+import shop.nuribooks.view.member.member.service.MemberService;
 
 /**
  * 회원 관련 Controller

@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
-import shop.nuribooks.view.member.entity.GenderType;
+import shop.nuribooks.view.member.member.entity.GenderType;
 
 public record MemberSearchResponse(
 

@@ -1,4 +1,4 @@
-package shop.nuribooks.view.member.entity;
+package shop.nuribooks.view.member.member.entity;
 
 import java.util.stream.Stream;
 

@@ -1,10 +1,10 @@
-package shop.nuribooks.view.member.service;
+package shop.nuribooks.view.member.member.service;
 
 import jakarta.validation.Valid;
 import shop.nuribooks.view.common.dto.ResponseMessage;
-import shop.nuribooks.view.member.dto.request.MemberRegisterRequest;
-import shop.nuribooks.view.member.dto.request.MemberPasswordUpdateRequest;
-import shop.nuribooks.view.member.dto.response.MemberDetailsResponse;
+import shop.nuribooks.view.member.member.dto.request.MemberRegisterRequest;
+import shop.nuribooks.view.member.member.dto.request.MemberPasswordUpdateRequest;
+import shop.nuribooks.view.member.member.dto.response.MemberDetailsResponse;
 
 /**
  * 회원 서비스 인터페이스.

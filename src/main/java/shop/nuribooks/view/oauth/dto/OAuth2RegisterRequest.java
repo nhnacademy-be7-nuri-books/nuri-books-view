@@ -14,8 +14,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import shop.nuribooks.view.member.dto.request.MemberRegisterRequest;
-import shop.nuribooks.view.member.entity.GenderType;
+import shop.nuribooks.view.member.member.dto.request.MemberRegisterRequest;
+import shop.nuribooks.view.member.member.entity.GenderType;
 
 @Setter
 @Getter

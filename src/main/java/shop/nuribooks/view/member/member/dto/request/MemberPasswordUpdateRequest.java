@@ -1,4 +1,4 @@
-package shop.nuribooks.view.member.dto.request;
+package shop.nuribooks.view.member.member.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
