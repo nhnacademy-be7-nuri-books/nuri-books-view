@@ -75,8 +75,8 @@ public class AuthServiceImpl implements AuthService {
 				.filter(list -> !list.isEmpty())
 				.ifPresent(setCookieHeaders -> responseMap.put(X_USER_ID, setCookieHeaders));
 
-			// 여기다가 작성
-			String userId = response.getHeaders().getFirst(X_USER_ID);
+			// 장바구니 로드
+			// String userId = response.getHeaders().getFirst(X_USER_ID);
 			// if (Objects.nonNull(userId)) {
 			// 	cartClientService.loadCartToRedis(userId);
 			// }

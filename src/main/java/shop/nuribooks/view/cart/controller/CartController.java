@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
@@ -47,8 +48,8 @@ public class CartController {
 	@Value("${success.message-key}")
 	private String successMessageKey;
 
-	@PostMapping("/api/cart")
-	public String addCart(@ModelAttribute CartAddRequest cartAddRequest, HttpServletRequest request,
+	@PostMapping("/api/cart/{book-id}")
+	public String addCart(@PathVariable("book-id") Long bookId, @RequestParam Integer quantity, HttpServletRequest request,
 		HttpServletResponse response, RedirectAttributes redirectAttributes) {
 
 		String cartId;
@@ -65,11 +66,10 @@ public class CartController {
 			cookie.setMaxAge(3600);
 			response.addCookie(cookie);
 		}
-		CartRequestToServer cartRequestToServer = new CartRequestToServer(cartId,
-			cartAddRequest.bookId(), cartAddRequest.quantity());
+		CartRequestToServer cartRequestToServer = new CartRequestToServer(cartId, bookId, quantity);
 		cartClientService.addCart(cartRequestToServer);
 		redirectAttributes.addFlashAttribute(successMessageKey, "상품이 장바구니에 담겼습니다.");
-		return "redirect:/view/book/details/" + cartAddRequest.bookId();
+		return "redirect:/view/book/details/" + bookId;
 	}
 
 	@GetMapping("/api/cart")
