@@ -13,9 +13,9 @@ import shop.nuribooks.view.member.address.dto.response.AddressResponse;
 @FeignClient(name = "address", url = "http://localhost:8080")
 public interface AddressClient {
 
-    @PostMapping("/api/member/address")
+    @PostMapping("/api/members/addresses")
     ResponseEntity<ResponseMessage> registerAddress(@RequestBody AddressRegisterRequest request);
 
-    @GetMapping("/api/member/me/address")
+    @GetMapping("/api/members/me/addresses")
     ResponseEntity<List<AddressResponse>> getAddressList();
 }

@@ -1,0 +1,142 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout/adminlayout}">
+<body>
+<div layout:fragment="content">
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">회원등급 관리</h2>
+            </div>
+            <div th:if="${errorMessage}">
+                <div th:text="${errorMessage}" class="alert alert-info"></div>
+            </div>
+            <div class="card-body">
+                <div class="text-end mb-4">
+                    <a href="/admin/grade/form" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-plus-circle me-2"></i>회원등급 추가
+                    </a>
+                    <h2 class="text-center text-uppercase mb-4">회원등급 목록</h2>
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                        <tr>
+                            <th class="text-center">ID</th>
+                            <th class="text-center">등급명</th>
+                            <th class="text-center">포인트 적립률</th>
+                            <th class="text-center">요구 금액</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <th:block th:each="grade : ${grades}">
+                            <tr>
+                                <td class="text-center" th:text="${grade.id}"></td>
+                                <td class="text-center" th:text="${grade.name}"></td>
+                                <td class="text-center" th:text="${grade.pointRate + '퍼센트'}"></td>
+                                <td class="text-center" th:text="${#numbers.formatInteger(grade.requirement, 1, 'COMMA') + '원'}"></td>
+
+                                <td>
+                                    <!-- 수정 버튼 -->
+                                    <form th:action="@{/admin/grade/{name}(name=${grade.name})}"
+                                          method="get" style="display:inline;">
+                                        <button type="submit" class="btn btn-outline-secondary btn-sm">
+                                            <i class="fas fa-trash-alt me-2"></i>수정
+                                        </button>
+                                    </form>
+                                    <!-- 삭제 버튼 -->
+                                    <form th:action="@{/admin/grade/{name}(name=${grade.name})}"
+                                          method="post" id="grade_delete_form" style="display:inline;">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button type="submit" class="btn btn-outline-secondary btn-sm deleteBtn">
+                                            <i class="fas fa-trash-alt me-2"></i>삭제
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </th:block>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS, Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Modal for displaying messages -->
+    <div class="modal fade" id="responseModal" tabindex="-1" aria-labelledby="responseModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="responseModalLabel">알림</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modalMessage" th:text="${message}">
+                    <!-- 서버에서 전달된 메시지가 여기에 동적으로 삽입됩니다 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="responseBtn">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for displaying confirmation before deletion -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmationModalLabel">회원등급 삭제</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    이 작업이 실행되면 복구가 불가능합니다.
+                    정말로 선택한 회원등급을 삭제하시겠습니까?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">삭제</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 페이지가 로드되면 메시지가 있으면 모달을 띄운다.
+        document.addEventListener("DOMContentLoaded", function() {
+            const message = document.getElementById('modalMessage').textContent;
+
+            if (message) {
+                // 모달에 메시지 삽입
+                document.getElementById('modalMessage').textContent = message;
+
+                // 모달 표시
+                var modal = new bootstrap.Modal(document.getElementById('responseModal'));
+                modal.show();
+
+                // 확인 버튼 클릭 시 모달 닫기
+                document.getElementById('responseBtn').addEventListener('click', function () {
+                    modal.hide(); // 모달 닫기
+                });
+            }
+        });
+
+        // 모든 삭제 버튼에 대해 클릭 이벤트 등록
+        document.querySelectorAll('.deleteBtn').forEach(function(deleteBtn) {
+            deleteBtn.addEventListener('click', function (e) {
+                e.preventDefault(); // 폼 제출 방지
+                var form = this.closest('form'); // 해당 삭제 버튼이 속한 폼 선택
+                var modal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+                modal.show();
+
+                // 삭제 확인 버튼 클릭 시 폼 제출
+                document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+                    modal.hide(); // 모달 닫기
+                    form.submit(); // 해당 폼 제출
+                });
+            });
+        });
+    </script>
+</div>
+</body>
+</html>

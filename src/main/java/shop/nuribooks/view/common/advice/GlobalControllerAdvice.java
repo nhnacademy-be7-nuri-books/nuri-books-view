@@ -1,10 +1,26 @@
 package shop.nuribooks.view.common.advice;
 
+import org.springframework.beans.factory.annotation.Value;
+import java.io.IOException;
+import java.util.stream.Collectors;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import feign.FeignException;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import shop.nuribooks.view.common.dto.ErrorResponse;
+import shop.nuribooks.view.common.dto.ResponseMessage;
+import shop.nuribooks.view.common.util.ExceptionUtil;
 import shop.nuribooks.view.exception.BadRequestException;
 import shop.nuribooks.view.exception.CustomJsonProcessingException;
 import shop.nuribooks.view.exception.DefaultServerError;
@@ -24,6 +40,9 @@ import shop.nuribooks.view.exception.UnauthorizedException;
 @Slf4j
 @ControllerAdvice
 public class GlobalControllerAdvice {
+
+	@Value("${error.message-key}")
+	private String errorMessageKey;
 
 	/**
 	 * 서버 예외가 발생할 시 처리
@@ -87,8 +106,25 @@ public class GlobalControllerAdvice {
 
 	@ExceptionHandler({BadRequestException.class})
 	public String handlerBadRequest(BadRequestException ex, RedirectAttributes redirectAttributes) {
-		redirectAttributes.addFlashAttribute(ex.getMessage());
+		redirectAttributes.addFlashAttribute(errorMessageKey, ex.getMessage());
 		return "redirect:/error";
+	}
+
+	@ExceptionHandler({FeignException.class})
+	public ResponseEntity<ResponseMessage> feignExceptionHandler(FeignException ex) throws
+		IOException {
+		if(ex.status() >= 500){
+			log.error(ex.getMessage());
+		}
+		return ResponseEntity.status(ex.status()).body(new ResponseMessage(ex.status(), ExceptionUtil.handleFeignException(ex)));
+	}
+
+	@ExceptionHandler({MethodArgumentNotValidException.class})
+	public ResponseEntity<ResponseMessage> validFailHandler(MethodArgumentNotValidException ex){
+		String errorMessage = ex.getBindingResult().getFieldErrors().stream()
+			.map(DefaultMessageSourceResolvable::getDefaultMessage)
+			.collect(Collectors.joining(", "));
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body(new ResponseMessage(HttpStatus.BAD_REQUEST.value(), errorMessage));
 	}
 
 }
