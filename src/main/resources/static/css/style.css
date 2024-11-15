@@ -1,6 +1,32 @@
+@import url('/css/fonts.css');
+
+
+/* 기본 테두리 색상 변경 */
+.form-control {
+    border-color: #cccccc; /* 기본 테두리 색상 (예: 연한 회색) */
+}
+
+/* 입력란에 포커스가 있을 때 테두리 색상 변경 */
+.form-control:focus {
+    border-color: #007bff; /* 포커스 시 파란색 테두리 */
+    box-shadow: none; /* 그림자 효과 제거 */
+}
+
+/* 버튼 색상 변경 */
+.btn-outline-dark {
+    border-color: #007bff; /* 버튼 테두리 색상 */
+    color: #007bff; /* 버튼 글자 색상 */
+}
+
+.btn-outline-dark:hover {
+    background-color: #007bff; /* 버튼 hover 시 배경색 */
+    color: white; /* hover 시 글자색 변경 */
+}
+
 body {
     background-color: #eaeaea;
-    font-family: "IBM Plex Sans KR", sans-serif;
+    font-family: "Spoqa Han Sans Neo", serif;
+    font-weight: 300;
 }
 
 a {
@@ -12,7 +38,8 @@ a {
     padding: 0;
     list-style: none;
     font-size: 13px;
-    font-family: "IBM Plex Sans KR", sans-serif;
+    font-family: "Spoqa Han Sans Neo", sans-serif;
+    font-weight: 400;
 }
 
 .top-nav li {
@@ -104,7 +131,8 @@ a {
 .product-name.large {
     font-size: 21px;
     line-height: 1.3;
-    font-family: "IBM Plex Sans KR", sans-serif;
+    font-family: "Spoqa Han Sans Neo", sans-serif;
+    font-weight: 400;
     color: #000;
 }
 
@@ -301,7 +329,8 @@ a.product-name:hover, a.product-name:focus {
 }
 
 .ratings label:before {
-    font-family: "Font Awesome 5 Free", fantasy;
+    font-family: "Spoqa Han Sans Neo", sans-serif;
+    font-weight: 400;
     content: '\f005';
     font-size: 20px;
     margin-right: 3px;
