@@ -3,7 +3,7 @@ package shop.nuribooks.view.member.service;
 import jakarta.validation.Valid;
 import shop.nuribooks.view.common.dto.ResponseMessage;
 import shop.nuribooks.view.member.dto.request.MemberRegisterRequest;
-import shop.nuribooks.view.member.dto.request.MemberUpdateRequest;
+import shop.nuribooks.view.member.dto.request.MemberPasswordUpdateRequest;
 import shop.nuribooks.view.member.dto.response.MemberDetailsResponse;
 
 /**
@@ -24,9 +24,7 @@ public interface MemberService {
 
 	MemberDetailsResponse getMemberDetails();
 
-	MemberUpdateRequest getMemberDetailsBeforeUpdate();
-
-	ResponseMessage memberUpdate(MemberUpdateRequest request);
+	ResponseMessage memberPasswordUpdate(MemberPasswordUpdateRequest request);
 
 	Integer getMemberDetailsBeforeWithdraw();
 

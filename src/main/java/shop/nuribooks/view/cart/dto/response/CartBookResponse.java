@@ -2,8 +2,12 @@ package shop.nuribooks.view.cart.dto.response;
 
 import java.math.BigDecimal;
 
-public record CartBookResponse(String title,
+public record CartBookResponse(Long bookId,
+							   String title,
 							   BigDecimal price,
 							   int discountRate,
-							   String thumbnailImageUrl) {
+							   BigDecimal salePrice,
+							   BigDecimal totalPrice,
+							   String thumbnailImageUrl,
+							   int quantity) {
 }

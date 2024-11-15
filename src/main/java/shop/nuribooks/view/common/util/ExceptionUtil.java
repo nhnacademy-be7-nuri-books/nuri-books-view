@@ -28,7 +28,6 @@ public class ExceptionUtil {
 	public static String handleFeignException(FeignException ex) {
 
 		String methodKey = ex.request().httpMethod().toString() + "," + ex.request().url();
-		log.info("{}", methodKey);
 
 		String responseBody = ex.contentUTF8();
 
@@ -59,6 +58,7 @@ public class ExceptionUtil {
 		try {
 			jsonNode = objectMapper.readTree(responseBody);
 		} catch (JsonProcessingException e) {
+			log.error("ExceptionUtil - json parsing 중 문제");
 			throw new CustomJsonProcessingException("서버 응답 메시지가 잘못되었습니다. (json Processing 실패)");
 		}
 
