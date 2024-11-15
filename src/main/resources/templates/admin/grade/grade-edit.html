@@ -1,0 +1,42 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout/adminlayout}">
+<body>
+
+<div layout:fragment="content">
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">회원등급 수정</h2>
+            </div>
+            <div class="card-body">
+                <!-- 회원등급 수정 폼 -->
+                <form th:action="@{/admin/grade/{name}(name=${grade != null ? grade.name : ''})}" method="post" id="grade_edit_form">
+                    <input type="hidden" name="_method" value="PUT">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">등급명</label>
+                        <input type="text" class="form-control" id="name" name="name"
+                               th:value="${grade.name}" required placeholder="등급명">
+                        <label for="pointRate" class="form-label">포인트 적립률</label>
+                        <input type="number" class="form-control" id="pointRate" name="pointRate"
+                               th:value="${grade.pointRate}" required placeholder="포인트 적립률" min="0" max="100">
+                        <label for="requirement" class="form-label">요구 금액</label>
+                        <input type="number" class="form-control" id="requirement" name="requirement"
+                               th:value="${#numbers.formatInteger(grade.requirement, 1, 'COMMA')}" required placeholder="요구 금액"
+                               min="0" step="1000">
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">수정</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 회원등급 목록으로 돌아가기 링크 -->
+    <div class="mt-3 text-center">
+        <a href="/admin/grade" class="btn btn-secondary">회원등급 목록으로 돌아가기</a>
+    </div>
+</div>
+
+</body>
+</html>

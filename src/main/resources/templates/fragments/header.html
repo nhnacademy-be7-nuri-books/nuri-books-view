@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="header">
     <header class="row">
+        <!-- Header -->
         <div class="col-12 bg-white pt-4">
             <div class="row">
                 <!-- Logo Section -->
@@ -70,8 +71,7 @@
                                     <a class="nav-link" href="#">베스트</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a th:href="${isLoggedIn == true ? '/myPage' : '/login'}" class="nav-link">마이
-                                        페이지</a>
+                                    <a th:href="${isLoggedIn == true ? '/my-page' : '/login'}" class="nav-link">마이 페이지</a>
                                 </li>
                             </ul>
                         </nav>

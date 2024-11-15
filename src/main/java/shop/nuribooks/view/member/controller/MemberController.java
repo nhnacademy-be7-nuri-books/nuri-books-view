@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.auth.service.AuthService;
 import shop.nuribooks.view.common.util.CookieUtil;
 import shop.nuribooks.view.member.dto.request.MemberRegisterRequest;
-import shop.nuribooks.view.member.dto.request.MemberUpdateRequest;
+import shop.nuribooks.view.member.dto.request.MemberPasswordUpdateRequest;
 import shop.nuribooks.view.member.dto.response.MemberDetailsResponse;
 import shop.nuribooks.view.member.service.MemberService;
 
@@ -105,51 +105,51 @@ public class MemberController {
 
 	/**
 	 * 마이 페이지 GET
-	 * @return myPage.html
+	 * @return my-page.html
 	 */
 	@Operation(summary = "회원의 마이 페이지", description = "회원의 마이 페이지를 반환합니다.")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "마이 페이지 반환 성공")
 	})
-	@GetMapping("/myPage")
+	@GetMapping("/my-page")
 	public String myPage() {
-		return "member/myPage";
+		return "member/my-page";
 	}
 
 	/**
 	 * 회원 정보 조회 페이지 GET
-	 * @return myDetail.html
+	 * @return my-detail.html
 	 */
 	@Operation(summary = "회원 정보 조회 페이지", description = "회원 정보 조회 페이지를 반환합니다.")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "회원 정보 조회 페이지 반환 성공")
 	})
-	@GetMapping("/myDetail")
+	@GetMapping("/my-detail")
 	public String myDetail(Model model) {
 
 		MemberDetailsResponse member = memberService.getMemberDetails();
 
 		model.addAttribute("member", member);
 
-		return "member/myDetail";
+		return "member/my-detail";
 	}
 
 	/**
 	 * 회원 정보 수정 페이지 GET
-	 * @return myEdit.html
+	 * @return my-edit.html
 	 */
 	@Operation(summary = "회원 정보 수정 페이지", description = "회원 정보 수정 페이지를 반환합니다.")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "회원 정보 수정 페이지 반환 성공")
 	})
-	@GetMapping("/myEdit")
-	public String myEdit(Model model) {
+	@GetMapping("/my-edit")
+	public String myEdit(@ModelAttribute("message") String message, Model model) {
+		// 비밀번호 변경 후 메시지와 함께 리다이렉트되면 메시지를 받아온다.
+		if (message != null) {
+			model.addAttribute("message", message);
+		}
 
-		MemberUpdateRequest memberUpdateRequest = memberService.getMemberDetailsBeforeUpdate();
-
-		model.addAttribute("MemberUpdateRequest", memberUpdateRequest);
-
-		return "member/myEdit";
+		return "member/my-edit";
 	}
 
 	/**
@@ -160,69 +160,71 @@ public class MemberController {
 		@ApiResponse(responseCode = "302", description = "회원 정보 수정 후 회원 정보 페이지로 리다이렉트"),
 		@ApiResponse(responseCode = "500", description = "서버 오류 : 회원 정보 수정 실패")
 	})
-	@PostMapping("/myEdit")
-	public String memberUpdate(@Valid @ModelAttribute MemberUpdateRequest request) {
+	@PostMapping("/my-edit")
+	public String memberPasswordUpdate(@Valid @ModelAttribute MemberPasswordUpdateRequest request,
+		RedirectAttributes redirectAttributes) {
 
-		memberService.memberUpdate(request);
+		memberService.memberPasswordUpdate(request);
+		redirectAttributes.addFlashAttribute("message", "비밀번호를 변경하였습니다.");
 
-		return "redirect:/myEdit";
+		return "redirect:/my-edit";
 	}
 
 
 	/**
 	 * 나의 장바구니 페이지 GET
-	 * @return myCart.html
+	 * @return my-cart.html
 	 */
 	@Operation(summary = "나의 장바구니 페이지", description = "나의 장바구니 페이지를 반환합니다.")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "나의 장바구니 페이지 반환 성공")
 	})
-	@GetMapping("/myCart")
+	@GetMapping("/my-cart")
 	public String myCart() {
-		return "member/myCart";
+		return "member/my-cart";
 	}
 
 	/**
 	 * 나의 구매내역 페이지 GET
-	 * @return myOrders.html
+	 * @return my-orders.html
 	 */
 	@Operation(summary = "나의 구매내역 페이지", description = "나의 구매내역 페이지를 반환합니다.")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "나의 구매내역 페이지 반환 성공")
 	})
-	@GetMapping("/myOrders")
+	@GetMapping("/my-orders")
 	public String myOrders() {
-		return "member/myOrders";
+		return "member/my-orders";
 	}
 
 	/**
 	 * 나의 쿠폰 페이지 GET
-	 * @return myCoupons.html
+	 * @return my-coupons.html
 	 */
 	@Operation(summary = "나의 쿠폰 페이지", description = "나의 쿠폰 페이지를 반환합니다.")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "나의 쿠폰 페이지 반환 성공")
 	})
-	@GetMapping("/myCoupons")
+	@GetMapping("/my-coupons")
 	public String myCoupons() {
-		return "member/myCoupons";
+		return "member/my-coupons";
 	}
 
 	/**
 	 * 회원 탈퇴 페이지 GET
-	 * @return myGoodbye.html
+	 * @return my-goodbye.html
 	 */
 	@Operation(summary = "회원 탈퇴 페이지", description = "회원 탈퇴 페이지를 반환합니다.")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "회원 탈퇴 페이지 반환 성공")
 	})
-	@GetMapping("/myGoodbye")
+	@GetMapping("/my-goodbye")
 	public String myGoodbye(Model model) {
 
 		Integer point = memberService.getMemberDetailsBeforeWithdraw();
 		model.addAttribute("point", point);
 
-		return "member/myGoodbye";
+		return "member/my-goodbye";
 	}
 
 	/**
@@ -233,7 +235,7 @@ public class MemberController {
 		@ApiResponse(responseCode = "200", description = "회원 탈퇴가 성공적으로 진행되었습니다."),
 		@ApiResponse(responseCode = "500", description = "서버 오류 : 회원 탈퇴 실패")
 	})
-	@PostMapping("/myGoodbye")
+	@PostMapping("/my-goodbye")
 	public String memberWithdraw(HttpServletResponse response, RedirectAttributes redirectAttributes) {
 
 		memberService.memberWithdraw();
