@@ -12,7 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.common.dto.ResponseMessage;
-import shop.nuribooks.view.member.dto.request.MemberUpdateRequest;
+import shop.nuribooks.view.member.dto.request.MemberPasswordUpdateRequest;
 import shop.nuribooks.view.member.dto.response.MemberDetailsResponse;
 import shop.nuribooks.view.member.feign.MemberServiceClient;
 import shop.nuribooks.view.common.util.ExceptionUtil;
@@ -59,20 +59,9 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public MemberUpdateRequest getMemberDetailsBeforeUpdate() {
+	public ResponseMessage memberPasswordUpdate(MemberPasswordUpdateRequest request) {
 
-		ResponseEntity<MemberDetailsResponse> response = memberServiceClient.getMemberDetails();
-
-		return MemberUpdateRequest.builder()
-			.username(response.getBody().username())
-			.name(response.getBody().name())
-			.build();
-	}
-
-	@Override
-	public ResponseMessage memberUpdate(MemberUpdateRequest request) {
-
-		return memberServiceClient.memberUpdate(request).getBody();
+		return memberServiceClient.memberPasswordUpdate(request).getBody();
 	}
 
 	@Override

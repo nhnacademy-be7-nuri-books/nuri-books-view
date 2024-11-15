@@ -107,13 +107,14 @@
                                                placeholder="수취자 연락처를 입력하세요"/>
                                     </div>
                                     <div class="form-group">
+                                        <label for="shipping-address">수취자 주소</label>
                                         <input type="button" class="form-control" id="Postcode"
                                                onclick="daumPostcode()" value="도로명 주소 찾기"/>
                                     </div>
                                     <div class="form-group">
                                         <label for="shipping-address">배송지</label>
                                         <input type="text" class="form-control" id="shipping-address"
-                                               placeholder="배송지를 입력하세요"/>
+                                               placeholder="주소명 찾기를 이용하세요." readonly/>
                                     </div>
                                     <div class="form-group">
                                         <label for="shipping-address">배송지 상세주소</label>
@@ -123,7 +124,7 @@
                                     <div class="form-group">
                                         <label for="shipping-address">우편번호</label>
                                         <input type="text" class="form-control" id="shipping-zipcode"
-                                               placeholder="우편번호를 입력하세요"/>
+                                               placeholder="주소명 찾기를 이용하세요." readonly/>
                                     </div>
                                 </div>
                             </div>
@@ -156,50 +157,32 @@
                                     <table class="table table-borderless">
                                         <tbody>
                                         <!-- 상품 항목 1 -->
-                                        <tr>
+                                        <tr th:each="book : ${orderInformation.bookOrderResponse}">
                                             <td class="d-flex align-items-center">
                                                 <!-- 썸네일 -->
-                                                <img src="https://via.placeholder.com/100" class="img-fluid mr-3"
+                                                <img th:src="@{${book.thumbnailImageUrl}}" class="img-fluid mr-3"
                                                      alt="상품 이미지">
                                             </td>
                                             <td>
-                                                <h6 class="mb-1">토스 티셔츠</h6>
+                                                <h6 class="mb-1" th:text="${book.title()}">테스트 책 이름</h6>
                                             </td>
                                             <td>
                                                 <!-- 상품 정보 -->
                                                 <div>
-                                                    <div>가격: <span class="original-price">20,000원</span></div>
-                                                    <div>세일가: <span class="sale-price">15,000원</span></div>
+                                                    <div>가격: <span class="original-price" th:text="${book.price}">20,000원</span>
+                                                    </div>
+                                                    <div>세일가: <span class="sale-price"
+                                                                    th:text="${book.salePrice}">15,000원</span></div>
+                                                    <div>총합 가격: <span class="book-total-price"
+                                                                      th:text="${book.bookTotalPrice}">15,000원</span>
+                                                    </div>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="mt-2">
                                                     <label for="item-quantity">수량:</label>
-                                                    <span class="item-quantity" id="item-quantity">1개</span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <!-- 상품 항목 2 -->
-                                        <tr>
-                                            <td class="d-flex align-items-center">
-                                                <!-- 썸네일 -->
-                                                <img src="https://via.placeholder.com/100" class="img-fluid mr-3"
-                                                     alt="상품 이미지">
-                                            </td>
-                                            <td>
-                                                <h6 class="mb-1">토스 티셔츠</h6>
-                                            </td>
-                                            <td>
-                                                <!-- 상품 정보 -->
-                                                <div>
-                                                    <div>가격: <span class="original-price">20,000원</span></div>
-                                                    <div>세일가: <span class="sale-price">15,000원</span></div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="mt-2">
-                                                    <label for="item-quantity2">수량:</label>
-                                                    <span class="item-quantity" id="item-quantity2">1개</span>
+                                                    <span class="item-quantity" id="item-quantity"
+                                                          th:text="${book.quantity}">1개</span>
                                                 </div>
                                             </td>
                                         </tr>
@@ -209,8 +192,6 @@
                                     <!-- 총합 -->
                                     <div class="text-right">
                                         <p>총 주문 품목: <span id="total-items">2</span>개</p>
-                                        <p>배송비: <span id="shipping-cost">3,000원</span></p>
-                                        <p>총 결제 금액: <span id="total-price">23,000원</span></p>
                                     </div>
                                 </div>
 
@@ -247,71 +228,6 @@
                         </div>
                     </div>
 
-                    <!-- 쿠폰 및 포인트 UI 추가 (아코디언) -->
-                    <div class="col-md-12">
-                        <div class="card mb-3">
-                            <h5 class="mb-0">
-                                <button
-                                        class="btn btn-link accordion-button"
-                                        type="button"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#collapseCouponPoint"
-                                        aria-expanded="false"
-                                        aria-controls="collapseCouponPoint"
-                                >
-                                    쿠폰 및 포인트
-                                </button>
-                            </h5>
-                            <div
-                                    id="collapseCouponPoint"
-                                    class="collapse"
-                                    aria-labelledby="headingCouponPoint"
-                            >
-                                <div class="card-body">
-                                    <!-- 쿠폰 목록 -->
-                                    <div class="form-group">
-                                        <label for="order-coupon-list">주문에만 사용할 수 있는 쿠폰</label>
-                                        <select class="form-control" id="order-coupon-list">
-                                            <option>10% 할인 쿠폰</option>
-                                            <option>5,000원 할인 쿠폰</option>
-                                            <option>1,000원 할인 쿠폰</option>
-                                        </select>
-                                    </div>
-
-                                    <hr>
-
-                                    <div class="form-group">
-                                        <label for="product-coupon-list">상품별로 사용할 수 있는 쿠폰</label>
-                                        <select class="form-control" id="product-coupon-list">
-                                            <option>토스 티셔츠 20% 할인</option>
-                                            <option>토스 머그컵 15% 할인</option>
-                                        </select>
-                                    </div>
-
-                                    <!-- 포인트 영역 -->
-                                    <div class="form-group">
-                                        <label for="point-amount">포인트 사용</label>
-                                        <div class="d-flex align-items-center">
-                                            <!-- 포인트 입력 칸 -->
-                                            <input type="number" class="form-control mr-2" id="point-amount"
-                                                   placeholder="사용할 포인트 입력"/>
-
-                                            <!-- 전체 사용 버튼 -->
-                                            <button class="btn-sm btn-secondary" id="use-all-points">전체 사용</button>
-                                        </div>
-                                    </div>
-
-
-                                    <!-- 포인트 잔여량 -->
-                                    <div class="form-group">
-                                        <label for="remaining-points">잔여 포인트</label>
-                                        <input type="text" class="form-control" id="remaining-points" value="10,000"
-                                               readonly/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -320,9 +236,25 @@
                 <div id="payment-amount-container">
                     <h5>결제 금액</h5>
                     <div class="form-group">
-                        <label for="total-amount">총 결제 금액</label>
-                        <input type="text" class="form-control" id="total-amount" value="50,000원" readonly/>
+                        <!-- 배송비 -->
+                        <div class="mb-3">
+                            <label for="shipping-cost" class="font-weight-bold">배송비</label>
+                            <div id="shipping-cost" th:text="${orderInformation.shippingFee}">3000</div>
+                        </div>
+
+                        <!-- 도서 전체 금액 -->
+                        <div class="mb-3">
+                            <label for="book-list-amount" class="font-weight-bold">도서 전체 금액</label>
+                            <div id="book-list-amount">3000</div>
+                        </div>
+
+                        <!-- 총 결제 금액 -->
+                        <div class="mb-3">
+                            <label for="total-amount" class="font-weight-bold">총 결제 금액</label>
+                            <input type="text" class="form-control" id="total-amount" readonly/>
+                        </div>
                     </div>
+
 
                     <!-- 결제 금액 업데이트 처리 -->
                     <div class="mt-3">
@@ -336,16 +268,22 @@
 
     <!-- Script -->
     <th:block layout:fragment="script">
-        <script>
+        <script th:inline="javascript">
+
+            const orderDetails = /*[[${orderInformation.bookOrderResponse}]]*/ [];
+            const shippingId = /*[${orderInformation.shippingId}]*/ 1;
             main();
 
             // 토스 payments 결제
             async function main() {
 
+                // 가격 계산을 위한 데이티
+                const totalCount = countBooks();
                 const totalPrice = calculateTotalPrice();
 
                 const button = document.getElementById("payment-button");
                 const coupon = document.getElementById("order-coupon-list");
+                document.getElementById("total-items").textContent = totalCount;
 
                 const amount = {
                     currency: "KRW",
@@ -353,11 +291,10 @@
                 };
 
                 // ------  결제위젯 초기화 ------
-                // TODO: clientKey는 개발자센터의 결제위젯 연동 키 > 클라이언트 키로 바꾸세요.
-                // TODO: 구매자의 고유 아이디를 불러와서 customerKey로 설정하세요. 이메일・전화번호와 같이 유추가 가능한 값은 안전하지 않습니다.
+                // clientKey는 개발자센터의 결제위젯 연동 키 > 클라이언트 키로 바꾸세dy. (사업자 등록 필요)
                 // @docs https://docs.tosspayments.com/sdk/v2/js#토스페이먼츠-초기화
                 const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
-                const customerKey = generateRandomString();
+                //const customerKey = generateRandomString();
                 const tossPayments = TossPayments(clientKey);
 
                 // 회원 결제
@@ -369,8 +306,7 @@
                 const widgets = tossPayments.widgets({customerKey: TossPayments.ANONYMOUS});
 
                 // ------  주문서의 결제 금액 설정 ------
-                // TODO: 위젯의 결제금액을 결제하려는 금액으로 초기화하세요.
-                // TODO: renderPaymentMethods, renderAgreement, requestPayment 보다 반드시 선행되어야 합니다.
+                // renderPaymentMethods, renderAgreement, requestPayment 보다 반드시 선행되어야 합니다.
                 await widgets.setAmount(amount);
 
                 // ------  결제 UI 렌더링 ------
@@ -405,20 +341,83 @@
                 //     });
                 // });
 
+                let currentDate = new Date();
+                const formattedDate = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')} ${currentDate.getHours().toString().padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')}:${currentDate.getSeconds().toString().padStart(2, '0')}`;
+
                 // ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
                 // @docs https://docs.tosspayments.com/sdk/v2/js#widgetsrequestpayment
                 button.addEventListener("click", async function () {
                     // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
                     // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
-                    await widgets.requestPayment({
-                        orderId: generateRandomString(),
-                        orderName: "토스 티셔츠 외 2건",
-                        successUrl: window.location.origin + "/orders/success",
-                        failUrl: window.location.origin + "/orders/fail",
-                        customerEmail: document.getElementById('customer-email').value,
-                        customerName: document.getElementById('customer').value,
-                        customerMobilePhone: document.getElementById('customer-phone').value,
-                    });
+                    // 주문 임시 저장 용 데이터
+                    // 1. 책 정보
+                    const bookList = processOrderDetails();
+                    // 2. 배송 정보
+                    const shippingRegister = {
+                        ShippingPolicyId: shippingId,
+                        recipientName: document.getElementById('shipping-name').value,
+                        recipientAddress: document.getElementById('shipping-address').value,
+                        recipientAddressDetail: document.getElementById('shipping-address-detail').value,
+                        recipientZipcode: document.getElementById('shipping-zipcode').value,
+                        recipientPhoneNumber: document.getElementById('shipping-phone-number').value,
+                        senderName: document.getElementById('customer-name').value,
+                        senderPhoneNumber: document.getElementById('customer-phone').value
+                    };
+                    // 3. 회원 정보
+                    const customerRegister = {
+                        name: document.getElementById('customer-name').value,
+                        password: document.getElementById('customer-password').value,
+                        email: document.getElementById('customer-email').value,
+                        phoneNumber: document.getElementById('customer-phone').value
+                    }
+
+                    // 임시 주문 정보
+                    const orderData = {
+                        paymentPrice: amount.value,  // 총 결제 금액
+                        wrappingPrice: 2000,   // 포장 비용 예시 - todo: 이후 id로 변경하기
+                        orderedAt: formattedDate, // 현재 시간을 ISO 형식으로
+                        expectedDeliveryAt: null,
+                        orderDetails: bookList,  // 주문 상세
+                        shippingRegister: shippingRegister,  // 배송 정보
+                        customerRegister: customerRegister, // 회원 정보
+                        usingPoint: 0,
+                        allAppliedCoupon: null,
+                        wrapping: null
+                    };
+
+                    console.log(JSON.stringify(orderData));
+
+                    try {
+                        const apiUrl = window.location.origin + "/orders/save";
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(orderData),
+                        });
+
+                        const result = await response.json();
+                        console.log(result);
+                        if (response.ok) {
+                            await widgets.requestPayment({
+                                orderId: generateRandomString(),
+                                orderName: "도서주문 건",
+                                successUrl: window.location.origin + "/orders/success",
+                                failUrl: window.location.origin + "/orders/fail",
+                                customerEmail: document.getElementById('customer-email').value,
+                                customerName: document.getElementById('customer-name').value,
+                                customerMobilePhone: document.getElementById('customer-phone').value,
+                            });
+                        } else {
+                            throw new Error("주문 정보를 저장하는 데 실패했습니다.");
+                        }
+
+                    } catch (error) {
+                        console.error('주문 정보 저장 중 오류 발생:', error);
+                        alert('주문 저장 실패. 다시 시도해주세요.');
+                    }
+
                 });
             }
 
@@ -429,7 +428,7 @@
 
             // 결제 금액 얻어오기
             function getAllSalePrices() {
-                const salePriceElements = document.querySelectorAll('.sale-price');
+                const salePriceElements = document.querySelectorAll('.book-total-price');
                 const salePrices = Array.from(salePriceElements).map(element => {
                     return parseInt(element.textContent.replace(/[^\d]/g, ''));
                 })
@@ -446,15 +445,53 @@
             // 총 결제 금액을 계산하고 input 필드에 값을 넣기
             function calculateTotalPrice() {
                 const salePrices = getAllSalePrices();  // 모든 세일가 값을 가져옴
-                const totalPrice = salePrices.reduce((total, price) => total + price, 0);  // 총 결제 금액 계산
+                const shippingPrice = document.getElementById('shipping-cost').textContent // 배송비
+                let bookListPrice = salePrices.reduce((total, price) => total + price, 0); // 도서 총 금액
+                let totalPrice = bookListPrice + parseInt(shippingPrice, 10); // 총 결제 금액 계산
+                console.log("salePrices: %d", bookListPrice);
 
                 // 총 결제 금액을 포맷하여 input 필드에 넣기
-                const formattedPrice = formatPrice(totalPrice);  // 포맷된 가격
-                document.getElementById('total-amount').value = formattedPrice; // 최종값이라 쿠폰, 배송비도 지원할 것
-                document.getElementById('total-price').value = formattedPrice;
+                const formattedPrice1 = formatPrice(bookListPrice);
+                const formattedPrice2 = formatPrice(totalPrice);  // 포맷된 가격
+                document.getElementById('book-list-amount').textContent = formattedPrice1;
+                document.getElementById('total-amount').value = formattedPrice2; // 최종값이라 쿠폰, 배송비도 지원할 것
 
-                console.log("formattedPrice: " + formattedPrice);  // 예시: "50,000원"
+                console.log("shippingPrice: " + shippingPrice);
+                console.log("formattedPrice: " + formattedPrice2);  // 예시: "50,000원"
                 return totalPrice;  // 포맷된 가격 반환
+            }
+
+            // 주문한 책 총 갯수
+            function countBooks() {
+                let totalCount = 0;
+
+                const itemQuantities = document.querySelectorAll('.item-quantity');
+
+                itemQuantities.forEach(span => {
+                    const quantity1 = parseInt(span.textContent, 10); // 수량 가져오기
+                    if (isNaN(quantity1)) {
+                        console.error("Invalid quantity: ", span.textContent || span.value);
+                        return;  // 수량이 유효하지 않으면 건너뜁니다.
+                    }
+                    totalCount += quantity1; // 총 품목 수에 더하기
+                });
+
+                return totalCount;
+
+            }
+
+            // 도서 목록
+            function processOrderDetails() {
+                // 새로운 리스트 만들기 예시: 총합 가격 계산
+                return orderDetails.map(function (book) {
+                    return {
+                        bookId: book.bookId,
+                        count: book.quantity,
+                        unitPrice: book.salePrice,
+                        isWrapped: book.isPackageable,
+                        BookAppliedCouponRequestStub: null
+                    };
+                });
             }
 
             // 도로명 주소 처리
