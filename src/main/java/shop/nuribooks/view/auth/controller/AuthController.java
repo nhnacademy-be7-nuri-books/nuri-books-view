@@ -3,7 +3,6 @@ package shop.nuribooks.view.auth.controller;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -23,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.auth.dto.request.LoginRequest;
 import shop.nuribooks.view.auth.service.AuthService;
 import shop.nuribooks.view.common.util.CookieUtil;
+import shop.nuribooks.view.member.member.service.MemberService;
 
 /**
  * 인증 관련 Controller
@@ -35,6 +35,7 @@ import shop.nuribooks.view.common.util.CookieUtil;
 public class AuthController {
 
 	private final AuthService authService;
+	private final MemberService memberService;
 
 	@Value("${error.message-key}")
 	private String errorMessageKey;
@@ -94,6 +95,7 @@ public class AuthController {
 
 			log.info("로그인 성공");
 		}
+		// memberService.memberLatestLoginAtUpdate();
 
 		// String authHeader = result.get("X-USER-ID").getFirst();
 		// if (Objects.nonNull(authHeader)) {

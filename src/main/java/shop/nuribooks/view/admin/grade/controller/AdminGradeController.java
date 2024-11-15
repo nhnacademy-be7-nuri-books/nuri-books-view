@@ -65,9 +65,12 @@ public class AdminGradeController {
 	}
 
 	@PutMapping("/{name}")
-	public String gradeUpdate(@PathVariable String name, @Valid @ModelAttribute GradeUpdateRequest request) {
+	public String gradeUpdate(@PathVariable String name,
+		@Valid @ModelAttribute GradeUpdateRequest request,
+		RedirectAttributes redirectAttributes) {
 
-		adminGradeService.updateGrade(name, request);
+		String resultMessage = adminGradeService.updateGrade(name, request);
+		redirectAttributes.addFlashAttribute("message", resultMessage);
 
 		return "redirect:/admin/grade";
 	}
