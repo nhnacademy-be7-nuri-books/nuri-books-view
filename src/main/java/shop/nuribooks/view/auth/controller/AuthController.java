@@ -95,10 +95,8 @@ public class AuthController {
 			log.info("로그인 성공");
 		}
 
-		String authHeader = result.get("X-USER-ID").getFirst();
-		if (Objects.nonNull(authHeader)) {
-			redirectAttributes.addFlashAttribute(successMessageKey, "환영합니다." + authHeader);
-		}
+		// String authHeader = result.get("X-USER-ID").getFirst();
+		redirectAttributes.addFlashAttribute(successMessageKey, "로그인 성공, 환영합니다.");
 		return "redirect:/";
 
 	}

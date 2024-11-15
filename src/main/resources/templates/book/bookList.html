@@ -6,20 +6,18 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         /* 공통 스타일 */
-        body {
-            background-color: #f5f5f5;
-            font-family: 'Arial', sans-serif;
-        }
         .header-container {
             text-align: center;
             margin: 20px 0 40px;
             position: relative;
         }
+
         .header-title {
             font-size: 2.5em;
             font-weight: bold;
             color: #2c3e50;
         }
+
         .page-size-selector {
             position: absolute;
             right: 0;
@@ -28,10 +26,12 @@
             font-size: 1em;
             color: #2c3e50;
         }
+
         .page-size-selector label {
             margin-right: 8px;
             font-weight: bold;
         }
+
         .page-size-selector select {
             padding: 5px 10px;
             border-radius: 4px;
@@ -39,11 +39,13 @@
             font-size: 1em;
             color: #34495e;
         }
+
         .page-size-selector select:focus {
             outline: none;
             border-color: #0984e3;
             box-shadow: 0 0 5px rgba(9, 132, 227, 0.2);
         }
+
         .book-list {
             max-width: 1000px;
             margin: auto;
@@ -52,6 +54,7 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             padding: 10px;
         }
+
         .book-item {
             display: flex;
             justify-content: space-between;
@@ -60,9 +63,11 @@
             position: relative;
             transition: background-color 0.3s ease;
         }
+
         .book-item:hover {
             background-color: #f9f9f9;
         }
+
         .book-thumbnail {
             flex: 0 0 120px;
             height: 180px;
@@ -71,32 +76,39 @@
             margin-right: 20px;
             background-color: #f0f0f0;
         }
+
         .book-thumbnail img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: transform 0.3s ease;
         }
+
         .book-thumbnail img:hover {
             transform: scale(1.08);
         }
+
         .book-details {
             flex: 1;
         }
+
         .book-title {
             font-size: 1.5em;
             font-weight: bold;
             color: #34495e;
             margin-bottom: 5px;
         }
+
         .book-publisher {
             color: #7f8c8d;
             margin-bottom: 8px;
         }
+
         .book-price {
             color: #b2bec3;
             text-decoration: line-through;
         }
+
         .book-discount {
             color: #16a085;
             font-weight: bold;
@@ -106,17 +118,20 @@
             border-radius: 4px;
             margin-left: 5px;
         }
+
         .book-sale-price {
             color: #e74c3c;
             font-weight: bold;
             font-size: 1.2em;
             margin-left: 8px;
         }
+
         .book-authors {
             margin-top: 10px;
             color: #2c3e50;
             font-size: 0.9em;
         }
+
         /* 관리자 버튼 스타일 */
         .book-actions {
             position: absolute;
@@ -127,6 +142,7 @@
             flex-direction: column;
             gap: 8px;
         }
+
         .book-actions button {
             padding: 5px 12px;
             font-size: 0.85em;
@@ -135,18 +151,23 @@
             color: #ffffff;
             cursor: pointer;
         }
+
         .btn-edit {
             background-color: #007bff;
         }
+
         .btn-edit:hover {
             background-color: #0056b3;
         }
+
         .btn-delete {
             background-color: #dc3545;
         }
+
         .btn-delete:hover {
             background-color: #c82333;
         }
+
         /* 페이지 네비게이션 */
         .pagination {
             display: flex;
@@ -155,6 +176,7 @@
             margin-top: 20px;
             font-size: 1em;
         }
+
         .pagination a, .pagination span {
             margin: 0 5px;
             padding: 8px 12px;
@@ -162,14 +184,17 @@
             text-decoration: none;
             color: #34495e;
         }
+
         .pagination .btn-secondary {
             background-color: #0984e3;
             border: none;
             color: white;
         }
+
         .pagination .btn-secondary:hover {
             background-color: #74b9ff;
         }
+
         .current-page {
             font-weight: bold;
             color: #0984e3;
@@ -184,12 +209,13 @@
         <div class="page-size-selector">
             <form th:action="@{/view/books}" method="get">
                 <label for="sizeSelect">페이지 당 항목 수:</label>
-                <select name="size" id="sizeSelect" onchange="document.getElementById('pageInput').value = 0; this.form.submit()">
+                <select name="size" id="sizeSelect"
+                        onchange="document.getElementById('pageInput').value = 0; this.form.submit()">
                     <option th:value="5" th:text="'5개씩 보기'" th:selected="${books.size == 5}"></option>
                     <option th:value="10" th:text="'10개씩 보기'" th:selected="${books.size == 10}"></option>
                     <option th:value="20" th:text="'20개씩 보기'" th:selected="${books.size == 20}"></option>
                 </select>
-                <input type="hidden" id="pageInput" name="page" th:value="${books.page}" />
+                <input type="hidden" id="pageInput" name="page" th:value="${books.page}"/>
             </form>
         </div>
     </div>
@@ -197,7 +223,8 @@
     <!-- 도서 목록 리스트형 스타일 -->
     <div class="container book-list">
         <div class="book-item" th:each="bookWithContributors : ${books.content}">
-            <<a th:href="@{/view/book/details/{bookId}(bookId=${bookWithContributors.bookDetails.id})}" class="book-thumbnail">
+            <<a th:href="@{/view/book/details/{bookId}(bookId=${bookWithContributors.bookDetails.id})}"
+                class="book-thumbnail">
             <img th:src="${bookWithContributors.bookDetails.thumbnailImageUrl}" alt="도서 이미지">
         </a>
             <div class="book-details">
@@ -212,9 +239,12 @@
                 </div>
                 <p class="book-publisher" th:text="${bookWithContributors.bookDetails.publisherName}">출판사</p>
                 <p>
-                    <span class="book-price" th:text="'정가: ' + ${bookWithContributors.bookDetails.price} + ' 원'">정가</span>
-                    <span class="book-discount" th:if="${bookWithContributors.bookDetails.discountRate > 0}" th:text="'할인율' + ${bookWithContributors.bookDetails.discountRate} + '%'">할인율</span>
-                    <span class="book-sale-price" th:text="'판매가: ' + ${bookWithContributors.bookDetails.salePrice} + ' 원'">판매가</span>
+                    <span class="book-price"
+                          th:text="'정가: ' + ${bookWithContributors.bookDetails.price} + ' 원'">정가</span>
+                    <span class="book-discount" th:if="${bookWithContributors.bookDetails.discountRate > 0}"
+                          th:text="'할인율' + ${bookWithContributors.bookDetails.discountRate} + '%'">할인율</span>
+                    <span class="book-sale-price"
+                          th:text="'판매가: ' + ${bookWithContributors.bookDetails.salePrice} + ' 원'">판매가</span>
                 </p>
                 <!-- 관리자 버튼 (isAdmin인 경우에만 표시) -->
                 <div class="book-actions" th:if="${isAdmin}">
@@ -222,7 +252,9 @@
                        class="btn btn-edit">
                         수정
                     </a>
-                    <button type="button" class="btn-delete" th:attr="data-book-id=${bookWithContributors.bookDetails.id}" onclick="deleteBook(this)">삭제</button>
+                    <button type="button" class="btn-delete"
+                            th:attr="data-book-id=${bookWithContributors.bookDetails.id}" onclick="deleteBook(this)">삭제
+                    </button>
                     <script>
                         function deleteBook(button) {
                             const bookId = button.getAttribute("data-book-id");
@@ -265,7 +297,8 @@
         </a>
 
         <!-- 페이지 번호 링크 -->
-        <span th:each="i : ${#numbers.sequence(1, books.totalPages)}" th:if="${i >= books.page - 2 && i <= books.page + 3}">
+        <span th:each="i : ${#numbers.sequence(1, books.totalPages)}"
+              th:if="${i >= books.page - 2 && i <= books.page + 3}">
         <a th:if="${isAdmin}" th:href="@{/admin/view/books(page=${i - 1}, size=${books.size})}"
            th:text="${i}" th:classappend="${i == books.page + 1} ? 'current-page' : ''">
         </a>

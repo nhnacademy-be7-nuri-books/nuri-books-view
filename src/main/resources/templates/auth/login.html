@@ -14,14 +14,15 @@
     <main class="row">
         <div class="col-lg-4 col-md-6 col-sm-8 mx-auto bg-light rounded shadow py-4 mb-4">
             <div class="text-left mb-4">
-                <h4>Nuribooks</h4>
+                <h4>NURIBOOKS</h4>
             </div>
             <form class="row" th:action="@{/login}" method="post" id="login_form">
                 <div class="mb-3">
                     <input type="text" id="username" name="username" class="form-control" placeholder="아이디" required>
                 </div>
                 <div class="mb-3">
-                    <input type="password" id="password" name="password" class="form-control" PLACEHOLDER="비밀번호" required>
+                    <input type="password" id="password" name="password" class="form-control" PLACEHOLDER="비밀번호"
+                           required>
                 </div>
                 <p class="text-center" id="signup-text"><a th:href="@{/sign-up}">아직 회원이 아니신가요?</a></p>
                 <div class="mb-3 text-center">
@@ -36,11 +37,11 @@
                         <img src="/images/payco-logo.png" alt="Payco Oauth2 Login ICON">
                     </a>
                 </div>
-                    <div>
-                        <a href="/login/oauth2/naver">
-                            <img src="/images/naver-logo.png" alt="Naver Oauth2 Login ICON">
-                        </a>
-                    </div>
+                <div>
+                    <a href="/login/oauth2/naver">
+                        <img src="/images/naver-logo.png" alt="Naver Oauth2 Login ICON">
+                    </a>
+                </div>
             </div>
         </div>
     </main>
