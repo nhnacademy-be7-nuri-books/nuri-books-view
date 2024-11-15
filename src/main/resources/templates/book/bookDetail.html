@@ -201,15 +201,37 @@
                 </div>
                 <!-- Buttons aligned to the right in one line -->
                 <div class="button-group mt-3">
-                    <form th:action="@{/orders/{book-id}(book-id=${book.id})}" method="get">
-                        <label for="quantity">수량:</label>
-                        <input type="number" id="quantity" name="quantity" min="1" max="100" value="1">
-                        <button type="submit"
-                                class="btn btn-secondary btn-custom">바로
-                            구매하기
-                        </button>
+                    <label for="quantity">수량:</label>
+                    <input type="number" id="quantity" name="quantity" min="1" max="100" value="1">
+                    <!-- 바로 구매하기 버튼 (GET 요청) -->
+                    <button type="button" class="btn btn-secondary btn-custom" onclick="submitForm('orderForm')">바로 구매하기</button>
+
+                    <!-- 장바구니에 담기 버튼 (POST 요청) -->
+                    <button type="button" class="btn btn-primary btn-custom" onclick="submitForm('cartForm')">장바구니에 담기</button>
+
+                    <!-- GET 요청용 폼 -->
+                    <form id="orderForm" th:action="@{/orders/{book-id}(book-id=${book.id})}" method="get">
+                        <input type="hidden" name="quantity" id="orderQuantity">
                     </form>
-                    <a href="#" class="btn btn-primary btn-custom">장바구니에 담기</a>
+
+                    <!-- POST 요청용 폼 -->
+                    <form id="cartForm" th:action="@{/api/cart/{book-id}(book-id=${book.id})}" method="post">
+                        <input type="hidden" name="quantity" id="cartQuantity">
+                    </form>
+<!--                    <form th:action="@{/orders/{book-id}(book-id=${book.id})}" method="get">-->
+<!--                        <label for="quantity">수량:</label>-->
+<!--                        <button type="submit"-->
+<!--                                class="btn btn-secondary btn-custom">바로-->
+<!--                            구매하기-->
+<!--                        </button>-->
+<!--                    </form>-->
+
+<!--                    <form id="cartForm" th:action="@{/api/cart/{book-id}(book-id=${book.id})}" method="post">-->
+<!--                        <label for="quantity">수량:</label>-->
+<!--                        <button type="submit"-->
+<!--                                class="btn btn-secondary btn-custom">장바구니에 담기-->
+<!--                        </button>-->
+<!--                    </form>-->
                 </div>
 
                 <!-- Like button aligned to the right -->
@@ -249,25 +271,38 @@
             </div>
         </div>
     </div>
+    <script>
+        function toggleLike() {
+            const likeButton = document.querySelector('.like-button .fa-heart');
+            const likeCountElement = document.querySelector('.like-count');
+            let likeCount = parseInt(likeCountElement.textContent);
+
+            if (likeButton.classList.contains('liked')) {
+                likeButton.classList.remove('liked');
+                likeCountElement.textContent = likeCount - 1;
+            } else {
+                likeButton.classList.add('liked');
+                likeCountElement.textContent = likeCount + 1;
+            }
+        }
+
+        function submitForm(formId) {
+            const quantity = document.getElementById("quantity").value;
+
+            if (formId === "orderForm") {
+                document.getElementById("orderQuantity").value = quantity;
+            } else if (formId === "cartForm") {
+                document.getElementById("cartQuantity").value = quantity;
+            }
+
+            document.getElementById(formId).submit();
+        }
+        window.submitForm = submitForm;
+    </script>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    function toggleLike() {
-        const likeButton = document.querySelector('.like-button .fa-heart');
-        const likeCountElement = document.querySelector('.like-count');
-        let likeCount = parseInt(likeCountElement.textContent);
-
-        if (likeButton.classList.contains('liked')) {
-            likeButton.classList.remove('liked');
-            likeCountElement.textContent = likeCount - 1;
-        } else {
-            likeButton.classList.add('liked');
-            likeCountElement.textContent = likeCount + 1;
-        }
-    }
-</script>
 </body>
 
 </html>
