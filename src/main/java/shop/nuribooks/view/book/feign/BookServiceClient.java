@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.Valid;
 import shop.nuribooks.view.admin.category.dto.CategoryResponse;
@@ -52,4 +54,7 @@ public interface BookServiceClient {
 
 	@DeleteMapping("/api/books/{book-id}")
 	Void deleteBook(@PathVariable(name = "book-id") Long bookId);
+
+	@PostMapping(value = "/api/books/uploadImage", consumes = "multipart/form-data")
+	String uploadImage(@RequestPart("file")MultipartFile file);
 }

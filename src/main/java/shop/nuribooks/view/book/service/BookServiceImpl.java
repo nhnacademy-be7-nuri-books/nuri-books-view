@@ -3,6 +3,7 @@ package shop.nuribooks.view.book.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 import shop.nuribooks.view.admin.category.dto.CategoryResponse;
@@ -59,5 +60,10 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public List<CategoryResponse> getAllCategories() {
 		return bookServiceClient.getAllCategories();
+	}
+
+	@Override
+	public String uploadImage(MultipartFile file) {
+		return bookServiceClient.uploadImage(file);
 	}
 }

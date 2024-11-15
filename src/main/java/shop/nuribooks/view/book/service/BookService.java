@@ -2,6 +2,8 @@ package shop.nuribooks.view.book.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import shop.nuribooks.view.admin.category.dto.CategoryResponse;
 import shop.nuribooks.view.book.dto.AladinBookRegisterRequest;
 import shop.nuribooks.view.book.dto.BookContributorsResponse;
@@ -27,4 +29,5 @@ public interface BookService {
 
 	List<CategoryResponse> getAllCategories();
 
+	String uploadImage(MultipartFile file);
 }
