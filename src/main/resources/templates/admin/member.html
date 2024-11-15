@@ -118,21 +118,21 @@
                     </thead>
                     <tbody>
                     <!-- 각 회원 데이터를 테이블에 출력 -->
-                    <tr th:each="result : ${members}">
-                        <td th:text="${result.customerId}"></td>
-                        <td th:text="${result.name}"></td>
-                        <td th:text="${result.gender}"></td>
-                        <td th:text="${result.phoneNumber}"></td>
-                        <td th:text="${result.email}"></td>
-                        <td th:text="${result.birthday}"></td>
-                        <td th:text="${result.username}"></td>
-                        <td th:text="${result.point}"></td>
-                        <td th:text="${result.totalPaymentAmount}"></td>
-                        <td th:text="${result.authority}"></td>
-                        <td th:text="${result.gradeName}"></td>
-                        <td th:text="${result.status}"></td>
-                        <td th:text="${result.createdAt}"></td>
-                        <td th:text="${result.latestLoginAt}"></td>
+                    <tr th:each="member : ${members}">
+                        <td th:text="${member.customerId}"></td>
+                        <td th:text="${member.name}"></td>
+                        <td th:text="${member.gender}"></td>
+                        <td th:text="${member.phoneNumber}"></td>
+                        <td th:text="${member.email}"></td>
+                        <td th:text="${member.birthday}"></td>
+                        <td th:text="${member.username}"></td>
+                        <td th:text="${#numbers.formatInteger(member.point, 1, 'COMMA') + '원'}"></td>
+                        <td th:text="${#numbers.formatInteger(member.totalPaymentAmount, 1, 'COMMA') + '원'}"></td>
+                        <td th:text="${member.authority}"></td>
+                        <td th:text="${member.gradeName}"></td>
+                        <td th:text="${member.status}"></td>
+                        <td th:text="${member.createdAt}"></td>
+                        <td th:text="${member.latestLoginAt}"></td>
                     </tr>
                     </tbody>
                 </table>

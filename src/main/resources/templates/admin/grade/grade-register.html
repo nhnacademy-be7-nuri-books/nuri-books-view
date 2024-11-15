@@ -1,0 +1,30 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout/adminlayout}">
+<body>
+<div layout:fragment="content">
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">회원등급 추가</h2>
+            </div>
+            <div class="card-body">
+                <form action="/admin/grade" method="post" id="grade_form">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">등급명</label>
+                        <input type="text" class="form-control" id="name" name="name" required placeholder="등급명">
+                        <label for="pointRate" class="form-label">포인트 적립률</label>
+                        <input type="number" class="form-control" id="pointRate" name="pointRate"
+                               required placeholder="포인트 적립률" min="0" max="100">
+                        <label for="requirement" class="form-label">요구 금액</label>
+                        <input type="number" class="form-control" id="requirement" name="requirement"
+                               required placeholder="요구 금액" min="0" step="1000">
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">추가</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
