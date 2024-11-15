@@ -3,7 +3,6 @@ package shop.nuribooks.view.auth.controller;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -96,9 +95,7 @@ public class AuthController {
 		}
 
 		// String authHeader = result.get("X-USER-ID").getFirst();
-		// if (Objects.nonNull(authHeader)) {
-		// 	redirectAttributes.addFlashAttribute(successMessageKey, "환영합니다." + authHeader);
-		// }
+		redirectAttributes.addFlashAttribute(successMessageKey, "로그인 성공, 환영합니다.");
 		return "redirect:/";
 
 	}

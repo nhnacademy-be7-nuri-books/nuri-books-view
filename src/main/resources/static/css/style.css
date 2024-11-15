@@ -23,14 +23,21 @@
     color: white; /* hover 시 글자색 변경 */
 }
 
+
 body {
-    background-color: #eaeaea;
     font-family: "Spoqa Han Sans Neo", serif;
     font-weight: 300;
 }
 
 a {
     transition: color .2s linear 0s;
+}
+
+.thin-line {
+    border-top: 1px solid #000; /* 얇은 검은색 라인 */
+    width: 80%; /* 라인의 길이를 80%로 설정 */
+    margin: 20px auto; /* 상하 여백과, 좌우 중앙 정렬 */
+    padding-top: 0; /* padding 없애기 */
 }
 
 .top-nav {
@@ -85,7 +92,6 @@ a {
     cursor: pointer;
     color: #656565;
     transition: color .2s linear 0s;
-    font-weight: bold;
     line-height: 2.5;
     text-decoration: none;
 }
