@@ -44,9 +44,9 @@
                                     </form>
                                     <!-- 삭제 버튼 -->
                                     <form th:action="@{/admin/grade/{name}(name=${grade.name})}"
-                                          method="post" style="display:inline;">
+                                          method="post" id="grade_delete_form" style="display:inline;">
                                         <input type="hidden" name="_method" value="DELETE">
-                                        <button type="submit" class="btn btn-outline-secondary btn-sm">
+                                        <button type="submit" class="btn btn-outline-secondary btn-sm deleteBtn">
                                             <i class="fas fa-trash-alt me-2"></i>삭제
                                         </button>
                                     </form>
@@ -81,6 +81,26 @@
         </div>
     </div>
 
+    <!-- Modal for displaying confirmation before deletion -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmationModalLabel">회원등급 삭제</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    이 작업이 실행되면 복구가 불가능합니다.
+                    정말로 선택한 회원등급을 삭제하시겠습니까?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">삭제</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // 페이지가 로드되면 메시지가 있으면 모달을 띄운다.
         document.addEventListener("DOMContentLoaded", function() {
@@ -99,6 +119,22 @@
                     modal.hide(); // 모달 닫기
                 });
             }
+        });
+
+        // 모든 삭제 버튼에 대해 클릭 이벤트 등록
+        document.querySelectorAll('.deleteBtn').forEach(function(deleteBtn) {
+            deleteBtn.addEventListener('click', function (e) {
+                e.preventDefault(); // 폼 제출 방지
+                var form = this.closest('form'); // 해당 삭제 버튼이 속한 폼 선택
+                var modal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+                modal.show();
+
+                // 삭제 확인 버튼 클릭 시 폼 제출
+                document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+                    modal.hide(); // 모달 닫기
+                    form.submit(); // 해당 폼 제출
+                });
+            });
         });
     </script>
 </div>

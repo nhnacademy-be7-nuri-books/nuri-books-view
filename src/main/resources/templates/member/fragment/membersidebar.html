@@ -17,13 +17,6 @@
 
             <hr class="sidebar-divider">
 
-            <!-- 나의 장바구니 -->
-            <li class="nav-item my-2">
-                <a href="/my-cart" class="nav-link text-white sidebar-item" data-url="myCart">
-                    <i class="fas fa-shopping-cart me-2"></i>나의 장바구니
-                </a>
-            </li>
-
             <!-- 나의 주문내역 -->
             <li class="nav-item my-2">
                 <a href="/my-orders" class="nav-link text-white sidebar-item" data-url="myOrders">
@@ -38,6 +31,10 @@
                 </a>
             </li>
 
+            <!-- 나의 주소 -->
+            <li class="nav-item my-2">
+                <a href="/api/member/me/address" class="nav-link text-white sidebar-item" data-url="address-list">
+                    <i class="fas fa-gift me-2"></i>나의 주소
             <!-- 나의 포인트 -->
             <li class="nav-item my-2">
                 <a href="/my-points?type=ALL" class="nav-link text-white sidebar-item" data-url="point/history">

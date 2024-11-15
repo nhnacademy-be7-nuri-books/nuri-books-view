@@ -9,9 +9,9 @@ import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import shop.nuribooks.view.member.feign.MemberServiceClient;
+import shop.nuribooks.view.member.member.feign.MemberServiceClient;
 import shop.nuribooks.view.common.util.ExceptionUtil;
-import shop.nuribooks.view.member.dto.response.MemberRegisterResponse;
+import shop.nuribooks.view.member.member.dto.response.MemberRegisterResponse;
 import shop.nuribooks.view.oauth.dto.OAuth2RegisterRequest;
 
 @Slf4j

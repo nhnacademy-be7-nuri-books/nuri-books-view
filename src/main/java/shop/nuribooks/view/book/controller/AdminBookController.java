@@ -1,8 +1,11 @@
 package shop.nuribooks.view.book.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.RequiredArgsConstructor;
@@ -131,6 +135,25 @@ public class AdminBookController {
 			redirectAttributes.addFlashAttribute("errorMessage", "도서 등록 실패");
 		}
 		return "redirect:/admin/book/adminBookManage";
+	}
+
+	/*@PostMapping("/image")
+	public String imageUpload(@RequestParam("file")MultipartFile file) {
+		return bookService.uploadImage(file);
+	}*/
+
+	@PostMapping("/image")
+	public ResponseEntity<Map<String, String>> imageUpload(@RequestParam("file") MultipartFile file) {
+		try {
+			String imageUrl = bookService.uploadImage(file);
+			Map<String, String> response = new HashMap<>();
+			response.put("imageUrl", imageUrl);
+			return ResponseEntity.ok(response);
+		} catch (Exception e) {
+			Map<String, String> errorResponse = new HashMap<>();
+			errorResponse.put("error", "Image upload failed: " + e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+		}
 	}
 
 	@GetMapping("/books")
