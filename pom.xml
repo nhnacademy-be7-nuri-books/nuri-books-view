@@ -103,6 +103,13 @@
             <version>2.1.0</version> <!-- check for the latest version -->
         </dependency>
 
+        <!-- logback -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+
         <!-- spring data commons -->
         <dependency>
             <groupId>org.springframework.data</groupId>
