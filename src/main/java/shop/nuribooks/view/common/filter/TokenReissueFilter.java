@@ -48,17 +48,20 @@ public class TokenReissueFilter extends OncePerRequestFilter {
 		String prevAccessToken = CookieUtil.findByCookieKey(request, HttpHeaders.AUTHORIZATION);
 		String prevRefreshToken = CookieUtil.findByCookieKey(request, refreshHeaderName);
 
+		if (Objects.nonNull(prevAccessToken) && (Objects.isNull(prevRefreshToken) || JwtDecoder.isExpired(prevRefreshToken))) {
+			log.info("Access는 존재하지만 Refresh가 없거나 만료되어 로그아웃처리합니다.");
+			logout(response);
+			response.sendRedirect("/login");
+			return;
+		}
 
 		if (Objects.nonNull(prevRefreshToken)) {
 			if (Objects.isNull(prevAccessToken) || (JwtDecoder.isExpired(prevAccessToken) && !JwtDecoder.isExpired(
 				prevRefreshToken))) {
 
 				try {
-					log.info("필터 타고 간 URL 이다 : {}", request.getRequestURI());
-
 					ResponseEntity<String> reissueResponse = reissueServiceClient.reissue(prevRefreshToken);
 					HttpHeaders headers = reissueResponse.getHeaders();
-
 					String accessToken = headers.getFirst(HttpHeaders.AUTHORIZATION);
 
 					Map<String, List<String>> responseMap = new HashMap<>();
