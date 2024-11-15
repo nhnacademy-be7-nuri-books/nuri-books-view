@@ -1,4 +1,4 @@
-package shop.nuribooks.view.member.grade.dto;
+package shop.nuribooks.view.admin.grade.dto;
 
 import java.math.BigDecimal;
 
@@ -8,10 +8,8 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
 
-@Builder
-public record GradeRegisterRequest(
+public record GradeUpdateRequest(
 
 	@NotBlank(message = "등급명은 반드시 입력해야 합니다.")
 	String name,

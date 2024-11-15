@@ -172,19 +172,6 @@ public class MemberController {
 
 
 	/**
-	 * 나의 장바구니 페이지 GET
-	 * @return my-cart.html
-	 */
-	@Operation(summary = "나의 장바구니 페이지", description = "나의 장바구니 페이지를 반환합니다.")
-	@ApiResponses(value = {
-		@ApiResponse(responseCode = "200", description = "나의 장바구니 페이지 반환 성공")
-	})
-	@GetMapping("/my-cart")
-	public String myCart() {
-		return "member/my-cart";
-	}
-
-	/**
 	 * 나의 구매내역 페이지 GET
 	 * @return my-orders.html
 	 */
@@ -245,12 +232,12 @@ public class MemberController {
 		if (result.equals(successMessageKey)) {
 			CookieUtil.deleteCookie(response, HttpHeaders.AUTHORIZATION);
 			CookieUtil.deleteCookie(response, refreshHeaderName);
-			redirectAttributes.addFlashAttribute(successMessageKey, "로그아웃에 성공하였습니다.");
-			log.info("로그아웃 성공");
+			redirectAttributes.addFlashAttribute(successMessageKey, "탈퇴가 완료되었습니다.");
+			log.info("회원 탈퇴 후 로그아웃 성공");
 			return "redirect:/";
 		} else {
 			redirectAttributes.addFlashAttribute(errorMessageKey, "로그아웃 실패: " + result);
-			log.info("로그아웃 실패");
+			log.info("회원 탈퇴 후 로그아웃 실패");
 			return "redirect:/";
 		}
 

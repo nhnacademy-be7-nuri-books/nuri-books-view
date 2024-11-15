@@ -7,15 +7,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import shop.nuribooks.view.common.dto.ResponseMessage;
 import shop.nuribooks.view.member.dto.request.MemberRegisterRequest;
 import shop.nuribooks.view.member.dto.request.MemberPasswordUpdateRequest;
 import shop.nuribooks.view.member.dto.response.MemberDetailsResponse;
 import shop.nuribooks.view.member.dto.response.MemberRegisterResponse;
-import shop.nuribooks.view.admin.dto.response.MemberSearchResponse;
-import org.springframework.data.domain.Page;
 
 /**
  * member 관련 FeignClient
@@ -40,20 +37,6 @@ public interface MemberServiceClient {
 	 */
 	@PostMapping("/api/members")
 	ResponseEntity<MemberRegisterResponse> registerUser(@RequestBody MemberRegisterRequest userRequest);
-
-
-	/**
-	 * 관리자가 다양한 검색 조건으로 회원 조회
-	 */
-	@GetMapping("/api/members")
-	ResponseEntity<Page<MemberSearchResponse>> memberSearchWithPaging(
-		@RequestParam(value = "name", required = false) String name,
-		@RequestParam(value = "email", required = false) String email,
-		@RequestParam(value = "phoneNumber", required = false) String phoneNumber,
-		@RequestParam(value = "gender", required = false) String gender,
-		@RequestParam(value = "status", required = false) String status,
-		@RequestParam(value = "page") int page,
-		@RequestParam(value = "size") int size);
 
 	/**
 	 * 회원 정보 수정

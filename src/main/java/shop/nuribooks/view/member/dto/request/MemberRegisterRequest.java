@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import shop.nuribooks.view.member.entity.GenderType;
@@ -23,6 +24,7 @@ public record MemberRegisterRequest(
 	GenderType gender,
 
 	@NotBlank(message = "아이디는 반드시 입력해야 합니다.")
+	@Pattern(regexp = "[a-z0-9]{8,20}$", message = "아이디는 영어 소문자와 숫자만 사용하여 8자 이상 20자 이하로 입력해야 합니다.")
 	@Size(min = 8, max = 20, message = "아이디는 반드시 8자 이상 20자 이하로 입력해야 합니다.")
 	String username,
 

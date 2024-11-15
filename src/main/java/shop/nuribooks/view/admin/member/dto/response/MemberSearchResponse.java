@@ -1,4 +1,4 @@
-package shop.nuribooks.view.admin.dto.response;
+package shop.nuribooks.view.admin.member.dto.response;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

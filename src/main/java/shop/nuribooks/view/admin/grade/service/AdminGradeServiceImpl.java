@@ -1,21 +1,19 @@
-package shop.nuribooks.view.member.grade.service;
+package shop.nuribooks.view.admin.grade.service;
 
 import static org.springframework.http.HttpStatus.*;
 
 import java.util.List;
-import java.util.Objects;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import shop.nuribooks.view.common.dto.ResponseMessage;
-import shop.nuribooks.view.member.grade.dto.GradeDetailsResponse;
-import shop.nuribooks.view.member.grade.dto.GradeListResponse;
-import shop.nuribooks.view.member.grade.dto.GradeRegisterRequest;
-import shop.nuribooks.view.member.grade.dto.GradeUpdateRequest;
-import shop.nuribooks.view.member.grade.feign.AdminGradeServiceClient;
+import shop.nuribooks.view.admin.grade.dto.GradeDetailsResponse;
+import shop.nuribooks.view.admin.grade.dto.GradeListResponse;
+import shop.nuribooks.view.admin.grade.dto.GradeRegisterRequest;
+import shop.nuribooks.view.admin.grade.dto.GradeUpdateRequest;
+import shop.nuribooks.view.admin.grade.feign.AdminGradeServiceClient;
 
 @Service
 @RequiredArgsConstructor

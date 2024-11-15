@@ -1,4 +1,4 @@
-package shop.nuribooks.view.admin.dto.request;
+package shop.nuribooks.view.admin.member.dto.request;
 
 import lombok.Builder;
 
@@ -6,10 +6,13 @@ import lombok.Builder;
 public record MemberSearchRequest(
 
     String name,
+	String username,
     String email,
 	String phoneNumber,
 	String gender,
+	String gradeName,
     String status,
+	String authority,
 	int page,
 	int size
 

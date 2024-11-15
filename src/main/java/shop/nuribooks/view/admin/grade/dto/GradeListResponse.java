@@ -1,4 +1,4 @@
-package shop.nuribooks.view.member.grade.dto;
+package shop.nuribooks.view.admin.grade.dto;
 
 import java.math.BigDecimal;
 

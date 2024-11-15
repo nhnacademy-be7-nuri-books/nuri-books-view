@@ -1,4 +1,4 @@
-package shop.nuribooks.view.member.grade.controller;
+package shop.nuribooks.view.admin.grade.controller;
 
 import java.util.List;
 
@@ -15,11 +15,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import shop.nuribooks.view.member.grade.dto.GradeDetailsResponse;
-import shop.nuribooks.view.member.grade.dto.GradeListResponse;
-import shop.nuribooks.view.member.grade.dto.GradeRegisterRequest;
-import shop.nuribooks.view.member.grade.dto.GradeUpdateRequest;
-import shop.nuribooks.view.member.grade.service.AdminGradeService;
+import shop.nuribooks.view.admin.grade.dto.GradeDetailsResponse;
+import shop.nuribooks.view.admin.grade.dto.GradeListResponse;
+import shop.nuribooks.view.admin.grade.dto.GradeRegisterRequest;
+import shop.nuribooks.view.admin.grade.dto.GradeUpdateRequest;
+import shop.nuribooks.view.admin.grade.service.AdminGradeService;
 
 @Controller
 @RequiredArgsConstructor
