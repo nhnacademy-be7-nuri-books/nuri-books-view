@@ -75,7 +75,7 @@ public class ExceptionUtil {
 	 */
 	private static String handleStatusCode(int status, String message) {
 		switch (status) {
-			case 400, 401, 403, 409 -> {
+			case 400, 401, 403, 404, 409 -> {
 				return message;
 			}
 			default -> throw new DefaultServerError(status, message);
