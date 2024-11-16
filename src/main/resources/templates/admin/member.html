@@ -47,73 +47,79 @@
                 <div class="card-body">
                     <form th:action="@{/admin/member/members}" method="get" id="search_form">
                         <div class="form-group">
-                            <input type="text" class="form-control" id="name" name="name" placeholder=" ">
+                            <input type="text" class="form-control" id="name" name="name" placeholder=" "
+                                   th:value="${request != null ? request.name : ''}">
                             <label for="name" class="floating-label">이름</label>
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" id="username" name="username" placeholder=" ">
+                            <input type="text" class="form-control" id="username" name="username" placeholder=" "
+                                   th:value="${request != null ? request.username : ''}">
                             <label for="name" class="floating-label">아이디</label>
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" id="email" name="email" placeholder=" ">
+                            <input type="text" class="form-control" id="email" name="email" placeholder=" "
+                                   th:value="${request != null ? request.email : ''}">
                             <label for="email" class="floating-label">이메일</label>
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder=" ">
+                            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder=" "
+                                   th:value="${request != null ? request.phoneNumber : ''}">
                             <label for="phoneNumber" class="floating-label">전화번호</label>
                         </div>
                         <div class="form-group">
                             <label for="gender">성별</label>
                             <select class="form-control" id="gender" name="gender">
                                 <option value="" disabled selected hidden>성별을 선택하세요</option>
-                                <option value="MALE">남성</option>
-                                <option value="FEMALE">여성</option>
-                                <option value="OTHER">기타</option>
-                                <option value="NULL">선택하지 않음</option>
+                                <option value="MALE" th:selected="${request != null && request.gender == 'MALE'}">남성</option>
+                                <option value="FEMALE" th:selected="${request != null && request.gender == 'FEMALE'}">여성</option>
+                                <option value="OTHER" th:selected="${request != null && request.gender == 'OTHER'}">기타</option>
+                                <option value="NULL" th:selected="${request != null && request.gender == 'NULL'}">선택하지 않음</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="gender">등급</label>
                             <select class="form-control" id="gradeName" name="gradeName">
                                 <option value="" disabled selected hidden>등급을 선택하세요</option>
-                                <option value="STANDARD">STANDARD</option>
-                                <option value="SILVER">SILVER</option>
-                                <option value="GOLD">GOLD</option>
-                                <option value="PLATINUM">PLATINUM</option>
-                                <option value="ROYAL">ROYAL</option>
-                                <option value="NULL">선택하지 않음</option>
+                                <option value="STANDARD" th:selected="${request != null && request.gradeName == 'STANDARD'}">STANDARD</option>
+                                <option value="SILVER" th:selected="${request != null && request.gradeName == 'SILVER'}">SILVER</option>
+                                <option value="GOLD" th:selected="${request != null && request.gradeName == 'GOLD'}">GOLD</option>
+                                <option value="PLATINUM" th:selected="${request != null && request.gradeName == 'PLATINUM'}">PLATINUM</option>
+                                <option value="ROYAL" th:selected="${request != null && request.gradeName == 'ROYAL'}">ROYAL</option>
+                                <option value="NULL" th:selected="${request != null && request.gradeName == 'NULL'}">선택하지 않음</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="status">상태</label>
                             <select class="form-control" id="status" name="status">
                                 <option value="" disabled selected hidden>상태를 선택하세요</option>
-                                <option value="ACTIVE">활동</option>
-                                <option value="INACTIVE">휴면</option>
-                                <option value="WITHDRAWN">탈퇴</option>
-                                <option value="NULL">선택하지 않음</option>
+                                <option value="ACTIVE" th:selected="${request != null && request.status == 'ACTIVE'}">활동</option>
+                                <option value="INACTIVE" th:selected="${request != null && request.status == 'INACTIVE'}">휴면</option>
+                                <option value="WITHDRAWN" th:selected="${request != null && request.status == 'WITHDRAWN'}">탈퇴</option>
+                                <option value="NULL" th:selected="${request != null && request.status == 'NULL'}">선택하지 않음</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="status">권한</label>
                             <select class="form-control" id="authority" name="authority">
                                 <option value="" disabled selected hidden>권한을 선택하세요</option>
-                                <option value="MEMBER">일반회원</option>
-                                <option value="SELLER">판매자</option>
-                                <option value="ADMIN">관리자</option>
-                                <option value="NULL">선택하지 않음</option>
+                                <option value="MEMBER" th:selected="${request != null && request.authority == 'MEMBER'}">일반회원</option>
+                                <option value="SELLER" th:selected="${request != null && request.authority == 'SELLER'}">판매자</option>
+                                <option value="ADMIN" th:selected="${request != null && request.authority == 'ADMIN'}">관리자</option>
+                                <option value="NULL" th:selected="${request != null && request.authority == 'NULL'}">선택하지 않음</option>
                             </select>
                         </div>
                         <div class="form-group row">
                             <label for="page" class="col-sm-4 col-form-label">페이지 번호</label>
                             <div class="col-sm-8">
-                                <input type="number" class="form-control" id="page" name="page" value="0" min="0">
+                                <input type="number" class="form-control" id="page" name="page"
+                                       th:value="${request != null ? request.page : 0}" min="0">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="size" class="col-sm-4 col-form-label">페이지 크기</label>
                             <div class="col-sm-8">
-                                <input type="number" class="form-control" id="size" name="size" value="10" min="1">
+                                <input type="number" class="form-control" id="size" name="size"
+                                       th:value="${request != null ? request.size : 10}" min="1">
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary btn-block">검색</button>
