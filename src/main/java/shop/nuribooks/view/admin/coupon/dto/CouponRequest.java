@@ -8,13 +8,17 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import shop.nuribooks.view.admin.coupon.enums.ExpirationType;
+import shop.nuribooks.view.admin.point.enums.PolicyType;
 
 public record CouponRequest(
 	@NotNull(message = "이름은 필수입니다.")
 	@Size(min = 2, max = 50)
 	String name,
 
-	@NotNull(message = "할인율은 필수입니다.")
+	@NotNull(message = "쿠폰 할인 유형은 필수입니다.")
+	PolicyType policyType,
+
+	@NotNull(message = "할인 할당량은 필수입니다.")
 	@PositiveOrZero
 	int discount,
 

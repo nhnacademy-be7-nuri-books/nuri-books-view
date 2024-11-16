@@ -23,6 +23,7 @@ import shop.nuribooks.view.admin.coupon.dto.CouponRequest;
 import shop.nuribooks.view.admin.coupon.dto.CouponResponse;
 import shop.nuribooks.view.admin.coupon.enums.ExpirationType;
 import shop.nuribooks.view.admin.coupon.service.CouponService;
+import shop.nuribooks.view.admin.point.enums.PolicyType;
 import shop.nuribooks.view.common.dto.ResponseMessage;
 
 @Controller
@@ -35,6 +36,7 @@ public class CouponController {
 	public String getPointPolicy(Model model, @PageableDefault Pageable pageable){
 		Page<CouponResponse> coupons = this.couponService.getCoupons(pageable);
 		model.addAttribute("pages", coupons);
+		model.addAttribute("policyTypes", PolicyType.values());
 		model.addAttribute("expirationTypes", ExpirationType.values());
 		return "admin/coupon/coupon";
 	}

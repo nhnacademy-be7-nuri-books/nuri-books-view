@@ -16,7 +16,8 @@
                     <tr>
                         <th class="text-center">ID</th>
                         <th class="text-center">쿠폰 이름</th>
-                        <th class="text-center">할인율</th>
+                        <th class="text-center">정책 유형</th>
+                        <th class="text-center">할인 할당량</th>
                         <th class="text-center">최소 주문 금액</th>
                         <th class="text-center">최대 할인 금액</th>
                         <th class="text-center">시작일시</th>
@@ -30,7 +31,8 @@
                     <tr th:each="coupon : ${pages.content}">
                         <td class="text-center" th:text="${coupon.id}">ID</td>
                         <td class="text-center" th:text="${coupon.name}">쿠폰 이름</td>
-                        <th class="text-center" th:text="${coupon.discount}">할인율</th>
+                        <th class="text-center" th:text="${coupon.policyType.toKorName()}">정책 유형</th>
+                        <td class="text-center" th:text="${coupon.discount.intValue() + ' ' + (coupon.policyType.toString().equals('RATED') ? '%' : '₩')}">할인 할당량</td>
                         <th class="text-center" th:text="${coupon.minimumOrderPrice}">최소 주문 금액</th>
                         <th class="text-center" th:text="${coupon.maximumDiscountPrice}">최대 할인 금액</th>
                         <th class="text-center" th:text="${coupon.createdAt}">시작일시</th>

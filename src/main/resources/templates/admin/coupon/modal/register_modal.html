@@ -26,6 +26,19 @@
             $('#register-modal').modal('hide');
         }
 
+        function setMaxAmount() {
+            const policyType = document.getElementById("policyType").value;
+            const amountInput = document.getElementById("discount");
+
+            if (policyType === 'RATED') { // Adjust according to actual value for Type 1
+                amountInput.setAttribute("max", "100");
+                amountInput.value = 0;
+            } else {
+                amountInput.removeAttribute("max");
+                amountInput.value = 0;
+            }
+        }
+
     </script>
 
     <div>
@@ -52,9 +65,24 @@
                                 <label for="name" class="form-label">쿠폰 이름</label>
                                 <input type="text" class="form-control" id="name" name="name" required placeholder="쿠폰 이름">
 
-                                <label for="discount" class="form-label">할인율</label>
-                                <input type="number" min="0" max="100" class="form-control" id="discount" name="discount" required placeholder="할인율">
+                                <label for="policyType" class="form-label">정책 유형</label>
+                                <select id="policyType" name="policyType" class="form-select" onchange="setMaxAmount()">
+                                    <option th:each="policyType : ${policyTypes}" th:value="${policyType}"
+                                            th:text="${policyType.toKorName()}"></option>
+                                </select>
 
+                                <label for="discount" class="form-label">할인 할당량</label>
+                                <input type="number" min="0" class="form-control" id="discount" name="discount" required placeholder="할인 할당량">
+                                <script>
+                                    document.getElementById('discount').addEventListener('input', function() {
+                                        const maxAmount = this.getAttribute('max');
+                                        console.log(this.value)
+                                        if (maxAmount && this.value > Number(maxAmount)) {
+                                            this.value = maxAmount;
+                                        }
+                                    });
+
+                                </script>
                                 <label for="minimumOrderPrice" class="form-label">최소 주문 금액</label>
                                 <input type="number" min="0" class="form-control" id="minimumOrderPrice" name="minimumOrderPrice" required placeholder="최소 주문 금액">
 
@@ -75,19 +103,6 @@
                                     <option th:each="expirationType : ${expirationTypes}" th:value="${expirationType}"
                                             th:text="${expirationType.toKorName()}"></option>
                                 </select>
-
-
-
-<!--                                <script>-->
-<!--                                    document.getElementById('amount').addEventListener('input', function() {-->
-<!--                                        const maxAmount = this.getAttribute('max');-->
-<!--                                        console.log(this.value)-->
-<!--                                        if (maxAmount && this.value > Number(maxAmount)) {-->
-<!--                                            this.value = maxAmount;-->
-<!--                                        }-->
-<!--                                    });-->
-
-<!--                                </script>-->
                             </div>
                             <div class="text-center">
                                 <button type="button" class="btn btn-primary" onclick="submitHandler('/admin/coupon')">등록</button>
