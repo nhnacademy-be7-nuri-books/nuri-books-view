@@ -4,6 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# 로그 디렉토리 제외
+log/
+
 ### STS ###
 .apt_generated
 .classpath
