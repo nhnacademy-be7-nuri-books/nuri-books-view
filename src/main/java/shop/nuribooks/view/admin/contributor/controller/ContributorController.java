@@ -1,10 +1,10 @@
 package shop.nuribooks.view.admin.contributor.controller;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import shop.nuribooks.view.admin.contributor.dto.ContributorRequest;
 import shop.nuribooks.view.admin.contributor.dto.ContributorResponse;
 import shop.nuribooks.view.admin.contributor.service.ContributorService;
+import shop.nuribooks.view.common.dto.ResponseMessage;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,36 +31,36 @@ public class ContributorController {
 	public String showContributorList(@PageableDefault Pageable pageable, Model model) {
 		Page<ContributorResponse> contributors = contributorService.getAllContributors(pageable);
 		model.addAttribute("pages", contributors);
-		return "admin/contributor/contributor-list";
+		return "admin/contributor/contributor";
 	}
 
-	@GetMapping("/register")
-	public String showContributorRegisterPage() {
-		return "admin/contributor/contributor-register";
-	}
+	// @GetMapping("/register")
+	// public String showContributorRegisterPage() {
+	// 	return "admin/contributor/contributor-register";
+	// }
 
 	@PostMapping
-	public String registerContributor(ContributorRequest contributorRequest) {
-		contributorService.registerContributor(contributorRequest);
-		return "redirect:/admin/contributor";
+	public ResponseEntity<ResponseMessage> registerContributor(ContributorRequest contributorRequest) {
+		ResponseMessage message = contributorService.registerContributor(contributorRequest);
+		return ResponseEntity.status(HttpStatus.CREATED).body(message);
 	}
 
-	@GetMapping("/{contributor-id}")
-	public String showEditContributorPage(@PathVariable("contributor-id") Long id, Model model) {
-		ContributorResponse contributor = contributorService.getContributor(id);
-		model.addAttribute("contributor", contributor);
-		return "admin/contributor/contributor-edit";
-	}
+	// @GetMapping("/{contributor-id}")
+	// public ResponseEntity<ResponseMessage> showEditContributorPage(@PathVariable("contributor-id") Long id, Model model) {
+	// 	ResponseMessage message = contributorService.getContributor(id);
+	// 	return ResponseEntity.status(HttpStatus.CREATED ).body(message);
+	// }
 
 	@PutMapping("/{contributor-id}")
-	public String updateContributor(@PathVariable("contributor-id") Long id, ContributorRequest contributorRequest) {
-		contributorService.updateContributor(id, contributorRequest);
-		return "redirect:/admin/contributor";
+	public ResponseEntity<ResponseMessage> updateContributor(@PathVariable("contributor-id") Long id,
+		ContributorRequest contributorRequest) {
+		ResponseMessage message = contributorService.updateContributor(id, contributorRequest);
+		return ResponseEntity.status(HttpStatus.OK).body(message);
 	}
 
 	@DeleteMapping("/{contributor-id}")
-	public String deleteContributor(@PathVariable("contributor-id") Long id) {
-		contributorService.deleteContributor(id);
-		return "redirect:/admin/contributor";
+	public ResponseEntity<ResponseMessage> deleteContributor(@PathVariable("contributor-id") Long id) {
+		ResponseMessage message = contributorService.deleteContributor(id);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(message);
 	}
 }

@@ -1,0 +1,44 @@
+<div th:fragment="delete_modal">
+    <script>
+        const deleteHandler = (url) => {
+            // url과 id로 이루어진 path로 api 요청 보냄. 다른 url 형식일 땐 수정하여야함.
+            fetch(url + "/" + data, {
+                method: 'DELETE'
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        response.json().then(data => {
+                            showMessage("삭제 실패 \n"+ data.message)
+                        });
+                    }else{
+                        refreshList();
+                        showMessage();
+                    }
+                })
+                .catch(error => {
+                    showMessage(error);
+                });
+            $('#delete-modal').modal('hide');
+        }
+    </script>
+
+    <!-- 기여자 정책 삭제 모달 -->
+    <div id="delete-modal" class="modal fade" tabindex="-1" aria-labelledby="deleteModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">삭제</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>정말 삭제하시겠습니까?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="confirmDelete" onclick="deleteHandler('/admin/contributor')">예</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
