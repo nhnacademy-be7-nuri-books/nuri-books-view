@@ -31,13 +31,13 @@
                     <tr th:each="coupon : ${pages.content}">
                         <td class="text-center" th:text="${coupon.id}">ID</td>
                         <td class="text-center" th:text="${coupon.name}">쿠폰 이름</td>
-                        <th class="text-center" th:text="${coupon.policyType.toKorName()}">정책 유형</th>
+                        <td class="text-center" th:text="${coupon.policyType.toKorName()}">정책 유형</td>
                         <td class="text-center" th:text="${coupon.discount.intValue() + ' ' + (coupon.policyType.toString().equals('RATED') ? '%' : '₩')}">할인 할당량</td>
-                        <th class="text-center" th:text="${coupon.minimumOrderPrice}">최소 주문 금액</th>
-                        <th class="text-center" th:text="${coupon.maximumDiscountPrice}">최대 할인 금액</th>
-                        <th class="text-center" th:text="${coupon.createdAt}">시작일시</th>
-                        <th class="text-center" th:text="${coupon.expiredAt}">종료일시</th>
-                        <th class="text-center" th:text="${coupon.period}">기간</th>
+                        <td class="text-center" th:text="${coupon.minimumOrderPrice}">최소 주문 금액</td>
+                        <td class="text-center" th:text="${coupon.maximumDiscountPrice}">최대 할인 금액</td>
+                        <td class="text-center" th:text="${coupon.createdAt}">시작일시</td>
+                        <td class="text-center" th:text="${coupon.expiredAt}">종료일시</td>
+                        <td class="text-center" th:text="${coupon.period}">기간</td>
                         <td class="text-center" th:text="${coupon.expirationType.toKorName()}">만료 유형</td>
                         <td class="text-end">
                             <!-- 수정 버튼 (수정 모달 트리거) -->
