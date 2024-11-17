@@ -9,11 +9,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import shop.nuribooks.view.admin.contributor.dto.ContributorRequest;
 import shop.nuribooks.view.admin.contributor.dto.ContributorResponse;
@@ -28,32 +30,21 @@ public class ContributorController {
 	private final ContributorService contributorService;
 
 	@GetMapping
-	public String showContributorList(@PageableDefault Pageable pageable, Model model) {
+	public String getContributorList(@PageableDefault Pageable pageable, Model model) {
 		Page<ContributorResponse> contributors = contributorService.getAllContributors(pageable);
 		model.addAttribute("pages", contributors);
 		return "admin/contributor/contributor";
 	}
 
-	// @GetMapping("/register")
-	// public String showContributorRegisterPage() {
-	// 	return "admin/contributor/contributor-register";
-	// }
-
 	@PostMapping
-	public ResponseEntity<ResponseMessage> registerContributor(ContributorRequest contributorRequest) {
+	public ResponseEntity<ResponseMessage> registerContributor(@Valid @ModelAttribute ContributorRequest contributorRequest) {
 		ResponseMessage message = contributorService.registerContributor(contributorRequest);
 		return ResponseEntity.status(HttpStatus.CREATED).body(message);
 	}
 
-	// @GetMapping("/{contributor-id}")
-	// public ResponseEntity<ResponseMessage> showEditContributorPage(@PathVariable("contributor-id") Long id, Model model) {
-	// 	ResponseMessage message = contributorService.getContributor(id);
-	// 	return ResponseEntity.status(HttpStatus.CREATED ).body(message);
-	// }
-
 	@PutMapping("/{contributor-id}")
 	public ResponseEntity<ResponseMessage> updateContributor(@PathVariable("contributor-id") Long id,
-		ContributorRequest contributorRequest) {
+		@Valid @ModelAttribute ContributorRequest contributorRequest) {
 		ResponseMessage message = contributorService.updateContributor(id, contributorRequest);
 		return ResponseEntity.status(HttpStatus.OK).body(message);
 	}
