@@ -1,7 +1,5 @@
 package shop.nuribooks.view.admin.coupon.controller;
 
-import java.math.BigDecimal;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -33,7 +31,7 @@ public class CouponController {
 	private final CouponService couponService;
 
 	@GetMapping
-	public String getPointPolicy(Model model, @PageableDefault Pageable pageable){
+	public String getCoupons(Model model, @PageableDefault Pageable pageable) {
 		Page<CouponResponse> coupons = this.couponService.getCoupons(pageable);
 		model.addAttribute("pages", coupons);
 		model.addAttribute("policyTypes", PolicyType.values());
@@ -42,19 +40,20 @@ public class CouponController {
 	}
 
 	@PostMapping
-	public ResponseEntity<ResponseMessage> registerPointPolicy(@Valid @ModelAttribute CouponRequest couponRequest){
+	public ResponseEntity<ResponseMessage> registerCoupon(@Valid @ModelAttribute CouponRequest couponRequest) {
 		ResponseMessage message = this.couponService.registerCoupon(couponRequest);
 		return ResponseEntity.status(HttpStatus.CREATED).body(message);
 	}
 
 	@PutMapping("/{coupon-id}")
-	public ResponseEntity<ResponseMessage> updatePointPolicy(@PathVariable("coupon-id") Long id, @Valid @ModelAttribute CouponRequest couponRequest){
+	public ResponseEntity<ResponseMessage> updateCoupon(@PathVariable("coupon-id") Long id,
+		@Valid @ModelAttribute CouponRequest couponRequest) {
 		ResponseMessage message = this.couponService.updateCoupon(id, couponRequest);
-		return ResponseEntity.status(HttpStatus.OK ).body(message);
+		return ResponseEntity.status(HttpStatus.OK).body(message);
 	}
 
 	@DeleteMapping("/{coupon-id}")
-	public ResponseEntity<ResponseMessage> deleteCoupon(@PathVariable("coupon-id") Long id){
+	public ResponseEntity<ResponseMessage> deleteCoupon(@PathVariable("coupon-id") Long id) {
 		ResponseMessage message = this.couponService.deleteCoupon(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(message);
 	}

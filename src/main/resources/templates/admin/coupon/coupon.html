@@ -54,7 +54,7 @@
                     </tr>
 
                     <tr th:if="${#lists.isEmpty(pages.content)}">
-                        <td colspan="10일" class="text-center text-muted">등록된 쿠폰 정책이 없습니다.</td>
+                        <td colspan="10" class="text-center text-muted">등록된 쿠폰 정책이 없습니다.</td>
                     </tr>
                     </tbody>
                 </table>
@@ -63,8 +63,8 @@
         </div>
     </div>
 
-    <div th:replace="~{/admin/coupon/modal/update_modal::update_modal}"></div>
-    <div th:replace="~{/admin/coupon/modal/delete_modal::delete_modal}"></div>
+    <div th:replace="~{admin/coupon/modal/update_modal::update_modal}"></div>
+    <div th:replace="~{admin/coupon/modal/delete_modal::delete_modal}"></div>
 </div>
 </body>
 </html>
