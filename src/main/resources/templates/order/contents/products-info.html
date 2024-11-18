@@ -1,0 +1,69 @@
+<div th:fragment="productsInfo" class="col-md-12">
+    <div class="card mb-3">
+        <h5 class="mb-0">
+            <button
+                    class="btn btn-link accordion-button"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseOrderDetails"
+                    aria-expanded="false"
+                    aria-controls="collapseOrderDetails"
+            >
+                주문 상세
+            </button>
+        </h5>
+        <div
+                id="collapseOrderDetails"
+                class="collapse"
+                aria-labelledby="headingOrderDetails"
+        >
+
+            <div class="card-body">
+                <br/>
+                <h4>주문 품목</h4>
+                <table class="table table-borderless">
+                    <tbody>
+                    <!-- 상품 항목 1 -->
+                    <tr th:each="book : ${orderInformation.bookOrderResponse}">
+                        <td class="d-flex align-items-center">
+                            <!-- 썸네일 -->
+                            <img th:src="@{${book.thumbnailImageUrl}}" class="img-fluid mr-3"
+                                 alt="상품 이미지">
+                        </td>
+                        <td>
+                            <h6 class="mb-1" th:text="${book.title()}">테스트 책 이름</h6>
+                        </td>
+                        <td>
+                            <!-- 상품 정보 -->
+                            <div>
+                                <div>가격: <span class="original-price" th:text="${book.price}">20,000원</span>
+                                </div>
+                                <div>세일가: <span class="sale-price"
+                                                th:text="${book.salePrice}">15,000원</span></div>
+                                <div>총합 가격: <span class="book-total-price"
+                                                  th:text="${book.bookTotalPrice}">15,000원</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="mt-2">
+                                <label for="item-quantity">수량:</label>
+                                <span class="item-quantity" id="item-quantity"
+                                      th:text="${book.quantity}">1개</span>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <!-- 총합 -->
+                <div class="text-right">
+                    <p>총 주문 품목: <span id="total-items">2</span>개</p>
+                </div>
+                <br/>
+            </div>
+            <!-- 주문 상세 -->
+
+        </div>
+    </div>
+</div>
