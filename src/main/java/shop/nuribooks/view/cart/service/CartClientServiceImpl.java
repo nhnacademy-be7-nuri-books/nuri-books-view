@@ -36,8 +36,8 @@ public class CartClientServiceImpl implements CartClientService{
             Long parsedUserId = Long.parseLong(userId);
             CartLoadRequest cartLoadRequest = new CartLoadRequest(parsedUserId);
             cartClient.loadCartToRedis(cartLoadRequest);
-        } catch (NumberFormatException ignored) {
-            log.debug("변환할 수 없습니다.");
+        } catch (Exception e) {
+            log.error("예외를 무시합니다.");
 		}
     }
 
