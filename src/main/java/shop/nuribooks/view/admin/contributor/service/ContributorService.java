@@ -2,6 +2,7 @@ package shop.nuribooks.view.admin.contributor.service;
 
 import shop.nuribooks.view.admin.contributor.dto.ContributorRequest;
 import shop.nuribooks.view.admin.contributor.dto.ContributorResponse;
+import shop.nuribooks.view.common.dto.ResponseMessage;
 
 import java.util.List;
 
@@ -12,9 +13,9 @@ public interface ContributorService {
     Page<ContributorResponse> getAllContributors(Pageable pageable);
 
     ContributorResponse getContributor(Long contributorId);
-    String registerContributor(ContributorRequest contributorRequest);
+    ResponseMessage registerContributor(ContributorRequest contributorRequest);
 
-    String updateContributor(Long id, ContributorRequest contributorRequest);
+    ResponseMessage updateContributor(Long id, ContributorRequest contributorRequest);
 
-    String deleteContributor(Long contributorId);
+    ResponseMessage deleteContributor(Long contributorId);
 }

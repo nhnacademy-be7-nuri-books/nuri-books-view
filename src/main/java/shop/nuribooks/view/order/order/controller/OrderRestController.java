@@ -21,12 +21,17 @@ public class OrderRestController {
 
 	private final OrderService orderService;
 
+	/**
+	 * 주문 저장 처리
+	 *
+	 * @param orderTempRegisterRequest
+	 * @return
+	 */
 	@PostMapping("/save")
 	public ResponseEntity<OrderTempRegisterResponse> doOrder(
 		@RequestBody OrderTempRegisterRequest orderTempRegisterRequest) {
 
 		OrderTempRegisterResponse orderTempRegisterResponse = orderService.saveOrder(orderTempRegisterRequest);
-
 		return ResponseEntity.status(HttpStatus.OK).body(orderTempRegisterResponse);
 
 	}
