@@ -401,3 +401,16 @@ table td img {
     }
 
 }
+
+/* 버튼 색상 지정 하기*/
+.btn-custom1 {
+    background-color: #1E2617; /* 원하는 배경색 (예: 토마토 색) */
+    color: #D7D8D9; /* 글자 색 */
+    border: none;
+    transition: background-color 0.3s ease; /* 부드러운 색상 전환 */
+}
+
+.btn-custom1:hover {
+    background-color: #D7D8D9; /* Hover 시 배경색 변경 */
+    color: #4C5938; /* Hover 시 글자 색 (선택 사항) */
+}
