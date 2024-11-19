@@ -35,7 +35,6 @@ import shop.nuribooks.view.member.member.service.MemberService;
 public class AuthController {
 
 	private final AuthService authService;
-	private final MemberService memberService;
 
 	@Value("${error.message-key}")
 	private String errorMessageKey;
@@ -95,7 +94,6 @@ public class AuthController {
 
 			log.info("로그인 성공");
 		}
-		// memberService.memberLatestLoginAtUpdate();
 
 		// String authHeader = result.get("X-USER-ID").getFirst();
 		// if (Objects.nonNull(authHeader)) {
