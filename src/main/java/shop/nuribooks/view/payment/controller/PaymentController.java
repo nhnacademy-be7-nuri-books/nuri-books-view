@@ -7,6 +7,7 @@ import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 import java.util.Base64;
 
 import org.json.simple.JSONObject;
@@ -22,33 +23,39 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import shop.nuribooks.view.common.dto.ResponseMessage;
 import shop.nuribooks.view.payment.dto.PaymentRequest;
+import shop.nuribooks.view.payment.dto.PaymentSuccessRequest;
+import shop.nuribooks.view.payment.service.PaymentService;
 
 @Controller
+@RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/payments")
 public class PaymentController {
 
+	private final PaymentService paymentService;
+
 	/**
 	 * 인증성공처리
-	 * @param request
-	 * @param model
-	 * @return
-	 * @throws Exception
+	 * @param request HttpServletRequest
+	 * @param model Model
+	 * @return 성공 페이지
+	 * @throws Exception 토스 페이먼츠 에러
 	 */
 	@GetMapping(value = "/success")
 	public String paymentRequest(HttpServletRequest request, Model model) throws Exception {
-		// todo : 결제 인증 성공 처리 - AMOUNT 가 서버에서 저장된 AMOUNT와 같은 지 확인 하기
 		return "payment/success";
 	}
 
 	/**
 	 * 인증실패처리
-	 * @param request
-	 * @param model
-	 * @return
-	 * @throws Exception
+	 * @param request HttpServletRequest
+	 * @param model Model
+	 * @return 실패 페이지
+	 * @throws Exception 토스 페이먼츠 에러
 	 */
 	@GetMapping(value = "/fail")
 	public String failPayment(HttpServletRequest request, Model model) throws Exception {
@@ -116,7 +123,24 @@ public class PaymentController {
 		responseStream.close();
 
 		if (isSuccess) {
-			// todo : 주문 상태값 변경,
+			// 주문 상태값 변경
+			PaymentSuccessRequest paymentSuccessRequest = PaymentSuccessRequest.builder()
+				.status((String)jsonObject.get("status"))
+				.orderId((String)jsonObject.get("orderId"))
+				.paymentKey((String)jsonObject.get("paymentKey"))
+				.requestedAt(OffsetDateTime.parse((String)jsonObject.get("requestedAt")).toLocalDateTime())
+				.method((String)jsonObject.get("method"))
+				.approvedAt(OffsetDateTime.parse((String)jsonObject.get("approvedAt")).toLocalDateTime())
+				.totalAmount((Long)jsonObject.get("totalAmount"))
+				.build();
+
+			ResponseMessage responseMessage = paymentService.paymentSuccessRequest(
+				paymentSuccessRequest);
+
+			if (responseMessage.statusCode() != 201) {
+				log.error("결제 저장 실패");
+				code = responseMessage.statusCode();
+			}
 		}
 
 		return ResponseEntity.status(code).body(jsonObject);
