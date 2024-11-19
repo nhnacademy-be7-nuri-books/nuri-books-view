@@ -16,7 +16,7 @@ public interface AdminGradeService {
 
 	GradeDetailsResponse getGradeDetails(String name);
 
-	ResponseMessage updateGrade(String name, GradeUpdateRequest request);
+	String updateGrade(String name, GradeUpdateRequest request);
 
 	String deleteGrade(String name);
 }

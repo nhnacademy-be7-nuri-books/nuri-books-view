@@ -13,14 +13,14 @@ public record MemberSearchRequest(
 	String gradeName,
     String status,
 	String authority,
-	int page,
-	int size
+	Integer page,
+	Integer size
 
 ) { public MemberSearchRequest {
-	if (page <= 0) {
+	if (page == null || page <= 0) {
 		page = 0;
 	}
-	if (size <= 0) {
-		size = 30;
+	if (size == null || size <= 0) {
+		size = 20;
 	}
 }}

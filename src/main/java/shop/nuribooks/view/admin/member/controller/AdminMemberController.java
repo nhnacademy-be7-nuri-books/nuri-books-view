@@ -39,6 +39,7 @@ public class AdminMemberController {
 		Page<MemberSearchResponse> result = adminMemberService.memberSearchWithPaging(request);
 
 		model.addAttribute("members", result);
+		model.addAttribute("request", request);
 
 		return "admin/member";
 	}

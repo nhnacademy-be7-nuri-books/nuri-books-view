@@ -18,11 +18,11 @@
                                th:value="${grade.name}" required placeholder="등급명">
                         <label for="pointRate" class="form-label">포인트 적립률</label>
                         <input type="number" class="form-control" id="pointRate" name="pointRate"
-                               th:value="${grade.pointRate}" required placeholder="포인트 적립률" min="0" max="100">
+                               th:value="${grade.pointRate}" required placeholder="포인트 적립률" min="0.0" max="100">
                         <label for="requirement" class="form-label">요구 금액</label>
                         <input type="number" class="form-control" id="requirement" name="requirement"
                                th:value="${#numbers.formatInteger(grade.requirement, 1, 'COMMA')}" required placeholder="요구 금액"
-                               min="0" step="1000">
+                               min="0.0" step="1000">
                     </div>
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary">수정</button>
@@ -36,7 +36,48 @@
     <div class="mt-3 text-center">
         <a href="/admin/grade" class="btn btn-secondary">회원등급 목록으로 돌아가기</a>
     </div>
-</div>
 
+    <!-- Bootstrap JS, Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Modal for displaying messages -->
+    <div class="modal fade" id="responseModal" tabindex="-1" aria-labelledby="responseModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="responseModalLabel">알림</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modalMessage" th:text="${message}">
+                    <!-- 서버에서 전달된 메시지가 여기에 동적으로 삽입됩니다 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="responseBtn">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 페이지가 로드되면 메시지가 있으면 모달을 띄운다.
+        document.addEventListener("DOMContentLoaded", function() {
+            const message = document.getElementById('modalMessage').textContent;
+
+            if (message) {
+                // 모달에 메시지 삽입
+                document.getElementById('modalMessage').textContent = message;
+
+                // 모달 표시
+                var modal = new bootstrap.Modal(document.getElementById('responseModal'));
+                modal.show();
+
+                // 확인 버튼 클릭 시 모달 닫기
+                document.getElementById('responseBtn').addEventListener('click', function () {
+                    modal.hide(); // 모달 닫기
+                });
+            }
+        });
+    </script>
+</div>
 </body>
 </html>
