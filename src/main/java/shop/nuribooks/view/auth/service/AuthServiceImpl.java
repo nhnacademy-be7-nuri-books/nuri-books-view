@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -73,11 +74,10 @@ public class AuthServiceImpl implements AuthService {
 				.filter(list -> !list.isEmpty())
 				.ifPresent(setCookieHeaders -> responseMap.put(X_USER_ID, setCookieHeaders));
 
-			// 장바구니 로드
-			// String userId = response.getHeaders().getFirst(X_USER_ID);
-			// if (Objects.nonNull(userId)) {
-			// 	cartClientService.loadCartToRedis(userId);
-			// }
+			String userId = response.getHeaders().getFirst(X_USER_ID);
+			if (Objects.nonNull(userId)) {
+				cartClientService.loadCartToRedis(userId);
+			}
 			return responseMap;
 
 		} catch (FeignException ex) {
