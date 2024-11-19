@@ -83,7 +83,7 @@ spring:
 
 logging:
   level:
-    root: info
+    root: debug
     javax:
       management:
         remote:

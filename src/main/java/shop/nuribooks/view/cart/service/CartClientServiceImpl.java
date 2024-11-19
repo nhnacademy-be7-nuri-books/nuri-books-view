@@ -6,10 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
-import shop.nuribooks.view.cart.dto.request.CartAddRequest;
-import shop.nuribooks.view.cart.dto.request.CartAddRequestToServer;
+import shop.nuribooks.view.cart.dto.request.CartRequestToServer;
 import shop.nuribooks.view.cart.dto.request.CartLoadRequest;
-import shop.nuribooks.view.cart.dto.response.CartResponse;
+import shop.nuribooks.view.cart.dto.response.CartBookResponse;
 import shop.nuribooks.view.cart.fegin.CartClient;
 
 @Slf4j
@@ -20,13 +19,14 @@ public class CartClientServiceImpl implements CartClientService{
     private final CartClient cartClient;
 
     @Override
-    public void addCart(CartAddRequestToServer request) {
-        cartClient.addCart(request);
+    public ResponseEntity<Void> addCart(CartRequestToServer request) {
+
+        return cartClient.addCart(request);
     }
 
     @Override
-    public List<CartResponse> getCart(String cartId) {
-        ResponseEntity<List<CartResponse>> cart = cartClient.getCart(cartId);
+    public List<CartBookResponse> getCart(String cartId) {
+        ResponseEntity<List<CartBookResponse>> cart = cartClient.getCart(cartId);
         return cart.getBody();
     }
 
@@ -39,5 +39,10 @@ public class CartClientServiceImpl implements CartClientService{
         } catch (NumberFormatException ignored) {
             log.debug("변환할 수 없습니다.");
 		}
+    }
+
+    @Override
+    public ResponseEntity<Void> removeCartItem(String cartId, Long bookId) {
+        return cartClient.removeCartItem(cartId, bookId);
     }
 }

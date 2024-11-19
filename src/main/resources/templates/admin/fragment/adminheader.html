@@ -1,34 +1,61 @@
 <div th:fragment="adminHeader">
-    <header class="admin-header d-flex justify-content-between align-items-center bg-light p-3 shadow-sm rounded text-dark">
+    <header class="row">
         <!-- Header -->
-        <div class="col-12 bg-white pt-3">
+        <div class="col-12 bg-white pt-4">
             <div class="row">
+                <!-- Logo Section -->
                 <div class="col-lg-auto">
                     <div class="site-logo text-center text-lg-left">
-                        <a th:href="@{/admin}">NURIBOOKS</a>
+                        <a th:href="@{/}">NURIBOOKS</a>
                     </div>
                 </div>
+
+                <!-- Search Bar -->
                 <div class="col-lg-5 mx-auto mt-4 mt-lg-0">
                     <form action="#">
                         <div class="form-group">
                             <div class="input-group">
-                                <input type="search" class="form-control border-dark" placeholder="Search..."
-                                       required>
+                                <input class="form-control border-dark" placeholder="Search..." required type="search">
                                 <button class="btn btn-outline-dark"><i class="fas fa-search"></i></button>
                             </div>
                         </div>
                     </form>
                 </div>
-                <div class="col-lg-auto text-center text-lg-left header-item-holder">
-                    <a href="#" class="header-item">
-                        <i class="fas fa-heart me-2"></i><span id="header-favorite">0</span>
-                    </a>
-                    <a href="cart.html" class="header-item">
-                        <i class="fas fa-shopping-bag me-2"></i><span id="header-qty" class="me-3">2</span>
-                        <!--<i class="fas fa-money-bill-wave me-2"></i><span id="header-price">$4,000</span>-->
-                    </a>
+
+                <!-- User & Cart Section -->
+                <div class="col-lg-auto d-flex justify-content-between align-items-center">
+                    <div th:if="${isLoggedIn == null or isLoggedIn == false}">
+                        <a th:href="@{/api/cart}" class="header-item">
+                            <i class="fas fa-shopping-bag me-2"></i><span id="header-qty1"
+                                                                          class="me-3 font-weight-bold">2</span>
+                        </a>
+                        <a th:href="@{/login}" class="header-item">
+                            <span class="font-weight-normal">로그인</span>
+                        </a>
+                        <a th:href="@{/sign-up}" class="header-item">
+                            <span class="font-weight-normal">회원가입</span>
+                        </a>
+                    </div>
+                    <div th:if="${isLoggedIn}">
+                        <a th:href="@{/api/cart}" class="header-item">
+                            <i class="fas fa-shopping-bag me-2"></i><span id="header-qty2" class="me-3">2</span>
+                        </a>
+                        <form th:action="@{/logout}" method="post" style="display:inline;">
+                            <button type="submit" class="header-item"
+                                    style="border: none; background: none; padding: 0;">
+                                <span class="font-weight-normal">로그아웃</span>
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
+
+            <!-- Main Navigation (Menu) -->
+            <div class="container-fluid">
+                <div class="row">
+                </div>
+            </div>
+            <!-- Main Navigation End -->
         </div>
     </header>
 </div>

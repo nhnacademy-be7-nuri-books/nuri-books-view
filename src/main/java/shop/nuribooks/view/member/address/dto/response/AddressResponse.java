@@ -1,12 +1,11 @@
 package shop.nuribooks.view.member.address.dto.response;
 
-import jakarta.validation.constraints.NotBlank;
 
 public record AddressResponse(
-        @NotBlank Long id,
-        @NotBlank String name,
-        @NotBlank String zipcode,
-        @NotBlank String address,
-        @NotBlank String detailAddress,
+        Long id,
+        String name,
+        String zipcode,
+        String address,
+        String detailAddress,
         boolean isDefault) {
 }

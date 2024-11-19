@@ -28,10 +28,9 @@ public class AddressController {
     }
 
     @PostMapping("api/member/address")
-    public String registerAddress(@ModelAttribute @Valid AddressRegisterRequest request, HttpServletRequest httpServletRequest) {
+    public String registerAddress(@ModelAttribute @Valid AddressRegisterRequest request) {
         addressClientService.registerAddress(request);
-
-        return "index";
+        return "redirect:/api/member/me/address";
     }
 
     @GetMapping("/api/member/me/address")

@@ -1,10 +1,77 @@
-<!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout1}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{member/layout/memberlayout}">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">주소 등록 등록</h2>
+            </div>
+            <div class="card-body">
+                <form th:action="@{/api/member/address}" method="post" id="address_form">
+                    <div class="col-md-12 form-group mb-3">
+                        <label for="zipcode">우편번호</label>
+                        <input type="text" class="form-control" id="zipcode" name="zipcode" placeholder="우편번호"
+                               onfocus="this.placeholder = ''" onblur="this.placeholder = '우편번호'" readonly>
+                    </div>
+                    <div class="col-md-12 form-group mb-3">
+                        <label for="address">주소</label>
+                        <input type="text" class="form-control" id="address" name="address" placeholder="주소"
+                               onfocus="this.placeholder = ''" onblur="this.placeholder = '주소'" readonly>
+                    </div>
+                    <div class="col-md-12 form-group mb-3">
+                        <input type="button" onclick="sample6_execDaumPostcode()" value="도로명 주소 찾기"><br>
+                    </div>
+                    <div class="col-md-12 form-group mb-3">
+                        <label for="detailAddress">상세주소</label>
+                        <input type="text" class="form-control" id="detailAddress" name="detailAddress" placeholder="상세주소"
+                               onfocus="this.placeholder = ''" onblur="this.placeholder = '상세주소'" required>
+                    </div>
+                    <div class="col-md-6 form-group mb-3">
+                        <label for="name">별칭</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="별칭"
+                               onfocus="this.placeholder = ''" onblur="this.placeholder = '별칭'" required>
+                    </div>
+                    <div class="col-md-12 form-group mb-3">
+                        <button type="submit" class="btn btn-primary w-100">주소등록</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <script>
+        document.getElementById('contributor_form').document.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+
+            fetch('/api/member/address', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('주소 등록 실패');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('주소 등록 성공:', data);
+                    alert('주소가 성공적으로 등록되었습니다.');
+                    window.location.href = '/api/member/me/address';
+                })
+                .catch(error => {
+                    console.error('주소 등록 오류:', error);
+                    alert('다시 작성해 주세요.');
+                });
+        });
+
+
         function sample6_execDaumPostcode() {
             new daum.Postcode({
                 oncomplete: function(data) {
@@ -49,85 +116,6 @@
             }).open();
         }
     </script>
-</head>
-<div layout:fragment="content">
-    <!-- Main Content -->
-    <div class="row">
-        <div class="col-12 mt-3 text-center text-uppercase">
-            <h2>주소 등록</h2>
-        </div>
-    </div>
-
-    <main class="row">
-        <div class="col-lg-6 col-md-8 col-sm-10 mx-auto bg-light rounded shadow py-4 mb-4">
-            <div class="text-center mb-4">
-                <p>Please fill in your details to register.</p>
-            </div>
-            <form class="row" th:action="@{/api/member/address}" method="post" id="register_form">
-                <div class="col-md-12 form-group mb-3">
-                    <label for="zipcode">우편번호</label>
-                    <input type="text" class="form-control" id="zipcode" name="zipcode" placeholder="우편번호"
-                           onfocus="this.placeholder = ''" onblur="this.placeholder = '우편번호'" readonly>
-                </div>
-                <div class="col-md-12 form-group mb-3">
-                    <label for="address">주소</label>
-                    <input type="text" class="form-control" id="address" name="address" placeholder="주소"
-                           onfocus="this.placeholder = ''" onblur="this.placeholder = '주소'" readonly>
-                </div>
-                <div class="col-md-12 form-group mb-3">
-                    <input type="button" onclick="sample6_execDaumPostcode()" value="도로명 주소 찾기"><br>
-                </div>
-                <div class="col-md-12 form-group mb-3">
-                    <label for="detailAddress">상세주소</label>
-                    <input type="text" class="form-control" id="detailAddress" name="detailAddress" placeholder="상세주소"
-                           onfocus="this.placeholder = ''" onblur="this.placeholder = '상세주소'" required>
-                </div>
-                <div class="col-md-6 form-group mb-3">
-                    <label for="name">별칭</label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="별칭"
-                           onfocus="this.placeholder = ''" onblur="this.placeholder = '별칭'" required>
-                </div>
-                <div class="col-md-12 form-group mb-3">
-                    <button type="submit" class="btn btn-primary w-100">주소등록</button>
-                </div>
-            </form>
-        </div>
-    </main>
 </div>
-<!-- Main Content -->
-
-<!-- Script -->
-<th:block layout:fragment="script">
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const form = document.getElementById("register_form");
-            const errorMessage = document.getElementById("errorMessage");
-            const errorToastElement = document.getElementById("errorToast")
-            const errorToast = new bootstrap.Toast(errorToastElement);
-            errorToast.hide();
-
-            form.addEventListener("submit", function (event) {
-                let valid = true;
-
-                const zipcode = document.getElementById("zipcode").value;
-                const address = document.getElementById("address").value;
-                const detailAddress = document.getElementById("detailAddress").value;
-                const name = document.getElementById("name").value;
-
-                // 필수 입력 검증
-                if (!zipcode || !address || !detailAddress || !name) {
-                    errorMessage.textContent = "모든 필드를 입력해야 합니다.";
-                    valid = false;
-                }
-                // 유효하지 않으면 오류 메시지 표시하고 폼 제출 중지
-                if (!valid) {
-                    event.preventDefault();
-                    errorToastElement.style.display = "block";
-                    errorToast.show();
-                }
-            });
-        });
-    </script>
-</th:block>
-<!-- Script -->
+</body>
 </html>

@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.auth.dto.request.LoginRequest;
 import shop.nuribooks.view.cart.service.CartClientService;
-import shop.nuribooks.view.common.decoder.JwtDecoder;
 import shop.nuribooks.view.common.feign.AuthServiceClient;
 import shop.nuribooks.view.common.util.ExceptionUtil;
 
@@ -75,15 +73,17 @@ public class AuthServiceImpl implements AuthService {
 				.filter(list -> !list.isEmpty())
 				.ifPresent(setCookieHeaders -> responseMap.put(X_USER_ID, setCookieHeaders));
 
-			// 여기다가 작성
-			String userId = response.getHeaders().getFirst(X_USER_ID);
-			if (Objects.nonNull(userId)) {
-				cartClientService.loadCartToRedis(userId);
-			}
+			// 장바구니 로드
+			// String userId = response.getHeaders().getFirst(X_USER_ID);
+			// if (Objects.nonNull(userId)) {
+			// 	cartClientService.loadCartToRedis(userId);
+			// }
 			return responseMap;
 
 		} catch (FeignException ex) {
-			List<String> errorMessage = Collections.singletonList(ExceptionUtil.handleFeignException(ex));
+			// 실제 메시지는 사용 안하고 서버 에러만 핸들링
+			String message = ExceptionUtil.handleFeignException(ex);
+			List<String> errorMessage = Collections.singletonList("로그인에 실패하였습니다.");
 			responseMap.put(errorMessageKey, errorMessage);
 			return responseMap;
 		}

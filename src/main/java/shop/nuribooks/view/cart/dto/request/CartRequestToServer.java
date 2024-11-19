@@ -1,6 +1,6 @@
 package shop.nuribooks.view.cart.dto.request;
 
-public record CartAddRequestToServer(
+public record CartRequestToServer(
 	String cartId,
 	Long bookId,
 	int quantity) {

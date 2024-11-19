@@ -1,5 +1,6 @@
 package shop.nuribooks.view.common.advice;
 
+import org.springframework.beans.factory.annotation.Value;
 import java.io.IOException;
 import java.util.stream.Collectors;
 
@@ -8,6 +9,7 @@ import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -38,6 +40,9 @@ import shop.nuribooks.view.exception.UnauthorizedException;
 @Slf4j
 @ControllerAdvice
 public class GlobalControllerAdvice {
+
+	@Value("${error.message-key}")
+	private String errorMessageKey;
 
 	/**
 	 * 서버 예외가 발생할 시 처리
@@ -101,18 +106,15 @@ public class GlobalControllerAdvice {
 
 	@ExceptionHandler({BadRequestException.class})
 	public String handlerBadRequest(BadRequestException ex, RedirectAttributes redirectAttributes) {
-		redirectAttributes.addFlashAttribute(ex.getMessage());
+		redirectAttributes.addFlashAttribute(errorMessageKey, ex.getMessage());
 		return "redirect:/error";
 	}
 
 	@ExceptionHandler({FeignException.class})
-	public ResponseEntity<ResponseMessage> feignExceptionHandler(FeignException ex, HttpServletResponse response) throws
+	public ResponseEntity<ResponseMessage> feignExceptionHandler(FeignException ex) throws
 		IOException {
 		if(ex.status() >= 500){
 			log.error(ex.getMessage());
-		}
-		else if(ex.status() == 401){
-			response.sendRedirect("/logout");
 		}
 		return ResponseEntity.status(ex.status()).body(new ResponseMessage(ex.status(), ExceptionUtil.handleFeignException(ex)));
 	}
