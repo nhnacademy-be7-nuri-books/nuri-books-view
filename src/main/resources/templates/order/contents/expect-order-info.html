@@ -1,0 +1,51 @@
+<div th:fragment="expectOrderInfo" class="col-md-12">
+    <div class="card mb-3">
+        <h5 class="mb-0">
+            <button
+                    class="btn btn-link accordion-button"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseShippingDate"
+                    aria-expanded="false"
+                    aria-controls="collapseShippingDate"
+            >
+                배송 날짜 예약
+            </button>
+        </h5>
+        <div
+                id="collapseShippingDate"
+                class="collapse"
+                aria-labelledby="headingShippingDate"
+        >
+            <div class="card-body">
+                <br/>
+                <h4>배송 예약 날짜 선택</h4>
+                <br/>
+
+                <ul class="list-group d-flex">
+                    <li class="list-group-item">
+                        <input type="radio" id="deliveryTomorrow" name="deliveryDate"
+                               value="deliveryTomorrow" checked>
+                        <label for="deliveryTomorrow">내일 (<span id="dateTomorrow"></span>)</label>
+                    </li>
+                    <li class="list-group-item">
+                        <input type="radio" id="deliveryDayAfter" name="deliveryDate"
+                               value="deliveryDayAfter">
+                        <label for="deliveryDayAfter">내일 모레 (<span
+                                id="dateDayAfter"></span>)</label>
+                    </li>
+                    <li class="list-group-item">
+                        <input type="radio" id="deliveryTwoDaysAfter" name="deliveryDate"
+                               value="deliveryTwoDaysAfter">
+                        <label for="deliveryTwoDaysAfter">글피 (<span
+                                id="dateTwoDaysAfter"></span>)</label>
+                    </li>
+                </ul>
+
+
+                <br/>
+
+            </div>
+        </div>
+    </div>
+</div>

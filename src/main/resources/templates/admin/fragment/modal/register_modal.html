@@ -1,60 +1,60 @@
-<div th:fragment="register_modal(url)">
-    <script th:inline="javascript">
-        /*<![CDATA[*/
-        const showSuccessMessage = () =>{
-            const successMessage = document.getElementById("successMessage");
-            const successToastElement = document.getElementById("successToast");
-            const successToast = new bootstrap.Toast(successToastElement);
+<!--<div th:fragment="register_modal(url)">-->
+<!--    <script th:inline="javascript">-->
+<!--        /*<![CDATA[*/-->
+<!--        const showSuccessMessage = () =>{-->
+<!--            const successMessage = document.getElementById("successMessage");-->
+<!--            const successToastElement = document.getElementById("successToast");-->
+<!--            const successToast = new bootstrap.Toast(successToastElement);-->
 
-            successMessage.textContent = '요청이 완료되었습니다.';
+<!--            successMessage.textContent = '요청이 완료되었습니다.';-->
 
-            successToastElement.style.display = "block";
-            successToast.show();
-        }
-        const showErrorMessage = (error) => {
-            const errorMessage = document.getElementById("errorMessage");
-            const errorToastElement = document.getElementById("errorToast")
-            const errorToast = new bootstrap.Toast(errorToastElement);
+<!--            successToastElement.style.display = "block";-->
+<!--            successToast.show();-->
+<!--        }-->
+<!--        const showErrorMessage = (error) => {-->
+<!--            const errorMessage = document.getElementById("errorMessage");-->
+<!--            const errorToastElement = document.getElementById("errorToast")-->
+<!--            const errorToast = new bootstrap.Toast(errorToastElement);-->
 
-            errorMessage.textContent = '요청이 실패하였습니다. ' + error;
+<!--            errorMessage.textContent = '요청이 실패하였습니다. ' + error;-->
 
-            errorToastElement.style.display = "block";
-            errorToast.show();
-        }
+<!--            errorToastElement.style.display = "block";-->
+<!--            errorToast.show();-->
+<!--        }-->
 
-        const refreshList = () => {
-            $("#data-table").load(window.location.href + " #data-table");
-        }
-        const submitHandler = () => {
-            const form = document.getElementById('register_form');
+<!--        const refreshList = () => {-->
+<!--            $("#data-table").load(window.location.href + " #data-table");-->
+<!--        }-->
+<!--        const submitHandler = () => {-->
+<!--            const form = document.getElementById('register_form');-->
 
-            const formData = new FormData(form);
-            let urls = [[$ {url}]];
-            fetch(urls , {
-                method: 'POST',
-                body: formData
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(response.status, "등록 실패");
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    refreshList();
-                    showSuccessMessage();
-                })
-                .catch(error => {
-                    showErrorMessage(error);
-                });
-            form.reset();
-            $('#register_modal').modal('hide');
-        }
-        const openModal = (name) => {
-            const modal = document.getElementById(name);
-            const bootModal = new bootstrap.Modal(modal);
-            bootModal.show();
-        }
-        /*]]>*/
-    </script>
-</div>
+<!--            const formData = new FormData(form);-->
+<!--            let urls = [[$ {url}]];-->
+<!--            fetch(urls , {-->
+<!--                method: 'POST',-->
+<!--                body: formData-->
+<!--            })-->
+<!--                .then(response => {-->
+<!--                    if (!response.ok) {-->
+<!--                        throw new Error(response.status, "등록 실패");-->
+<!--                    }-->
+<!--                    return response.json();-->
+<!--                })-->
+<!--                .then(data => {-->
+<!--                    refreshList();-->
+<!--                    showSuccessMessage();-->
+<!--                })-->
+<!--                .catch(error => {-->
+<!--                    showErrorMessage(error);-->
+<!--                });-->
+<!--            form.reset();-->
+<!--            $('#register_modal').modal('hide');-->
+<!--        }-->
+<!--        const openModal = (name) => {-->
+<!--            const modal = document.getElementById(name);-->
+<!--            const bootModal = new bootstrap.Modal(modal);-->
+<!--            bootModal.show();-->
+<!--        }-->
+<!--        /*]]>*/-->
+<!--    </script>-->
+<!--</div>-->
