@@ -1,55 +1,86 @@
 <div th:fragment="search">
-        <form th:action="@{/search}" method="get">
-            <div class="input-group">
-                <!-- 검색 타입 드롭다운 -->
-                <div class="dropdown">
-                    <button
-                            class="btn btn-outline-secondary dropdown-toggle"
-                            type="button"
-                            id="searchTypeDropdown"
-                            onclick="toggleDropdown()">
-                        <span th:text="${param.search_type ?: 'ALL'}">ALL</span>
-                    </button>
-                    <ul class="dropdown-menu" id="dropdownMenu">
-                        <li>
-                            <a class="dropdown-item" onclick="setSearchType(this, 'ALL')">All</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" onclick="setSearchType(this, 'TITLE')">Title</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" onclick="setSearchType(this, 'DESCRIPTION')">Description</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" onclick="setSearchType(this, 'CONTRIBUTOR')">Contributor</a>
-                        </li>
-                    </ul>
-                </div>
-                <!-- 검색어 입력 -->
-                <input
-                        type="search"
-                        class="form-control"
-                        name="keyword"
-                        placeholder="Search..."
-                        th:value="${param.keyword}"
-                        required>
-                <!-- 검색 버튼 -->
-                <button class="btn btn-dark" type="submit">
-                    <i class="fas fa-search"></i>
+    <form th:action="@{/search}" method="get">
+        <div class="input-group">
+            <!-- 검색 타입 드롭다운 -->
+            <div class="dropdown">
+                <button
+                        class="btn btn-outline-secondary dropdown-toggle"
+                        type="button"
+                        id="searchTypeDropdown"
+                        onclick="toggleDropdown()">
+                    <span id="selectedSearchType">통합 검색</span>
                 </button>
-                <!-- Hidden field for search_type -->
-                <input type="hidden" name="search_type" id="searchType" th:value="${param.search_type ?: 'ALL'}">
+                <ul class="dropdown-menu" id="dropdownMenu">
+                    <!-- 드롭다운 항목은 JavaScript에서 동적으로 생성 -->
+                </ul>
             </div>
-        </form>
+            <!-- 검색어 입력 -->
+            <input
+                    type="search"
+                    class="form-control"
+                    name="keyword"
+                    placeholder="검색어를 입력하세요"
+                    th:value="${param.keyword}"
+                    required>
+            <input type="hidden" name="search_type" id="searchType" value="ALL">
+            <!-- 검색 버튼 -->
+            <button class="btn btn-dark" type="submit">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </form>
 
     <!-- JavaScript -->
     <script>
+        // 검색 타입 정의
+        const searchTypes = {
+            ALL: '통합 검색',
+            TITLE: '제목 검색',
+            DESCRIPTION: '설명 검색',
+            CONTRIBUTOR: '작가 검색'
+        };
+
+        // 현재 URL에서 파라미터 추출
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentSearchType = urlParams.get('search_type') || 'ALL'; // 기본값은 'ALL'
+
+        // 드롭다운 메뉴 동적 생성
+        function populateDropdown() {
+            const dropdownMenu = document.getElementById("dropdownMenu");
+            for (const [key, value] of Object.entries(searchTypes)) {
+                const listItem = document.createElement("li");
+                const anchor = document.createElement("a");
+
+                anchor.className = "dropdown-item";
+                anchor.textContent = value; // 표시할 텍스트
+                anchor.href = "#";
+                anchor.onclick = (e) => {
+                    e.preventDefault(); // 기본 동작 막기
+                    setSearchType(anchor, key); // 선택 이벤트
+                };
+
+                if (key === currentSearchType) {
+                    anchor.classList.add("active"); // 현재 선택된 타입에 active 클래스 추가
+                }
+
+
+                listItem.appendChild(anchor);
+                dropdownMenu.appendChild(listItem);
+            }
+        }
+
+        // 드롭다운 초기화
+        populateDropdown();
+
+        // 버튼 및 숨겨진 필드 초기화
+        document.getElementById("selectedSearchType").textContent = searchTypes[currentSearchType];
+
+        // 선택된 검색 타입 설정
         function setSearchType(element, type) {
-            // Hidden 필드 값 설정
             document.getElementById("searchType").value = type;
 
-            // 버튼 텍스트 변경
-            document.getElementById("searchTypeDropdown").querySelector('span').textContent = type;
+            // 드롭다운 버튼 텍스트 변경
+            document.getElementById("selectedSearchType").textContent = searchTypes[type];
 
             // 모든 드롭다운 항목의 'active' 클래스 제거
             const items = document.querySelectorAll('.dropdown-item');
@@ -59,9 +90,10 @@
             element.classList.add('active');
 
             // 드롭다운 메뉴 닫기
-            const dropdown = document.getElementById("dropdownMenu");
-            dropdown.style.display = "none";
+            toggleDropdown();
         }
+
+        // 드롭다운 토글
         function toggleDropdown() {
             const menu = document.getElementById("dropdownMenu");
             menu.style.display = menu.style.display === "block" ? "none" : "block";
