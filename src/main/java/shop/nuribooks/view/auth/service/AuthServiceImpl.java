@@ -83,7 +83,7 @@ public class AuthServiceImpl implements AuthService {
 		} catch (FeignException ex) {
 			// 실제 메시지는 사용 안하고 서버 에러만 핸들링
 			String message = ExceptionUtil.handleFeignException(ex);
-			List<String> errorMessage = Collections.singletonList("로그인에 실패하였습니다.");
+			List<String> errorMessage = Collections.singletonList(message);
 			responseMap.put(errorMessageKey, errorMessage);
 			return responseMap;
 		}
