@@ -78,10 +78,4 @@ public class MemberServiceImpl implements MemberService {
 
 		return memberServiceClient.memberWithdraw().getBody();
 	}
-
-	@Override
-	public ResponseMessage memberLatestLoginAtUpdate() {
-
-		return memberServiceClient.memberLatestLoginAtUpdate().getBody();
-	}
 }

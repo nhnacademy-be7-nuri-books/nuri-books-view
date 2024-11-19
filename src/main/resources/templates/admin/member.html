@@ -147,7 +147,7 @@
                 </thead>
                 <tbody>
                 <!-- 각 회원 데이터를 테이블에 출력 -->
-                <tr th:each="member : ${members}">
+                <tr th:each="member : ${members.content}">
                     <td th:text="${member.customerId}"></td>
                     <td th:text="${member.name}"></td>
                     <td th:text="${member.gender}"></td>
@@ -170,6 +170,36 @@
         <!-- members가 없을 때 메시지 -->
         <div th:if="${#lists.isEmpty(members)}">
             <p class="text-center text-muted">검색된 회원이 없습니다.</p>
+        </div>
+
+        <!-- 페이징 처리 -->
+        <div th:if="${members.totalPages > 1}" class="pagination-container">
+            <ul class="pagination justify-content-center">
+                <!-- 이전 페이지 -->
+                <li class="page-item" th:classappend="${members.hasPrevious() ? '' : 'disabled'}">
+                    <a class="page-link"  th:href="@{/admin/member/members(page=${members.number - 1}, size=${members.size},
+                                                name=${request.name}, username=${request.username},
+                                                email=${request.email}, phoneNumber=${request.phoneNumber},
+                                                gender=${request.gender}, gradeName=${request.gradeName},
+                                                status=${request.status}, authority=${request.authority})}" tabindex="-1">이전</a>
+                </li>
+
+                <!-- 페이지 번호들 -->
+                <li class="page-item" th:each="i : ${#numbers.sequence(0, members.totalPages - 1)}">
+                    <a class="page-link" th:href="@{/admin/member/members(page=${i}, size=${members.size}, name=${request.name}, username=${request.username},
+                                                email=${request.email}, phoneNumber=${request.phoneNumber},
+                                                gender=${request.gender}, gradeName=${request.gradeName},
+                                                status=${request.status}, authority=${request.authority})}" th:text="${i + 1}"></a>
+                </li>
+
+                <!-- 다음 페이지 -->
+                <li class="page-item" th:classappend="${members.hasNext() ? '' : 'disabled'}">
+                    <a class="page-link" th:href="@{/admin/member/members(page=${members.number + 1}, size=${members.size}, name=${request.name}, username=${request.username},
+                                                email=${request.email}, phoneNumber=${request.phoneNumber},
+                                                gender=${request.gender}, gradeName=${request.gradeName},
+                                                status=${request.status}, authority=${request.authority})}">다음</a>
+                </li>
+            </ul>
         </div>
 
     </div> <!-- row justify-content-center (End) -->

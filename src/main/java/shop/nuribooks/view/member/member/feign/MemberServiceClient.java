@@ -8,9 +8,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import shop.nuribooks.view.common.dto.ResponseMessage;
 import shop.nuribooks.view.member.member.dto.request.MemberRegisterRequest;
 import shop.nuribooks.view.member.member.dto.request.MemberPasswordUpdateRequest;
@@ -58,10 +55,4 @@ public interface MemberServiceClient {
 	 */
 	@DeleteMapping("/api/members/me")
 	ResponseEntity<ResponseMessage> memberWithdraw();
-
-	/**
-	 * 회원의 최근 로그인 시간을 업데이트
-	 */
-	@PostMapping("/api/members/me/login-time")
-	ResponseEntity<ResponseMessage> memberLatestLoginAtUpdate();
 }
