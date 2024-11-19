@@ -38,9 +38,13 @@ public class AdminGradeServiceImpl implements AdminGradeService {
 	}
 
 	@Override
-	public ResponseMessage updateGrade(String name, GradeUpdateRequest request) {
+	public String updateGrade(String name, GradeUpdateRequest request) {
 
-		return gradeServiceClient.updateGrade(name, request).getBody();
+		try {
+			return gradeServiceClient.updateGrade(name, request).getBody().message();
+		} catch (FeignException e) {
+			return extractMessage(e.getMessage());
+		}
 	}
 
 	@Override
