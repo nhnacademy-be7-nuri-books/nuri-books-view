@@ -1,5 +1,7 @@
 package shop.nuribooks.view.order.order.controller;
 
+import static shop.nuribooks.view.cart.controller.CartController.*;
+
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import shop.nuribooks.view.common.decoder.JwtDecoder;
 import shop.nuribooks.view.common.util.CookieUtil;
 import shop.nuribooks.view.order.order.dto.OrderInformationResponse;
 import shop.nuribooks.view.order.order.service.OrderService;
@@ -58,5 +61,21 @@ public class OrderController {
 		}
 	}
 
-	// todo: 장바구니 구매
+	@GetMapping("/cart")
+	public String getCartOrderForm(HttpServletRequest request, Model model) {
+		String accessToken = CookieUtil.findByCookieKey(request, HttpHeaders.AUTHORIZATION);
+		if (Objects.nonNull(accessToken)) {
+			String cartId = JwtDecoder.getUserId(accessToken);
+			OrderInformationResponse response = orderService.getCartOrderInformation(cartId);
+			model.addAttribute("orderInformation", response);
+			return "order/member-order-form";
+		}
+		String customerId = CookieUtil.findByCookieKey(request, CART_COOKIE_ID);
+		if (Objects.nonNull(customerId)) {
+			OrderInformationResponse response = orderService.getCartOrderInformation(customerId);
+			model.addAttribute("orderInformation", response);
+			return "order/customer-order-form";
+		}
+		return "cart";
+	}
 }
