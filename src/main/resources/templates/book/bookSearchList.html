@@ -112,14 +112,123 @@
             color: #ffffff;
             cursor: pointer;
         }
-
-
     </style>
+    <style>
+        /* Dropdown container */
+        .sort-dropdown {
+            position: relative;
+            display: inline-block;
+            width: 200px;
+        }
+        .activate {
+            font-weight: bold;
+            color: #007bff; /* 선택된 항목의 강조 색상 */
+            background-color: #f0f8ff; /* 선택된 항목의 배경 색상 */
+            border-radius: 5px;
+        }
+
+        /* Button for triggering dropdown */
+        .sort-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px;
+            color: #495057;
+        }
+
+        /* Dropdown menu */
+        .sort-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: #ffffff;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            list-style: none;
+            padding: 0;
+            margin: 5px 0 0;
+        }
+
+        /* Dropdown menu item */
+        .sort-menu li {
+            padding: 10px;
+            cursor: pointer;
+            color: #495057;
+            transition: background-color 0.2s ease;
+        }
+
+        .sort-menu li:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Show dropdown when active */
+        .sort-menu.show {
+            display: block;
+        }
+    </style>
+
+    <script th:inline="javascript">
+        // Toggle dropdown visibility
+        function toggleSortDropdown() {
+            const menu = document.getElementById('sortMenu');
+            menu.classList.toggle('show');
+        }
+
+        // Set selected sort type
+        function setSortType(element) {
+            // Update the button text
+            const sortTypeName = element.getAttribute('data-sort-type');
+
+            // Update the URL query parameter and reload the page
+            const url = new URL(window.location.href);
+            url.searchParams.set('sort_type', sortTypeName);
+            window.location.href = url.toString();
+        }
+
+        // Initialize dropdown based on URL query parameter
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const sortType = urlParams.get('sort_type');
+            if (sortType) {
+                // 정렬 타입과 일치하는 li 요소 찾기
+                const menuItems = document.querySelectorAll('#sortMenu li');
+                menuItems.forEach(item => {
+                    if (item.getAttribute('data-sort-type') === sortType) {
+                        // 버튼 텍스트를 한글 이름으로 설정
+                        document.getElementById('selectedSortType').textContent = item.textContent;
+                        item.classList.add("activate")
+                    }
+                });
+            }
+        })
+    </script>
 </head>
 <body>
 <div layout:fragment="content">
     <div class="header-container">
         <h1 class="header-title">검색된 도서</h1>
+        <div class="sort-dropdown">
+            <button class="sort-button" onclick="toggleSortDropdown()">
+                <span id="selectedSortType">정렬 선택</span>
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <ul class="sort-menu" id="sortMenu">
+                <li th:each="sort_type : ${sort_types}"
+                    th:data-sort-type="${sort_type.name()}"
+                    onclick="setSortType(this)"
+                    th:text="${sort_type.getKorName()}"></li>
+            </ul>
+        </div>
     </div>
 
     <!-- 도서 목록 리스트형 스타일 -->
