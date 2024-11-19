@@ -1,31 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <div th:fragment="header">
     <header class="row">
         <!-- Header -->
         <div class="col-12 bg-white pt-4">
-            <div class="row">
+            <div class="row align-items-center py-3">
                 <!-- Logo Section -->
                 <div class="col-lg-auto">
                     <div class="site-logo text-center text-lg-left">
                         <a th:href="@{/}">NURIBOOKS</a>
                     </div>
                 </div>
-
                 <!-- Search Bar -->
-                <div class="col-lg-5 mx-auto mt-4 mt-lg-0">
-                    <form action="#">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input class="form-control border-dark" placeholder="Search..." required type="search">
-                                <button class="btn btn-outline-dark"><i class="fas fa-search"></i></button>
-                            </div>
-                        </div>
-                    </form>
+                <div class="col-lg-5 mx-auto">
+                    <div class="search-bar w-100" th:replace="fragments/search::search"></div>
                 </div>
 
                 <!-- User & Cart Section -->
-                <div class="col-lg-auto d-flex justify-content-between align-items-center">
+                <div class="col-lg-auto d-flex justify-content-end align-items-center">
                     <div th:if="${isLoggedIn == null or isLoggedIn == false}">
                         <a th:href="@{/api/cart}" class="header-item">
                             <i class="fas fa-shopping-bag me-2"></i><span id="header-qty1"

@@ -1,0 +1,70 @@
+<div th:fragment="search">
+        <form th:action="@{/search}" method="get">
+            <div class="input-group">
+                <!-- 검색 타입 드롭다운 -->
+                <div class="dropdown">
+                    <button
+                            class="btn btn-outline-secondary dropdown-toggle"
+                            type="button"
+                            id="searchTypeDropdown"
+                            onclick="toggleDropdown()">
+                        <span th:text="${param.search_type ?: 'ALL'}">ALL</span>
+                    </button>
+                    <ul class="dropdown-menu" id="dropdownMenu">
+                        <li>
+                            <a class="dropdown-item" onclick="setSearchType(this, 'ALL')">All</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" onclick="setSearchType(this, 'TITLE')">Title</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" onclick="setSearchType(this, 'DESCRIPTION')">Description</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" onclick="setSearchType(this, 'CONTRIBUTOR')">Contributor</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- 검색어 입력 -->
+                <input
+                        type="search"
+                        class="form-control"
+                        name="keyword"
+                        placeholder="Search..."
+                        th:value="${param.keyword}"
+                        required>
+                <!-- 검색 버튼 -->
+                <button class="btn btn-dark" type="submit">
+                    <i class="fas fa-search"></i>
+                </button>
+                <!-- Hidden field for search_type -->
+                <input type="hidden" name="search_type" id="searchType" th:value="${param.search_type ?: 'ALL'}">
+            </div>
+        </form>
+
+    <!-- JavaScript -->
+    <script>
+        function setSearchType(element, type) {
+            // Hidden 필드 값 설정
+            document.getElementById("searchType").value = type;
+
+            // 버튼 텍스트 변경
+            document.getElementById("searchTypeDropdown").querySelector('span').textContent = type;
+
+            // 모든 드롭다운 항목의 'active' 클래스 제거
+            const items = document.querySelectorAll('.dropdown-item');
+            items.forEach(item => item.classList.remove('active'));
+
+            // 선택된 항목에 'active' 클래스 추가
+            element.classList.add('active');
+
+            // 드롭다운 메뉴 닫기
+            const dropdown = document.getElementById("dropdownMenu");
+            dropdown.style.display = "none";
+        }
+        function toggleDropdown() {
+            const menu = document.getElementById("dropdownMenu");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
+        }
+    </script>
+</div>
