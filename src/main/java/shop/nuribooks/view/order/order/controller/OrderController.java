@@ -62,17 +62,25 @@ public class OrderController {
 	}
 
 	@GetMapping("/cart")
-	public String getCartOrderForm(HttpServletRequest request, Model model) {
+	public String getCartOrderForm(HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		String accessToken = CookieUtil.findByCookieKey(request, HttpHeaders.AUTHORIZATION);
 		if (Objects.nonNull(accessToken)) {
 			String cartId = JwtDecoder.getUserId(accessToken);
 			OrderInformationResponse response = orderService.getCartOrderInformation(cartId);
+			if (response.bookOrderResponse().isEmpty()) {
+				redirectAttributes.addFlashAttribute(errorMessageKey, "도서를 담아주세요");
+				return "redirect:/api/cart";
+			}
 			model.addAttribute("orderInformation", response);
 			return "order/member-order-form";
 		}
 		String customerId = CookieUtil.findByCookieKey(request, CART_COOKIE_ID);
 		if (Objects.nonNull(customerId)) {
 			OrderInformationResponse response = orderService.getCartOrderInformation(customerId);
+			if (response.bookOrderResponse().isEmpty()) {
+				redirectAttributes.addFlashAttribute(errorMessageKey, "도서를 담아주세요");
+				return "redirect:/api/cart";
+			}
 			model.addAttribute("orderInformation", response);
 			return "order/customer-order-form";
 		}
