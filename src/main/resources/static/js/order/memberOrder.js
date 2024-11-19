@@ -198,7 +198,7 @@ async function main() {
                     customerMobilePhone: document.getElementById('customer-phone').textContent,
                 });
             } else {
-                throw new Error("주문 정보를 저장하는 데 실패했습니다.");
+                throw new Error("주문 정보를 저장하는 데 실패했습니다. 결제 수단 또는 정보를 확인해주세요.");
             }
 
         } catch (error) {
