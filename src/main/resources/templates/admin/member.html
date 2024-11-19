@@ -33,6 +33,16 @@
             vertical-align: middle; /* 데이터도 세로 가운데 정렬 */
             white-space: nowrap; /* 텍스트가 줄 바꿈되지 않도록 설정 */
         }
+        .sort-arrow {
+            font-size: 1.2em;
+            margin-left: 5px;
+            color: white; /* 화살표 색상 */
+            display: inline-block;
+        }
+
+        th:hover .sort-arrow {
+            color: white; /* 화살표가 강조될 때의 색상 */
+        }
     </style>
 </head>
 <body>
@@ -126,23 +136,23 @@
 
         <!-- members가 존재할 때만 테이블 보이기 -->
         <div th:if="${not #lists.isEmpty(members)}" class="table-container">
-            <table class="table table-striped table-bordered table-hover mt-4">
+            <table class="table table-striped table-bordered table-hover mt-4" id="memberTable">
                 <thead class="thead-dark">
                 <tr>
-                    <th>고객 ID</th>
-                    <th>이름</th>
-                    <th>성별</th>
-                    <th>전화번호</th>
-                    <th>이메일</th>
-                    <th>생일</th>
-                    <th>사용자 ID</th>
-                    <th>포인트</th>
-                    <th>총 결제 금액</th>
-                    <th>권한</th>
-                    <th>등급</th>
-                    <th>상태</th>
-                    <th>가입일</th>
-                    <th>최종 로그인 일시</th>
+                    <th data-column="customerId">고객 ID <span class="sort-arrow"></span></th>
+                    <th data-column="name">이름 <span class="sort-arrow"></span></th>
+                    <th data-column="gender">성별 <span class="sort-arrow"></span></th>
+                    <th data-column="phoneNumber">전화번호 <span class="sort-arrow"></span></th>
+                    <th data-column="email">이메일 <span class="sort-arrow"></span></th>
+                    <th data-column="birthday">생일 <span class="sort-arrow"></span></th>
+                    <th data-column="username">사용자 ID <span class="sort-arrow"></span></th>
+                    <th data-column="point">포인트 <span class="sort-arrow"></span></th>
+                    <th data-column="totalPaymentAmount">총 결제 금액 <span class="sort-arrow"></span></th>
+                    <th data-column="authority">권한 <span class="sort-arrow"></span></th>
+                    <th data-column="gradeName">등급 <span class="sort-arrow"></span></th>
+                    <th data-column="status">상태 <span class="sort-arrow"></span></th>
+                    <th data-column="createdAt">가입일 <span class="sort-arrow"></span></th>
+                    <th data-column="latestLoginAt">최종 로그인 일시 <span class="sort-arrow"></span></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -208,6 +218,78 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    // 테이블 정렬 기능 구현
+    document.addEventListener("DOMContentLoaded", function() {
+        const table = document.getElementById("memberTable");
+        const headers = table.querySelectorAll("th");
+        let currentSortColumn = null;
+        let currentSortDirection = "asc"; // 기본적으로 오름차순
+
+        headers.forEach(header => {
+            header.addEventListener("click", function() {
+                const column = this.getAttribute("data-column");
+
+                // 정렬 방향 설정 (오름차순 / 내림차순)
+                if (currentSortColumn === column) {
+                    currentSortDirection = currentSortDirection === "asc" ? "desc" : "asc";
+                } else {
+                    currentSortColumn = column;
+                    currentSortDirection = "asc";
+                }
+
+                // 테이블을 정렬하는 함수 호출
+                sortTable(column, currentSortDirection);
+            });
+        });
+
+        function sortTable(column, direction) {
+            const rows = Array.from(table.querySelectorAll("tbody tr"));
+            const index = getColumnIndex(column);
+
+            // 오름차순/내림차순으로 데이터를 정렬
+            rows.sort((rowA, rowB) => {
+                const cellA = rowA.children[index].textContent.trim();
+                const cellB = rowB.children[index].textContent.trim();
+
+                if (direction === "asc") {
+                    return compare(cellA, cellB);
+                } else {
+                    return compare(cellB, cellA);
+                }
+            });
+
+            // 정렬된 행을 테이블에 다시 추가
+            rows.forEach(row => table.querySelector("tbody").appendChild(row));
+
+            // 정렬 아이콘 업데이트
+            updateSortArrow(column);
+        }
+
+        function getColumnIndex(column) {
+            // 데이터 컬럼에 맞는 인덱스를 반환
+            const header = Array.from(headers).find(header => header.getAttribute("data-column") === column);
+            return Array.from(headers).indexOf(header);
+        }
+
+        function compare(a, b) {
+            // 문자열 비교 (숫자나 날짜도 필요에 맞게 처리 가능)
+            return a.localeCompare(b, undefined, { numeric: true });
+        }
+
+        function updateSortArrow(column) {
+            headers.forEach(header => {
+                const arrow = header.querySelector(".sort-arrow");
+                if (header.getAttribute("data-column") === column) {
+                    arrow.textContent = currentSortDirection === "asc" ? "↑" : "↓";
+                } else {
+                    arrow.textContent = ""; // 다른 열은 화살표 없앰
+                }
+            });
+        }
+    });
+</script>
 
 </div>
 </body>
