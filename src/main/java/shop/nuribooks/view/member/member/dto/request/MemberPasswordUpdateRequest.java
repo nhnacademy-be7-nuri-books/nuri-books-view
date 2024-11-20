@@ -11,5 +11,5 @@ public record MemberPasswordUpdateRequest(
 	@Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,20}$",
 		message = "비밀번호는 8자 이상 20자 이하, 영문자, 숫자, 특수문자가 각각 1개 이상 포함되어야 합니다.")
 	String password
-) {}
-
+) {
+}

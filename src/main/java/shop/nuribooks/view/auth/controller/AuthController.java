@@ -194,5 +194,4 @@ public class AuthController {
 	private void addAuthCookie(HttpServletResponse response, String authHeader) {
 		CookieUtil.addCookie(response, HttpHeaders.AUTHORIZATION, authHeader);
 	}
-
 }
