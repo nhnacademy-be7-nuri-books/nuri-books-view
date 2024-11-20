@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.admin.tag.dto.TagRequest;
 import shop.nuribooks.view.admin.tag.dto.TagResponse;
 import shop.nuribooks.view.admin.tag.service.TagService;
+import shop.nuribooks.view.common.dto.ResponseMessage;
 
 @Controller
 @Slf4j
@@ -32,43 +35,43 @@ public class TagController {
 	public String showTagList(Model model) {
 		List<TagResponse> tags = tagService.getAllTags();
 		model.addAttribute("tags", tags);
-		return "admin/tag/tag-list";
+		return "admin/tag/tag";
 	}
 
 	@GetMapping
 	public String showTagList(@PageableDefault Pageable pageable, Model model) {
 		Page<TagResponse> tags = tagService.getAllTags(pageable);
 		model.addAttribute("pages", tags);
-		return "admin/tag/tag-list";
+		return "admin/tag/tag";
 	}
 
-	@GetMapping("/register")
-	public String showTagRegisterPage() {
-		return "admin/tag/tag-register";
-	}
+	// @GetMapping("/register")
+	// public String showTagRegisterPage() {
+	// 	return "admin/tag/tag-register";
+	// }
 
 	@PostMapping
-	public String registerTag(TagRequest tagRequest) {
-		tagService.registerTag(tagRequest);
-		return "redirect:/admin/tag";
+	public ResponseEntity<ResponseMessage> registerTag(TagRequest tagRequest) {
+		ResponseMessage message = tagService.registerTag(tagRequest);
+		return ResponseEntity.status(HttpStatus.CREATED).body(message);
 	}
 
-	@GetMapping("/{tag-id}")
-	public String showEditTagPage(@PathVariable("tag-id") Long id, Model model) {
-		TagResponse tag = tagService.getTag(id);
-		model.addAttribute("tag", tag);
-		return "admin/tag/tag-edit";
-	}
+	// @GetMapping("/{tag-id}")
+	// public String showEditTagPage(@PathVariable("tag-id") Long id, Model model) {
+	// 	TagResponse tag = tagService.getTag(id);
+	// 	model.addAttribute("tag", tag);
+	// 	return "admin/tag/tag-edit";
+	// }
 
 	@PutMapping("/{tag-id}")
-	public String updateTag(@PathVariable("tag-id") Long id, TagRequest tagRequest) {
-		tagService.updateTag(id, tagRequest);
-		return "redirect:/admin/tag";
+	public ResponseEntity<ResponseMessage> updateTag(@PathVariable("tag-id") Long id, TagRequest tagRequest) {
+		ResponseMessage message = tagService.updateTag(id, tagRequest);
+		return ResponseEntity.status(HttpStatus.OK).body(message);
 	}
 
 	@DeleteMapping("/{tag-id}")
-	public String deleteTag(@PathVariable("tag-id") Long id) {
-		tagService.deleteTag(id);
-		return "redirect:/admin/tag";
+	public ResponseEntity<ResponseMessage> deleteTag(@PathVariable("tag-id") Long id) {
+		ResponseMessage message = tagService.deleteTag(id);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(message);
 	}
 }

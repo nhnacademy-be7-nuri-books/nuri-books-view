@@ -2,6 +2,7 @@ package shop.nuribooks.view.admin.coupon.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
@@ -38,6 +39,8 @@ public record CouponRequest(
 	Integer period,
 
 	@NotNull(message = "만료유형은 필수입니다.") //기간 쿠폰, 만료일 쿠폰
-	ExpirationType expirationType
+	ExpirationType expirationType,
+
+	LocalDateTime expireDate
 ) {
 }
