@@ -1,10 +1,7 @@
 package shop.nuribooks.view.member.point.controller;
 
-import java.time.LocalDateTime;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +27,7 @@ public class PointController {
 		Model model,
 		@RequestParam(value = "type") HistoryType type,
 		Pageable pageable,
-		PointHistoryPeriodRequest pointHistoryPeriodRequest){
+		PointHistoryPeriodRequest pointHistoryPeriodRequest) {
 		Page<PointHistoryResponse> points = pointService.getPointHistories(type, pageable, pointHistoryPeriodRequest);
 		model.addAttribute("pages", points);
 		model.addAttribute("type", type);

@@ -1,13 +1,77 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{member/layout/memberlayout}">
+<html lang="en" layout:decorate="~{member/layout/memberlayout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>쿠폰 정보</title>
 </head>
 <body>
+
 <div layout:fragment="content">
-    <h1>나의 쿠폰</h1>
-    <p>나의 쿠폰</p>
+    <script>
+        let couponType = 'available';
+
+        const setType = (type) => {
+            couponType = type;
+        }
+
+        const gotoURL = () => {
+            const start = document.getElementById('start').value;
+            const end = document.getElementById('end').value;
+            console.log(start);
+            window.location.href = "/my-coupons/" + couponType + "?start=" + start + "&end=" + end;
+        }
+    </script>
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">포인트 내역</h2>
+            </div>
+            <div class="card-body">
+                <!-- Filter Section -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <a class="btn btn-outline-secondary me-2" href="#" onclick="setType('available'); gotoURL();">사용
+                            가능</a>
+                        <a class="btn btn-outline-secondary" href="#" onclick="setType('expired-or-used'); gotoURL();">만료
+                            또는 사용됨</a>
+                    </div>
+                    <div class="d-flex">
+                        <input class="form-control me-2" id="start" name="start" th:value="${period.start}"
+                               type="date"/>
+                        <input class="form-control me-2" id="end" name="end" th:value="${period.end}" type="date"/>
+                        <button class="btn btn-primary w-100" onclick="gotoURL()" type="button">
+                            <i class="fas fa-check-circle me-1"></i> 적용하기
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Points Table -->
+                <table class="table table-hover" id="data-table">
+                    <thead class="table-light">
+                    <tr>
+                        <th class="text-center">설명</th>
+                        <th class="text-center">발생일시</th>
+                        <th class="text-center">포인트</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="coupon : ${coupons.content}">
+                        <td class="text-center" th:text="${coupon.description}">설명</td>
+                        <td class="text-center" th:text="${coupon.createdAt.toLocalDate()}">발생일시</td>
+                        <td class="text-center" th:text="${coupon.amount.intValue()}">포인트</td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(coupons.content)}">
+                        <td class="text-center text-muted" colspan="3">해당 기간 내의 포인트 내역이 없습니다.</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <!-- Pagination -->
+                <div th:replace="fragments/page::page(url=@{'/my-coupons'(start=${period.start}, end=${period.end})})"></div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
