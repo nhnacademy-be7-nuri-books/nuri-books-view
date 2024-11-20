@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -16,10 +17,16 @@ import feign.FeignException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import shop.nuribooks.view.auth.dto.request.AuthenticationCodeRequest;
 import shop.nuribooks.view.auth.dto.request.LoginRequest;
+import shop.nuribooks.view.auth.dto.request.MemberReactiveRequest;
 import shop.nuribooks.view.cart.service.CartClientService;
 import shop.nuribooks.view.common.feign.AuthServiceClient;
+import shop.nuribooks.view.common.sender.MessageRequest;
+import shop.nuribooks.view.common.sender.MessageSender;
 import shop.nuribooks.view.common.util.ExceptionUtil;
+import shop.nuribooks.view.exception.BadRequestException;
+import shop.nuribooks.view.member.member.feign.MemberServiceClient;
 
 /**
  * 인증 서비스 구현체
@@ -33,12 +40,16 @@ public class AuthServiceImpl implements AuthService {
 	public static final String X_USER_ID = "X-USER-ID";
 
 	private final AuthServiceClient authServiceClient;
+	private final MemberServiceClient memberServiceClient;
 	private final CartClientService cartClientService;
+	private final MessageSender messageSender;
 
 	@Value("${error.message-key}")
 	private String errorMessageKey;
 	@Value("${success.message-key}")
 	private String successMessageKey;
+	@Value("${info.authentication-code}")
+	private String authenticationCode;
 
 	/**
 	 * 로그인을 처리하는 메서드
@@ -83,7 +94,7 @@ public class AuthServiceImpl implements AuthService {
 		} catch (FeignException ex) {
 			// 실제 메시지는 사용 안하고 서버 에러만 핸들링
 			String message = ExceptionUtil.handleFeignException(ex);
-			List<String> errorMessage = Collections.singletonList("로그인에 실패하였습니다.");
+			List<String> errorMessage = Collections.singletonList(message);
 			responseMap.put(errorMessageKey, errorMessage);
 			return responseMap;
 		}
@@ -101,5 +112,29 @@ public class AuthServiceImpl implements AuthService {
 			log.error("excepion :{}", ExceptionUtil.handleFeignException(ex));
 			return ExceptionUtil.handleFeignException(ex);
 		}
+	}
+
+	@Override
+	public String sendAuthenticationCode(AuthenticationCodeRequest request) {
+		//난수의 범위 111111 ~ 999999 (6자리 난수)
+		Random random = new Random();
+		int checkNum = random.nextInt(888888) + 111111;
+
+		authenticationCode = String.valueOf(checkNum);
+
+		return messageSender.sendMessage(
+			request, new MessageRequest("휴면 인증", "휴면 회원 인증번호 입니다: " + checkNum));
+	}
+
+	@Override
+	public void reactiveMember(MemberReactiveRequest request) {
+
+		if (!request.authenticationCode().equals(authenticationCode)) {
+			// 인증번호가 일치하지 않음
+			throw new BadRequestException("인증번호가 일치하지 않습니다.");
+		}
+
+		// TODO: 회원의 휴면 상태 해지 요청
+		memberServiceClient.memberReactive(request.username());
 	}
 }

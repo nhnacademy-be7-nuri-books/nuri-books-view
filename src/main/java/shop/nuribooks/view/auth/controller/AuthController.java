@@ -7,9 +7,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,10 +21,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import shop.nuribooks.view.auth.dto.request.AuthenticationCodeRequest;
 import shop.nuribooks.view.auth.dto.request.LoginRequest;
+import shop.nuribooks.view.auth.dto.request.MemberReactiveRequest;
 import shop.nuribooks.view.auth.service.AuthService;
 import shop.nuribooks.view.common.util.CookieUtil;
-import shop.nuribooks.view.member.member.service.MemberService;
 
 /**
  * 인증 관련 Controller
@@ -74,7 +77,13 @@ public class AuthController {
 		Map<String, List<String>> result = authService.login(loginRequest);
 
 		// 에러 메시지 처리
+		// 휴면 회원의 경우
 		if (result.containsKey(errorMessageKey)) {
+			if (result.get(errorMessageKey).getFirst().contains("휴면")) {
+				redirectAttributes.addFlashAttribute("username", loginRequest.username());
+				return "redirect:/login/inactive";
+			}
+
 			String errorMessageStr = result.get(errorMessageKey).getFirst();
 			log.error("Login 실패: {}", errorMessageStr);
 			redirectAttributes.addFlashAttribute(errorMessageKey, errorMessageStr);
@@ -128,6 +137,33 @@ public class AuthController {
 			log.info("로그아웃 실패");
 			return "redirect:/";
 		}
+	}
+
+	@GetMapping("/login/inactive")
+	public String inactiveLoginForm(@ModelAttribute(value = "username") String username, Model model) {
+
+		String hookUrl = "https://hook.dooray.com/services/3204376758577275363/3940128695610713143/D2Wa5K8hTI2yixx1eLi2ug";
+		model.addAttribute("hookUrl", hookUrl);
+		model.addAttribute("username", username);
+
+		return "auth/inactive-login";
+	}
+
+	@PostMapping("/login/inactive-code")
+	@ResponseBody
+	public String sendAuthenticationCode(@ModelAttribute AuthenticationCodeRequest request) {
+
+		return authService.sendAuthenticationCode(request);
+	}
+
+	@PostMapping("/login/inactive")
+	public String memberReactive(@ModelAttribute MemberReactiveRequest request, Model model) {
+
+		authService.reactiveMember(request);
+
+		model.addAttribute("message", "휴면회원 인증이 완료되었습니다.");
+
+		return "redirect:/login";
 	}
 
 	/**
