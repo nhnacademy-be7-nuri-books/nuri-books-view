@@ -3,14 +3,15 @@ package shop.nuribooks.view.member.member.feign;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import shop.nuribooks.view.common.dto.ResponseMessage;
-import shop.nuribooks.view.member.member.dto.request.MemberRegisterRequest;
 import shop.nuribooks.view.member.member.dto.request.MemberPasswordUpdateRequest;
+import shop.nuribooks.view.member.member.dto.request.MemberRegisterRequest;
 import shop.nuribooks.view.member.member.dto.response.MemberDetailsResponse;
 import shop.nuribooks.view.member.member.dto.response.MemberRegisterResponse;
 
@@ -55,4 +56,10 @@ public interface MemberServiceClient {
 	 */
 	@DeleteMapping("/api/members/me")
 	ResponseEntity<ResponseMessage> memberWithdraw();
+
+	/**
+	 * 휴면 해지 요청
+	 */
+	@PutMapping("/api/members/{username}/active")
+	ResponseEntity<ResponseMessage> memberReactive(@PathVariable String username);
 }

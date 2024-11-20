@@ -1,0 +1,112 @@
+<div th:fragment="update_modal">
+<script>
+    const updateHandler = (url) => {
+        // url과 id로 이루어진 path로 api 요청 보냄. 다른 url 형식일 땐 수정하여야함.
+        const form = document.getElementById('update-form');
+
+        const formData = new FormData(form);
+
+        const periodInput = document.getElementById('update-period');
+        if (!periodInput.value) {
+            formData.set('period', '0'); // 빈 값이면 0으로 설정
+        }
+
+        fetch(url + "/" + data, {
+            method: 'PUT',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                response.json().then(data => {
+                    showMessage("수정 실패 \n"+ data.message)
+                });
+            }else{
+                refreshList();
+                showMessage();
+            }
+        })
+        .catch(error => {
+            showMessage(error);
+        });
+        form.reset();
+        $('#update-modal').modal('hide');
+    }
+
+    function setMaxAmount() {
+        const policyType = document.getElementById("policyType").value;
+        const amountInput = document.getElementById("discount");
+
+        if (policyType === 'RATED') { // Adjust according to actual value for Type 1
+            amountInput.setAttribute("max", "100");
+            amountInput.value = 0;
+        } else {
+            amountInput.removeAttribute("max");
+            amountInput.value = 0;
+        }
+    }
+
+</script>
+    <!-- 쿠폰 정책 수정 모달 -->
+    <div id="update-modal" class="modal fade" tabindex="-1" aria-labelledby="editPolicyModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editPolicyModalLabel">쿠폰 정책 수정</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="#" method="post" id="update-form">
+                        <div class="mb-3">
+                            <label for="update-name" class="form-label">쿠폰 이름</label>
+                            <input type="text" class="form-control" id="update-name" name="name" required placeholder="쿠폰 이름">
+
+                            <label for="policyType" class="form-label">정책 유형</label>
+                            <select id="policyType" name="policyType" class="form-select" onchange="setMaxAmount()">
+                                <option th:each="policyType : ${policyTypes}" th:value="${policyType}"
+                                        th:text="${policyType.toKorName()}"></option>
+                            </select>
+
+                            <label for="discount" class="form-label">할인 할당량</label>
+                            <input type="number" min="0" class="form-control" id="discount" name="discount" required placeholder="할인 할당량">
+                            <script>
+                                document.getElementById('discount').addEventListener('input', function() {
+                                    const maxAmount = this.getAttribute('max');
+                                    console.log(this.value)
+                                    if (maxAmount && this.value > Number(maxAmount)) {
+                                        this.value = maxAmount;
+                                    }
+                                });
+
+                            </script>
+                            <label for="update-minimumOrderPrice" class="form-label">최소 주문 금액</label>
+                            <input type="number" min="0" class="form-control" id="update-minimumOrderPrice" name="minimumOrderPrice" required placeholder="최소 주문 금액">
+
+                            <label for="update-maximumDiscountPrice" class="form-label">최대 할인 금액</label>
+                            <input type="number" min="0" class="form-control" id="update-maximumDiscountPrice" name="maximumDiscountPrice" required placeholder="최대 할인 금액">
+
+                            <label for="update-createdAt" class="form-label">시작일시</label>
+                            <input type="date" class="form-control" id="update-createdAt" name="createdAt" required placeholder="시작일시">
+
+                            <label for="update-expiredAt" class="form-label">종료일시</label>
+                            <input type="date" class="form-control" id="update-expiredAt" name="expiredAt" placeholder="선택 사항">
+
+                            <label for="update-period" class="form-label">기간 (일)</label>
+                            <input type="number" min="0" class="form-control" id="update-period" name="period" placeholder="0은 지정하지 않음">
+
+                            <label for="update-expirationType" class="form-label">만료 유형</label>
+                            <select id="update-expirationType" name="expirationType" class="form-select">
+                                <option th:each="expirationType : ${expirationTypes}" th:value="${expirationType}" th:text="${expirationType.toKorName()}"></option>
+                            </select>
+`
+                        </div>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-primary" onclick="updateHandler('/admin/coupon')">수정</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

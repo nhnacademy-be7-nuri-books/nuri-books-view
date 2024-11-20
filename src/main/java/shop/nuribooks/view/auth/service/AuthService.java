@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import jakarta.validation.Valid;
+import shop.nuribooks.view.auth.dto.request.AuthenticationCodeRequest;
 import shop.nuribooks.view.auth.dto.request.LoginRequest;
+import shop.nuribooks.view.auth.dto.request.MemberReactiveRequest;
 
 /**
  * 인증 서비스 인터페이스.
@@ -27,4 +29,8 @@ public interface AuthService {
 	 * 로그아웃
 	 */
 	String logout();
+
+	String sendAuthenticationCode(AuthenticationCodeRequest request);
+
+	void reactiveMember(MemberReactiveRequest request);
 }

@@ -20,7 +20,7 @@ public record GradeUpdateRequest(
 	Integer pointRate,
 
 	@NotNull(message = "등급의 승급 조건 금액은 반드시 입력해야 합니다.")
-	@DecimalMin(value = "0", inclusive = false, message = "등급의 승급 조건 금액은 0원을 초과해야 합니다.")
+	@DecimalMin(value = "0", message = "등급의 승급 조건 금액은 0원 이상이어야 합니다.")
 	@DecimalMax(value = "100000000", message = "등급의 승급 조건 금액은 1억원을 초과할 수 없습니다.")
 	BigDecimal requirement
 ) {}
