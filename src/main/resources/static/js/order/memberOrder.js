@@ -166,10 +166,12 @@ async function main() {
             orderDetails: bookList,  // 주문 상세
             shippingRegister: shippingRegister,  // 배송 정보
             customerRegister: null, // 회원 정보
-            usingPoint: 0,
+            usingPoint: updateFinalPrice(),
             allAppliedCoupon: null,
             wrapping: null
         };
+
+        console.log(orderData);
 
         console.log(JSON.stringify(orderData));
         // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
@@ -300,8 +302,9 @@ function updateFinalPrice() {
         calculateTotalPrice();
     });
 
+    console.log(finalPointLabel.textContent);
     // 최종 결제 금액 업데이트
-    return parseInt(usedPointsField.value, 10);
+    return parseInt(finalPointLabel.textContent, 10);
 
 }
 
