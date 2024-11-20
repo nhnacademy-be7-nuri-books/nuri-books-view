@@ -46,25 +46,6 @@
         </div>
     </main>
     <!-- Main Content -->
-
-    <!-- Custom Modal for ResponseMessage -->
-    <div aria-hidden="true" aria-labelledby="responseModalLabel" class="modal fade" id="responseModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="responseModalLabel">휴면회원 인증</h5>
-                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-                </div>
-                <div class="modal-body" id="modalMessage" th:text="${message}">
-                    <!-- 서버에서 전달된 메시지가 여기에 동적으로 삽입됩니다 -->
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" id="responseBtn" type="button">확인</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
 </div>
 
 <!-- Script -->
@@ -105,27 +86,7 @@
                     errorToastElement.style.display = "block";
                     errorToast.show();
                 }
-
             });
-        });
-
-        // 페이지가 로드되면 메시지가 있으면 모달을 띄운다.
-        document.addEventListener("DOMContentLoaded", function () {
-            const message = document.getElementById('modalMessage').textContent;
-
-            if (message) {
-                // 모달에 메시지 삽입
-                document.getElementById('modalMessage').textContent = message;
-
-                // 모달 표시
-                var modal = new bootstrap.Modal(document.getElementById('responseModal'));
-                modal.show();
-
-                // 확인 버튼 클릭 시 모달 닫기
-                document.getElementById('responseBtn').addEventListener('click', function () {
-                    modal.hide(); // 모달 닫기
-                });
-            }
         });
     </script>
 </th:block>

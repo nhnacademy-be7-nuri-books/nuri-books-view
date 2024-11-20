@@ -161,7 +161,7 @@ public class AuthController {
 
 		authService.reactiveMember(request);
 
-		model.addAttribute("message", "휴면회원 인증이 완료되었습니다.");
+		model.addAttribute("successMessage", "휴면회원 인증이 완료되었습니다.");
 
 		return "redirect:/login";
 	}
