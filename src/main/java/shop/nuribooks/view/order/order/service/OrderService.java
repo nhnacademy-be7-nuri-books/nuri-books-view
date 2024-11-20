@@ -9,4 +9,7 @@ public interface OrderService {
 	OrderInformationResponse getOrderInformation(Long bookId, Integer quantity);
 
 	OrderTempRegisterResponse saveOrder(OrderTempRegisterRequest orderTempRegisterRequest);
+
+	OrderInformationResponse getCartOrderInformation(String cartId);
+
 }

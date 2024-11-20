@@ -19,6 +19,10 @@ public interface OrderServiceClient {
 	ResponseEntity<OrderInformationResponse> getOrderInformation(@PathVariable("book-id") Long bookId,
 		@RequestParam("quantity") Integer quantity);
 
+	@GetMapping("/api/orders/cart/{cart-id}")
+	ResponseEntity<OrderInformationResponse> getCartOrderInformation(@PathVariable("cart-id") String cartId);
+
+
 	@PostMapping("/api/orders")
 	ResponseEntity<OrderTempRegisterResponse> saveOrder(@RequestBody OrderTempRegisterRequest orderTempRegisterRequest);
 }
