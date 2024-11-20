@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        layout:decorate="~{layouts/layout1}">
+        layout:decorate="~{layouts/layout1}"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <!-- layout1.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
 <div layout:fragment="content">
@@ -16,17 +16,17 @@
             <div class="text-left mb-4">
                 <h4>NURIBOOKS</h4>
             </div>
-            <form class="row" th:action="@{/login}" method="post" id="login_form">
+            <form class="row" id="login_form" method="post" th:action="@{/login}">
                 <div class="mb-3">
-                    <input type="text" id="username" name="username" class="form-control" placeholder="아이디" required>
+                    <input class="form-control" id="username" name="username" placeholder="아이디" required type="text">
                 </div>
                 <div class="mb-3">
-                    <input type="password" id="password" name="password" class="form-control" PLACEHOLDER="비밀번호"
-                           required>
+                    <input PLACEHOLDER="비밀번호" class="form-control" id="password" name="password" required
+                           type="password">
                 </div>
                 <p class="text-center" id="signup-text"><a th:href="@{/sign-up}">아직 회원이 아니신가요?</a></p>
                 <div class="mb-3 text-center">
-                    <button type="submit" class="btn btn-primary w-100">일반 로그인</button>
+                    <button class="btn btn-primary w-100" type="submit">일반 로그인</button>
                 </div>
             </form>
 
@@ -34,12 +34,12 @@
             <div id="oauth-list">
                 <div>
                     <a href="/login/oauth2/payco">
-                        <img src="/images/payco-logo.png" alt="Payco Oauth2 Login ICON">
+                        <img alt="Payco Oauth2 Login ICON" src="/images/payco-logo.png">
                     </a>
                 </div>
                 <div>
                     <a href="/login/oauth2/naver">
-                        <img src="/images/naver-logo.png" alt="Naver Oauth2 Login ICON">
+                        <img alt="Naver Oauth2 Login ICON" src="/images/naver-logo.png">
                     </a>
                 </div>
             </div>
@@ -86,7 +86,6 @@
                     errorToastElement.style.display = "block";
                     errorToast.show();
                 }
-
             });
         });
     </script>
