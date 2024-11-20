@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{member/layout/memberlayout}">
+<html lang="en" layout:decorate="~{member/layout/memberlayout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>회원 정보 상세</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -126,25 +127,27 @@
                     <p class="value" th:text="${'최종 결제금액의 ' + member.pointRate + '퍼센트가 포인트로 적립됩니다.'}"></p>
                 </div>
                 <div class="profile-item">
-                    <!-- SILVER 등급으로 가기 위한 조건 -->
+                    <!-- ROYAL 등급으로 가기 위한 조건 -->
                     <span th:if="${member.totalPaymentAmount < 100000}">
-                        <span>다음 SILVER 등급까지: </span>
-                        <p class="value" th:text="${#numbers.formatInteger(100000 - member.totalPaymentAmount, 1, 'COMMA') + '원'}"></p>
+                        <span>다음 ROYAL 등급까지: </span>
+                        <p class="value"
+                           th:text="${#numbers.formatInteger(100000 - member.totalPaymentAmount, 1, 'COMMA') + '원'}"></p>
                     </span>
                     <!-- GOLD 등급으로 가기 위한 조건 -->
-                    <span th:if="${member.totalPaymentAmount >= 100000 and member.totalPaymentAmount < 250000}">
+                    <span th:if="${member.totalPaymentAmount >= 100000 and member.totalPaymentAmount < 200000}">
                         <span>다음 GOLD 등급까지: </span>
-                        <p class="value" th:text="${#numbers.formatInteger(250000 - member.totalPaymentAmount, 1, 'COMMA') + '원'}"></p>
+                        <p class="value"
+                           th:text="${#numbers.formatInteger(200000 - member.totalPaymentAmount, 1, 'COMMA') + '원'}"></p>
                     </span>
                     <!-- PLATINUM 등급으로 가기 위한 조건 -->
-                    <span th:if="${member.totalPaymentAmount >= 250000 and member.totalPaymentAmount < 400000}">
+                    <span th:if="${member.totalPaymentAmount >= 200000 and member.totalPaymentAmount < 300000}">
                         <span>다음 PLATINUM 등급까지: </span>
-                        <p class="value" th:text="${#numbers.formatInteger(400000 - member.totalPaymentAmount, 1, 'COMMA') + '원'}"></p>
+                        <p class="value"
+                           th:text="${#numbers.formatInteger(300000 - member.totalPaymentAmount, 1, 'COMMA') + '원'}"></p>
                     </span>
-                    <!-- ROYAL 등급으로 가기 위한 조건 -->
-                    <span th:if="${member.totalPaymentAmount >= 400000 and member.totalPaymentAmount < 600000}">
-                        <span>다음 ROYAL 등급까지: </span>
-                        <p class="value" th:text="${#numbers.formatInteger(600000 - member.totalPaymentAmount, 1, 'COMMA') + '원'}"></p>
+                    <!-- 최고등급 -->
+                    <span th:if="${member.totalPaymentAmount >= 300000}">
+                        <span>현재 최고 등급인 PLATINUM 등급입니다. </span>
                     </span>
                 </div>
             </div>

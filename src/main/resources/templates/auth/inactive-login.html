@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html
+        layout:decorate="~{layouts/layout1}"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<!-- layout1.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역 -->
+<div layout:fragment="content">
+    <!-- Main Content -->
+    <div class="row">
+        <div class="col-12 mt-3 text-center text-uppercase">
+        </div>
+    </div>
+
+    <main class="row">
+        <div class="col-lg-4 col-md-6 col-sm-8 mx-auto bg-light rounded shadow py-4 mb-4">
+            <div class="text-left mb-4">
+                <h4>휴면회원 인증</h4>
+            </div>
+            <form class="row" id="inactive_login_form">
+                <div class="mb-3">
+                    <label for="username">아이디</label>
+                    <input class="form-control" id="username" name="username"
+                           placeholder="" readonly th:value="${username}" type="text">
+                    <label for="hookUrl">두레이훅 URL</label>
+                    <input class="form-control" id="hookUrl" name="hookUrl" placeholder=" " th:value="${hookUrl}"
+                           type="text">
+                </div>
+                <div class="mb-3 text-center">
+                    <button class="btn btn-primary w-100" type="submit">인증번호 발송</button>
+                </div>
+            </form>
+
+            <!-- 인증번호 발송 후 메시지와 입력란을 보여줄 영역 -->
+            <div class="text-center mt-3" id="responseMessage" style="display: none;">
+                <p id="messageText"></p>
+
+                <!-- 인증번호 입력을 위한 form -->
+                <form id="authenticationForm" method="post" style="display: none;" th:action="@{/login/inactive}">
+                    <div class="mb-3">
+                        <label for="authenticationCode">인증번호 입력</label>
+                        <input class="form-control" id="authenticationCode" name="authenticationCode"
+                               placeholder="인증번호를 입력하세요" required type="text">
+                    </div>
+                    <!-- 숨겨진 username 필드 -->
+                    <input id="hiddenUsername" name="username" th:value="${username}" type="hidden">
+                    <div class="mb-3 text-center">
+                        <button class="btn btn-primary w-100" type="submit">인증번호 확인</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </main>
+    <!-- Main Content -->
+</div>
+
+<!-- Script -->
+<th:block layout:fragment="script">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#inactive_login_form').on('submit', function (event) {
+                event.preventDefault(); // 기본 폼 제출 방지
+
+                var hookUrl = $('#hookUrl').val(); // 폼 데이터 가져오기
+
+                // AJAX 요청 보내기
+                $.ajax({
+                    url: '/login/inactive-code', // POST 요청을 보낼 URL
+                    type: 'POST',
+                    data: {hookUrl: hookUrl},
+                    success: function (response) {
+                        // 응답 결과를 처리
+                        $('#responseMessage').show();
+                        $('#messageText').text(response);  // 인증번호 발송 성공 메시지
+
+                        // 인증번호 입력 폼 추가
+                        $('#authenticationForm').show();
+                    },
+                    error: function () {
+                        $('#responseMessage').show();
+                        $('#messageText').text('서버 오류입니다. 다시 시도하세요.');
+                    }
+                });
+            });
+        });
+
+        // // 인증번호 폼 제출 처리 (추가적인 기능을 구현할 경우 사용)
+        // $('#verificationForm').on('submit', function(event) {
+        //     event.preventDefault(); // 폼 제출 방지
+        //
+        //     var verificationCode = $('#verificationCode').val(); // 입력된 인증번호 값
+        //
+        //     // 인증번호 확인을 위한 AJAX 요청 (필요시 서버에서 인증번호 확인 로직을 추가)
+        //     $.ajax({
+        //         url: '/verify/code', // 인증번호 확인 URL (예시)
+        //         type: 'POST',
+        //         data: { verificationCode: verificationCode },
+        //         success: function(response) {
+        //             alert('인증 성공!');
+        //             // 인증 성공 시 추가 작업을 여기에 구현
+        //         },
+        //         error: function() {
+        //             alert('인증번호가 일치하지 않습니다.');
+        //         }
+        //     });
+        // });
+    </script>
+</th:block>
+<!-- Script -->
+</html>
