@@ -31,7 +31,7 @@ public class CouponServiceImpl implements CouponService{
 	}
 
 	@Override
-	public ResponseMessage deleteCoupon(Long id) {
-		return this.couponServiceClient.deleteCoupon(id).getBody();
+	public ResponseMessage expireCoupon(Long id) {
+		return this.couponServiceClient.expireCoupon(id).getBody();
 	}
 }

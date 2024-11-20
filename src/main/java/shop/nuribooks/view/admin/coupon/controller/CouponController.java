@@ -52,9 +52,9 @@ public class CouponController {
 		return ResponseEntity.status(HttpStatus.OK).body(message);
 	}
 
-	@DeleteMapping("/{coupon-id}")
-	public ResponseEntity<ResponseMessage> deleteCoupon(@PathVariable("coupon-id") Long id) {
-		ResponseMessage message = this.couponService.deleteCoupon(id);
+	@PutMapping("/{coupon-id}/expire")
+	public ResponseEntity<ResponseMessage> expireCoupon(@PathVariable("coupon-id") Long id) {
+		ResponseMessage message = this.couponService.expireCoupon(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(message);
 	}
 }
