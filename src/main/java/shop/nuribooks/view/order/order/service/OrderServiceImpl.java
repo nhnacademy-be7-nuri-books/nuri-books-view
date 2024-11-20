@@ -40,4 +40,14 @@ public class OrderServiceImpl implements OrderService {
 		}
 	}
 
+	@Override
+	public OrderInformationResponse getCartOrderInformation(String cartId) {
+		try {
+			return orderServiceClient.getCartOrderInformation(cartId).getBody();
+		} catch (FeignException e) {
+			log.error("getOrderInformation - 주문 폼 불러오기 실패");
+			throw new DefaultServerError(e.status(), e.getMessage());
+		}
+	}
+
 }

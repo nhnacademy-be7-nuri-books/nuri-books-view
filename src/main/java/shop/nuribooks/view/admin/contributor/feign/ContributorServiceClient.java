@@ -15,24 +15,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.validation.Valid;
 import shop.nuribooks.view.admin.contributor.dto.ContributorRequest;
 import shop.nuribooks.view.admin.contributor.dto.ContributorResponse;
+import shop.nuribooks.view.common.dto.ResponseMessage;
 
 @FeignClient(name = "contributorServiceClient", url = "http://localhost:8080")
 public interface ContributorServiceClient {
 	@PostMapping("/api/contributors")
-	ResponseEntity<ContributorResponse> registerContributor(@Valid @RequestBody ContributorRequest request);
+	ResponseEntity<ResponseMessage> registerContributor(@Valid @RequestBody ContributorRequest request);
 
-	@GetMapping("/api/contributors/{contributorId}")
-	ResponseEntity<ContributorResponse> getContributor(@PathVariable Long contributorId);
+	@GetMapping("/api/contributors/{contributor-id}")
+	ResponseEntity<ContributorResponse> getContributor(@PathVariable(name = "contributor-id")  Long contributorId);
 
 	@GetMapping("/api/contributors")
 	ResponseEntity<Page<ContributorResponse>> getAllContributors(
 		@RequestParam(value = "page") int page,
 		@RequestParam(value = "size") int size);
 
-	@PutMapping("/api/contributors/{contributorId}")
-	ResponseEntity<ContributorResponse> updateContributor(
-		@PathVariable Long contributorId, @Valid @RequestBody ContributorRequest request);
+	@PutMapping("/api/contributors/{contributor-id}")
+	ResponseEntity<ResponseMessage> updateContributor(
+		@PathVariable(name = "contributor-id")  Long contributorId, @Valid @RequestBody ContributorRequest request);
 
-	@DeleteMapping("/api/contributors/{contributorId}")
-	ResponseEntity<HttpStatus> deleteContributor(@PathVariable Long contributorId);
+	@DeleteMapping("/api/contributors/{contributor-id}")
+	ResponseEntity<ResponseMessage> deleteContributor(@PathVariable(name = "contributor-id") Long contributorId);
 }

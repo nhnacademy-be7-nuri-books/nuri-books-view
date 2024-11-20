@@ -9,5 +9,6 @@ public record CartBookResponse(Long bookId,
 							   BigDecimal salePrice,
 							   BigDecimal totalPrice,
 							   String thumbnailImageUrl,
+							   boolean isPackageable,
 							   int quantity) {
 }
