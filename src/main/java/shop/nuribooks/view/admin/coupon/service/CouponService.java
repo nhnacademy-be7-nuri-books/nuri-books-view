@@ -15,5 +15,5 @@ public interface CouponService {
 
 	ResponseMessage updateCoupon(Long id, CouponRequest couponRequest);
 
-	ResponseMessage deleteCoupon(Long id);
+	ResponseMessage expireCoupon(Long id);
 }

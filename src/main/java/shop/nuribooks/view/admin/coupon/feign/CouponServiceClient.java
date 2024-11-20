@@ -27,6 +27,6 @@ public interface CouponServiceClient {
 	@PutMapping("/api/coupons/{coupon-id}")
 	ResponseEntity<ResponseMessage> updateCoupon(@PathVariable("coupon-id") Long id, @Valid @RequestBody CouponRequest couponRequest);
 
-	@DeleteMapping("/api/coupons/{coupon-id}")
-	ResponseEntity<ResponseMessage> deleteCoupon(@PathVariable("coupon-id") Long id);
+	@PutMapping("/api/coupons/{coupon-id}/expire")
+	ResponseEntity<ResponseMessage> expireCoupon(@PathVariable("coupon-id") Long id);
 }
