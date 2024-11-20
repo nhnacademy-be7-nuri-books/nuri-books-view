@@ -2,17 +2,11 @@ package shop.nuribooks.view.cart.controller;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
-
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,13 +20,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
-import shop.nuribooks.view.cart.dto.request.CartAddRequest;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import shop.nuribooks.view.cart.dto.request.CartRequestToServer;
 import shop.nuribooks.view.cart.dto.request.CartUpdateRequest;
 import shop.nuribooks.view.cart.dto.response.CartBookResponse;
 import shop.nuribooks.view.cart.service.CartClientService;
 import shop.nuribooks.view.common.decoder.JwtDecoder;
+import shop.nuribooks.view.common.util.CookieUtil;
+import shop.nuribooks.view.order.order.dto.OrderInformationResponse;
 
 @RequiredArgsConstructor
 @Controller
@@ -49,19 +48,14 @@ public class CartController {
 	private String successMessageKey;
 
 	@PostMapping("/api/cart/{book-id}")
-	public String addCart(@PathVariable("book-id") Long bookId, @RequestParam Integer quantity, HttpServletRequest request,
+	public String addCart(@PathVariable("book-id") Long bookId, @RequestParam Integer quantity,
+		HttpServletRequest request,
 		HttpServletResponse response, RedirectAttributes redirectAttributes) {
 
-		String cartId;
-		CartIdentifiers cartIdentifiers = getCartIdentifiers(request);
-		if (cartIdentifiers.memberId.isPresent()) {
-			cartId = cartIdentifiers.memberId.get();
-		}
-		else if (cartIdentifiers.customerId.isPresent()) {
-			cartId = cartIdentifiers.customerId.get();
-		} else {
-			cartId = UUID.randomUUID() .toString();
-			Cookie cookie = new Cookie("cart-id", cartId);
+		String cartId = getCartId(request);
+		if (Objects.isNull(cartId)) {
+			cartId = UUID.randomUUID().toString();
+			Cookie cookie = new Cookie(CART_COOKIE_ID, cartId);
 			cookie.setPath("/");
 			cookie.setMaxAge(3600);
 			response.addCookie(cookie);
@@ -74,14 +68,8 @@ public class CartController {
 
 	@GetMapping("/api/cart")
 	public String getCart(HttpServletRequest request, Model model) {
-		String cartId;
-		CartIdentifiers cartIdentifiers = getCartIdentifiers(request);
-		if (cartIdentifiers.memberId.isPresent()) {
-			cartId = cartIdentifiers.memberId.get();
-		}
-		else if (cartIdentifiers.customerId.isPresent()) {
-			cartId = cartIdentifiers.customerId.get();
-		} else {
+		String cartId = getCartId(request);
+		if (Objects.isNull(cartId)) {
 			return "cart";
 		}
 		List<CartBookResponse> cart = cartClientService.getCart(cartId);
@@ -93,16 +81,9 @@ public class CartController {
 
 	@PostMapping("/api/cart/updateQuantity")
 	public String updateCart(@ModelAttribute CartUpdateRequest cartUpdateRequest, HttpServletRequest request,
-		HttpServletResponse response, RedirectAttributes redirectAttributes) {
-
-		String cartId;
-		CartIdentifiers cartIdentifiers = getCartIdentifiers(request);
-		if (cartIdentifiers.memberId.isPresent()) {
-			cartId = cartIdentifiers.memberId.get();
-		}
-		else if (cartIdentifiers.customerId.isPresent()) {
-			cartId = cartIdentifiers.customerId.get();
-		} else {
+		RedirectAttributes redirectAttributes) {
+		String cartId = getCartId(request);
+		if (Objects.isNull(cartId)) {
 			return "cart";
 		}
 		CartRequestToServer cartRequestToServer = new CartRequestToServer(cartId,
@@ -116,39 +97,23 @@ public class CartController {
 	@RequestBody
 	public ResponseEntity<Void> removeCartItem(@PathVariable("book-id") Long bookId, HttpServletRequest request) {
 
-		String cartId;
-		CartIdentifiers cartIdentifiers = getCartIdentifiers(request);
-		if (cartIdentifiers.memberId.isPresent()) {
-			cartId = cartIdentifiers.memberId.get();
-		}
-		else if (cartIdentifiers.customerId.isPresent()) {
-			cartId = cartIdentifiers.customerId.get();
-		} else {
+		String cartId = getCartId(request);
+		if (Objects.isNull(cartId)) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
 		return cartClientService.removeCartItem(cartId, bookId);
 	}
 
-	private record CartIdentifiers(Optional<String> memberId, Optional<String> customerId) {
-	}
-
-	private CartIdentifiers getCartIdentifiers(HttpServletRequest request) {
-		Optional<String> memberId = Optional.empty();
-		Optional<String> customerId = Optional.empty();
-		Cookie[] cookies = request.getCookies();
-		if (cookies != null) {
-			for (Cookie cookie : cookies) {
-				// 회원인 경우
-				if (cookie.getName().equals(HttpHeaders.AUTHORIZATION)) {
-					memberId = Optional.of(JwtDecoder.getUserId(cookie.getValue()));
-				}
-				// 비회원인데 카트가 이미 있는 경우
-				if (cookie.getName().equals(CART_COOKIE_ID)) {
-					customerId = Optional.of(cookie.getValue());
-				}
-			}
+	private String getCartId(HttpServletRequest request) {
+		String accessToken = CookieUtil.findByCookieKey(request, HttpHeaders.AUTHORIZATION);
+		if (Objects.nonNull(accessToken)) {
+			return JwtDecoder.getUserId(accessToken);
 		}
-		return new CartIdentifiers(memberId, customerId);
+		String customerId = CookieUtil.findByCookieKey(request, CART_COOKIE_ID);
+		if (Objects.nonNull(customerId)) {
+			return customerId;
+		}
+		return null;
 	}
 
 	private static BigDecimal getTotalPrice(List<CartBookResponse> cart) {
