@@ -1,5 +1,5 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{member/layout/memberlayout}">
+<html lang="en" layout:decorate="~{member/layout/memberlayout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <body>
 
 <div layout:fragment="content">
@@ -10,7 +10,7 @@
             </div>
             <div class="card-body">
                 <div class="text-end mb-4">
-                    <a href="/api/member/address" class="btn btn-outline-secondary btn-sm">
+                    <a class="btn btn-outline-secondary btn-sm" href="/api/member/address">
                         <i class="fas fa-plus-circle me-2"></i>주소 등록
                     </a>
                     <h2 class="text-center text-uppercase mb-4">주소 목록</h2>
@@ -27,33 +27,32 @@
                         </thead>
                         <tbody>
 
-                        <th:block th:each="address : ${addressList}">
-                            <tr>
-                                <td class="text-center" th:text="${address.id}"></td>
-                                <td class="text-center" th:text="${address.name}"></td>
-                                <td class="text-center" th:text="${address.zipcode}"></td>
-                                <td class="text-center" th:text="${address.address}"></td>
-                                <td class="text-center" th:text="${address.detailAddress}"></td>
-                                <td>
-                                    <!-- 수정 버튼 -->
-<!--                                    <a th:href="@{/admin/contributor/{contributor-id}(contributor-id=${contributor.id})}"-->
-<!--                                       class="btn btn-outline-secondary btn-sm">-->
-<!--                                        <i class="fas fa-edit me-2"></i>수정-->
-<!--                                    </a>-->
-<!--                                    &lt;!&ndash; 삭제 버튼 &ndash;&gt;-->
-<!--                                    <form th:action="@{/admin/contributor/{contributor-id}(contributor-id=${contributor.id})}"-->
-<!--                                          method="post" style="display:inline;">-->
-<!--                                        <input type="hidden" name="_method" value="DELETE">-->
-<!--                                        <button type="submit" class="btn btn-outline-secondary btn-sm">-->
-<!--                                            <i class="fas fa-trash-alt me-2"></i>삭제-->
-<!--                                        </button>-->
-<!--                                    </form>-->
-                                </td>
-                            </tr>
-                        </th:block>
+                        <tr th:each="address : ${addressList}">
+                            <td class="text-center" th:text="${address.id}"></td>
+                            <td class="text-center" th:text="${address.name}"></td>
+                            <td class="text-center" th:text="${address.zipcode}"></td>
+                            <td class="text-center" th:text="${address.address}"></td>
+                            <td class="text-center" th:text="${address.detailAddress}"></td>
+                            <td>
+                                <!-- 수정 버튼 -->
+                                <a class="btn btn-outline-secondary btn-sm"
+                                   th:href="@{api/member/address/{address-id}(address-id=${address.id})}">
+                                    <i class="fas fa-edit me-2"></i>수정
+                                </a>
+                                <!-- 삭제 버튼 -->
+                                <form method="post"
+                                      style="display:inline;"
+                                      th:action="@{api/member/address/{address-id}(address-id=${address.id})}">
+                                    <input name="_method" type="hidden" value="DELETE">
+                                    <button class="btn btn-outline-secondary btn-sm" type="submit">
+                                        <i class="fas fa-trash-alt me-2"></i>삭제
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
-<!--                    <div th:replace="fragments/page::page(url=${'/api/member/me/address'})"></div>-->
+                    <!--                    <div th:replace="fragments/page::page(url=${'/api/member/me/address'})"></div>-->
                 </div>
             </div>
         </div>
