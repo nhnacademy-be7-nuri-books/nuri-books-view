@@ -35,14 +35,16 @@
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
-
         .book-title {
-            font-size: 2em;
-            font-weight: 700;
-            color: #1a202c;
-            margin-bottom: 15px;
+            font-size: 1.5rem; /* 기본 글꼴 크기 */
+            font-weight: bold; /* 글씨 두께 */
+            line-height: 1.4; /* 줄 간격 */
+            text-align: right; /* 텍스트 정렬 */
+            word-wrap: break-word; /* 단어 초과 시 줄바꿈 */
+            overflow-wrap: break-word; /* 긴 단어 줄바꿈 */
+            max-width: 100%; /* 최대 너비 */
+            white-space: normal; /* 줄바꿈 허용 */
         }
-
         .book-meta {
             font-size: 0.9em;
             color: #4a5568;
