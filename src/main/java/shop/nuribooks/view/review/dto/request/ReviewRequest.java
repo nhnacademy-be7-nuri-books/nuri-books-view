@@ -25,8 +25,8 @@ public record ReviewRequest(
 	@NotNull(message = "도서 id가 필요합니다.")
 	long bookId,
 
-	// @NotNull(message = "주문 상세 id가 필요합니다.")
-	// long orderDetailId,
+	@NotNull(message = "주문 상세 id가 필요합니다.")
+	long orderDetailId,
 
 	@Size(max = 10)
 	List<String> reviewImages
