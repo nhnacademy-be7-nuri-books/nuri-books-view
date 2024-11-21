@@ -71,7 +71,6 @@ warning:
 
 info:
   message-key: infoMessage
-  authentication-code: authenticationCode
 
 header:
   refresh-key-name: Refresh
