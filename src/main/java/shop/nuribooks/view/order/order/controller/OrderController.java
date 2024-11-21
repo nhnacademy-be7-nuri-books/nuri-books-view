@@ -2,9 +2,12 @@ package shop.nuribooks.view.order.order.controller;
 
 import static shop.nuribooks.view.cart.controller.CartController.*;
 
+import java.io.IOException;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 import shop.nuribooks.view.common.decoder.JwtDecoder;
 import shop.nuribooks.view.common.util.CookieUtil;
 import shop.nuribooks.view.order.order.dto.OrderInformationResponse;
+import shop.nuribooks.view.order.order.dto.OrderListPeriodRequest;
+import shop.nuribooks.view.order.order.dto.OrderListResponse;
 import shop.nuribooks.view.order.order.service.OrderService;
 
 @Controller
@@ -26,10 +31,9 @@ import shop.nuribooks.view.order.order.service.OrderService;
 @RequiredArgsConstructor
 public class OrderController {
 
+	private final OrderService orderService;
 	@Value("${error.message-key}")
 	private String errorMessageKey;
-
-	private final OrderService orderService;
 
 	/**
 	 * 상품 바로 구매 - 주문 폼 불러오기
@@ -86,4 +90,44 @@ public class OrderController {
 		}
 		return "cart";
 	}
+
+	@GetMapping("/list")
+	public String getOrderList(Model model, OrderListPeriodRequest orderListPeriodRequest,
+		@RequestParam(name = "include-pending", defaultValue = "true") boolean includeOrdersInPendingStatus,
+		Pageable pageable) throws
+		IOException {
+		Page<OrderListResponse> orders = orderService.getOrderList(orderListPeriodRequest, includeOrdersInPendingStatus,
+			pageable);
+
+		int pendingCount = 0;
+		int paidCount = 0;
+		int shippingCount = 0;
+		int completedCount = 0;
+
+		for (OrderListResponse order : orders) {
+			String status = order.orderState().name();  // 상태를 가져옵니다.
+
+			// 상태에 따라 카운트를 증가시킵니다.
+			if ("PENDING".equals(status)) {
+				pendingCount++;
+			} else if ("PAID".equals(status)) {
+				paidCount++;
+			} else if ("DELIVERING".equals(status)) {
+				shippingCount++;
+			} else if ("COMPLETED".equals(status)) {
+				completedCount++;
+			}
+		}
+
+		model.addAttribute("pendingCount", pendingCount);
+		model.addAttribute("paidCount", paidCount);
+		model.addAttribute("shippingCount", shippingCount);
+		model.addAttribute("completedCount", completedCount);
+
+		model.addAttribute("pages", orders);
+		model.addAttribute("period", orderListPeriodRequest);
+		model.addAttribute("periodDuration", includeOrdersInPendingStatus);
+		return "member/order/my-orders";
+	}
+
 }
