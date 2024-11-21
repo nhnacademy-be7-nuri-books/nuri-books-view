@@ -12,7 +12,7 @@
     <div class="container mt-5">
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
-                <h2 class="mb-0">포인트 내역</h2>
+                <h2 class="mb-0">쿠폰 내역</h2>
             </div>
             <div class="card-body">
                 <!-- Filter Section -->
@@ -27,28 +27,44 @@
                 <table class="table table-hover" id="data-table">
                     <thead class="table-light">
                     <tr>
-                        <th class="text-center">쿠폰 ID</th>
+                        <th class="text-center">쿠폰 이름</th>
+                        <th class="text-center">할인 금액</th>
+                        <th class="text-center">최소 주문금액</th>
+                        <th class="text-center">최대 할인금액</th>
                         <th class="text-center">사용 여부</th>
                         <th class="text-center">발급일</th>
                         <th class="text-center">만료일</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="coupon : ${coupons.content}">
-                        <td class="text-center" th:text="${coupon.id}">쿠폰 ID</td>
+                    <tr th:each="coupon : ${pages.content}">
+                        <td class="text-center" th:text="${coupon.couponName}">쿠폰 이름</td>
+                        <td class="text-center"
+                            th:text="${coupon.policyType == T(shop.nuribooks.view.admin.point.enums.PolicyType).FIXED ? coupon.discount + '원' : coupon.discount + '%'}">
+                            할인 금액
+                        </td>
+                        <td class="text-center"
+                            th:text="${coupon.minimumOrderPrice.setScale(0, T(java.math.RoundingMode).DOWN) + '원'}">최소
+                            주문금액
+                        </td>
+                        <td class="text-center"
+                            th:text="${coupon.maximumDiscountPrice.setScale(0, T(java.math.RoundingMode).DOWN) + '원'}">
+                            최대 할인금액
+                        </td>
+
                         <td class="text-center" th:text="${coupon.isUsed ? '사용됨' : '미사용'}">사용 여부</td>
                         <td class="text-center" th:text="${#temporals.format(coupon.createdAt, 'yyyy-MM-dd')}">발급일</td>
                         <td class="text-center" th:text="${#temporals.format(coupon.expiredAt, 'yyyy-MM-dd')}">만료일</td>
                     </tr>
 
-                    <tr th:if="${#lists.isEmpty(coupons.content)}">
+                    <tr th:if="${#lists.isEmpty(pages.content)}">
                         <td class="text-center text-muted" colspan="4">쿠폰이 없습니다.</td>
                     </tr>
                     </tbody>
                 </table>
 
                 <!-- Pagination -->
-                <div th:replace="fragments/page::page(url=${paginationUrl})"></div>
+                <div th:replace="~{fragments/page::page(url=${paginationUrl})}"></div>
             </div>
         </div>
     </div>

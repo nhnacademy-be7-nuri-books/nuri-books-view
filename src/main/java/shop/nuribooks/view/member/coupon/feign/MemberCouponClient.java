@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import shop.nuribooks.view.member.coupon.dto.MemberCouponResponse;
 
-@FeignClient(name = "member-coupon-client", url = "http://localhost:8080/api/member-coupons")
+@FeignClient(name = "member-coupon-client", url = "http://localhost:8080")
 public interface MemberCouponClient {
 
-	@GetMapping("/available")
+	@GetMapping("/api/member-coupons/available")
 	Page<MemberCouponResponse> getAvailableCouponsByMemberId(Pageable pageable);
 
-	@GetMapping("/expired-or-used")
+	@GetMapping("/api/member-coupons/expired-or-used")
 	Page<MemberCouponResponse> getExpiredOrUsedCouponsByMemberId(Pageable pageable);
 }

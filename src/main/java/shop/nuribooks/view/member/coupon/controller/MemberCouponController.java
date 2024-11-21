@@ -25,7 +25,7 @@ public class MemberCouponController {
 
 		Page<MemberCouponResponse> availableCoupons = memberCouponService.getAvailableCouponsByMemberId(pageable);
 
-		model.addAttribute("coupons", availableCoupons);
+		model.addAttribute("pages", availableCoupons);
 		model.addAttribute("paginationUrl", "/my-coupon/available");
 
 		return "member/my-coupons";
@@ -38,7 +38,7 @@ public class MemberCouponController {
 		Page<MemberCouponResponse> expiredOrUsedCoupons = memberCouponService.getExpiredOrUsedCouponsByMemberId(
 			pageable);
 
-		model.addAttribute("coupons", expiredOrUsedCoupons);
+		model.addAttribute("pages", expiredOrUsedCoupons);
 		model.addAttribute("paginationUrl", "/my-coupon/expired-or-used");
 
 		return "member/my-coupons";
