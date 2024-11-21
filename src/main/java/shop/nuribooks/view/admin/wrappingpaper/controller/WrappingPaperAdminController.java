@@ -1,5 +1,7 @@
 package shop.nuribooks.view.admin.wrappingpaper.controller;
 
+import java.math.BigDecimal;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,14 +17,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.admin.wrappingpaper.dto.WrappingPaperRequest;
 import shop.nuribooks.view.admin.wrappingpaper.dto.WrappingPaperResponse;
 import shop.nuribooks.view.admin.wrappingpaper.service.WrappingPaperService;
 import shop.nuribooks.view.common.dto.ResponseMessage;
 
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/admin/wrapping-paper")
 @Controller
@@ -43,16 +48,25 @@ public class WrappingPaperAdminController {
 
 	@PostMapping
 	public ResponseEntity<ResponseMessage> registerWrappingPaper(
-		@Valid @ModelAttribute WrappingPaperRequest wrappingPaperRequest) {
+		@RequestParam("title") String title,
+		@RequestParam("wrappingPrice") BigDecimal wrappingPrice,
+		@RequestParam("imageFile") MultipartFile imageFile
+		) {
+		String imageUrl = wrappingPaperService.uploadImage(imageFile);
+		WrappingPaperRequest wrappingPaperRequest = new WrappingPaperRequest(title, imageUrl, wrappingPrice);
 		return ResponseEntity.status(HttpStatus.CREATED)
 			.body(wrappingPaperService.registerWrappingPaper(wrappingPaperRequest));
 	}
 
 	@PutMapping("/{wrapping-paper-id}")
 	public ResponseEntity<ResponseMessage> updateWrappingPaper(
-		@Valid @ModelAttribute WrappingPaperRequest wrappingPaperRequest,
+		@RequestParam("title") String title,
+		@RequestParam("wrappingPrice") BigDecimal wrappingPrice,
+		@RequestParam("imageFile") MultipartFile imageFile,
 		@PathVariable("wrapping-paper-id") Long id
 	) {
+		String imageUrl = wrappingPaperService.uploadImage(imageFile);
+		WrappingPaperRequest wrappingPaperRequest = new WrappingPaperRequest(title, imageUrl, wrappingPrice);
 		return ResponseEntity.status(HttpStatus.OK)
 			.body(wrappingPaperService.updateWrappingPaper(id, wrappingPaperRequest));
 	}

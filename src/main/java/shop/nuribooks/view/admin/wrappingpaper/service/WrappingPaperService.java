@@ -2,6 +2,7 @@ package shop.nuribooks.view.admin.wrappingpaper.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import shop.nuribooks.view.admin.wrappingpaper.dto.WrappingPaperRequest;
 import shop.nuribooks.view.admin.wrappingpaper.dto.WrappingPaperResponse;
@@ -15,4 +16,6 @@ public interface WrappingPaperService {
 	ResponseMessage updateWrappingPaper(Long id, WrappingPaperRequest wrappingPaperRequest);
 
 	ResponseMessage deleteWrappingPaper(Long id);
+
+	String uploadImage(MultipartFile file);
 }
