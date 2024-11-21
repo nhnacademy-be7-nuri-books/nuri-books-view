@@ -1,21 +1,103 @@
 
     <!-- 리뷰 카드 반복 (크기 조정) -->
     <div class="row" th:fragment="reviews">
-        <div th:each="review : ${pages.content}" class="col-12 mb-4">
+        <style>
+            /* 카드 스타일 */
+            .card {
+                border: none;
+                border-radius: 10px;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            }
+
+            .card-title {
+                font-size: 1.25rem;
+                color: #343a40;
+            }
+
+            .card-text {
+                font-size: 0.9rem;
+                color: #6c757d;
+            }
+
+        </style>
+        <style>
+            /* 별점 스타일 */
+            .fixed-star-rating {
+                display: flex;
+                gap: 4px;
+            }
+
+            .fixed-star-label {
+                cursor: default;
+                font-size: 1.2rem;
+                color: #ccc; /* 기본 회색 */
+            }
+
+            .fixed-star-label.active {
+                color: #ffd700 !important; /* 활성화된 별 금색 */
+            }
+        </style>
+        <style>
+            .image-gallery {
+                border: 1px solid #ddd;
+                padding: 1rem;
+                border-radius: 8px;
+                background-color: #f9f9f9;
+            }
+
+            .image-wrapper {
+                position: relative;
+                overflow: hidden;
+                border-radius: 8px;
+            }
+
+            .image-wrapper img {
+                width: 100%;
+                height: auto;
+                display: block;
+                object-fit: cover;
+            }
+
+            .image-wrapper button {
+                cursor: pointer;
+                z-index: 10;
+                opacity: 0.8;
+                transition: opacity 0.3s ease;
+            }
+
+            .image-wrapper button:hover {
+                opacity: 1;
+            }
+        </style>
+
+        <div class="col-12 mb-4" th:each="review : ${pages.content}">
             <div class="card h-100 shadow-sm">
                 <div class="card-body p-3">
 
                     <!-- 리뷰 제목과 내용 -->
                     <h5 class="card-title font-weight-bold" th:text="${review.title}">리뷰 제목</h5>
+                    <!-- 평점과 작성자 정보 -->
+                    <div class="align-items-center mt-2">
+                        <span class="text-muted small" th:if="${#strings.equals(type, 'member')}"
+                              th:text="${review.member.username}">작성자 이름</span>
+                        <span class="text-muted small" th:if="${#strings.equals(type, 'book')}"
+                              th:text="${review.book.title}">책 제목</span>
+
+                        <div class="fixed-star-rating d-flex">
+                            <th:block th:each="i : ${#numbers.sequence(1, 5)}">
+                                <span class="fixed-star-label"
+                                      th:classappend="${i <= review.score ? 'active' : ''}">★</span>
+                            </th:block>
+                        </div>
+                    </div>
                     <p class="card-text" th:text="${review.content}">리뷰 내용</p>
 
-                    <!-- 평점과 작성자 정보 -->
-                    <div class="d-flex justify-content-between align-items-center mt-2">
-                        <span class="text-muted small">평점: <span th:text="${review.score}">0</span></span>
-                        <span class="text-muted small" th:if="${#strings.equals(type, 'member')}" th:text="${review.member.username}">작성자 이름</span>
-                        <span class="text-muted small" th:if="${#strings.equals(type, 'book')}" th:text="${review.book.title}">책 제목</span>
-                    </div>
-
+                    <div th:replace="~{book/review/image-list::image-list}"></div>
                 </div>
             </div>
         </div>

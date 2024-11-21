@@ -1,4 +1,5 @@
 <div th:fragment="review">
+    <div th:replace="admin/fragment/js-utils::utils"/>
     <style>
         /* 리뷰 헤더 토글 버튼 */
         #toggleReviewForm {
@@ -44,6 +45,22 @@
         .btn-success:hover {
             background-color: #121b4a;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .list-group-item img {
+            margin-right: 10px;
+        }
+
+        .list-group-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .list-group-item .btn {
+            margin-left: auto;
         }
     </style>
 
@@ -94,43 +111,68 @@
             const files = fileInput.files;
 
             if (files.length === 0) {
-                alert("업로드할 이미지를 선택하세요.");
+                showMessage("업로드할 이미지를 선택하세요.");
                 return;
             }
 
-            const uploadedUrls = [];
+            if (files.length > 10) {
+                showMessage("이미지는 10장까지 가능합니다.");
+                return;
+            }
+
             const uploadedImageList = document.getElementById('uploadedImageList');
             uploadedImageList.innerHTML = ''; // 이전 결과 초기화
 
-            for (let file of files) {
-                try {
-                    const formData = new FormData();
-                    formData.append("image", file);
+            try {
+                const formData = new FormData();
 
-                    // 외부 API 호출
-                    const response = await fetch("https://example.com/upload", {
-                        method: "POST",
-                        body: formData,
-                    });
-
-                    if (!response.ok) {
-                        throw new Error("업로드 실패: " + response.statusText);
-                    }
-
-                    const result = await response.json();
-                    uploadedUrls.push(result.url);
-
-                    // 업로드된 이미지 URL을 리스트에 추가
-                    const listItem = document.createElement("li");
-                    listItem.className = "list-group-item";
-                    listItem.textContent = result.url;
-                    uploadedImageList.appendChild(listItem);
-                } catch (error) {
-                    alert("이미지 업로드 중 오류 발생: " + error.message);
+                for (let i = 0; i < files.length; i++) {
+                    formData.append("files", files[i]);
                 }
+
+                // 외부 API 호출
+                const response = await fetch("/api/image/multi", {
+                    method: "POST",
+                    body: formData,
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.message);
+                }
+
+                result.forEach((url) => {
+                    const listItem = document.createElement("li");
+                    listItem.className = "list-group-item d-flex justify-content-between align-items-center";
+
+                    // 이미지 썸네일과 URL
+                    const thumbnail = document.createElement("img");
+                    thumbnail.src = url;
+                    thumbnail.alt = "이미지 썸네일";
+                    thumbnail.className = "img-thumbnail";
+                    thumbnail.style.width = "60px";
+
+                    const text = document.createElement("span");
+                    text.textContent = url;
+
+                    const reviewImage = document.createElement("input");
+                    reviewImage.value = url;
+                    reviewImage.name = "reviewImages"
+                    reviewImage.type = "hidden"
+
+                    // 리스트에 추가
+                    listItem.appendChild(thumbnail);
+                    listItem.appendChild(text);
+                    listItem.appendChild(reviewImage);
+                    uploadedImageList.appendChild(listItem);
+                });
+                showMessage();
+            } catch (error) {
+                showMessage(error);
             }
 
-            console.log("업로드된 이미지 URL 리스트:", uploadedUrls);
+
         }
     </script>
     <form action="/review" class="p-3 pb-0 mb-3 rounded shadow-sm bg-light"
@@ -177,21 +219,32 @@
 
             <div class="row align-items-center">
                 <!-- 이미지 업로드 -->
-                <div class="col-md-8">
+                <div class="mb-3">
                     <label class="form-label fw-bold">이미지 업로드</label>
-                    <input accept="image/*" class="form-control" id="images" multiple
-                           name="reviewImages" type="file">
-                    <small class="text-muted">이미지 파일을 업로드하고 확인 버튼을 눌러 처리합니다.</small>
-
-                    <!-- 확인 버튼 -->
-                    <div class="text-end mt-2">
-                        <button class="btn btn-outline-primary btn-sm" onclick="uploadImages()"
-                                type="button">확인
+                    <div class="input-group">
+                        <input
+                                accept="image/*"
+                                class="form-control"
+                                id="images"
+                                max="10"
+                                multiple
+                                type="file"
+                        />
+                        <button
+                                class="btn btn-primary"
+                                onclick="uploadImages()"
+                                type="button"
+                        >
+                            업로드
                         </button>
                     </div>
+                    <small class="text-muted">최대 10개까지 업로드 가능합니다.</small>
 
-                    <!-- 업로드된 이미지 URL 리스트 -->
-                    <ul class="list-group mt-3" id="uploadedImageList"></ul>
+                    <!-- 업로드된 이미지 URL을 표시할 리스트 -->
+                    <div class="mt-3">
+                        <label class="form-label fw-bold">업로드된 이미지</label>
+                        <ul class="list-group" id="uploadedImageList"></ul>
+                    </div>
                 </div>
 
                 <input name="bookId" th:value="${book.id()}" type="hidden">
