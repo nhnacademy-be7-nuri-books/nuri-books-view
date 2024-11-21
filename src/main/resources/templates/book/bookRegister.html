@@ -224,6 +224,21 @@
             <div class="mb-3">
                 <label for="thumbnailImageUrl" class="form-label">썸네일 이미지 URL</label>
                 <input type="text" class="form-control" id="thumbnailImageUrl" name="thumbnailImageUrl" th:value="${book.cover}" required>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        // 썸네일 이미지 URL input 필드
+                        const thumbnailInput = document.getElementById("thumbnailImageUrl");
+
+                        // 현재 값 가져오기
+                        const originalThumbnailUrl = thumbnailInput.value;
+
+                        // cover200을 cover500으로 변경
+                        if (originalThumbnailUrl.includes("cover200")) {
+                            const modifiedThumbnailUrl = originalThumbnailUrl.replace("cover200", "cover500");
+                            thumbnailInput.value = modifiedThumbnailUrl;
+                        }
+                    });
+                </script>
             </div>
             <div class="mb-3">
                 <label for="detailImageUrl" class="form-label">상세 이미지 URL</label>
