@@ -187,11 +187,19 @@
                                                                 class="text-emphasis">상태 정보</span></p>
 
                 <div class="book-price">
-                    <span class="original-price" th:text="'정가: ' + ${book.price} + ' 원'">정가</span>
+                    <!-- 정가 -->
+                    <span class="original-price"
+                          th:text="|정가: ${#numbers.formatInteger(book.price, 0, 'COMMA')} 원|">정가</span>
+
+                    <!-- 할인율 (조건부 출력) -->
                     <span class="discount-rate" th:if="${book.discountRate > 0}"
-                          th:text="'할인율: ' + ${book.discountRate} + ' %'">할인율</span><br/>
-                    <span class="sale-price" th:text="'판매가: ' + ${book.salePrice} + ' 원'">판매가</span>
+                          th:text="|할인율: ${book.discountRate}%|">할인율</span><br/>
+
+                    <!-- 판매가 -->
+                    <span class="sale-price"
+                          th:text="|판매가: ${#numbers.formatInteger(book.salePrice, 0, 'COMMA')} 원|">판매가</span>
                 </div>
+
 
                 <p class="isbn-info" th:if="${book.isbn} != null">
                     <strong>ISBN:</strong> <span th:text="${book.isbn}">ISBN 정보</span>
