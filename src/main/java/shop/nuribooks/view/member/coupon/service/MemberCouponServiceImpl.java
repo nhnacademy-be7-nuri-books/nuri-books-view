@@ -5,7 +5,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import shop.nuribooks.view.member.coupon.dto.CouponHistoryPeriodRequest;
 import shop.nuribooks.view.member.coupon.dto.MemberCouponResponse;
 import shop.nuribooks.view.member.coupon.feign.MemberCouponClient;
 
@@ -16,14 +15,12 @@ public class MemberCouponServiceImpl implements MemberCouponService {
 	private final MemberCouponClient memberCouponClient;
 
 	@Override
-	public Page<MemberCouponResponse> getAvailableCouponsByMemberId(Pageable pageable,
-		CouponHistoryPeriodRequest couponHistoryPeriodRequest) {
-		return memberCouponClient.getAvailableCouponsByMemberId(pageable, couponHistoryPeriodRequest);
+	public Page<MemberCouponResponse> getAvailableCouponsByMemberId(Pageable pageable) {
+		return memberCouponClient.getAvailableCouponsByMemberId(pageable);
 	}
 
 	@Override
-	public Page<MemberCouponResponse> getExpiredOrUsedCouponsByMemberId(Pageable pageable,
-		CouponHistoryPeriodRequest couponHistoryPeriodRequest) {
-		return memberCouponClient.getExpiredOrUsedCouponsByMemberId(pageable, couponHistoryPeriodRequest);
+	public Page<MemberCouponResponse> getExpiredOrUsedCouponsByMemberId(Pageable pageable) {
+		return memberCouponClient.getExpiredOrUsedCouponsByMemberId(pageable);
 	}
 }
