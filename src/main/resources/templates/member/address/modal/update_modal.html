@@ -1,0 +1,128 @@
+<div th:fragment="update_modal">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script>
+        const updateHandler = (url) => {
+            // url과 id로 이루어진 path로 api 요청 보냄. 다른 url 형식일 땐 수정하여야함.
+            const form = document.getElementById('update-form');
+
+            const formData = new FormData(form);
+
+            fetch(url + "/" + data, {
+                method: 'PUT',
+                body: formData
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        showMessage("수정 실패")
+                    } else {
+                        refreshList();
+                        showMessage();
+                    }
+                })
+                .catch(error => {
+                    showMessage(error);
+                });
+            form.reset();
+            $('#update-modal').modal('hide');
+        }
+
+        function sample6_execDaumPostcode_update() {
+            new daum.Postcode({
+                oncomplete: function (data) {
+                    // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                    // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                    // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                    var addr = ''; // 주소 변수
+                    var extraAddr = ''; // 참고항목 변수
+
+                    //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                    if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                        addr = data.roadAddress;
+                    } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                        alert("지번 주소는 선택할 수 없습니다. 도로명 주소를 선택해 주세요.");
+                        return;
+                    }
+
+                    // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                    if (data.userSelectedType === 'R') {
+                        // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                        // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                        if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                            extraAddr += data.bname;
+                        }
+                        // 건물명이 있고, 공동주택일 경우 추가한다.
+                        if (data.buildingName !== '' && data.apartment === 'Y') {
+                            extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                        }
+                        // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                        if (extraAddr !== '') {
+                            extraAddr = ' (' + extraAddr + ')';
+                        }
+                    }
+
+                    // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                    document.getElementById('update-zipcode').value = data.zonecode;
+                    document.getElementById("update-address").value = addr + extraAddr;
+                    // 커서를 상세주소 필드로 이동한다.
+                    document.getElementById("update-detailAddress").focus();
+                }
+            }).open();
+        }
+
+    </script>
+    <!-- 주소 수정 모달 -->
+    <div aria-hidden="true" aria-labelledby="editPolicyModalLabel" class="modal fade" id="update-modal"
+         tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editPolicyModalLabel">주소 수정</h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="#" id="update-form" method="post">
+                        <div class="mb-3">
+                            <div class="col-md-12 form-group mb-3">
+                                <label for="update-zipcode">우편번호</label>
+                                <input class="form-control" id="update-zipcode" name="zipcode"
+                                       onblur="this.placeholder = '우편번호'" onfocus="this.placeholder = ''"
+                                       placeholder="우편번호" readonly type="text">
+                            </div>
+                            <div class="col-md-12 form-group mb-3">
+                                <label for="update-address">주소</label>
+                                <input class="form-control" id="update-address" name="address"
+                                       onblur="this.placeholder = '주소'"
+                                       onfocus="this.placeholder = ''"
+                                       placeholder="주소" readonly type="text">
+                            </div>
+                            <div class="col-md-12 form-group mb-3">
+                                <input onclick="sample6_execDaumPostcode_update()" type="button" value="도로명 주소 찾기"><br>
+                            </div>
+                            <div class="col-md-12 form-group mb-3">
+                                <label for="update-detailAddress">상세주소</label>
+                                <input class="form-control" id="update-detailAddress" name="detailAddress"
+                                       onblur="this.placeholder = '상세주소'"
+                                       onfocus="this.placeholder = ''"
+                                       placeholder="상세주소" required type="text">
+                            </div>
+                            <div class="col-md-6 form-group mb-3">
+                                <label for="update-name">별칭</label>
+                                <input class="form-control" id="update-name" name="name"
+                                       onblur="this.placeholder = '별칭'"
+                                       onfocus="this.placeholder = ''"
+                                       placeholder="별칭" required type="text">
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button class="btn btn-primary" onclick="updateHandler('/member/address')" type="button">
+                                수정
+                            </button>
+                            <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">아니오</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
