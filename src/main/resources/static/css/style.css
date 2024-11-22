@@ -404,7 +404,7 @@ table td img {
 
 /* 버튼 색상 지정 하기*/
 .btn-custom1 {
-    background-color: #1E2617; /* 원하는 배경색 (예: 토마토 색) */
+    background-color: #132894; /* 원하는 배경색*/
     color: #D7D8D9; /* 글자 색 */
     border: none;
     transition: background-color 0.3s ease; /* 부드러운 색상 전환 */
@@ -412,5 +412,18 @@ table td img {
 
 .btn-custom1:hover {
     background-color: #D7D8D9; /* Hover 시 배경색 변경 */
-    color: #4C5938; /* Hover 시 글자 색 (선택 사항) */
+    color: #323d86; /* Hover 시 글자 색 (선택 사항) */
+}
+
+body .status-step {
+    background-color: #f0f0f0; /* 배경색을 회색으로 */
+    padding: 10px;
+    border-radius: 5px;
+    margin-right: 10px; /* 상태 간 간격 */
+}
+
+body .status-text {
+    font-size: 18px; /* 글씨 크기 키우기 */
+    font-weight: bold; /* 글씨 두껍게 */
+    color: #132894;
 }

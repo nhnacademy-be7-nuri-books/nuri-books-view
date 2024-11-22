@@ -29,11 +29,11 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public void registerReview(ReviewRequest reviewRequest) {
-
+		this.reviewServiceClient.registerReview(reviewRequest);
 	}
 
 	@Override
-	public void updateReview(ReviewRequest reviewRequest) {
-
+	public void updateReview(ReviewRequest reviewRequest, long reviewId) {
+		this.reviewServiceClient.updateReview(reviewRequest, reviewId);
 	}
 }
