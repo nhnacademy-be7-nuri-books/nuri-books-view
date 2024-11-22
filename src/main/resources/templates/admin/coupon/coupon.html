@@ -16,6 +16,7 @@
                     <tr>
                         <th class="text-center">ID</th>
                         <th class="text-center">쿠폰 이름</th>
+                        <th class="text-center">쿠폰 유형</th>
                         <th class="text-center">정책 유형</th>
                         <th class="text-center">할인 할당량</th>
                         <th class="text-center">최소 주문 금액</th>
@@ -32,6 +33,7 @@
                     <tr th:each="coupon : ${pages.content}">
                         <td class="text-center" th:text="${coupon.id}">ID</td>
                         <td class="text-center" th:text="${coupon.name}">쿠폰 이름</td>
+                        <td class="text-center" th:text="${coupon.couponType}">쿠폰 유형</td>
                         <td class="text-center" th:text="${coupon.policyType.toKorName()}">정책 유형</td>
                         <td class="text-center" th:text="${coupon.discount.intValue() + ' ' + (coupon.policyType.toString().equals('RATED') ? '%' : '₩')}">할인 할당량</td>
                         <td class="text-center" th:text="${coupon.minimumOrderPrice}">최소 주문 금액</td>
@@ -41,7 +43,7 @@
                         <td class="text-center" th:text="${coupon.period}">기간</td>
                         <td class="text-center" th:text="${coupon.expirationType.toKorName()}">만료 유형</td>
                         <td class="text-center"
-                            th:text="${coupon.expireDate == null ? 'Active' : coupon.expireDate}">
+                            th:text="${coupon.expiredDate == null ? 'Active' : coupon.expiredDate}">
                             만료기한
                         </td>
                         <td class="text-end">
