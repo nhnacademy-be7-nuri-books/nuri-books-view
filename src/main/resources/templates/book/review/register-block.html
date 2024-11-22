@@ -1,5 +1,5 @@
 <div th:fragment="review">
-    <div th:replace="admin/fragment/js-utils::utils"/>
+    <div th:replace="~{admin/fragment/js-utils::utils}"/>
     <style>
         /* 리뷰 헤더 토글 버튼 */
         #toggleReviewForm {
@@ -131,7 +131,7 @@
                 }
 
                 // 외부 API 호출
-                const response = await fetch("/api/image/multi", {
+                const response = await fetch("/api/image/bulk", {
                     method: "POST",
                     body: formData,
                 });
