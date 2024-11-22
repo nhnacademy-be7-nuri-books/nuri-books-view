@@ -12,12 +12,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.common.dto.ResponseMessage;
-import shop.nuribooks.view.member.member.dto.request.MemberPasswordUpdateRequest;
-import shop.nuribooks.view.member.member.dto.response.MemberDetailsResponse;
-import shop.nuribooks.view.member.member.feign.MemberServiceClient;
 import shop.nuribooks.view.common.util.ExceptionUtil;
+import shop.nuribooks.view.member.member.dto.request.MemberPasswordUpdateRequest;
 import shop.nuribooks.view.member.member.dto.request.MemberRegisterRequest;
+import shop.nuribooks.view.member.member.dto.response.MemberDetailsResponse;
 import shop.nuribooks.view.member.member.dto.response.MemberRegisterResponse;
+import shop.nuribooks.view.member.member.feign.MemberServiceClient;
 
 /**
  * 회원 서비스 구현체

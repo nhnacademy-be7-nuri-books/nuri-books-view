@@ -49,4 +49,3 @@ public record MemberRegisterRequest(
 	LocalDate birthday
 ) {
 }
-
