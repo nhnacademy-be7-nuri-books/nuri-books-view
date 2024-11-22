@@ -239,7 +239,10 @@ a.product-name:hover, a.product-name:focus {
 }
 
 .slider-img {
-    width: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 1000px;
     height: auto;
 }
 
@@ -281,7 +284,7 @@ a.product-name:hover, a.product-name:focus {
 }
 
 .sidebar {
-    border-left: 1px solid #c7c8c9;
+    border-right: 1px solid #c7c8c9;
     border-top: 0 solid #c7c8c9;
 }
 
