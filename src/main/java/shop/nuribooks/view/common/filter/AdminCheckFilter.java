@@ -3,7 +3,6 @@ package shop.nuribooks.view.common.filter;
 import java.io.IOException;
 import java.util.Objects;
 
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -16,7 +15,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.common.decoder.JwtDecoder;
 import shop.nuribooks.view.common.util.CookieUtil;
-import shop.nuribooks.view.exception.UnauthorizedException;
 
 /**
  * 어드민 권한 확인 필터

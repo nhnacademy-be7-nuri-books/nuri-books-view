@@ -1,6 +1,9 @@
 package shop.nuribooks.view.order.order.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.cloud.openfeign.SpringQueryMap;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import shop.nuribooks.view.order.order.dto.OrderInformationResponse;
+import shop.nuribooks.view.order.order.dto.OrderListPeriodRequest;
+import shop.nuribooks.view.order.order.dto.OrderListResponse;
 import shop.nuribooks.view.order.order.dto.OrderTempRegisterRequest;
 import shop.nuribooks.view.order.order.dto.OrderTempRegisterResponse;
 
@@ -22,7 +27,12 @@ public interface OrderServiceClient {
 	@GetMapping("/api/orders/cart/{cart-id}")
 	ResponseEntity<OrderInformationResponse> getCartOrderInformation(@PathVariable("cart-id") String cartId);
 
-
 	@PostMapping("/api/orders")
 	ResponseEntity<OrderTempRegisterResponse> saveOrder(@RequestBody OrderTempRegisterRequest orderTempRegisterRequest);
+
+	@GetMapping("/api/orders")
+	ResponseEntity<Page<OrderListResponse>> getOrderList(
+		@SpringQueryMap OrderListPeriodRequest orderListPeriodRequest,
+		@RequestParam boolean includeOrdersInPendingStatus,
+		@RequestParam Pageable pageable);
 }
