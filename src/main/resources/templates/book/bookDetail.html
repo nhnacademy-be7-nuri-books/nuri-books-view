@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout1}">
+<html layout:decorate="~{layouts/layout1}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>도서 상세 정보</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -35,14 +35,16 @@
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
-
         .book-title {
-            font-size: 2em;
-            font-weight: 700;
-            color: #1a202c;
-            margin-bottom: 15px;
+            font-size: 1.5rem; /* 기본 글꼴 크기 */
+            font-weight: bold; /* 글씨 두께 */
+            line-height: 1.4; /* 줄 간격 */
+            text-align: right; /* 텍스트 정렬 */
+            word-wrap: break-word; /* 단어 초과 시 줄바꿈 */
+            overflow-wrap: break-word; /* 긴 단어 줄바꿈 */
+            max-width: 100%; /* 최대 너비 */
+            white-space: normal; /* 줄바꿈 허용 */
         }
-
         .book-meta {
             font-size: 0.9em;
             color: #4a5568;
@@ -153,7 +155,7 @@
             margin-right: 5px;
         }
     </style>
-    <!--    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>-->
+
 </head>
 <body>
 <div layout:fragment="content">
@@ -161,7 +163,7 @@
         <div class="row justify-content-between">
             <!-- Book Thumbnail -->
             <div class="col-md-4 text-center">
-                <img th:src="${book.thumbnailImageUrl}" alt="도서 이미지" class="book-thumbnail">
+                <img alt="도서 이미지" class="book-thumbnail" th:src="${#strings.replace(book.thumbnailImageUrl, 'cover200', 'cover500')}">
             </div>
 
             <!-- Book Information -->
@@ -176,20 +178,28 @@
                         <span th:text="' : ' + ${entry.key}"> : 역할</span><br/>
                     </th:block>
                 </div>
-                <p class="book-meta"><strong>출판사:</strong> <span th:text="${book.publisherName}" class="text-emphasis">출판사 정보</span>
+                <p class="book-meta"><strong>출판사:</strong> <span class="text-emphasis" th:text="${book.publisherName}">출판사 정보</span>
                 </p>
                 <p class="book-meta"><strong>출판일:</strong> <span
-                        th:text="${#temporals.format(book.publicationDate, 'yyyy-MM-dd')}"
-                        class="text-emphasis">출판일</span></p>
-                <p class="book-meta"><strong>상태:</strong> <span th:text="${book.state}"
-                                                                class="text-emphasis">상태 정보</span></p>
+                        class="text-emphasis"
+                        th:text="${#temporals.format(book.publicationDate, 'yyyy-MM-dd')}">출판일</span></p>
+                <p class="book-meta"><strong>상태:</strong> <span class="text-emphasis"
+                                                                th:text="${book.state}">상태 정보</span></p>
 
                 <div class="book-price">
-                    <span class="original-price" th:text="'정가: ' + ${book.price} + ' 원'">정가</span>
+                    <!-- 정가 -->
+                    <span class="original-price"
+                          th:text="|정가: ${#numbers.formatInteger(book.price, 0, 'COMMA')} 원|">정가</span>
+
+                    <!-- 할인율 (조건부 출력) -->
                     <span class="discount-rate" th:if="${book.discountRate > 0}"
-                          th:text="'할인율: ' + ${book.discountRate} + ' %'">할인율</span><br/>
-                    <span class="sale-price" th:text="'판매가: ' + ${book.salePrice} + ' 원'">판매가</span>
+                          th:text="|할인율: ${book.discountRate}%|">할인율</span><br/>
+
+                    <!-- 판매가 -->
+                    <span class="sale-price"
+                          th:text="|판매가: ${#numbers.formatInteger(book.salePrice, 0, 'COMMA')} 원|">판매가</span>
                 </div>
+
 
                 <p class="isbn-info" th:if="${book.isbn} != null">
                     <strong>ISBN:</strong> <span th:text="${book.isbn}">ISBN 정보</span>
@@ -197,26 +207,29 @@
 
                 <div class="book-meta mt-3" th:if="${book.tagNames?.size() > 0}">
                     <strong>태그:</strong>
-                    <span th:each="tag : ${book.tagNames}" th:text="${tag}" class="badge badge-secondary mr-1">태그</span>
+                    <span class="badge badge-secondary mr-1" th:each="tag : ${book.tagNames}" th:text="${tag}">태그</span>
                 </div>
                 <!-- Buttons aligned to the right in one line -->
                 <div class="button-group mt-3">
                     <label for="quantity">수량:</label>
-                    <input type="number" id="quantity" name="quantity" min="1" max="100" value="1">
+                    <input id="quantity" max="100" min="1" name="quantity" type="number" value="1">
                     <!-- 바로 구매하기 버튼 (GET 요청) -->
-                    <button type="button" class="btn btn-secondary btn-custom" onclick="submitForm('orderForm')">바로 구매하기</button>
+                    <button class="btn btn-secondary btn-custom" onclick="submitForm('orderForm')" type="button">바로
+                        구매하기
+                    </button>
 
                     <!-- 장바구니에 담기 버튼 (POST 요청) -->
-                    <button type="button" class="btn btn-primary btn-custom" onclick="submitForm('cartForm')">장바구니에 담기</button>
+                    <button class="btn btn-primary btn-custom" onclick="submitForm('cartForm')" type="button">장바구니에 담기
+                    </button>
 
                     <!-- GET 요청용 폼 -->
-                    <form id="orderForm" th:action="@{/orders/{book-id}(book-id=${book.id})}" method="get">
-                        <input type="hidden" name="quantity" id="orderQuantity">
+                    <form id="orderForm" method="get" th:action="@{/orders/{book-id}(book-id=${book.id})}">
+                        <input id="orderQuantity" name="quantity" type="hidden">
                     </form>
 
                     <!-- POST 요청용 폼 -->
-                    <form id="cartForm" th:action="@{/api/cart/{book-id}(book-id=${book.id})}" method="post">
-                        <input type="hidden" name="quantity" id="cartQuantity">
+                    <form id="cartForm" method="post" th:action="@{/api/cart/{book-id}(book-id=${book.id})}">
+                        <input id="cartQuantity" name="quantity" type="hidden">
                     </form>
 <!--                    <form th:action="@{/orders/{book-id}(book-id=${book.id})}" method="get">-->
 <!--                        <label for="quantity">수량:</label>-->
@@ -237,7 +250,7 @@
                 <!-- Like button aligned to the right -->
                 <div class="like-button mt-3" onclick="toggleLike()">
                     <i class="fas fa-heart"></i>
-                    <span th:text="${book.likeCount}" class="like-count">0</span>
+                    <span class="like-count" th:text="${book.likeCount}">0</span>
                 </div>
             </div>
 
@@ -266,8 +279,9 @@
             </div>
             <div class="mt-5">
               <h2 class="book-section-title">리뷰</h2>
-                <div th:replace="book/review/list::reviews"></div>
-                <div th:replace="fragments/page::page(url=${'/view/book/details/'+ book.id})"></div>
+                <div th:replace="~{book/review/register-block::review}"></div>
+                <div th:replace="~{book/review/list::reviews}"></div>
+                <div th:replace="~{fragments/page::page(url=${'/view/book/details/'+ book.id})}"></div>
             </div>
         </div>
     </div>

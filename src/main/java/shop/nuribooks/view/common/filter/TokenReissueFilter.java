@@ -24,7 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.common.decoder.JwtDecoder;
 import shop.nuribooks.view.common.feign.ReissueServiceClient;
 import shop.nuribooks.view.common.util.CookieUtil;
-import shop.nuribooks.view.common.util.ExceptionUtil;
 
 /**
  * 토큰 재발행 검사 로직
@@ -48,7 +47,8 @@ public class TokenReissueFilter extends OncePerRequestFilter {
 		String prevAccessToken = CookieUtil.findByCookieKey(request, HttpHeaders.AUTHORIZATION);
 		String prevRefreshToken = CookieUtil.findByCookieKey(request, refreshHeaderName);
 
-		if (Objects.nonNull(prevAccessToken) && (Objects.isNull(prevRefreshToken) || JwtDecoder.isExpired(prevRefreshToken))) {
+		if (Objects.nonNull(prevAccessToken) && (Objects.isNull(prevRefreshToken) || JwtDecoder.isExpired(
+			prevRefreshToken))) {
 			log.info("Access는 존재하지만 Refresh가 없거나 만료되어 로그아웃처리합니다.");
 			logout(response);
 			response.sendRedirect("/login");

@@ -1,5 +1,9 @@
 package shop.nuribooks.view.order.order.service;
 
+import java.io.IOException;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import feign.FeignException;
@@ -7,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.exception.DefaultServerError;
 import shop.nuribooks.view.order.order.dto.OrderInformationResponse;
+import shop.nuribooks.view.order.order.dto.OrderListPeriodRequest;
+import shop.nuribooks.view.order.order.dto.OrderListResponse;
 import shop.nuribooks.view.order.order.dto.OrderTempRegisterRequest;
 import shop.nuribooks.view.order.order.dto.OrderTempRegisterResponse;
 import shop.nuribooks.view.order.order.feign.OrderServiceClient;
@@ -48,6 +54,13 @@ public class OrderServiceImpl implements OrderService {
 			log.error("getOrderInformation - 주문 폼 불러오기 실패");
 			throw new DefaultServerError(e.status(), e.getMessage());
 		}
+	}
+
+	@Override
+	public Page<OrderListResponse> getOrderList(OrderListPeriodRequest orderListPeriodRequest,
+		boolean includeOrdersInPendingStatus, Pageable pageable) throws IOException {
+		return orderServiceClient.getOrderList(orderListPeriodRequest, includeOrdersInPendingStatus, pageable)
+			.getBody();
 	}
 
 }

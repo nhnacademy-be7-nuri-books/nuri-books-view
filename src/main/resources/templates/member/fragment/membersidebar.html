@@ -1,26 +1,26 @@
 <div th:fragment="sidebar">
-    <nav class="sidebar bg-dark text-white" style="width: 250px; min-height: 100vh; position: sticky; top: 0;">
-        <ul class="nav flex-column px-3">
+    <nav class="sidebar bg-white text-dark" style="width: 250px; min-height: 100vh; position: sticky; top: 0;">
+        <ul class="nav flex-column mx-3">
             <!-- 회원정보 조회 -->
             <li class="nav-item my-2">
-                <a class="nav-link text-white sidebar-item" data-url="myDetail" href="/my-detail">
+                <a class="nav-link text-dark sidebar-item" data-url="myDetail" href="/my-detail">
                     <i class="fas fa-user-circle me-2"></i>회원정보 조회
                 </a>
             </li>
 
             <!-- 비밀번호 수정 -->
             <li class="nav-item my-2">
-                <a class="nav-link text-white sidebar-item" data-url="myEdit" href="/my-edit">
+                <a class="nav-link text-dark sidebar-item" data-url="myEdit" href="/my-edit">
                     <i class="fas fa-user-edit me-2"></i>비밀번호 수정
                 </a>
             </li>
 
             <hr class="sidebar-divider">
 
-            <!-- 나의 주문내역 -->
+            <!-- 나의 주소 -->
             <li class="nav-item my-2">
-                <a class="nav-link text-white sidebar-item" data-url="myOrders" href="/my-orders">
-                    <i class="fas fa-boxes me-2"></i>나의 주문내역
+                <a class="nav-link text-dark sidebar-item" data-url="address-list" href="/api/member/me/address">
+                    주소 목록
                 </a>
             </li>
 
@@ -31,16 +31,24 @@
                 </a>
             </li>
 
-            <!-- 나의 주소 -->
+            <!-- 나의 주문내역 -->
             <li class="nav-item my-2">
-                <a class="nav-link text-white sidebar-item" data-url="address-list" href="/api/member/me/address">
-                    <i class="fas fa-map-marker-alt me-2"></i>나의 주소
+                <a class="nav-link text-dark sidebar-item" data-url="myOrders" href="/orders/list">
+                    주문내역
                 </a>
             </li>
+
+            <!-- 취소 환불 내역 -->
+            <li class="nav-item my-2">
+                <a class="nav-link text-dark sidebar-item" data-url="myOrders" href="/orders/list">
+                    취소 환불 내역
+                </a>
+            </li>
+
             <!-- 나의 포인트 -->
             <li class="nav-item my-2">
-                <a class="nav-link text-white sidebar-item" data-url="point/history" href="/my-points?type=ALL">
-                    <i class="fas fa-money-bill-wave me-2"></i>나의 포인트
+                <a class="nav-link text-dark sidebar-item" data-url="point/history" href="/my-points?type=ALL">
+                    포인트 내역
                 </a>
             </li>
 
@@ -48,7 +56,7 @@
 
             <!-- 회원 탈퇴 -->
             <li class="nav-item my-2">
-                <a class="nav-link text-white sidebar-item" data-url="myGoodbye" href="/my-goodbye">
+                <a class="nav-link text-dark sidebar-item" data-url="myGoodbye" href="/my-goodbye">
                     <i class="fas fa-user-times me-2"></i>회원 탈퇴
                 </a>
             </li>
@@ -56,7 +64,7 @@
             <!-- 로그아웃 -->
             <li class="nav-item my-2">
                 <form action="/logout" method="POST" style="display:inline;">
-                    <button class="nav-link text-white sidebar-item" style="background: none; border: none;"
+                    <button class="nav-link text-dark sidebar-item" style="background: none; border: none;"
                             type="submit">
                         <i class="fas fa-sign-out-alt me-2"></i>로그아웃
                     </button>
