@@ -23,7 +23,7 @@ import shop.nuribooks.view.oauth.dto.OAuth2UserResponse;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class NaverOAuth2ServiceImpl implements OAuth2Service{
+public class NaverOAuth2ServiceImpl implements OAuth2Service {
 	private final OAuth2ClientProperties oAuth2ClientProperties;
 	private final NaverTokenFeignClient naverTokenFeignClient;
 	private final NaverUserInfoFeignClient naverUserInfoFeignClient;
@@ -31,10 +31,9 @@ public class NaverOAuth2ServiceImpl implements OAuth2Service{
 
 	@Override
 	public String getLoginFormUri() {
-		return oAuth2ClientProperties.getProvider().getNaver().getAuthorizationUri()
-			+ "&response_type=" + "code"
-			+ "&client_id=" + oAuth2ClientProperties.getRegistration().getNaver().getClientId()
-			+ "&redirect_uri=" + oAuth2ClientProperties.getRegistration().getNaver().getRedirectUri();
+		return oAuth2ClientProperties.getProvider().getNaver().getAuthorizationUri() + "&response_type=" + "code"
+			+ "&client_id=" + oAuth2ClientProperties.getRegistration().getNaver().getClientId() + "&redirect_uri="
+			+ oAuth2ClientProperties.getRegistration().getNaver().getRedirectUri();
 	}
 
 	@Override
@@ -42,14 +41,10 @@ public class NaverOAuth2ServiceImpl implements OAuth2Service{
 		Map<String, Object> tokenResponse = naverTokenFeignClient.getToken(
 			oAuth2ClientProperties.getRegistration().getNaver().getClientId(),
 			oAuth2ClientProperties.getRegistration().getNaver().getClientSecret(),
-			oAuth2ClientProperties.getRegistration().getNaver().getAuthorizationGrantType(),
-			code
-		);
+			oAuth2ClientProperties.getRegistration().getNaver().getAuthorizationGrantType(), code);
 
 		String accessToken = getAccessToken(tokenResponse);
-		Map<String, Object> userResponse = naverUserInfoFeignClient.getUserInfo(
-			"Bearer " + accessToken
-		);
+		Map<String, Object> userResponse = naverUserInfoFeignClient.getUserInfo("Bearer " + accessToken);
 
 		Optional<OAuth2UserResponse> naverUser = Optional.of(getUserInfo(userResponse));
 		naverUser.get().setId(OAuth2ServicePrefix.NAVER + naverUser.get().getId());
@@ -72,8 +67,7 @@ public class NaverOAuth2ServiceImpl implements OAuth2Service{
 
 		Optional.ofNullable(headers.get(HttpHeaders.AUTHORIZATION))
 			.filter(list -> !list.isEmpty())
-			.ifPresent(
-				setAuthorizationHeaders -> responseMap.put(HttpHeaders.AUTHORIZATION, setAuthorizationHeaders));
+			.ifPresent(setAuthorizationHeaders -> responseMap.put(HttpHeaders.AUTHORIZATION, setAuthorizationHeaders));
 	}
 
 	private String getAccessToken(Map<String, Object> tokenResponse) {

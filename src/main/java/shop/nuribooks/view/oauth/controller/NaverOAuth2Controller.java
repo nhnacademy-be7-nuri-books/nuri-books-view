@@ -36,10 +36,8 @@ public class NaverOAuth2Controller {
 	}
 
 	@GetMapping("/custom-login/oauth2/code/naver")
-	public String doNaverLogin(@RequestParam("code") String code,
-		RedirectAttributes redirectAttributes,
-		HttpServletResponse response
-		) {
+	public String doNaverLogin(@RequestParam("code") String code, RedirectAttributes redirectAttributes,
+		HttpServletResponse response) {
 		OAuth2ResultResponse result = naverOAuth2Service.login(code);
 		if (result.getStatus().equals(OAuth2Status.LOGIN_SUCCESS.toString())) {
 			List<String> cookies = result.getResponseMap().get(HttpHeaders.SET_COOKIE);
