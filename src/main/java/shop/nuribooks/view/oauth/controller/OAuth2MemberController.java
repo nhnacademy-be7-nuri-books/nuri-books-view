@@ -23,14 +23,16 @@ public class OAuth2MemberController {
 	private String successMessageKey;
 
 	@GetMapping("/simple-signup")
-	public String simpleSignupForm(@ModelAttribute("id") String id, @ModelAttribute("email") String email, Model model) {
+	public String simpleSignupForm(@ModelAttribute("id") String id, @ModelAttribute("email") String email,
+		Model model) {
 		model.addAttribute("id", id);
 		model.addAttribute("email", email);
 		return "member/simple-signup";
 	}
 
 	@PostMapping("/simple-signup")
-	public String simpleSignup(@ModelAttribute OAuth2RegisterRequest registerRequest, RedirectAttributes redirectAttributes) {
+	public String simpleSignup(@ModelAttribute OAuth2RegisterRequest registerRequest,
+		RedirectAttributes redirectAttributes) {
 		String returnMessage = oAuth2MemberService.signup(registerRequest);
 		if (returnMessage.startsWith(successMessageKey)) {
 			redirectAttributes.addFlashAttribute(successMessageKey, "회원가입에 성공하였습니다.");

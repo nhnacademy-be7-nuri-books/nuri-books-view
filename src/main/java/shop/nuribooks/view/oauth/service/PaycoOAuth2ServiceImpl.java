@@ -23,7 +23,7 @@ import shop.nuribooks.view.oauth.dto.OAuth2UserResponse;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class PaycoOAuth2ServiceImpl implements OAuth2Service{
+public class PaycoOAuth2ServiceImpl implements OAuth2Service {
 	private final OAuth2ClientProperties oAuth2ClientProperties;
 	private final PaycoTokenFeignClient paycoTokenFeignClient;
 	private final PaycoUserInfoFeignClient paycoUserInfoFeignClient;
@@ -31,10 +31,9 @@ public class PaycoOAuth2ServiceImpl implements OAuth2Service{
 
 	@Override
 	public String getLoginFormUri() {
-		return oAuth2ClientProperties.getProvider().getPayco().getAuthorizationUri()
-			+ "&response_type=" + "code"
-			+ "&client_id=" + oAuth2ClientProperties.getRegistration().getPayco().getClientId()
-			+ "&redirect_uri=" + oAuth2ClientProperties.getRegistration().getPayco().getRedirectUri();
+		return oAuth2ClientProperties.getProvider().getPayco().getAuthorizationUri() + "&response_type=" + "code"
+			+ "&client_id=" + oAuth2ClientProperties.getRegistration().getPayco().getClientId() + "&redirect_uri="
+			+ oAuth2ClientProperties.getRegistration().getPayco().getRedirectUri();
 	}
 
 	@Override
@@ -42,15 +41,11 @@ public class PaycoOAuth2ServiceImpl implements OAuth2Service{
 		Map<String, Object> tokenResponse = paycoTokenFeignClient.getToken(
 			oAuth2ClientProperties.getRegistration().getPayco().getClientId(),
 			oAuth2ClientProperties.getRegistration().getPayco().getClientSecret(),
-			oAuth2ClientProperties.getRegistration().getPayco().getAuthorizationGrantType(),
-			code
-		);
+			oAuth2ClientProperties.getRegistration().getPayco().getAuthorizationGrantType(), code);
 
 		String accessToken = getAccessToken(tokenResponse);
 		Map<String, Object> userResponse = paycoUserInfoFeignClient.getUserInfo(
-			oAuth2ClientProperties.getRegistration().getPayco().getClientId(),
-			accessToken
-		);
+			oAuth2ClientProperties.getRegistration().getPayco().getClientId(), accessToken);
 
 		Optional<OAuth2UserResponse> paycoUser = Optional.of(getUserInfo(userResponse));
 		paycoUser.get().setId(OAuth2ServicePrefix.PAYCO + paycoUser.get().getId());
@@ -73,8 +68,7 @@ public class PaycoOAuth2ServiceImpl implements OAuth2Service{
 
 		Optional.ofNullable(headers.get(HttpHeaders.AUTHORIZATION))
 			.filter(list -> !list.isEmpty())
-			.ifPresent(
-				setAuthorizationHeaders -> responseMap.put(HttpHeaders.AUTHORIZATION, setAuthorizationHeaders));
+			.ifPresent(setAuthorizationHeaders -> responseMap.put(HttpHeaders.AUTHORIZATION, setAuthorizationHeaders));
 	}
 
 	private String getAccessToken(Map<String, Object> tokenResponse) {
@@ -83,9 +77,10 @@ public class PaycoOAuth2ServiceImpl implements OAuth2Service{
 
 	private OAuth2UserResponse getUserInfo(Map<String, Object> userResponse) {
 		Map<String, Object> member = Optional.ofNullable(userResponse)
-			.map(data -> (Map<String, Object>) data.get("data"))
-			.map(dataMap -> (Map<String, Object>) dataMap.get("member"))
+			.map(data -> (Map<String, Object>)data.get("data"))
+			.map(dataMap -> (Map<String, Object>)dataMap.get("member"))
 			.orElse(null);
-		return member != null ? new OAuth2UserResponse(member.get("idNo").toString(), member.get("email").toString()) : null;
+		return member != null ? new OAuth2UserResponse(member.get("idNo").toString(), member.get("email").toString()) :
+			null;
 	}
 }
