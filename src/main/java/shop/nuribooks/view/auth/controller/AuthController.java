@@ -141,8 +141,8 @@ public class AuthController {
     @GetMapping("/login/inactive")
     public String inactiveLoginForm(@ModelAttribute(value = "username") String username, Model model) {
 
-        String hookUrl = "https://hook.dooray.com/services/3204376758577275363/3940128695610713143/D2Wa5K8hTI2yixx1eLi2ug";
-//        String hookUrl = "https://hook.dooray.com/services/3204376758577275363/3933055412757737486/4J9Wb-vOTdKm5CQJVQS0Xg";
+        String hookUrl = "https://hook.dooray.com/services/3204376758577275363/3942084368369400595/RyITAQ8cQHGJ_6vnGz2DBw";
+
         model.addAttribute("hookUrl", hookUrl);
         model.addAttribute("username", username);
 
