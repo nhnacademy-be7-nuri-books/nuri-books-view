@@ -63,12 +63,16 @@
                 event.preventDefault(); // 기본 폼 제출 방지
 
                 var hookUrl = $('#hookUrl').val(); // 폼 데이터 가져오기
+                var username = $('#username').val(); // 폼 데이터 가져오기
 
                 // AJAX 요청 보내기
                 $.ajax({
                     url: '/login/inactive-code', // POST 요청을 보낼 URL
                     type: 'POST',
-                    data: {hookUrl: hookUrl},
+                    data: {
+                        hookUrl: hookUrl,
+                        username: username
+                    },
                     success: function (response) {
                         // 응답 결과를 처리
                         $('#responseMessage').show();

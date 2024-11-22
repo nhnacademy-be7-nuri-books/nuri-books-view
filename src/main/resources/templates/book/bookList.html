@@ -57,6 +57,7 @@
 
         .book-item {
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             padding: 20px;
             border-bottom: 1px solid #e0e0e0;
@@ -90,13 +91,18 @@
 
         .book-details {
             flex: 1;
+            min-width: 0;
         }
 
         .book-title {
-            font-size: 1.5em;
+            font-size: clamp(1em, 2vw, 1.5em);
             font-weight: bold;
             color: #34495e;
             margin-bottom: 5px;
+            line-height: 1.2;
+            word-wrap: break-word;
+            white-space: normal; /* 여러 줄 허용 */
+            overflow: hidden; /* 넘치는 텍스트 숨김 */
         }
 
         .book-publisher {
@@ -225,8 +231,8 @@
         <div class="book-item" th:each="bookWithContributors : ${books.content}">
             <a th:href="@{/view/book/details/{bookId}(bookId=${bookWithContributors.bookDetails.id})}"
                 class="book-thumbnail">
-            <img th:src="${bookWithContributors.bookDetails.thumbnailImageUrl}" alt="도서 이미지">
-        </a>
+                <img th:src="${bookWithContributors.bookDetails.thumbnailImageUrl}" alt="도서 이미지">
+            </a>
             <div class="book-details">
                 <a th:href="@{/view/book/details/{bookId}(bookId=${bookWithContributors.bookDetails.id})}">
                     <h5 class="book-title" th:text="${bookWithContributors.bookDetails.title}">제목</h5>
@@ -239,13 +245,19 @@
                 </div>
                 <p class="book-publisher" th:text="${bookWithContributors.bookDetails.publisherName}">출판사</p>
                 <p>
+                    <!-- 정가 -->
                     <span class="book-price"
-                          th:text="'정가: ' + ${bookWithContributors.bookDetails.price} + ' 원'">정가</span>
+                          th:text="'정가: ' + ${#numbers.formatInteger(bookWithContributors.bookDetails.price, 0, 'COMMA')} + ' 원'">정가</span>
+
+                    <!-- 할인율 -->
                     <span class="book-discount" th:if="${bookWithContributors.bookDetails.discountRate > 0}"
-                          th:text="'할인율' + ${bookWithContributors.bookDetails.discountRate} + '%'">할인율</span>
+                          th:text="'할인율: ' + ${bookWithContributors.bookDetails.discountRate} + '%'">할인율</span>
+
+                    <!-- 판매가 -->
                     <span class="book-sale-price"
-                          th:text="'판매가: ' + ${bookWithContributors.bookDetails.salePrice} + ' 원'">판매가</span>
+                          th:text="'판매가: ' + ${#numbers.formatInteger(bookWithContributors.bookDetails.salePrice, 0, 'COMMA')} + ' 원'">판매가</span>
                 </p>
+
                 <!-- 관리자 버튼 (isAdmin인 경우에만 표시) -->
                 <div class="book-actions" th:if="${isAdmin}">
                     <a th:href="@{/admin/view/book/update-form/{bookId}(bookId=${bookWithContributors.bookDetails.id})}"

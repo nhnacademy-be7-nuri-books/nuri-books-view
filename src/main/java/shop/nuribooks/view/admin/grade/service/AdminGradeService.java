@@ -2,11 +2,11 @@ package shop.nuribooks.view.admin.grade.service;
 
 import java.util.List;
 
-import shop.nuribooks.view.common.dto.ResponseMessage;
 import shop.nuribooks.view.admin.grade.dto.GradeDetailsResponse;
 import shop.nuribooks.view.admin.grade.dto.GradeListResponse;
 import shop.nuribooks.view.admin.grade.dto.GradeRegisterRequest;
 import shop.nuribooks.view.admin.grade.dto.GradeUpdateRequest;
+import shop.nuribooks.view.common.dto.ResponseMessage;
 
 public interface AdminGradeService {
 

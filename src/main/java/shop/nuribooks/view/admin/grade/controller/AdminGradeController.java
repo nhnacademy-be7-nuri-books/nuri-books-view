@@ -48,7 +48,7 @@ public class AdminGradeController {
 	}
 
 	@PostMapping
-	public String GradeRegister(@Valid @ModelAttribute GradeRegisterRequest request) {
+	public String gradeRegister(@Valid @ModelAttribute GradeRegisterRequest request) {
 
 		adminGradeService.registerGrade(request);
 

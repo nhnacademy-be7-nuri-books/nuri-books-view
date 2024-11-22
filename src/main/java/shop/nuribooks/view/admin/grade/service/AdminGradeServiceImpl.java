@@ -6,18 +6,34 @@ import org.springframework.stereotype.Service;
 
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
-import shop.nuribooks.view.common.dto.ResponseMessage;
 import shop.nuribooks.view.admin.grade.dto.GradeDetailsResponse;
 import shop.nuribooks.view.admin.grade.dto.GradeListResponse;
 import shop.nuribooks.view.admin.grade.dto.GradeRegisterRequest;
 import shop.nuribooks.view.admin.grade.dto.GradeUpdateRequest;
 import shop.nuribooks.view.admin.grade.feign.AdminGradeServiceClient;
+import shop.nuribooks.view.common.dto.ResponseMessage;
 
 @Service
 @RequiredArgsConstructor
 public class AdminGradeServiceImpl implements AdminGradeService {
 
 	private final AdminGradeServiceClient gradeServiceClient;
+
+	/**
+	 * json 형식의 response에서 message의 value만을 추출
+	 */
+	private static String extractMessage(String jsonResponse) {
+		// "message"라는 키를 찾고, 해당 값 추출
+		int messageStartIndex = jsonResponse.indexOf("\"message\":") + 11; // "message": 의 뒤부터 시작
+		int messageEndIndex = jsonResponse.indexOf("\"", messageStartIndex); // " 이후로 끝
+
+		if (!jsonResponse.contains("\"message\":")) {
+			return "메시지 추출 실패";  // message가 없거나 JSON 형식이 이상한 경우
+		}
+
+		// "message" 값 추출
+		return jsonResponse.substring(messageStartIndex, messageEndIndex);
+	}
 
 	@Override
 	public List<GradeListResponse> getAllGrades() {
@@ -55,22 +71,5 @@ public class AdminGradeServiceImpl implements AdminGradeService {
 		} catch (FeignException e) {
 			return extractMessage(e.getMessage());
 		}
-	}
-
-
-	/**
-	 * json 형식의 response에서 message의 value만을 추출
-	 */
-	private static String extractMessage(String jsonResponse) {
-		// "message"라는 키를 찾고, 해당 값 추출
-		int messageStartIndex = jsonResponse.indexOf("\"message\":") + 11; // "message": 의 뒤부터 시작
-		int messageEndIndex = jsonResponse.indexOf("\"", messageStartIndex); // " 이후로 끝
-
-		if (!jsonResponse.contains("\"message\":")) {
-			return "메시지 추출 실패";  // message가 없거나 JSON 형식이 이상한 경우
-		}
-
-		// "message" 값 추출
-		return jsonResponse.substring(messageStartIndex, messageEndIndex);
 	}
 }
