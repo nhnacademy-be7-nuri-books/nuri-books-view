@@ -10,6 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 @FeignClient(name = "image", url = "http://localhost:8080")
 public interface ImageClient {
-	@PostMapping(value = "/api/image/multi", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@PostMapping(value = "/api/image/bulk", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	List<String> uploadImage(@RequestPart("files") List<MultipartFile> files);
 }
