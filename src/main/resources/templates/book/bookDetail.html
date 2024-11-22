@@ -35,14 +35,16 @@
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
-
         .book-title {
-            font-size: 2em;
-            font-weight: 700;
-            color: #1a202c;
-            margin-bottom: 15px;
+            font-size: 1.5rem; /* 기본 글꼴 크기 */
+            font-weight: bold; /* 글씨 두께 */
+            line-height: 1.4; /* 줄 간격 */
+            text-align: right; /* 텍스트 정렬 */
+            word-wrap: break-word; /* 단어 초과 시 줄바꿈 */
+            overflow-wrap: break-word; /* 긴 단어 줄바꿈 */
+            max-width: 100%; /* 최대 너비 */
+            white-space: normal; /* 줄바꿈 허용 */
         }
-
         .book-meta {
             font-size: 0.9em;
             color: #4a5568;
@@ -161,7 +163,7 @@
         <div class="row justify-content-between">
             <!-- Book Thumbnail -->
             <div class="col-md-4 text-center">
-                <img th:src="${book.thumbnailImageUrl}" alt="도서 이미지" class="book-thumbnail">
+                <img th:src="${#strings.replace(book.thumbnailImageUrl, 'cover200', 'cover500')}" alt="도서 이미지" class="book-thumbnail">
             </div>
 
             <!-- Book Information -->
@@ -185,11 +187,19 @@
                                                                 class="text-emphasis">상태 정보</span></p>
 
                 <div class="book-price">
-                    <span class="original-price" th:text="'정가: ' + ${book.price} + ' 원'">정가</span>
+                    <!-- 정가 -->
+                    <span class="original-price"
+                          th:text="|정가: ${#numbers.formatInteger(book.price, 0, 'COMMA')} 원|">정가</span>
+
+                    <!-- 할인율 (조건부 출력) -->
                     <span class="discount-rate" th:if="${book.discountRate > 0}"
-                          th:text="'할인율: ' + ${book.discountRate} + ' %'">할인율</span><br/>
-                    <span class="sale-price" th:text="'판매가: ' + ${book.salePrice} + ' 원'">판매가</span>
+                          th:text="|할인율: ${book.discountRate}%|">할인율</span><br/>
+
+                    <!-- 판매가 -->
+                    <span class="sale-price"
+                          th:text="|판매가: ${#numbers.formatInteger(book.salePrice, 0, 'COMMA')} 원|">판매가</span>
                 </div>
+
 
                 <p class="isbn-info" th:if="${book.isbn} != null">
                     <strong>ISBN:</strong> <span th:text="${book.isbn}">ISBN 정보</span>
