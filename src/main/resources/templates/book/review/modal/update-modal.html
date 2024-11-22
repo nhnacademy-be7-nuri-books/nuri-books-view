@@ -1,0 +1,101 @@
+<div th:fragment="update_modal">
+    <div aria-hidden="true" aria-labelledby="updateModalLabel" class="modal fade" id="update-modal" tabindex="-1">
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const updateModal = document.getElementById("update-modal");
+
+                updateModal.addEventListener("show.bs.modal", (event) => {
+                    // 버튼에서 데이터 추출
+                    const button = event.relatedTarget;
+                    const reviewId = button.getAttribute("data-id");
+                    const reviewTitle = button.getAttribute("data-title");
+                    const reviewContent = button.getAttribute("data-content");
+                    const reviewScore = button.getAttribute("data-score");
+
+                    // 모달 내부 필드 업데이트
+                    document.getElementById("update-form").action = "/review/" + reviewId;
+                    document.getElementById("review-title").value = reviewTitle;
+                    document.getElementById("review-content").value = reviewContent;
+                    const stars = document.querySelectorAll('.star-lab');
+                    document.getElementById(`ustar${reviewScore}`).checked = true;
+
+                    stars.forEach(star => {
+                        star.style.color = star.dataset.value <= reviewScore ? '#ffae00' : '#ccc';
+                        star.addEventListener('mouseover', () => {
+                            stars.forEach(s => {
+                                s.style.color = s.dataset.value <= star.dataset.value ? '#ffd700' : '#ccc';
+                            });
+                        });
+
+                        star.addEventListener('mouseleave', () => {
+                            const selectedValue = document.querySelector('input[name="score"]:checked')?.value || 0;
+                            stars.forEach(s => {
+                                s.style.color = s.dataset.value <= selectedValue ? '#ffae00' : '#ccc';
+                            });
+                        });
+
+                        star.addEventListener('click', () => {
+                            const value = star.dataset.value;
+                            document.getElementById(`ustar${value}`).checked = true;
+                        });
+                    });
+                });
+            });
+
+            document.addEventListener('DOMContentLoaded', () => {
+
+            });
+
+        </script>
+        <style>
+            /* 별점 스타일 */
+
+            .star-lab {
+                cursor: pointer;
+                font-size: 2rem;
+                color: #ccc;
+                transition: color 0.3s;
+            }
+
+            .star-lab:hover,
+            .star-lab:hover ~ .star-lab {
+                color: #ffd700;
+            }
+        </style>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateModalLabel">리뷰 수정</h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="update-form" th:method="PUT">
+                        <input name="bookId" th:value="${book.id}" type="hidden">
+                        <div>
+                            <label class="form-label fw-bold" for="star">별점</label>
+                            <div id="star">
+                                <th:block th:each="i : ${#numbers.sequence(1, 5)}">
+                                    <input class="btn-check" name="score" th:checked="${i == 1}"
+                                           th:id="'ustar' + ${i}" th:value="${i}" type="radio">
+                                    <label class="star-lab" th:data-value="${i}"
+                                           th:for="'ustar' + ${i}">★</label>
+                                </th:block>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="review-title">리뷰 제목</label>
+                            <input class="form-control" id="review-title" name="title" type="text">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="review-content">리뷰 내용</label>
+                            <textarea class="form-control" id="review-content" name="content" rows="3"></textarea>
+                        </div>
+                        <div class="text-end">
+                            <button class="btn btn-primary" type="submit">수정하기</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
