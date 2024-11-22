@@ -12,9 +12,9 @@
                 .then(response => {
                     if (!response.ok) {
                         response?.json().then(data => {
-                            showMessage("등록 실패 \n"+ data.message)
+                            showMessage("등록 실패 \n" + data.message)
                         });
-                    }else{
+                    } else {
                         refreshList();
                         showMessage();
                     }
@@ -44,37 +44,46 @@
     <div>
         <!-- 쿠폰 정책 등록 버튼 -->
         <div class="text-end mb-4">
-            <button id="openModalBtn" class="btn btn-outline-secondary btn-sm" onclick="openModal('register-modal')">
+            <button class="btn btn-outline-secondary btn-sm" id="openModalBtn" onclick="openModal('register-modal')">
                 <i class="fas fa-plus-circle me-2"></i>새로 만들기
             </button>
         </div>
 
         <!-- 쿠폰 정책 등록 모달 -->
-        <div id="register-modal" class="modal fade" tabindex="-1" aria-labelledby="policyModalLabel" aria-hidden="true">
+        <div aria-hidden="true" aria-labelledby="policyModalLabel" class="modal fade" id="register-modal" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="policyModalLabel">쿠폰 정책 등록</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
                     </div>
                     <div class="modal-body">
 
                         <!-- 쿠폰 정책 등록 폼 -->
-                        <form action="#" method="post" id="register_form">
+                        <form action="#" id="register_form" method="post">
                             <div class="mb-3">
-                                <label for="name" class="form-label">쿠폰 이름</label>
-                                <input type="text" class="form-control" id="name" name="name" required placeholder="쿠폰 이름">
+                                <label class="form-label" for="name">쿠폰 이름</label>
+                                <input class="form-control" id="name" name="name" placeholder="쿠폰 이름" required
+                                       type="text">
 
-                                <label for="policyType" class="form-label">정책 유형</label>
-                                <select id="policyType" name="policyType" class="form-select" onchange="setMaxAmount()">
-                                    <option th:each="policyType : ${policyTypes}" th:value="${policyType}"
-                                            th:text="${policyType.toKorName()}"></option>
+                                <label class="form-label" for="couponType">쿠폰 유형</label>
+                                <select class="form-select" id="couponType" name="couponType" onchange="setMaxAmount()">
+                                    <option th:each="couponType : ${couponTypes}" th:text="${couponType.toKorName()}"
+                                            th:value="${couponType}"></option>
                                 </select>
 
-                                <label for="discount" class="form-label">할인 할당량</label>
-                                <input type="number" min="0" class="form-control" id="discount" name="discount" required placeholder="할인 할당량">
+                                <label class="form-label" for="policyType">정책 유형</label>
+                                <select class="form-select" id="policyType" name="policyType" onchange="setMaxAmount()">
+                                    <option th:each="policyType : ${policyTypes}" th:text="${policyType.toKorName()}"
+                                            th:value="${policyType}"></option>
+                                </select>
+
+                                <label class="form-label" for="discount">할인 할당량</label>
+                                <input class="form-control" id="discount" min="0" name="discount" placeholder="할인 할당량"
+                                       required
+                                       type="number">
                                 <script>
-                                    document.getElementById('discount').addEventListener('input', function() {
+                                    document.getElementById('discount').addEventListener('input', function () {
                                         const maxAmount = this.getAttribute('max');
                                         console.log(this.value)
                                         if (maxAmount && this.value > Number(maxAmount)) {
@@ -83,30 +92,39 @@
                                     });
 
                                 </script>
-                                <label for="minimumOrderPrice" class="form-label">최소 주문 금액</label>
-                                <input type="number" min="0" class="form-control" id="minimumOrderPrice" name="minimumOrderPrice" required placeholder="최소 주문 금액">
+                                <label class="form-label" for="minimumOrderPrice">최소 주문 금액</label>
+                                <input class="form-control" id="minimumOrderPrice" min="0" name="minimumOrderPrice"
+                                       placeholder="최소 주문 금액" required type="number">
 
-                                <label for="maximumDiscountPrice" class="form-label">최대 할인 금액</label>
-                                <input type="number" min="0" class="form-control" id="maximumDiscountPrice" name="maximumDiscountPrice" required placeholder="최대 할인 금액">
+                                <label class="form-label" for="maximumDiscountPrice">최대 할인 금액</label>
+                                <input class="form-control" id="maximumDiscountPrice" min="0"
+                                       name="maximumDiscountPrice"
+                                       placeholder="최대 할인 금액" required type="number">
 
-                                <label for="createdAt" class="form-label">시작일시</label>
-                                <input type="date" class="form-control" id="createdAt" name="createdAt" required placeholder="시작일시">
+                                <label class="form-label" for="createdAt">시작일시</label>
+                                <input class="form-control" id="createdAt" name="createdAt" placeholder="시작일시" required
+                                       type="date">
 
-                                <label for="expiredAt" class="form-label">종료일시</label>
-                                <input type="date" class="form-control" id="expiredAt" name="expiredAt" placeholder="선택 사항">
+                                <label class="form-label" for="expiredAt">종료일시</label>
+                                <input class="form-control" id="expiredAt" name="expiredAt" placeholder="선택 사항"
+                                       type="date">
 
-                                <label for="period" class="form-label">기간 (일)</label>
-                                <input type="number" min="0" class="form-control" id="period" name="period" placeholder="0은 지정하지 않음">
+                                <label class="form-label" for="period">기간 (일)</label>
+                                <input class="form-control" id="period" min="0" name="period" placeholder="0은 지정하지 않음"
+                                       type="number">
 
-                                <label for="expirationType" class="form-label">만료 유형</label>
-                                <select id="expirationType" name="expirationType" class="form-select">
-                                    <option th:each="expirationType : ${expirationTypes}" th:value="${expirationType}"
-                                            th:text="${expirationType.toKorName()}"></option>
+                                <label class="form-label" for="expirationType">만료 유형</label>
+                                <select class="form-select" id="expirationType" name="expirationType">
+                                    <option th:each="expirationType : ${expirationTypes}"
+                                            th:text="${expirationType.toKorName()}"
+                                            th:value="${expirationType}"></option>
                                 </select>
                             </div>
                             <div class="text-center">
-                                <button type="button" class="btn btn-primary" onclick="submitHandler('/admin/coupon')">등록</button>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
+                                <button class="btn btn-primary" onclick="submitHandler('/admin/coupon')" type="button">
+                                    등록
+                                </button>
+                                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">아니오</button>
                             </div>
                         </form>
                     </div>
