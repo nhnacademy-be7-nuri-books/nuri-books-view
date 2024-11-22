@@ -30,4 +30,3 @@ public record MemberRegisterResponse(
 	LocalDate birthday
 ) {
 }
-

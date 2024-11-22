@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import shop.nuribooks.view.common.dto.ResponseMessage;
 import shop.nuribooks.view.admin.grade.dto.GradeDetailsResponse;
 import shop.nuribooks.view.admin.grade.dto.GradeListResponse;
 import shop.nuribooks.view.admin.grade.dto.GradeRegisterRequest;
 import shop.nuribooks.view.admin.grade.dto.GradeUpdateRequest;
+import shop.nuribooks.view.common.dto.ResponseMessage;
 
 @FeignClient(name = "grade", url = "http://localhost:8080")
 public interface AdminGradeServiceClient {

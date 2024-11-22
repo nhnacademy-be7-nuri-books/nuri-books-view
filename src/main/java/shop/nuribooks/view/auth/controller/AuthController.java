@@ -33,7 +33,7 @@ import shop.nuribooks.view.common.util.CookieUtil;
  *
  * @author : nuri
  */
-@Controller
+@Controller()
 @RequiredArgsConstructor
 @Slf4j
 public class AuthController {

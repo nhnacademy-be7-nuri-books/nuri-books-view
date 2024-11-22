@@ -32,4 +32,5 @@ public record MemberSearchResponse(
 
 	@JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
 	LocalDateTime latestLoginAt
-) {}
+) {
+}

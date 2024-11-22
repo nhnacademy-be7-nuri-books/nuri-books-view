@@ -8,4 +8,5 @@ public record GradeListResponse(
 	String name,
 	Integer pointRate,
 	BigDecimal requirement
-) {}
+) {
+}

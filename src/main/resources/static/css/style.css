@@ -127,7 +127,6 @@ a {
     box-shadow: #aaa 0 0 10px 1px;
 }
 
-
 .product-name {
     font-size: 1.2rem;
     font-weight: 600;
@@ -282,7 +281,7 @@ a.product-name:hover, a.product-name:focus {
 }
 
 .sidebar {
-    border-right: 1px solid #c7c8c9;
+    border-left: 1px solid #c7c8c9;
     border-top: 0 solid #c7c8c9;
 }
 
@@ -417,7 +416,7 @@ table td img {
 }
 
 body .status-step {
-    background-color: #ffffff !important;
+    background-color: #f0f0f0; /* 배경색을 회색으로 */
     padding: 10px;
     border-radius: 5px;
     margin-right: 10px; /* 상태 간 간격 */

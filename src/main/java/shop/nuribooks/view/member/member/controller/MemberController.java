@@ -18,8 +18,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.auth.service.AuthService;
 import shop.nuribooks.view.common.util.CookieUtil;
-import shop.nuribooks.view.member.member.dto.request.MemberRegisterRequest;
 import shop.nuribooks.view.member.member.dto.request.MemberPasswordUpdateRequest;
+import shop.nuribooks.view.member.member.dto.request.MemberRegisterRequest;
 import shop.nuribooks.view.member.member.dto.response.MemberDetailsResponse;
 import shop.nuribooks.view.member.member.service.MemberService;
 
@@ -170,7 +170,6 @@ public class MemberController {
 		return "redirect:/my-edit";
 	}
 
-
 	/**
 	 * 나의 구매내역 페이지 GET
 	 * @return my-orders.html
@@ -240,6 +239,5 @@ public class MemberController {
 			log.info("회원 탈퇴 후 로그아웃 실패");
 			return "redirect:/";
 		}
-
 	}
 }
