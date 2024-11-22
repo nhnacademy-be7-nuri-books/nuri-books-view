@@ -1,7 +1,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{admin/layout/adminlayout}">
 <body>
 <div layout:fragment="content">
-    <div th:replace="~{/admin/fragment/js-utils::utils}"></div>
+    <div th:replace="~{admin/fragment/js-utils::utils}"></div>
     <div class="container mt-5">
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
@@ -9,7 +9,7 @@
             </div>
             <div class="card-body">
 
-                <div id="register-modal" th:replace="~{/admin/coupon/modal/register_modal::register_modal}"></div>
+                <div id="register-modal" th:replace="~{admin/coupon/modal/register_modal::register_modal}"></div>
                 <!-- 쿠폰 정책 목록 테이블 -->
                 <table class="table table-hover" id="data-table">
                     <thead class="table-light">

@@ -23,4 +23,5 @@ public record GradeUpdateRequest(
 	@DecimalMin(value = "0", message = "등급의 승급 조건 금액은 0원 이상이어야 합니다.")
 	@DecimalMax(value = "100000000", message = "등급의 승급 조건 금액은 1억원을 초과할 수 없습니다.")
 	BigDecimal requirement
-) {}
+) {
+}

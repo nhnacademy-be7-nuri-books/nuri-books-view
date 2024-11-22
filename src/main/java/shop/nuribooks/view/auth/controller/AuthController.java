@@ -25,6 +25,7 @@ import shop.nuribooks.view.auth.dto.request.AuthenticationCodeRequest;
 import shop.nuribooks.view.auth.dto.request.LoginRequest;
 import shop.nuribooks.view.auth.dto.request.MemberReactiveRequest;
 import shop.nuribooks.view.auth.service.AuthService;
+import shop.nuribooks.view.common.decoder.JwtDecoder;
 import shop.nuribooks.view.common.util.CookieUtil;
 
 /**
@@ -36,6 +37,8 @@ import shop.nuribooks.view.common.util.CookieUtil;
 @RequiredArgsConstructor
 @Slf4j
 public class AuthController {
+
+	public static final String REDIRECT_HOME = "redirect:/";
 
 	private final AuthService authService;
 
@@ -75,6 +78,7 @@ public class AuthController {
 		HttpServletResponse response) {
 
 		Map<String, List<String>> result = authService.login(loginRequest);
+		String authHeader = null;
 
 		// 에러 메시지 처리
 		// 휴면 회원의 경우
@@ -95,7 +99,7 @@ public class AuthController {
 			handleCookies(cookies, response);
 
 			// accept jwt 쿠키로 저장
-			String authHeader = result.get(HttpHeaders.AUTHORIZATION).getFirst();
+			authHeader = result.get(HttpHeaders.AUTHORIZATION).getFirst();
 			if (authHeader != null) {
 				String token = authHeader.substring(7);
 				addAuthCookie(response, token);
@@ -104,9 +108,15 @@ public class AuthController {
 			log.info("로그인 성공");
 		}
 
-		// String authHeader = result.get("X-USER-ID").getFirst();
 		redirectAttributes.addFlashAttribute(successMessageKey, "로그인 성공, 환영합니다.");
-		return "redirect:/";
+
+		String userRole = JwtDecoder.getRole(authHeader);
+
+		if (userRole.contains("ADMIN")) {
+			return "redirect:/admin";
+		}
+
+		return REDIRECT_HOME;
 
 	}
 

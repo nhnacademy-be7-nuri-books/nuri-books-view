@@ -1,0 +1,97 @@
+<div th:fragment="image-list">
+    <!-- Swiper CSS -->
+    <link
+            href="https://unpkg.com/swiper/swiper-bundle.min.css"
+            rel="stylesheet"
+    />
+
+    <!-- Swiper JS -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            new Swiper(".swiper-container", {
+                slidesPerView: 3, // 한 번에 보이는 슬라이드 수
+                spaceBetween: 15, // 슬라이드 간격
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                },
+                breakpoints: {
+                    // 반응형 설정
+                    640: {
+                        slidesPerView: 2, // 모바일에서 한 번에 하나만 보여줌
+                        spaceBetween: 10,
+                    },
+                    768: {
+                        slidesPerView: 3, // 태블릿에서 2개
+                        spaceBetween: 10,
+                    },
+                    1024: {
+                        slidesPerView: 4, // 데스크톱에서 3개
+                        spaceBetween: 15,
+                    },
+                },
+            });
+        });
+    </script>
+
+    <style>
+        .image-gallery {
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        .swiper-container {
+            width: 100%;
+            padding: 10px 0;
+        }
+
+        .swiper-slide {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-wrapper img {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .image-wrapper img:hover {
+            transform: scale(1.05);
+        }
+
+        .swiper-button-next,
+        .swiper-button-prev {
+            color: #333;
+        }
+    </style>
+
+
+    <div class="image-gallery mt-4">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <!-- 이미지 반복 -->
+                <th:block th:each="reviewImage : ${review.reviewImages}">
+                    <div class="swiper-slide">
+                        <div class="image-wrapper position-relative shadow-sm">
+                            <img alt="첨부 이미지"
+                                 class="img-fluid rounded"
+                                 onclick="window.open(this.src)"
+                                 th:src="${reviewImage.imageUrl}">
+                        </div>
+                    </div>
+                </th:block>
+            </div>
+            <!-- Navigation buttons -->
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+            <!-- Pagination -->
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+</div>

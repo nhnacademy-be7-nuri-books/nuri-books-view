@@ -1,0 +1,262 @@
+<div th:fragment="review">
+    <div th:replace="admin/fragment/js-utils::utils"/>
+    <style>
+        /* 리뷰 헤더 토글 버튼 */
+        #toggleReviewForm {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #6c757d;
+        }
+
+        #toggleReviewForm i {
+            transition: transform 0.3s;
+        }
+
+        #toggleReviewForm.collapsed i {
+            transform: rotate(180deg);
+        }
+
+        /* 별점 스타일 */
+
+        .star-label {
+            cursor: pointer;
+            font-size: 2rem;
+            color: #ccc;
+            transition: color 0.3s;
+        }
+
+        .star-label:hover,
+        .star-label:hover ~ .star-label {
+            color: #ffd700;
+        }
+
+        input.btn-check:checked + label,
+        input.btn-check:checked + label ~ label {
+            color: #ffae00;
+        }
+
+        /* 등록 버튼 */
+        .btn-success {
+            background-color: #163e7e;
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .btn-success:hover {
+            background-color: #121b4a;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .list-group-item img {
+            margin-right: 10px;
+        }
+
+        .list-group-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .list-group-item .btn {
+            margin-left: auto;
+        }
+    </style>
+
+
+    <script>
+        // 별점 마우스 호버 및 선택 기능
+        document.addEventListener('DOMContentLoaded', () => {
+            const stars = document.querySelectorAll('.star-label');
+            document.getElementById('star1').checked = true;
+
+            stars.forEach(star => {
+                star.style.color = star.dataset.value <= 1 ? '#ffae00' : '#ccc';
+                star.addEventListener('mouseover', () => {
+                    stars.forEach(s => {
+                        s.style.color = s.dataset.value <= star.dataset.value ? '#ffd700' : '#ccc';
+                    });
+                });
+
+                star.addEventListener('mouseleave', () => {
+                    const selectedValue = document.querySelector('input[name="score"]:checked')?.value || 0;
+                    stars.forEach(s => {
+                        s.style.color = s.dataset.value <= selectedValue ? '#ffae00' : '#ccc';
+                    });
+                });
+
+                star.addEventListener('click', () => {
+                    const value = star.dataset.value;
+                    document.getElementById(`star${value}`).checked = true;
+                });
+            });
+        });
+
+        function toggleReviewContent() {
+            const reviewContent = document.getElementById("reviewContent");
+            const toggleButton = document.getElementById("toggleReviewForm");
+
+            if (reviewContent.style.display === "none") {
+                reviewContent.style.display = "block";
+                toggleButton.innerHTML = '<i class="fas fa-chevron-up me-1"></i> 접기';
+            } else {
+                reviewContent.style.display = "none";
+                toggleButton.innerHTML = '<i class="fas fa-chevron-down me-1"></i> 펼치기';
+            }
+        }
+
+        const uploadImages = async () => {
+            const fileInput = document.getElementById('images');
+            const files = fileInput.files;
+
+            if (files.length === 0) {
+                showMessage("업로드할 이미지를 선택하세요.");
+                return;
+            }
+
+            if (files.length > 10) {
+                showMessage("이미지는 10장까지 가능합니다.");
+                return;
+            }
+
+            const uploadedImageList = document.getElementById('uploadedImageList');
+            uploadedImageList.innerHTML = ''; // 이전 결과 초기화
+
+            try {
+                const formData = new FormData();
+
+                for (let i = 0; i < files.length; i++) {
+                    formData.append("files", files[i]);
+                }
+
+                // 외부 API 호출
+                const response = await fetch("/api/image/multi", {
+                    method: "POST",
+                    body: formData,
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.message);
+                }
+
+                result.forEach((url) => {
+                    const listItem = document.createElement("li");
+                    listItem.className = "list-group-item d-flex justify-content-between align-items-center";
+
+                    // 이미지 썸네일과 URL
+                    const thumbnail = document.createElement("img");
+                    thumbnail.src = url;
+                    thumbnail.alt = "이미지 썸네일";
+                    thumbnail.className = "img-thumbnail";
+                    thumbnail.style.width = "60px";
+
+                    const text = document.createElement("span");
+                    text.textContent = url;
+
+                    const reviewImage = document.createElement("input");
+                    reviewImage.value = url;
+                    reviewImage.name = "reviewImages"
+                    reviewImage.type = "hidden"
+
+                    // 리스트에 추가
+                    listItem.appendChild(thumbnail);
+                    listItem.appendChild(text);
+                    listItem.appendChild(reviewImage);
+                    uploadedImageList.appendChild(listItem);
+                });
+                showMessage();
+            } catch (error) {
+                showMessage(error);
+            }
+
+
+        }
+    </script>
+    <form action="/review" class="p-3 pb-0 mb-3 rounded shadow-sm bg-light"
+          id="register_form"
+          method="post">
+        <!-- 리뷰 헤더 -->
+        <div class="row">
+            <h5 class="fw-bold">리뷰 쓰기</h5>
+            <button class="btn btn-link text-decoration-none text-muted" id="toggleReviewForm"
+                    onclick="toggleReviewContent()"
+                    type="button">
+                <i class="fas fa-chevron-down me-1"></i> 펼치기
+            </button>
+        </div>
+
+        <!-- 리뷰 제목 -->
+        <div id="reviewContent" style="display: none;">
+            <div class="row align-items-center mb-4 ">
+                <div class="col-md-8">
+                    <label class="form-label fw-bold" for="title">리뷰 제목</label>
+                    <input class="form-control" id="title" name="title" placeholder="리뷰 제목을 입력하세요"
+                           required
+                           type="text">
+                </div>
+                <div class="col-md-4 text-center">
+                    <label class="form-label fw-bold" for="star">별점</label>
+                    <div id="star">
+                        <th:block th:each="i : ${#numbers.sequence(1, 5)}">
+                            <input class="btn-check" name="score" th:checked="${i == 1}"
+                                   th:id="'star' + ${i}" th:value="${i}" type="radio">
+                            <label class="star-label" th:data-value="${i}"
+                                   th:for="'star' + ${i}">★</label>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 리뷰 내용 -->
+            <div class="mb-3">
+                <label class="form-label fw-bold" for="content">리뷰 내용</label>
+                <textarea class="form-control" id="content" name="content" placeholder="리뷰 내용을 입력하세요"
+                          required rows="3"></textarea>
+            </div>
+
+            <div class="row align-items-center">
+                <!-- 이미지 업로드 -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">이미지 업로드</label>
+                    <div class="input-group">
+                        <input
+                                accept="image/*"
+                                class="form-control"
+                                id="images"
+                                max="10"
+                                multiple
+                                type="file"
+                        />
+                        <button
+                                class="btn btn-primary"
+                                onclick="uploadImages()"
+                                type="button"
+                        >
+                            업로드
+                        </button>
+                    </div>
+                    <small class="text-muted">최대 10개까지 업로드 가능합니다.</small>
+
+                    <!-- 업로드된 이미지 URL을 표시할 리스트 -->
+                    <div class="mt-3">
+                        <label class="form-label fw-bold">업로드된 이미지</label>
+                        <ul class="list-group" id="uploadedImageList"></ul>
+                    </div>
+                </div>
+
+                <input name="bookId" th:value="${book.id()}" type="hidden">
+
+                <!-- 등록 버튼 -->
+                <div class="col-md-4 text-center">
+                    <button class="btn btn-success btn-sm px-5 py-2 shadow-sm rounded-pill"
+                            type="submit">
+                        리뷰 등록
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
