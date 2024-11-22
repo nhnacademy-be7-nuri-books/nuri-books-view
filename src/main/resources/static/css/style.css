@@ -239,7 +239,10 @@ a.product-name:hover, a.product-name:focus {
 }
 
 .slider-img {
-    width: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 1000px;
     height: auto;
 }
 
@@ -281,7 +284,7 @@ a.product-name:hover, a.product-name:focus {
 }
 
 .sidebar {
-    border-left: 1px solid #c7c8c9;
+    border-right: 1px solid #c7c8c9;
     border-top: 0 solid #c7c8c9;
 }
 
@@ -308,7 +311,7 @@ a.product-name:hover, a.product-name:focus {
     border-radius: 0;
     margin-right: 10px;
     float: left;
-    background-color: #cccccc;
+    background-color: #ffffff;
 }
 
 .rating-list .progress .progress-bar {
@@ -368,7 +371,7 @@ a.product-name:hover, a.product-name:focus {
 }
 
 .pagination .page-item.active .page-link {
-    background-color: #656565;
+    background-color: #ffffff;
     color: #fff;
     font-size: 23px;
     line-height: 1;

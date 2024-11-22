@@ -1,34 +1,89 @@
 <div th:fragment="memberHeader">
-  <header class="member-header d-flex justify-content-between align-items-center bg-light p-3 shadow-sm rounded text-dark">
-    <!-- Header -->
-    <div class="col-12 bg-white pt-3">
-      <div class="row">
-        <div class="col-lg-auto">
-          <div class="site-logo text-center text-lg-left">
-            <a th:href="@{/}">NURIBOOKS</a>
-          </div>
-        </div>
-        <div class="col-lg-5 mx-auto mt-4 mt-lg-0">
-          <form action="#">
-            <div class="form-group">
-              <div class="input-group">
-                <input type="search" class="form-control border-dark" placeholder="Search..."
-                       required>
-                <button class="btn btn-outline-dark"><i class="fas fa-search"></i></button>
-              </div>
+    <header class="row">
+        <!-- Header -->
+        <div class="col-12 pt-4">
+            <div class="row align-items-center py-3">
+                <!-- Logo Section -->
+                <div class="col-lg-auto">
+                    <div class="site-logo text-center text-lg-left">
+                        <a th:href="@{/}">NURIBOOKS</a>
+                    </div>
+                </div>
+                <!-- Search Bar -->
+                <div class="col-lg-5 mx-auto">
+                    <div class="search-bar w-100" th:replace="~{fragments/search::search}"></div>
+                </div>
+
+                <!-- User & Cart Section -->
+                <div class="col-lg-auto d-flex justify-content-end align-items-center">
+                    <div th:if="${isLoggedIn == null or isLoggedIn == false}">
+                        <a class="header-item" th:href="@{/api/cart}">
+                            <i class="fas fa-shopping-bag me-2"></i><span class="me-3 font-weight-bold"
+                                                                          id="header-qty1">2</span>
+                        </a>
+                        <a class="header-item" th:href="@{/login}">
+                            <span class="font-weight-normal">로그인</span>
+                        </a>
+                        <a class="header-item" th:href="@{/sign-up}">
+                            <span class="font-weight-normal">회원가입</span>
+                        </a>
+                    </div>
+                    <div th:if="${isLoggedIn}">
+                        <a class="header-item" th:href="@{/api/cart}">
+                            <i class="fas fa-shopping-bag me-2"></i><span class="me-3" id="header-qty2">2</span>
+                        </a>
+                        <form method="post" style="display:inline;" th:action="@{/logout}">
+                            <button class="header-item" style="border: none; background: none; padding: 0;"
+                                    type="submit">
+                                <span class="font-weight-normal">로그아웃</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
-          </form>
+
+            <!-- Main Navigation (Menu) -->
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- Left Side Menu -->
+                    <div class="col-lg-6 col-md-12 d-flex justify-content-start p-3">
+                        <nav class="navbar navbar-expand-lg navbar-light ">
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <a class="nav-link" th:href="@{/}">홈</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/view/books">도서목록</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">신작</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">베스트</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" th:href="${isLoggedIn == true ? '/my-page' : '/login'}">마이
+                                        페이지</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                    <!-- Right Side Category Menu -->
+                    <div class="col-lg-6 col-md-12 d-flex justify-content-end">
+                        <nav class="navbar navbar-light ">
+                            <ul class="navbar-nav mt-2 mt-lg-0">
+                                <li class="nav-item d-flex align-items-center">
+                                    <span class="navbar-toggler-icon" onclick="toggleMenu()"
+                                          style="cursor: pointer;"></span>
+                                    <a class="nav-link" href="/view/categories"> 전체 카테고리</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <!-- Main Navigation End -->
         </div>
-        <div class="col-lg-auto text-center text-lg-left header-item-holder">
-          <a href="#" class="header-item">
-            <i class="fas fa-heart me-2"></i><span id="header-favorite">0</span>
-          </a>
-          <a href="/api/cart" class="header-item">
-            <i class="fas fa-shopping-bag me-2"></i><span id="header-qty" class="me-3">2</span>
-            <!--<i class="fas fa-money-bill-wave me-2"></i><span id="header-price">$4,000</span>-->
-          </a>
-        </div>
-      </div>
-    </div>
-  </header>
+    </header>
 </div>

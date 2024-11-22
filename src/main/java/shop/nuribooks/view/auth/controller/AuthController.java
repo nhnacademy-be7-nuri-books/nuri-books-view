@@ -1,12 +1,9 @@
 package shop.nuribooks.view.auth.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
@@ -16,15 +13,20 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.auth.dto.request.AuthenticationCodeRequest;
 import shop.nuribooks.view.auth.dto.request.LoginRequest;
 import shop.nuribooks.view.auth.dto.request.MemberReactiveRequest;
 import shop.nuribooks.view.auth.service.AuthService;
+import shop.nuribooks.view.common.decoder.JwtDecoder;
 import shop.nuribooks.view.common.util.CookieUtil;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 인증 관련 Controller
@@ -36,162 +38,171 @@ import java.util.Map;
 @Slf4j
 public class AuthController {
 
-    private final AuthService authService;
+	public static final String REDIRECT_HOME = "redirect:/";
 
-    @Value("${error.message-key}")
-    private String errorMessageKey;
-    @Value("${header.refresh-key-name}")
-    private String refreshHeaderName;
-    @Value("${success.message-key}")
-    private String successMessageKey;
+	private final AuthService authService;
 
-    /**
-     * 로그인 GET
-     *
-     * @return login.html
-     */
-    @Operation(summary = "로그인 폼", description = "로그인 페이지를 반환합니다.")
-    @GetMapping("/login")
-    public String loginForm() throws IOException {
-        return "auth/login";
-    }
+	@Value("${error.message-key}")
+	private String errorMessageKey;
+	@Value("${header.refresh-key-name}")
+	private String refreshHeaderName;
+	@Value("${success.message-key}")
+	private String successMessageKey;
 
-    /**
-     * 로그인 POST
-     *
-     * @param loginRequest form 입력받은 로그인 정보
-     * @param response     로그인 성공 시 받아온 jwt 정보를 쿠키에 저장
-     */
-    @Operation(summary = "로그인", description = "사용자의 로그인 요청을 처리합니다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "302", description = "로그인 성공"),
-            @ApiResponse(responseCode = "302", description = "로그인 실패"),
-            @ApiResponse(responseCode = "500", description = "서버 오류: 로그인 처리 중 오류 발생")
-    })
-    @PostMapping("/login")
-    public String doLogin(@Valid @ModelAttribute LoginRequest loginRequest,
-                          RedirectAttributes redirectAttributes,
-                          HttpServletResponse response) {
+	/**
+	 * 로그인 GET
+	 *
+	 * @return login.html
+	 */
+	@Operation(summary = "로그인 폼", description = "로그인 페이지를 반환합니다.")
+	@GetMapping("/login")
+	public String loginForm() throws IOException {
+		return "auth/login";
+	}
 
-        Map<String, List<String>> result = authService.login(loginRequest);
+	/**
+	 * 로그인 POST
+	 *
+	 * @param loginRequest form 입력받은 로그인 정보
+	 * @param response 로그인 성공 시 받아온 jwt 정보를 쿠키에 저장
+	 */
+	@Operation(summary = "로그인", description = "사용자의 로그인 요청을 처리합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "302", description = "로그인 성공"),
+		@ApiResponse(responseCode = "302", description = "로그인 실패"),
+		@ApiResponse(responseCode = "500", description = "서버 오류: 로그인 처리 중 오류 발생")
+	})
+	@PostMapping("/login")
+	public String doLogin(@Valid @ModelAttribute LoginRequest loginRequest,
+		RedirectAttributes redirectAttributes,
+		HttpServletResponse response) {
 
-        // 에러 메시지 처리
-        // 휴면 회원의 경우
-        if (result.containsKey(errorMessageKey)) {
-            if (result.get(errorMessageKey).getFirst().contains("휴면")) {
-                redirectAttributes.addFlashAttribute("username", loginRequest.username());
-                return "redirect:/login/inactive";
-            }
+		Map<String, List<String>> result = authService.login(loginRequest);
+		String authHeader = null;
 
-            String errorMessageStr = result.get(errorMessageKey).getFirst();
-            log.error("Login 실패: {}", errorMessageStr);
-            redirectAttributes.addFlashAttribute(errorMessageKey, errorMessageStr);
-            return "redirect:/login";
-        } else {
+		// 에러 메시지 처리
+		// 휴면 회원의 경우
+		if (result.containsKey(errorMessageKey)) {
+			if (result.get(errorMessageKey).getFirst().contains("휴면")) {
+				redirectAttributes.addFlashAttribute("username", loginRequest.username());
+				return "redirect:/login/inactive";
+			}
 
-            List<String> cookies = result.get(HttpHeaders.SET_COOKIE);
-            // refresh jwt & 그 외 쿠키 저장
-            handleCookies(cookies, response);
+			String errorMessageStr = result.get(errorMessageKey).getFirst();
+			log.error("Login 실패: {}", errorMessageStr);
+			redirectAttributes.addFlashAttribute(errorMessageKey, errorMessageStr);
+			return "redirect:/login";
+		} else {
 
-            // accept jwt 쿠키로 저장
-            String authHeader = result.get(HttpHeaders.AUTHORIZATION).getFirst();
-            if (authHeader != null) {
-                String token = authHeader.substring(7);
-                addAuthCookie(response, token);
-            }
+			List<String> cookies = result.get(HttpHeaders.SET_COOKIE);
+			// refresh jwt & 그 외 쿠키 저장
+			handleCookies(cookies, response);
 
-            log.info("로그인 성공");
-        }
+			// accept jwt 쿠키로 저장
+			authHeader = result.get(HttpHeaders.AUTHORIZATION).getFirst();
+			if (authHeader != null) {
+				String token = authHeader.substring(7);
+				addAuthCookie(response, token);
+			}
 
-        // String authHeader = result.get("X-USER-ID").getFirst();
-        redirectAttributes.addFlashAttribute(successMessageKey, "로그인 성공, 환영합니다.");
-        return "redirect:/";
+			log.info("로그인 성공");
+		}
 
-    }
+		redirectAttributes.addFlashAttribute(successMessageKey, "로그인 성공, 환영합니다.");
 
-    /**
-     * POST 로그아웃
-     *
-     * @return 반환 경로
-     */
-    @Operation(summary = "로그아웃", description = "사용자의 로그아웃 요청을 처리합니다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "302", description = "로그아웃 성공"),
-            @ApiResponse(responseCode = "302", description = "로그아웃 실패"),
-            @ApiResponse(responseCode = "500", description = "서버 오류: 로그아웃 처리 중 오류 발생")
-    })
-    @PostMapping("/logout")
-    public String doLogout(HttpServletResponse response,
-                           RedirectAttributes redirectAttributes) {
-        String result = authService.logout();
+		String userRole = JwtDecoder.getRole(authHeader);
 
-        if (result.equals(successMessageKey)) {
-            CookieUtil.deleteCookie(response, HttpHeaders.AUTHORIZATION);
-            CookieUtil.deleteCookie(response, refreshHeaderName);
-            redirectAttributes.addFlashAttribute(successMessageKey, "로그아웃에 성공하였습니다.");
-            log.info("로그아웃 성공");
-            return "redirect:/";
-        } else {
-            redirectAttributes.addFlashAttribute(errorMessageKey, "로그아웃 실패: " + result);
-            log.info("로그아웃 실패");
-            return "redirect:/";
-        }
-    }
+		if (userRole.contains("ADMIN")) {
+			return "redirect:/admin";
+		}
 
-    @GetMapping("/login/inactive")
-    public String inactiveLoginForm(@ModelAttribute(value = "username") String username, Model model) {
+		return REDIRECT_HOME;
 
-        String hookUrl = "https://hook.dooray.com/services/3204376758577275363/3942084368369400595/RyITAQ8cQHGJ_6vnGz2DBw";
+	}
 
-        model.addAttribute("hookUrl", hookUrl);
-        model.addAttribute("username", username);
+	/**
+	 * POST 로그아웃
+	 *
+	 * @return 반환 경로
+	 */
+	@Operation(summary = "로그아웃", description = "사용자의 로그아웃 요청을 처리합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "302", description = "로그아웃 성공"),
+		@ApiResponse(responseCode = "302", description = "로그아웃 실패"),
+		@ApiResponse(responseCode = "500", description = "서버 오류: 로그아웃 처리 중 오류 발생")
+	})
+	@PostMapping("/logout")
+	public String doLogout(HttpServletResponse response,
+		RedirectAttributes redirectAttributes) {
+		String result = authService.logout();
 
-        return "auth/inactive-login";
-    }
+		if (result.equals(successMessageKey)) {
+			CookieUtil.deleteCookie(response, HttpHeaders.AUTHORIZATION);
+			CookieUtil.deleteCookie(response, refreshHeaderName);
+			redirectAttributes.addFlashAttribute(successMessageKey, "로그아웃에 성공하였습니다.");
+			log.info("로그아웃 성공");
+			return "redirect:/";
+		} else {
+			redirectAttributes.addFlashAttribute(errorMessageKey, "로그아웃 실패: " + result);
+			log.info("로그아웃 실패");
+			return "redirect:/";
+		}
+	}
 
-    @PostMapping("/login/inactive-code")
-    @ResponseBody
-    public String sendAuthenticationCode(@ModelAttribute AuthenticationCodeRequest request) {
+	@GetMapping("/login/inactive")
+	public String inactiveLoginForm(@ModelAttribute(value = "username") String username, Model model) {
 
-        return authService.sendAuthenticationCode(request);
-    }
+		String hookUrl = "https://hook.dooray.com/services/3204376758577275363/3940128695610713143/D2Wa5K8hTI2yixx1eLi2ug";
+		model.addAttribute("hookUrl", hookUrl);
+		model.addAttribute("username", username);
 
-    @PostMapping("/login/inactive")
-    public String memberReactive(@ModelAttribute MemberReactiveRequest request, RedirectAttributes redirectAttributes) {
+		return "auth/inactive-login";
+	}
 
-        authService.reactiveMember(request);
+	@PostMapping("/login/inactive-code")
+	@ResponseBody
+	public String sendAuthenticationCode(@ModelAttribute AuthenticationCodeRequest request) {
 
-        redirectAttributes.addFlashAttribute(successMessageKey, "휴면회원 인증이 완료되었습니다.");
+		return authService.sendAuthenticationCode(request);
+	}
 
-        return "redirect:/login";
-    }
+	@PostMapping("/login/inactive")
+	public String memberReactive(@ModelAttribute MemberReactiveRequest request, Model model) {
 
-    /**
-     * SET-COOKIE 로 얻어온 쿠키 목록을 처리
-     *
-     * @param cookies  "name=value; attributes" 형식의 쿠키 목록
-     * @param response 쿠키가 추가 될 HttpServletResponse
-     */
-    private void handleCookies(List<String> cookies, HttpServletResponse response) {
-        if (cookies != null) {
-            for (String cookie : cookies) {
-                String[] cookieParts = cookie.split(";");
-                String[] keyValue = cookieParts[0].split("=");
+		authService.reactiveMember(request);
 
-                if (keyValue.length == 2) {
-                    CookieUtil.addCookie(response, keyValue[0].trim(), keyValue[1].trim());
-                }
-            }
-        }
-    }
+		model.addAttribute("successMessage", "휴면회원 인증이 완료되었습니다.");
 
-    /**
-     * AUTHORIZATION 로 얻어올 jwt 정보
-     *
-     * @param response   쿠키가 추가 될 HttpServletResponse
-     * @param authHeader AUTHORIZATION 헤더 내용
-     */
-    private void addAuthCookie(HttpServletResponse response, String authHeader) {
-        CookieUtil.addCookie(response, HttpHeaders.AUTHORIZATION, authHeader);
-    }
+		return "redirect:/login";
+	}
+
+	/**
+	 * SET-COOKIE 로 얻어온 쿠키 목록을 처리
+	 *
+	 * @param cookies "name=value; attributes" 형식의 쿠키 목록
+	 * @param response 쿠키가 추가 될 HttpServletResponse
+	 */
+	private void handleCookies(List<String> cookies, HttpServletResponse response) {
+		if (cookies != null) {
+			for (String cookie : cookies) {
+				String[] cookieParts = cookie.split(";");
+				String[] keyValue = cookieParts[0].split("=");
+
+				if (keyValue.length == 2) {
+					CookieUtil.addCookie(response, keyValue[0].trim(), keyValue[1].trim());
+				}
+			}
+		}
+	}
+
+	/**
+	 * AUTHORIZATION 로 얻어올 jwt 정보
+	 *
+	 * @param response 쿠키가 추가 될 HttpServletResponse
+	 * @param authHeader AUTHORIZATION 헤더 내용
+	 */
+	private void addAuthCookie(HttpServletResponse response, String authHeader) {
+		CookieUtil.addCookie(response, HttpHeaders.AUTHORIZATION, authHeader);
+	}
+
 }
