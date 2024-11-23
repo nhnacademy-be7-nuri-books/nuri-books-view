@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import shop.nuribooks.view.common.dto.PagedResponse;
 import shop.nuribooks.view.review.dto.request.ReviewRequest;
+import shop.nuribooks.view.review.dto.request.ReviewUpdateRequest;
 import shop.nuribooks.view.review.dto.response.ReviewBookResponse;
 import shop.nuribooks.view.review.dto.response.ReviewMemberResponse;
 import shop.nuribooks.view.review.feign.ReviewServiceClient;
@@ -19,7 +20,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public Page<ReviewMemberResponse> getReviewsByBookId(long bookId, Pageable pageable) {
-		return this.reviewServiceClient.getReviewMember(bookId, pageable.getPageNumber(), pageable.getPageSize());
+		return reviewServiceClient.getReviewMember(bookId, pageable.getPageNumber(), pageable.getPageSize());
 	}
 
 	@Override
@@ -29,11 +30,11 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public void registerReview(ReviewRequest reviewRequest) {
-		this.reviewServiceClient.registerReview(reviewRequest);
+		reviewServiceClient.registerReview(reviewRequest);
 	}
 
 	@Override
-	public void updateReview(ReviewRequest reviewRequest, long reviewId) {
-		this.reviewServiceClient.updateReview(reviewRequest, reviewId);
+	public void updateReview(ReviewUpdateRequest reviewUpdateRequest, long reviewId) {
+		reviewServiceClient.updateReview(reviewUpdateRequest, reviewId);
 	}
 }
