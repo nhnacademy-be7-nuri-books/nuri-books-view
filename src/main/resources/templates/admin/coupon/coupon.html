@@ -1,6 +1,8 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{admin/layout/adminlayout}">
+<html lang="en" layout:decorate="~{admin/layout/adminlayout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <body>
 <div layout:fragment="content">
+
     <div th:replace="~{admin/fragment/js-utils::utils}"></div>
     <div class="container mt-5">
         <div class="card shadow-sm">
@@ -8,14 +10,25 @@
                 <h2 class="mb-0">쿠폰 정책 관리</h2>
             </div>
             <div class="card-body">
+                <div>
+                    <input class="form-control me-2" id="type" name="type" th:value="${type}" type="hidden"/>
 
+                    <a class="btn btn-outline-secondary me-2" href="/admin/coupon?type=ALL"
+                       th:classappend="${type} == 'ALL' ? 'active text-white bg-primary' : ''">전체</a>
+                    <a class="btn btn-outline-secondary me-2" href="/admin/coupon?type=BOOK"
+                       th:classappend="${type} == 'BOOK' ? 'active text-white bg-primary' : ''">도서</a>
+                    <a class="btn btn-outline-secondary" href="/admin/coupon?type=CATEGORY"
+                       th:classappend="${type} == 'CATEGORY' ? 'active text-white bg-primary' : ''">카테고리</a>
+                </div>
                 <div id="register-modal" th:replace="~{admin/coupon/modal/register_modal::register_modal}"></div>
                 <!-- 쿠폰 정책 목록 테이블 -->
                 <table class="table table-hover" id="data-table">
+
                     <thead class="table-light">
                     <tr>
                         <th class="text-center">ID</th>
                         <th class="text-center">쿠폰 이름</th>
+                        <th class="text-center">쿠폰 유형</th>
                         <th class="text-center">정책 유형</th>
                         <th class="text-center">할인 할당량</th>
                         <th class="text-center">최소 주문 금액</th>
@@ -32,8 +45,12 @@
                     <tr th:each="coupon : ${pages.content}">
                         <td class="text-center" th:text="${coupon.id}">ID</td>
                         <td class="text-center" th:text="${coupon.name}">쿠폰 이름</td>
+                        <td class="text-center" th:text="${coupon.couponType}">쿠폰 유형</td>
                         <td class="text-center" th:text="${coupon.policyType.toKorName()}">정책 유형</td>
-                        <td class="text-center" th:text="${coupon.discount.intValue() + ' ' + (coupon.policyType.toString().equals('RATED') ? '%' : '₩')}">할인 할당량</td>
+                        <td class="text-center"
+                            th:text="${coupon.discount.intValue() + ' ' + (coupon.policyType.toString().equals('RATED') ? '%' : '₩')}">
+                            할인 할당량
+                        </td>
                         <td class="text-center" th:text="${coupon.minimumOrderPrice}">최소 주문 금액</td>
                         <td class="text-center" th:text="${coupon.maximumDiscountPrice}">최대 할인 금액</td>
                         <td class="text-center" th:text="${coupon.createdAt}">시작일시</td>
@@ -41,7 +58,7 @@
                         <td class="text-center" th:text="${coupon.period}">기간</td>
                         <td class="text-center" th:text="${coupon.expirationType.toKorName()}">만료 유형</td>
                         <td class="text-center"
-                            th:text="${coupon.expireDate == null ? 'Active' : coupon.expireDate}">
+                            th:text="${coupon.expiredDate == null ? 'Active' : coupon.expiredDate}">
                             만료기한
                         </td>
                         <td class="text-end">
@@ -59,12 +76,12 @@
                     </tr>
 
                     <tr th:if="${#lists.isEmpty(pages.content)}">
-                        <td colspan="10" class="text-center text-muted">등록된 쿠폰 정책이 없습니다.</td>
+                        <td class="text-center text-muted" colspan="10">등록된 쿠폰 정책이 없습니다.</td>
                     </tr>
                     </tbody>
                 </table>
             </div>
-            <div th:replace="~{fragments/page::page(url=${'/admin/coupon'})}"></div>
+            <div th:replace="~{fragments/page::page(url=@{'/admin/coupon'(type=${type})})}"></div>
         </div>
     </div>
 
