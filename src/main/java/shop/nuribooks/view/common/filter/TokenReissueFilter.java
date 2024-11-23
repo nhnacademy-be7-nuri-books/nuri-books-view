@@ -72,6 +72,11 @@ public class TokenReissueFilter extends OncePerRequestFilter {
 					List<String> cookies = responseMap.get(HttpHeaders.SET_COOKIE);
 					handleCookies(cookies, response);
 					CookieUtil.addCookie(response, HttpHeaders.AUTHORIZATION, accessToken);
+
+					// 쿠키 갱신을 위해 리다이렉트
+					response.sendRedirect(request.getRequestURI());
+					return;
+
 				} catch (FeignException e) {
 					logout(response);
 					response.sendRedirect("/login");
