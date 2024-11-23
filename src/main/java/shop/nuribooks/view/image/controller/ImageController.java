@@ -19,7 +19,7 @@ import shop.nuribooks.view.image.client.ImageClient;
 public class ImageController {
 	private final ImageClient imageClient;
 
-	@PostMapping(value = "/api/image/multi")
+	@PostMapping(value = "/api/image/bulk")
 	public ResponseEntity<List<String>> uploadMultiImage(@RequestPart("files") List<MultipartFile> files){
 		List<String> result = imageClient.uploadImage(files);
 		ResponseEntity re = ResponseEntity.status(HttpStatus.CREATED).body(result);
