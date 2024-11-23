@@ -1,6 +1,7 @@
 package shop.nuribooks.view.book.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,7 +28,16 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public BookResponse getBookById(Long bookId) {
-		return bookServiceClient.getBookById(bookId);
+		return bookServiceClient.getBookById(bookId, false);
+	}
+
+	@Override
+	public BookResponse getBookByIdAndUpdateRecentView(Long bookId, Set<Long> recentViewSet) {
+		Boolean updateRecentCount = true;
+		if (recentViewSet.contains(bookId)) {
+			updateRecentCount = false;
+		}
+		return bookServiceClient.getBookById(bookId, updateRecentCount);
 	}
 
 	// 알라딘 도서 등록
