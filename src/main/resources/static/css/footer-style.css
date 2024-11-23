@@ -1,0 +1,168 @@
+/* Footer 기본 스타일 */
+.footer {
+    background: linear-gradient(180deg, #fff 0%, #f9f9f9 20%, #e0e0e0 100%);
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* 상단 구분선 */
+.footer-divider {
+    border: 0;
+    height: 2px;
+    background: #d3d3d3;
+    margin-bottom: 20px;
+}
+
+/* 컨테이너 균등 배치 */
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 20px; /* 섹션 간격 균일화 */
+}
+
+/* 각 섹션의 공통 스타일 */
+.footer-container > div {
+    flex: 1; /* 모든 섹션 동일한 크기 */
+    text-align: center;
+}
+
+/* 로고 섹션 */
+.logo-section .footer-logo a {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #000; /* 기본 색상 */
+    text-decoration: none; /* 밑줄 제거 */
+    transition: color 0.3s ease; /* 부드러운 색상 변화 */
+}
+
+.logo-section .footer-logo a:hover {
+    color: #007bff; /* 마우스 올렸을 때 색상 변경 */
+}
+
+.logo-section .footer-logo a:focus,
+.logo-section .footer-logo a:active {
+    color: #000; /* 클릭 또는 선택 시에도 기본 색상 유지 */
+    outline: none; /* 포커스 테두리 제거 */
+}
+
+.logo-section .footer-address {
+    margin-top: 10px;
+    color: #555;
+    font-size: 0.9rem;
+    text-align: center; /* 가운데 정렬 */
+}
+
+.logo-section .social-icons {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 8px; /* 간격 줄임 */
+}
+
+.logo-section .social-icon {
+    font-size: 1.2rem; /* 크기 줄임 */
+    color: #666;
+    transition: color 0.3s ease;
+}
+
+.logo-section .social-icon:hover {
+    color: #007bff;
+}
+
+/* 누리의 서재 섹션 */
+.nuri-books-section ul {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 두 열로 배치 */
+    gap: 6px 16px; /* 간격 조금 더 조밀하게 */
+    justify-content: center;
+}
+
+.nuri-books-section h4 {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.nuri-books-section li a {
+    font-family: "Arial", sans-serif; /* 글씨체 변경 */
+    font-size: 0.9rem;
+    color: #333; /* 기본 텍스트 색상 */
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.nuri-books-section li a:hover {
+    color: #007bff; /* 마우스 올렸을 때 */
+}
+
+.nuri-books-section li a:focus,
+.nuri-books-section li a:active {
+    color: #333; /* 클릭 또는 선택 시 기본 색상 유지 */
+    outline: none; /* 포커스 테두리 제거 */
+}
+
+/* 빠른 링크 및 도움말 섹션 */
+.quick-links-section ul,
+.help-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.quick-links-section li,
+.help-section li {
+    margin-bottom: 10px;
+}
+
+.quick-links-section h4,
+.help-section h4 {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.quick-links-section li a,
+.help-section li a {
+    color: #555;
+    font-size: 0.9rem;
+    font-weight: normal;
+    transition: color 0.3s ease;
+}
+
+.quick-links-section li a:hover,
+.help-section li a:hover {
+    color: #007bff;
+}
+
+.quick-links-section li a:focus,
+.quick-links-section li a:active,
+.help-section li a:focus,
+.help-section li a:active {
+    color: #555; /* 클릭 또는 선택 시 기본 색상 유지 */
+    outline: none; /* 포커스 테두리 제거 */
+}
+
+/* Copyright 스타일 */
+.footer-copyright {
+    font-size: 0.75rem;
+    text-align: center;
+    color: #888;
+    margin-top: 20px;
+}
+
+/* 반응형 */
+@media screen and (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .nuri-books-section ul {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
