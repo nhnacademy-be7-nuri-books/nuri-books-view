@@ -12,6 +12,7 @@ import feign.FeignException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import shop.nuribooks.view.common.util.ExceptionUtil;
 import shop.nuribooks.view.review.dto.request.ReviewRequest;
 import shop.nuribooks.view.review.dto.request.ReviewUpdateRequest;
 import shop.nuribooks.view.review.service.ReviewService;
@@ -35,7 +36,7 @@ public class ReviewController {
 			reviewService.registerReview(reviewRequest);
 			redirectAttributes.addFlashAttribute(successMessageKey, "리뷰가 성공적으로 등록되었습니다.");
 		} catch (FeignException e) {
-			redirectAttributes.addFlashAttribute(errorMessageKey, e.getMessage());
+			redirectAttributes.addFlashAttribute(errorMessageKey, ExceptionUtil.handleFeignException(e));
 		}
 		return "redirect:/view/book/details/" + reviewRequest.bookId();
 	}
@@ -49,7 +50,7 @@ public class ReviewController {
 			reviewService.updateReview(reviewUpdateRequest, reviewId);
 			redirectAttributes.addFlashAttribute(successMessageKey, "리뷰가 성공적으로 등록되었습니다.");
 		} catch (FeignException e) {
-			redirectAttributes.addFlashAttribute(errorMessageKey, e.getMessage());
+			redirectAttributes.addFlashAttribute(errorMessageKey, ExceptionUtil.handleFeignException(e));
 		}
 		return "redirect:/view/book/details/" + reviewUpdateRequest.bookId();
 	}
