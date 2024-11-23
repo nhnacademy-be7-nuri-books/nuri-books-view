@@ -1,115 +1,73 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="footer" class="footer">
-    <!-- Footer -->
-    <footer class="row">
-        <div class="col-12 bg-primary text-white pb-3 pt-5">
-            <div class="row">
-                <div class="col-lg-2 col-sm-4 text-center text-sm-left mb-sm-0 mb-3">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="footer-logo">
-                                <a href="index.html">NURIBOOKS</a>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <address>
-                                221B Baker Street<br>
-                                London, England
-                            </address>
-                        </div>
-                        <div class="col-12">
-                            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="social-icon"><i class="fab fa-pinterest-p"></i></a>
-                            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-                            <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
-                        </div>
-                    </div>
+    <hr class="footer-divider">
+    <footer>
+        <div class="footer-container">
+            <!-- Logo and Address -->
+            <div class="footer-section logo-section">
+                <div class="footer-logo">
+                    <a href="index.html">NURIBOOKS</a>
                 </div>
-                <div class="col-lg-3 col-sm-8 text-center text-sm-left mb-sm-0 mb-3">
-                    <div class="row">
-                        <div class="col-12 text-uppercase">
-                            <h4>Who are we?</h4>
-                        </div>
-                        <div class="col-12 text-justify">
-                            <p>test</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-sm-3 col-5 ms-lg-auto ms-sm-0 ms-auto mb-sm-0 mb-3">
-                    <div class="row">
-                        <div class="col-12 text-uppercase">
-                            <h4>Quick Links</h4>
-                        </div>
-                        <div class="col-12">
-                            <ul class="footer-nav">
-                                <li>
-                                    <a th:href="@{/}">Home</a>
-                                </li>
-                                <li>
-                                    <a href="#">Contact Us</a>
-                                </li>
-                                <li>
-                                    <a href="#">About Us</a>
-                                </li>
-                                <li>
-                                    <a href="#">Privacy Policy</a>
-                                </li>
-                                <li>
-                                    <a href="#">Terms & Conditions</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-1 col-sm-2 col-4 me-auto mb-sm-0 mb-3">
-                    <div class="row">
-                        <div class="col-12 text-uppercase text-underline">
-                            <h4>Help</h4>
-                        </div>
-                        <div class="col-12">
-                            <ul class="footer-nav">
-                                <li>
-                                    <a href="#">FAQs</a>
-                                </li>
-                                <li>
-                                    <a href="#">Shipping</a>
-                                </li>
-                                <li>
-                                    <a href="#">Returns</a>
-                                </li>
-                                <li>
-                                    <a href="#">Track Order</a>
-                                </li>
-                                <li>
-                                    <a href="#">Report Fraud</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6 text-center text-sm-left">
-                    <div class="row">
-                        <div class="col-12 text-uppercase">
-                            <h4>Newsletter</h4>
-                        </div>
-                        <div class="col-12">
-                            <form action="#">
-                                <div class="mb-3">
-                                    <input type="text" class="form-control" placeholder="Enter your email..."
-                                           required>
-                                </div>
-                                <div class="mb-3">
-                                    <button class="btn btn-outline-light text-uppercase">Subscribe</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+                <address class="footer-address">
+                    대전 유성구 대학로 99<br>
+                    충남대학교 N2-1<br>
+                    대전, 대한민국
+                </address>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-pinterest-p"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
                 </div>
             </div>
+            <!-- Nuri's Books Section -->
+            <div class="footer-section nuri-books-section">
+                <h4>누리의 서재</h4>
+                <ul class="footer-nav">
+                    <li><a href="https://github.com/kkyongg" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-github"></i> 김경민</a></li>
+                    <li><a href="https://github.com/Jkim052" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-github"></i> 김장현</a></li>
+                    <li><a href="https://github.com/hxcva1" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-github"></i> 박문순</a></li>
+                    <li><a href="https://github.com/yeon-so" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-github"></i> 정누리</a></li>
+                    <li><a href="https://github.com/Jprotection" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-github"></i> 정보호</a></li>
+                    <li><a href="https://github.com/itaekit" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-github"></i> 이용택</a></li>
+                    <li><a href="https://github.com/ljg0610" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-github"></i> 이정규</a></li>
+                    <li><a href="https://github.com/rjsdn0124" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-github"></i> 임건우</a></li>
+                </ul>
+            </div>
+            <!-- Quick Links -->
+            <div class="footer-section quick-links-section">
+                <h4>빠른 링크</h4>
+                <ul class="footer-nav">
+                    <li><a href="#">홈</a></li>
+                    <li><a href="#">문의하기</a></li>
+                    <li><a href="#">회사 소개</a></li>
+                    <li><a href="#">개인정보 처리방침</a></li>
+                    <li><a href="#">이용약관</a></li>
+                </ul>
+            </div>
+            <!-- Help Section -->
+            <div class="footer-section help-section">
+                <h4>도움말</h4>
+                <ul class="footer-nav">
+                    <li><a href="#">자주 묻는 질문</a></li>
+                    <li><a href="#">배송 안내</a></li>
+                    <li><a href="#">반품 정책</a></li>
+                    <li><a href="#">주문 조회</a></li>
+                    <li><a href="#">사기 신고</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- Copyright -->
+        <div class="footer-copyright">
+            ⓒ NuriBooks Communication. All Rights Reserved.
         </div>
     </footer>
-    <!-- Footer -->
 </div>
-</html>
