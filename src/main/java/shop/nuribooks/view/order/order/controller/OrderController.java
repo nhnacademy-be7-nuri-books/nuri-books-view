@@ -21,9 +21,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import shop.nuribooks.view.common.decoder.JwtDecoder;
 import shop.nuribooks.view.common.util.CookieUtil;
-import shop.nuribooks.view.order.order.dto.OrderInformationResponse;
-import shop.nuribooks.view.order.order.dto.OrderListPeriodRequest;
-import shop.nuribooks.view.order.order.dto.OrderListResponse;
+import shop.nuribooks.view.order.order.dto.request.OrderListPeriodRequest;
+import shop.nuribooks.view.order.order.dto.response.OrderDetailResponse;
+import shop.nuribooks.view.order.order.dto.response.OrderInformationResponse;
+import shop.nuribooks.view.order.order.dto.response.OrderListResponse;
 import shop.nuribooks.view.order.order.service.OrderService;
 
 @Controller
@@ -127,7 +128,22 @@ public class OrderController {
 		model.addAttribute("pages", orders);
 		model.addAttribute("period", orderListPeriodRequest);
 		model.addAttribute("periodDuration", includeOrdersInPendingStatus);
+
 		return "member/order/my-orders";
+	}
+
+	@GetMapping("/detail/{order-id}")
+	public String getOrderDetail(@PathVariable("order-id") Long orderId, Model model) {
+
+		OrderDetailResponse orderDetailResponse = orderService.getOrderDetail(orderId);
+
+		model.addAttribute("orderId", orderId);
+		model.addAttribute("orderSummary", orderDetailResponse.order());
+		model.addAttribute("pages", orderDetailResponse.orderItems());
+		model.addAttribute("shipping", orderDetailResponse.shipping());
+		model.addAttribute("payment", orderDetailResponse.payment());
+
+		return "member/order/order-detail";
 	}
 
 }

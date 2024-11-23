@@ -1,4 +1,4 @@
-package shop.nuribooks.view.order.order.dto;
+package shop.nuribooks.view.order.order.dto.response;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

@@ -1,9 +1,9 @@
-package shop.nuribooks.view.order.order.dto;
+package shop.nuribooks.view.order.order.dto.response;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import shop.nuribooks.view.order.order.Enums.OrderState;
+import shop.nuribooks.view.order.order.enums.OrderState;
 
 public record OrderListResponse(
 	Long orderId,

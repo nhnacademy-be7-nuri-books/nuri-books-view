@@ -160,7 +160,7 @@ async function main() {
 
         // 임시 주문 정보
         let orderData = {
-            paymentPrice: amount.value,  // 총 결제 금액
+            paymentPrice: getAllSalePrices(),  // 순수 도서 가격
             wrappingPrice: 2000,   // 포장 비용 예시 - todo: 이후 id로 변경하기
             expectedDeliveryAt: selectedDate,
             orderDetails: bookList,  // 주문 상세

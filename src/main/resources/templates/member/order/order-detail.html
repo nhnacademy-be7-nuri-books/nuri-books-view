@@ -1,0 +1,137 @@
+<html lang="en" layout:decorate="~{member/layout/memberlayout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+<div layout:fragment="content" style="margin-left: 90px; margin-right: 90px;">
+    <script th:inline="javascript"></script>
+
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">주문 상세</h2>
+        </div>
+
+        <br/>
+
+        <div class="card-body">
+            <h4 class="mb-0 p-3">주문 정보</h4>
+
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <div class="col-6">
+                        <span class="fw-bold">주문 일시 </span><span th:text="${orderSummary.orderedAt.toLocalDate}">2000-02-02</span>
+                    </div>
+                    <div class="col-6">
+                        <span class="fw-bold">주문 명 </span><span th:text="${orderSummary.title}">oo책 1건</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-body">
+            <h4 class="mb-0 p-3">주문한 도서 목록</h4>
+            <!--Order Table-->
+            <table class="table table-hover" id="data-table1">
+                <thead class="table-light">
+                <tr>
+                    <th class="text-center">도서명</th>
+                    <th class="text-center">판매가</th>
+                    <th class="text-center">수량</th>
+                    <th class="text-center">구매가</th>
+                    <th class="text-center">진행현황</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="orderDetail : ${pages.content}">
+                    <td class="text-center">
+                        <img alt="상품 이미지" class="img-fluid mr-3"
+                             th:src="@{${orderDetail.thumbnailImageUrl}}">
+                        <span th:text="${orderDetail.title}">책 이름</span>
+                    </td>
+                    <td class="text-center" th:text="${orderDetail.price.intValue()}">판매가</td>
+                    <td class="text-center" th:text="${orderDetail.bookCount}">주문금액</td>
+                    <td class="text-center" th:text="${orderDetail.discountedPrice.intValue()}">구매가</td>
+                    <td class="text-center" th:text="${orderDetail.orderState.getKorName()}">상채</td>
+                </tr>
+                </tbody>
+            </table>
+            <div th:replace="fragments/page::page(url=@{'/orders/details/orderId'})"></div>
+        </div>
+
+        <div class="card-body">
+            <h4 class="mb-0 p-3">배송지 정보</h4>
+            <br/>
+
+            <div class="row mb-3 border-bottom pb-4">
+                <div class="col-md-3 d-flex justify-content-center"><span class="fw-bold">받는 분</span></div>
+                <div class="col-md-9"><span>홍길동</span></div>
+            </div>
+
+            <div class="row mb-3 border-bottom pb-4">
+                <div class="col-md-3 d-flex justify-content-center"><span class="fw-bold">연락처</span></div>
+                <div class="col-md-9"><span>010-1234-5678</span></div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-3 d-flex justify-content-center"><span class="fw-bold">주소</span></div>
+                <div class="col-md-9"><span>서울특별시 강남구 테헤란로 123</span></div>
+            </div>
+        </div>
+
+        <!-- 결제 정보 -->
+        <div class="card-body">
+            <h4 class="mb-0 p-3">결제 정보</h4>
+
+            <!-- 주문 금액 -->
+            <div class="row mb-3 py-2" style="border-bottom: 1px solid #dee2e6;">
+                <div class="col px-3 py-2" style="border-right: 1px solid #dee2e6;">
+                    <div class="d-flex justify-content-between">
+                        <span class="fw-bold ">주문 금액</span>
+                        <span class="fw-bold text-primary">000원</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="text-muted small">총 상품 금액</span>
+                        <span class="text-muted small">000원</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="text-muted small">배송비</span>
+                        <span class="text-muted small">000원</span>
+                    </div>
+                </div>
+
+                <div class="col px-3 py-2 " style="border-right: 1px solid #dee2e6;">
+                    <div class="d-flex justify-content-between">
+                        <span class="fw-bold ">쿠폰 금액</span>
+                        <span class="fw-bold text-primary">000원</span>
+                    </div>
+                </div>
+
+                <div class="col px-3 py-2">
+                    <div class="d-flex justify-content-between">
+                        <span class="fw-bold ">포인트 금액</span>
+                        <span class="fw-bold text-primary">000원</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 총합계 -->
+            <div class="row mt3 ">
+                <div class="col-8">
+                </div>
+                <div class="col-4 justify-content-between px-3 py-2">
+                    <div>
+                        <span class="fw-bold">총 합계</span>
+                        <span class="fw-bold text-primary">0000원</span>
+                    </div>
+                    <div>
+                        <span class="text-muted small">적립금</span>
+                        <span class="text-muted text-primary small">000원</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center py-5">
+            <a class="btn btn-secondary btn-lg" th:href="@{/orders/list}">목록으로</a>
+        </div>
+
+    </div>
+</div>
+</html>
