@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import shop.nuribooks.view.order.order.dto.OrderTempRegisterRequest;
-import shop.nuribooks.view.order.order.dto.OrderTempRegisterResponse;
+import shop.nuribooks.view.order.order.dto.request.OrderTempRegisterRequest;
+import shop.nuribooks.view.order.order.dto.response.OrderTempRegisterResponse;
 import shop.nuribooks.view.order.order.service.OrderService;
 
 @RestController

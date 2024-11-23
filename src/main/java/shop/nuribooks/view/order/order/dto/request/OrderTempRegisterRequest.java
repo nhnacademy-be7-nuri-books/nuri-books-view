@@ -1,4 +1,4 @@
-package shop.nuribooks.view.order.order.dto;
+package shop.nuribooks.view.order.order.dto.request;
 
 import static com.fasterxml.jackson.annotation.JsonFormat.Shape.*;
 
@@ -12,13 +12,13 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import shop.nuribooks.view.member.customer.CustomerRegisterRequest;
 import shop.nuribooks.view.order.orderDetail.dto.OrderDetailRequest;
-import shop.nuribooks.view.order.shippong.dto.ShippingRegisterRequest;
+import shop.nuribooks.view.order.shippIng.dto.ShippingRegisterRequest;
 import shop.nuribooks.view.order.stub.coupon.AllAppliedCouponRequestStub;
 import shop.nuribooks.view.order.wrapping.dto.WrappingRegisterRequest;
 
 public record OrderTempRegisterRequest(
 	@PositiveOrZero(message = "결제 금액은 0 이상이어야 합니다.")
-	BigDecimal paymentPrice, // 총 결제 금액 = 상품 금액 + 포장 금액 + 배송금액 - 포인트 - 쿠폰 할인가
+	BigDecimal paymentPrice, // 순수 도서 가격
 	@PositiveOrZero(message = "포장 금액은 0 이상이어야 합니다.")
 	BigDecimal wrappingPrice, // 포장 비용
 	@JsonFormat(shape = STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")

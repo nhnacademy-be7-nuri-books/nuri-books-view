@@ -1,4 +1,4 @@
-package shop.nuribooks.view.order.order.Enums;
+package shop.nuribooks.view.order.order.enums;
 
 /**
  * 주문 상태 Enum

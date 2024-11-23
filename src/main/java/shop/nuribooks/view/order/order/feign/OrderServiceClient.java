@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import shop.nuribooks.view.order.order.dto.OrderInformationResponse;
-import shop.nuribooks.view.order.order.dto.OrderListPeriodRequest;
-import shop.nuribooks.view.order.order.dto.OrderListResponse;
-import shop.nuribooks.view.order.order.dto.OrderTempRegisterRequest;
-import shop.nuribooks.view.order.order.dto.OrderTempRegisterResponse;
+import shop.nuribooks.view.order.order.dto.request.OrderListPeriodRequest;
+import shop.nuribooks.view.order.order.dto.request.OrderTempRegisterRequest;
+import shop.nuribooks.view.order.order.dto.response.OrderDetailResponse;
+import shop.nuribooks.view.order.order.dto.response.OrderInformationResponse;
+import shop.nuribooks.view.order.order.dto.response.OrderListResponse;
+import shop.nuribooks.view.order.order.dto.response.OrderTempRegisterResponse;
 
 @FeignClient(name = "order", url = "http://localhost:8080")
 public interface OrderServiceClient {
@@ -35,4 +36,7 @@ public interface OrderServiceClient {
 		@SpringQueryMap OrderListPeriodRequest orderListPeriodRequest,
 		@RequestParam boolean includeOrdersInPendingStatus,
 		@RequestParam Pageable pageable);
+
+	@GetMapping("/api/orders/details/{order-id}")
+	ResponseEntity<OrderDetailResponse> getOrderDetail(@PathVariable("order-id") Long orderId);
 }

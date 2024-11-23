@@ -10,11 +10,12 @@ import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.exception.DefaultServerError;
-import shop.nuribooks.view.order.order.dto.OrderInformationResponse;
-import shop.nuribooks.view.order.order.dto.OrderListPeriodRequest;
-import shop.nuribooks.view.order.order.dto.OrderListResponse;
-import shop.nuribooks.view.order.order.dto.OrderTempRegisterRequest;
-import shop.nuribooks.view.order.order.dto.OrderTempRegisterResponse;
+import shop.nuribooks.view.order.order.dto.request.OrderListPeriodRequest;
+import shop.nuribooks.view.order.order.dto.request.OrderTempRegisterRequest;
+import shop.nuribooks.view.order.order.dto.response.OrderDetailResponse;
+import shop.nuribooks.view.order.order.dto.response.OrderInformationResponse;
+import shop.nuribooks.view.order.order.dto.response.OrderListResponse;
+import shop.nuribooks.view.order.order.dto.response.OrderTempRegisterResponse;
 import shop.nuribooks.view.order.order.feign.OrderServiceClient;
 
 @Service
@@ -60,6 +61,12 @@ public class OrderServiceImpl implements OrderService {
 	public Page<OrderListResponse> getOrderList(OrderListPeriodRequest orderListPeriodRequest,
 		boolean includeOrdersInPendingStatus, Pageable pageable) throws IOException {
 		return orderServiceClient.getOrderList(orderListPeriodRequest, includeOrdersInPendingStatus, pageable)
+			.getBody();
+	}
+
+	@Override
+	public OrderDetailResponse getOrderDetail(Long orderId) {
+		return orderServiceClient.getOrderDetail(orderId)
 			.getBody();
 	}
 

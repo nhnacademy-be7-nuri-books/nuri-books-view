@@ -1,4 +1,4 @@
-package shop.nuribooks.view.order.shippong.dto;
+package shop.nuribooks.view.order.shippIng.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
