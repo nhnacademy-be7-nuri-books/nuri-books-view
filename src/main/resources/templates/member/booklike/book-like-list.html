@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html layout:decorate="~{member/layout/memberlayout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>좋아요 목록</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-item {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            position: relative;
+            transition: background-color 0.3s ease;
+        }
+
+        .book-item:hover {
+            background-color: #f9f9f9;
+        }
+
+        .book-thumbnail {
+            flex: 0 0 120px;
+            height: 180px;
+            overflow: hidden;
+            border-radius: 8px;
+            margin-right: 20px;
+            background-color: #f0f0f0;
+        }
+
+        .book-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .book-thumbnail img:hover {
+            transform: scale(1.08);
+        }
+
+        .book-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .book-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #000000;
+            margin-bottom: 5px;
+            line-height: 1.2;
+            word-wrap: break-word;
+            white-space: normal; /* 여러 줄 허용 */
+            overflow: hidden; /* 넘치는 텍스트 숨김 */
+        }
+
+        .book-title:hover {
+            text-decoration: underline;
+        }
+
+        .book-meta {
+            margin-top: 10px;
+            color: #2c3e50;
+            font-size: 0.9em;
+        }
+
+        .book-price {
+            color: #b2bec3;
+            text-decoration: line-through;
+        }
+
+        .book-discount {
+            color: #16a085;
+            font-weight: bold;
+            font-size: 1em;
+            padding: 2px 5px;
+            background-color: #d1f2eb;
+            border-radius: 4px;
+            margin-left: 5px;
+        }
+
+        .book-sale-price {
+            color: #e74c3c;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-left: 8px;
+        }
+
+        .btn-heart {
+            background: none; /* 배경 제거 */
+            border: none; /* 테두리 제거 */
+            color: red; /* 하트 색상 */
+            font-size: 1em; /* 하트 크기 */
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer; /* 포인터 커서 */
+            padding: 0; /* 여백 제거 */
+        }
+
+        .btn-heart i {
+            font-size: 1.5em; /* FontAwesome 아이콘 크기 */
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">나의 좋아요 목록</h2>
+            </div>
+            <div th:if="${likeBooks.content?.size() > 0}">
+                <div th:each="book : ${likeBooks.content}" class="book-item">
+                    <a th:href="@{/view/book/details/{bookId}(bookId=${book.bookId})}" class="book-thumbnail">
+                        <img th:src="${book.thumbnailImageUrl}" alt="도서 이미지">
+                    </a>
+                    <div class="book-details">
+                        <a th:href="@{/view/book/details/{bookId}(bookId=${book.bookId})}" class="book-title" th:text="${book.title}"></a>
+                        <div class="book-meta">
+                            <div class="book-authors">
+                                <th:block th:each="entry : ${book.contributorsByRole}">
+                                    <span th:each="name, iterStat : ${entry.value}" th:text="${name + (iterStat.last ? '' : ', ')}">작가 이름</span>
+                                    <span th:text="' - ' + ${entry.key}"> : 역할</span><br/>
+                                </th:block>
+                            </div>
+                            <p th:text="'출판사: ' + ${book.publisherName}"></p>
+                            <p>
+                            <span class="book-price"
+                                  th:text="'정가: ' + ${#numbers.formatInteger(book.price, 0, 'COMMA')} + ' 원'"></span>
+                                <span class="book-discount" th:if="${book.discountRate > 0}"
+                                      th:text="'할인율: ' + ${book.discountRate} + '%'"></span>
+                                <span class="book-sale-price"
+                                      th:text="'판매가: ' + ${#numbers.formatInteger(book.salePrice, 0, 'COMMA')} + ' 원'"></span>
+                            </p>
+                        </div>
+                        <button class="btn-heart" th:attr="data-book-id=${book.bookId}" onclick="removeLike(this)">
+                            <i class="fas fa-heart"></i> <!-- FontAwesome 하트 아이콘 -->
+                        </button>
+                    </div>
+                    <script>
+                        function removeLike(button) {
+                            const bookId = button.getAttribute("data-book-id");
+
+                            fetch(`/view/books/likes/${bookId}`, {
+                                method: 'DELETE',
+                            })
+                                .then(response => {
+                                    if (response.ok) {
+                                        /*alert("좋아요가 취소되었습니다.");*/
+                                        // 도서 목록에서 해당 항목 제거
+                                        button.closest(".book-item").remove();
+                                    } else {
+                                        alert("좋아요 취소에 실패했습니다.");
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error("Error:", error);
+                                    alert("좋아요 취소 중 오류가 발생했습니다.");
+                                });
+                        }
+                    </script>
+                </div>
+            </div>
+            <div th:if="${likeBooks.content?.size() == 0}" class="text-center">
+                <p>좋아요한 도서가 없습니다.</p>
+            </div>
+            <div th:replace="~{fragments/page::page(url=${'/view/books/likes/me'})}"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

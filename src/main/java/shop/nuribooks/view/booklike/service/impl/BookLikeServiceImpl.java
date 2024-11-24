@@ -1,5 +1,6 @@
 package shop.nuribooks.view.booklike.service.impl;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class BookLikeServiceImpl implements BookLikeService {
 	}
 
 	@Override
-	public PagedResponse<BookLikeResponse> getLikedBooks(Pageable pageable) {
+	public Page<BookLikeResponse> getLikedBooks(Pageable pageable) {
 		return bookLikeServiceClient.getBookLikes(pageable.getPageNumber(), pageable.getPageSize());
 	}
 

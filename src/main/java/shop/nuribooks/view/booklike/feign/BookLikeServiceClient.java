@@ -1,6 +1,7 @@
 package shop.nuribooks.view.booklike.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import shop.nuribooks.view.booklike.dto.BookLikeResponse;
 import shop.nuribooks.view.booklike.dto.LikeStatusResponse;
-import shop.nuribooks.view.common.dto.PagedResponse;
 
 @FeignClient(name = "book-like", url = "http://localhost:8080")
 public interface BookLikeServiceClient {
@@ -20,7 +20,7 @@ public interface BookLikeServiceClient {
 	void removeLike(@PathVariable("book-id") long bookId);
 
 	@GetMapping("/api/books/book-likes/me")
-	PagedResponse<BookLikeResponse> getBookLikes(@RequestParam("page") int page, @RequestParam("size") int size);
+	Page<BookLikeResponse> getBookLikes(@RequestParam("page") int page, @RequestParam("size") int size);
 
 	@GetMapping("/api/books/book-likes/status/{book-id}")
 	LikeStatusResponse getLikeStatus(@PathVariable("book-id") long bookId);

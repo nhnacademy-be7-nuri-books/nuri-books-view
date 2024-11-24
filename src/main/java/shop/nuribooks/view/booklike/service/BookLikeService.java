@@ -1,5 +1,6 @@
 package shop.nuribooks.view.booklike.service;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import shop.nuribooks.view.booklike.dto.BookLikeResponse;
@@ -11,7 +12,7 @@ public interface BookLikeService {
 
 	void removeLike(Long bookId);
 
-	PagedResponse<BookLikeResponse> getLikedBooks(Pageable pageable);
+	Page<BookLikeResponse> getLikedBooks(Pageable pageable);
 
 	LikeStatusResponse getLikeStatus(Long bookId);
 }
