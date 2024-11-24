@@ -260,15 +260,13 @@ function getAllSalePrices() {
         return parseInt(element.textContent.replace(/[^\d]/g, ''));
     })
 
-    console.log("prices: " + salePrices);  // 예시: [15000, 15000]
-    return salePrices;
+    return salePrices.reduce((total, price) => total + price, 0);
 }
 
 // 총 결제 금액을 계산하고 input 필드에 값을 넣기
 function calculateTotalPrice() {
-    const salePrices = getAllSalePrices();  // 모든 세일가 값을 가져옴
+    const bookListPrice = getAllSalePrices();  // 모든 세일가 값을 가져옴
     const shippingPrice = document.getElementById('shipping-cost').textContent // 배송비
-    let bookListPrice = salePrices.reduce((total, price) => total + price, 0); // 도서 총 금액
     let totalPrice = bookListPrice + parseInt(shippingPrice, 10); // 총 결제 금액 계산
     console.log("salePrices: %d", bookListPrice);
 

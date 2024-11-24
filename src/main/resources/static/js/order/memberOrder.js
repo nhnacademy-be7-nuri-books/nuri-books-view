@@ -176,36 +176,35 @@ async function main() {
         console.log(JSON.stringify(orderData));
         // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
         // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
-        try {
-            const apiUrl = window.location.origin + "/orders/save";
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(orderData),
+        const apiUrl = window.location.origin + "/orders/save";
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(orderData),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            await widgets.requestPayment({
+                orderId: "NB-ORDER-0000000" + result.orderId,
+                orderName: result.orderName,
+                successUrl: window.location.origin + "/payments/success",
+                failUrl: window.location.origin + "/payments/fail",
+                customerEmail: document.getElementById('customer-email').textContent,
+                customerName: document.getElementById('customer-name').textContent,
+                customerMobilePhone: document.getElementById('customer-phone').textContent,
             });
+        } else {
+            // 에러 메시지 출력
+            console.error("에러 코드:", result.status);
+            console.error("에러 메시지:", result.message);
 
-            const result = await response.json();
-            console.log(result);
-
-            if (response.ok) {
-                await widgets.requestPayment({
-                    orderId: "NB-ORDER-0000000" + result.orderId,
-                    orderName: result.orderName,
-                    successUrl: window.location.origin + "/payments/success",
-                    failUrl: window.location.origin + "/payments/fail",
-                    customerEmail: document.getElementById('customer-email').textContent,
-                    customerName: document.getElementById('customer-name').textContent,
-                    customerMobilePhone: document.getElementById('customer-phone').textContent,
-                });
-            } else {
-                throw new Error("주문 정보를 저장하는 데 실패했습니다. 결제 수단 또는 정보를 확인해주세요.");
-            }
-
-        } catch (error) {
-            console.error('주문 정보 저장 중 오류 발생:', error);
-            alert('주문 저장 실패. 다시 시도해주세요.');
+            // 사용자에게 에러 메시지 표시
+            alert(`주문 정보를 저장하는 데 실패했습니다. 사유: ${result.message}`);
+            throw new Error(`주문 정보 저장 실패: ${result.message}`);
         }
 
     });
@@ -223,16 +222,14 @@ function getAllSalePrices() {
         return parseInt(element.textContent.replace(/[^\d]/g, ''));
     })
 
-    console.log("순수 책 가격: " + salePrices);  // 예시: [15000, 15000]
-    return salePrices;
+    return salePrices.reduce((total, price) => total + price, 0);
 }
 
 // 총 결제 금액을 계산하고 input 필드에 값을 넣기
 function calculateTotalPrice() {
-    const salePrices = getAllSalePrices();  // 모든 세일가 값을 가져옴
     const shippingPrice = document.getElementById('shipping-cost').textContent // 배송비
     const usePoint = updateFinalPrice(); // 사용 포인트
-    let bookListPrice = salePrices.reduce((total, price) => total + price, 0); // 도서 가격
+    let bookListPrice = getAllSalePrices() // 도서 가격
     let totalPrice = bookListPrice + parseInt(shippingPrice, 10) - usePoint; // 총 결제 금액 계산
 
     document.getElementById('book-list-amount').textContent = bookListPrice;

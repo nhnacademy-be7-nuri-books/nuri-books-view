@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import shop.nuribooks.view.common.util.ExceptionUtil;
+import shop.nuribooks.view.exception.ApiErrorException;
 import shop.nuribooks.view.exception.DefaultServerError;
 import shop.nuribooks.view.order.order.dto.request.OrderListPeriodRequest;
 import shop.nuribooks.view.order.order.dto.request.OrderTempRegisterRequest;
@@ -42,8 +44,9 @@ public class OrderServiceImpl implements OrderService {
 		try {
 			return orderServiceClient.saveOrder(orderTempRegisterRequest).getBody();
 		} catch (FeignException e) {
-			log.error("saveOrder - 주문 폼 불러오기 실패");
-			throw new DefaultServerError(e.status(), e.getMessage());
+			String message = ExceptionUtil.handleFeignException(e);
+			log.error("saveOrder - 주문 폼 저장 실패 - {}", message);
+			throw new ApiErrorException(e.status(), message);
 		}
 	}
 
