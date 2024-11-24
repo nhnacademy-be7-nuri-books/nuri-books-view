@@ -17,16 +17,6 @@ public enum SortType {
 		this.korName = korName;
 	}
 
-	public static shop.nuribooks.view.booksearch.enums.SortType convert(String str) {
-		shop.nuribooks.view.booksearch.enums.SortType type;
-		try {
-			type = shop.nuribooks.view.booksearch.enums.SortType.valueOf(str.toUpperCase());
-		} catch (IllegalArgumentException | NullPointerException e) {
-			type = shop.nuribooks.view.booksearch.enums.SortType.ACCURACY;
-		}
-		return type;
-	}
-
 	public String getKorName() {
 		return korName;
 	}

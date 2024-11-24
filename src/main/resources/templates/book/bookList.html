@@ -196,7 +196,7 @@
                     <select id="sortSelect" name="sort"
                             onchange="document.getElementById('pageInput').value = 0; this.form.submit()">
                         <option th:each="sort_type : ${sort_types}"
-                                th:selected="${not pages.sort.isEmpty() and pages.sort.order[0].property == sort_type}"
+                                th:selected="${pages.sort.getOrderFor(sort_type.name) != null}"
                                 th:text="${sort_type.korName}"
                                 th:value="${sort_type}"></option>
                     </select>
@@ -275,8 +275,7 @@
         </div>
     </div>
 
-    <div th:if="${isAdmin}" th:replace="~{fragments/page::page(url=${'/admin/view/books'})}"></div>
-    <div th:replace="~{fragments/page::page(url=${'/view/books'})}" th:unless="${isAdmin}"></div>
+    <div th:replace="~{fragments/page::page}"></div>
 
 </div>
 </body>

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import shop.nuribooks.view.admin.category.dto.CategoryTreeResponse;
 import shop.nuribooks.view.admin.category.service.AdminCategoryService;
@@ -160,6 +161,7 @@ public class AdminBookController {
 	@GetMapping("/books")
 	public String getAdminBooks(@PageableDefault Pageable pageable,
 		Model model) {
+		HttpServletRequest req;
 		Page<BookContributorsResponse> books = bookService.getBooks(pageable);
 		model.addAttribute("pages", books);
 		model.addAttribute("sort_types", SortType.values());
