@@ -12,22 +12,27 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.admin.category.dto.CategoryRequest;
 import shop.nuribooks.view.admin.category.dto.CategoryResponse;
 import shop.nuribooks.view.admin.category.service.AdminCategoryService;
 import shop.nuribooks.view.book.dto.BookContributorsResponse;
 import shop.nuribooks.view.book.dto.BookResponse;
 import shop.nuribooks.view.book.service.BookService;
+import shop.nuribooks.view.booklike.dto.LikeStatusResponse;
+import shop.nuribooks.view.booklike.service.BookLikeService;
 import shop.nuribooks.view.common.dto.PagedResponse;
 import shop.nuribooks.view.review.dto.response.ReviewMemberResponse;
 import shop.nuribooks.view.review.service.ReviewService;
 
+@Slf4j
 @RequiredArgsConstructor
 @Controller
 public class BookController {
 	private final BookService bookService;
 	private final ReviewService reviewService;
 	private final AdminCategoryService adminCategoryService;
+	private final BookLikeService bookLikeService;
 
 	@GetMapping("/view/books")
 	public String getBooks(@RequestParam(defaultValue = "0") int page,
@@ -44,9 +49,13 @@ public class BookController {
 	public String getBookById(@PathVariable Long bookId, Model model, @PageableDefault Pageable pageable) {
 		BookResponse bookResponse = bookService.getBookById(bookId);
 		model.addAttribute("book", bookResponse);
+
 		Page<ReviewMemberResponse> pages = reviewService.getReviewsByBookId(bookId, pageable);
 		model.addAttribute("pages", pages);
 		model.addAttribute("type", "member");
+
+		LikeStatusResponse likeStatus = bookLikeService.getLikeStatus(bookId);
+		model.addAttribute("likeStatus", likeStatus);
 		return "book/bookDetail";
 	}
 

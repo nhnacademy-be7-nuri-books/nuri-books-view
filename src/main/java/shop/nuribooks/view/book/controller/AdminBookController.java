@@ -134,7 +134,8 @@ public class AdminBookController {
 		} catch (Exception ex) {
 			redirectAttributes.addFlashAttribute("errorMessage", "도서 등록 실패");
 		}
-		return "redirect:/admin/book/adminBookManage";
+		//return "redirect:/admin/book/adminBookManage";
+		return "redirect:/admin/view/book/manage";
 	}
 
 	/*@PostMapping("/image")

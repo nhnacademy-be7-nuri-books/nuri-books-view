@@ -134,27 +134,24 @@
         }
 
         .like-button {
-            cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 5px;
+            cursor: pointer;
             color: grey;
+            gap: 5px;
+            font-size: 1.2em;
+            margin-top: 10px;
+            justify-content: flex-end; /* 버튼을 오른쪽으로 정렬 */
         }
 
         .like-button .liked {
             color: red;
         }
 
-        .like-button i {
-            font-size: 1.2em;
-            margin-right: 5px;
-        }
-
         .like-count {
             font-size: 1em;
             font-weight: bold;
             color: #2d3748;
-            margin-right: 5px;
         }
     </style>
 
@@ -202,7 +199,6 @@
                           th:text="|판매가: ${#numbers.formatInteger(book.salePrice, 0, 'COMMA')} 원|">판매가</span>
                 </div>
 
-
                 <p class="isbn-info" th:if="${book.isbn} != null">
                     <strong>ISBN:</strong> <span th:text="${book.isbn}">ISBN 정보</span>
                 </p>
@@ -211,6 +207,14 @@
                     <strong>태그:</strong>
                     <span class="badge badge-secondary mr-1" th:each="tag : ${book.tagNames}" th:text="${tag}">태그</span>
                 </div>
+
+                <div class="like-button" id="like-button"
+                     th:data-book-id="${book.id}"
+                     th:data-liked="${likeStatus.isLiked}">
+                    <i class="fas fa-heart" th:classappend="${likeStatus.isLiked} ? 'liked' : ''"></i>
+                    <span id="like-count" th:text="${book.likeCount}">0</span>
+                </div>
+
                 <!-- Buttons aligned to the right in one line -->
                 <div class="button-group mt-3">
                     <label for="quantity">수량:</label>
@@ -247,12 +251,6 @@
 <!--                                class="btn btn-secondary btn-custom">장바구니에 담기-->
 <!--                        </button>-->
 <!--                    </form>-->
-                </div>
-
-                <!-- Like button aligned to the right -->
-                <div class="like-button mt-3" onclick="toggleLike(${book.id})">
-                    <i class="fas fa-heart" id="like-icon"></i>
-                    <span class="like-count" id="like-count" th:text="${book.likeCount}">0</span>
                 </div>
             </div>
 
@@ -305,6 +303,6 @@
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<!--<script th:src="@{/js/booklike/like-button.js}"></script>-->
 </body>
-
 </html>
