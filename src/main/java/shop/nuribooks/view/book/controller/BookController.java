@@ -55,17 +55,14 @@ public class BookController {
 		@PageableDefault Pageable pageable,
 		HttpServletRequest req,
 		HttpServletResponse res) {
-		LinkedHashSet<Long> recentViewSet = getRecentViewSet(req);
+		Set<Long> recentViewSet = getRecentViewSet(req);
 
 		BookResponse bookResponse = bookService.getBookByIdAndUpdateRecentView(bookId, recentViewSet);
 		model.addAttribute("book", bookResponse);
 
-		// recent view set 크기를 유지하며 새로운 id 추가.
+		// recent view 이전 방문 id 삭제 후 id 순서 최신화
 		recentViewSet.remove(bookId);
 		recentViewSet.add(bookId);
-		while (recentViewSet.size() > RECENT_VIEW_LIST_SIZE) {
-			recentViewSet.removeFirst();
-		}
 
 		Page<ReviewMemberResponse> pages = reviewService.getReviewsByBookId(bookId, pageable);
 		model.addAttribute("pages", pages);
@@ -107,10 +104,10 @@ public class BookController {
 		return null;
 	}
 
-	private LinkedHashSet<Long> getRecentViewSet(HttpServletRequest req) {
+	private Set<Long> getRecentViewSet(HttpServletRequest req) {
 		String recentViewListString = ExtractValueFromCookie(req, RECENT_VIEW_LIST_KEY);
 
-		LinkedHashSet<Long> recentViewSet = new LinkedHashSet<>();
+		Set<Long> recentViewSet = new LinkedHashSet<>();
 
 		if (recentViewListString != null) {
 			String[] recentViewList = recentViewListString.split("%");
