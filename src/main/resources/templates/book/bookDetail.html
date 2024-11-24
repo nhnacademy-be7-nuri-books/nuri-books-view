@@ -134,13 +134,15 @@
         }
 
         .like-button {
+            cursor: pointer;
             display: flex;
             align-items: center;
-            font-size: 1em;
-            color: #e53e3e;
-            cursor: pointer;
-            font-weight: 600;
-            margin-left: auto;
+            gap: 5px;
+            color: grey;
+        }
+
+        .like-button .liked {
+            color: red;
         }
 
         .like-button i {
@@ -248,9 +250,9 @@
                 </div>
 
                 <!-- Like button aligned to the right -->
-                <div class="like-button mt-3" onclick="toggleLike()">
-                    <i class="fas fa-heart"></i>
-                    <span class="like-count" th:text="${book.likeCount}">0</span>
+                <div class="like-button mt-3" onclick="toggleLike(${book.id})">
+                    <i class="fas fa-heart" id="like-icon"></i>
+                    <span class="like-count" id="like-count" th:text="${book.likeCount}">0</span>
                 </div>
             </div>
 
@@ -286,20 +288,6 @@
         </div>
     </div>
     <script>
-        function toggleLike() {
-            const likeButton = document.querySelector('.like-button .fa-heart');
-            const likeCountElement = document.querySelector('.like-count');
-            let likeCount = parseInt(likeCountElement.textContent);
-
-            if (likeButton.classList.contains('liked')) {
-                likeButton.classList.remove('liked');
-                likeCountElement.textContent = likeCount - 1;
-            } else {
-                likeButton.classList.add('liked');
-                likeCountElement.textContent = likeCount + 1;
-            }
-        }
-
         function submitForm(formId) {
             const quantity = document.getElementById("quantity").value;
 
