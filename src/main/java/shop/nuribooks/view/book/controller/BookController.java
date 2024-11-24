@@ -22,6 +22,7 @@ import shop.nuribooks.view.admin.category.dto.CategoryResponse;
 import shop.nuribooks.view.admin.category.service.AdminCategoryService;
 import shop.nuribooks.view.book.dto.BookContributorsResponse;
 import shop.nuribooks.view.book.dto.BookResponse;
+import shop.nuribooks.view.book.enums.SortType;
 import shop.nuribooks.view.book.service.BookService;
 import shop.nuribooks.view.common.dto.PagedResponse;
 import shop.nuribooks.view.common.util.CookieUtil;
@@ -36,14 +37,13 @@ public class BookController {
 	private final ReviewService reviewService;
 	private final AdminCategoryService adminCategoryService;
 	private final String RECENT_VIEW_LIST_KEY = "recent_view_list";
-	private final int RECENT_VIEW_LIST_SIZE = 10;
 
 	@GetMapping("/view/books")
-	public String getBooks(@RequestParam(defaultValue = "0") int page,
-		@RequestParam(defaultValue = "10") int size,
+	public String getBooks(@PageableDefault Pageable pageable,
 		Model model) {
-		PagedResponse<BookContributorsResponse> books = bookService.getBooks(page, size);
-		model.addAttribute("books", books);
+		Page<BookContributorsResponse> books = bookService.getBooks(pageable);
+		model.addAttribute("pages", books);
+		model.addAttribute("sort_types", SortType.values());
 		model.addAttribute("isAdmin", false);
 		model.addAttribute("layout", "layouts/layout1");  // 일반 사용자 레이아웃
 		return "book/bookList";

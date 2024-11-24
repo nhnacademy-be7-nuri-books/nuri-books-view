@@ -2,7 +2,7 @@ package shop.nuribooks.view.book.dto;
 
 import java.math.BigDecimal;
 
-public record BookListItemResponse(
+public record AladinBookListItemResponse(
 	String title,
 	String author,
 	String pubDate,
@@ -14,8 +14,8 @@ public record BookListItemResponse(
 	String categoryName,
 	String description
 ) {
-	public static BookListItemResponse empty() {
-		return new BookListItemResponse(
+	public static AladinBookListItemResponse empty() {
+		return new AladinBookListItemResponse(
 			null, null, null, null, BigDecimal.ZERO, null, null, null, null, null
 		);
 	}

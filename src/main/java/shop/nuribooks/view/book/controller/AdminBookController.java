@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,7 +17,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -22,7 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.RequiredArgsConstructor;
-import shop.nuribooks.view.admin.category.dto.CategoryResponse;
 import shop.nuribooks.view.admin.category.dto.CategoryTreeResponse;
 import shop.nuribooks.view.admin.category.service.AdminCategoryService;
 import shop.nuribooks.view.admin.tag.dto.TagResponse;
@@ -33,9 +34,9 @@ import shop.nuribooks.view.book.dto.BookContributorsResponse;
 import shop.nuribooks.view.book.dto.BookResponse;
 import shop.nuribooks.view.book.dto.BookUpdateRequest;
 import shop.nuribooks.view.book.dto.PersonallyBookRegisterRequest;
+import shop.nuribooks.view.book.enums.SortType;
 import shop.nuribooks.view.book.service.AladinBookService;
 import shop.nuribooks.view.book.service.BookService;
-import shop.nuribooks.view.common.dto.PagedResponse;
 
 @RequiredArgsConstructor
 @Controller
@@ -157,11 +158,11 @@ public class AdminBookController {
 	}
 
 	@GetMapping("/books")
-	public String getAdminBooks(@RequestParam(defaultValue = "0") int page,
-		@RequestParam(defaultValue = "10") int size,
+	public String getAdminBooks(@PageableDefault Pageable pageable,
 		Model model) {
-		PagedResponse<BookContributorsResponse> books = bookService.getBooks(page, size);
-		model.addAttribute("books", books);
+		Page<BookContributorsResponse> books = bookService.getBooks(pageable);
+		model.addAttribute("pages", books);
+		model.addAttribute("sort_types", SortType.values());
 		model.addAttribute("isAdmin", true);
 		model.addAttribute("layout", "admin/layout/adminlayout");
 		return "book/bookList";
