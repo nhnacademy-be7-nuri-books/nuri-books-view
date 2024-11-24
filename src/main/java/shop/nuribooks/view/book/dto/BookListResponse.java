@@ -2,7 +2,7 @@ package shop.nuribooks.view.book.dto;
 
 import java.math.BigDecimal;
 
-public record AdminBookListResponse(
+public record BookListResponse(
 	Long id,
 	String publisherName,
 	String state,
