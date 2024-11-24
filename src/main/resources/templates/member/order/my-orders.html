@@ -164,7 +164,7 @@
                 </table>
 
                 <!--                Pagination-->
-                <div th:replace="fragments/page::page(url=@{'/orders/list'(include-pending=${periodDuration}, start=${period.start}, end=${period.end})})"></div>
+                <div th:replace="fragments/page::page"></div>
             </div>
         </div>
     </div>
