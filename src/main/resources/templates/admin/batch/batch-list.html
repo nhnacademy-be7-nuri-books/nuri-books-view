@@ -1,0 +1,104 @@
+<html lang="en" layout:decorate="~{admin/layout/adminlayout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+<div layout:fragment="content">
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">BATCH 관리</h2>
+            </div>
+            <div class="card-body">
+                <div class="text-end mb-4">
+                    <h2 class="text-center text-uppercase mb-4">BATCH 작업목록</h2>
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                        <tr>
+                            <th class="text-center">작업명</th>
+                            <th class="text-center">작업시간</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="text-center">휴면회원 탐색</td>
+                            <td class="text-center">매일 00:05</td>
+                            <td>
+                                <!-- 수동 배치 작동 버튼 -->
+                                <form method="get" style="display:inline;" th:action="@{/admin/batch/inactive}">
+                                    <button class="btn btn-outline-secondary btn-sm workBtn" type="submit">
+                                        <i class="fas fa-cogs me-2"></i>수동으로 작동하기
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">탈퇴회원 탐색</td>
+                            <td class="text-center">매일 00:10</td>
+                            <td>
+                                <!-- 수동 배치 작동 버튼 -->
+                                <form method="get" style="display:inline;" th:action="@{/admin/batch/withdraw}">
+                                    <button class="btn btn-outline-secondary btn-sm workBtn" type="submit">
+                                        <i class="fas fa-cogs me-2"></i>수동으로 작동하기
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">회원등급 업데이트</td>
+                            <td class="text-center">매분기 00:15</td>
+                            <td>
+                                <!-- 수동 배치 작동 버튼 -->
+                                <form method="get" style="display:inline;" th:action="@{/admin/batch/grade}">
+                                    <button class="btn btn-outline-secondary btn-sm workBtn" type="submit">
+                                        <i class="fas fa-cogs me-2"></i>수동으로 작동하기
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Modal for Confirmation -->
+    <div aria-hidden="true" aria-labelledby="confirmationModalLabel" class="modal fade" id="confirmationModal"
+         tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmationModalLabel">배치작업 수동진행</h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body">
+                    선택하신 배치작업을 수동으로 진행하시겠습니까? <br>
+                    해당 작업은 주의를 요하는 작업입니다!
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">취소</button>
+                    <button class="btn btn-primary" id="confirmBtn" type="button">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 폼 제출 전 확인
+        document.querySelectorAll('.workBtn').forEach(function (workBtn) {
+            workBtn.addEventListener('click', function (e) {
+                e.preventDefault(); // 폼 제출 방지 (모달 확인 후에 제출)
+                var form = this.closest('form');
+                var modal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+                modal.show();
+
+                // 확인 버튼 클릭 시 폼 제출
+                document.getElementById('confirmBtn').addEventListener('click', function () {
+                    modal.hide();
+                    form.submit();
+                });
+            });
+        });
+    </script>
+</div>
+</body>
+</html>
