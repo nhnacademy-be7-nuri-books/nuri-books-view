@@ -1,4 +1,4 @@
-<div class="col-md-12" th:fragment="productsInfo">
+<div class="col-md-12" th:fragment="customerProductsInfo">
     <div class="card mb-3">
         <h5 class="mb-0">
             <button
@@ -50,19 +50,6 @@
                                 <label for="item-quantity">수량:</label>
                                 <span class="item-quantity" id="item-quantity"
                                       th:text="${book.quantity}">1개</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="mt-2">
-                                <div>
-                                    <span>적용된 쿠폰: <span th:id="'coupon-name-' + ${book.bookId}">없음</span></span>
-                                </div>
-                                <button class="btn btn-sm btn-primary" data-bs-target="#couponModal"
-                                        data-bs-toggle="modal">
-                                    쿠폰 선택
-                                </button>
-                                <input th:id="'coupon-' + ${book.bookId}" th:name="'coupon-' + ${book.bookId}"
-                                       type="hidden" value="none">
                             </div>
                         </td>
                     </tr>

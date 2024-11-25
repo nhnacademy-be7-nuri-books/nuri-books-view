@@ -8,6 +8,9 @@
         </div>
     </div>
 
+    <!-- 포장 모달 창-->
+    <div th:replace="~{order/contents/wrapping-modal :: wrappingModal}"></div>
+
     <!-- 주문서 영역 -->
     <div class="container mt-5">
         <div class="row">
@@ -139,7 +142,7 @@
                     </div>
 
                     <!-- 주문 상세 정보 -->
-                    <div th:replace="order/contents/products-info :: productsInfo"></div>
+                    <div th:replace="~{order/contents/customer-products-info :: customerProductsInfo}"></div>
 
                     <!-- 결제 UI -->
                     <div class="col-md-12">
@@ -170,7 +173,7 @@
                     </div>
 
                     <!-- 배송 날짜 예약 -->
-                    <div th:replace="order/contents/expect-order-info :: expectOrderInfo"></div>
+                    <div th:replace="~{order/contents/expect-order-info :: expectOrderInfo}"></div>
 
 
                 </div>
@@ -184,13 +187,19 @@
                         <!-- 배송비 -->
                         <div class="mb-3">
                             <label class="font-weight-bold" for="shipping-cost">배송비</label>
-                            <div id="shipping-cost" th:text="${orderInformation.shippingFee}">3000</div>
+                            <div id="shipping-cost" th:text="${shippingInfo.shippingFee}">3000</div>
                         </div>
 
                         <!-- 도서 전체 금액 -->
                         <div class="mb-3">
                             <label class="font-weight-bold" for="book-list-amount">도서 전체 금액</label>
                             <div id="book-list-amount">3000</div>
+                        </div>
+
+                        <!-- 포장비 -->
+                        <div class="mb-3">
+                            <label class="font-weight-bold" for="wrapping-amount">포장비</label>
+                            <div id="wrapping-amount">0</div>
                         </div>
 
                         <!-- 총 결제 금액 -->
@@ -214,12 +223,13 @@
     <th:block layout:fragment="script">
         <script th:inline="javascript">
             /*<![CDATA[*/
-            const orderDetails = /*[[${orderInformation.bookOrderResponse}]]*/ [];
-            const shippingId = /*[[${orderInformation.shippingPolicyId}]]*/ 1;
+            const orderDetails = /*[[${bookOrderInfo}]]*/ [];
+            const shippingId = /*[[${shippingInfo.id}]]*/ 1;
             /*]]>*/
         </script>
         <script src="/js/order/customerOrder.js"></script>
         <script src="/js/order/postcode.js"></script>
+        <script src="/js/order/wrappingModal.js"></script>
     </th:block>
 </div>
 </html>
