@@ -15,6 +15,7 @@ import shop.nuribooks.view.book.dto.BookContributorsResponse;
 import shop.nuribooks.view.book.dto.BookResponse;
 import shop.nuribooks.view.book.dto.BookUpdateRequest;
 import shop.nuribooks.view.book.dto.PersonallyBookRegisterRequest;
+import shop.nuribooks.view.book.dto.TopBookLikeResponse;
 import shop.nuribooks.view.book.feign.BookServiceClient;
 import shop.nuribooks.view.common.dto.PagedResponse;
 
@@ -77,5 +78,10 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public String uploadImage(MultipartFile file) {
 		return bookServiceClient.uploadImage(file);
+	}
+
+	@Override
+	public List<TopBookLikeResponse> getTopBookLikes() {
+		return bookServiceClient.getTopBookLike();
 	}
 }

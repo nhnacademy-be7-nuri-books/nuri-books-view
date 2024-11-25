@@ -23,6 +23,7 @@ import shop.nuribooks.view.book.dto.BookContributorsResponse;
 import shop.nuribooks.view.book.dto.BookResponse;
 import shop.nuribooks.view.book.dto.BookUpdateRequest;
 import shop.nuribooks.view.book.dto.PersonallyBookRegisterRequest;
+import shop.nuribooks.view.book.dto.TopBookLikeResponse;
 import shop.nuribooks.view.common.dto.PagedResponse;
 import shop.nuribooks.view.common.dto.ResponseMessage;
 
@@ -60,4 +61,7 @@ public interface BookServiceClient {
 
 	@PostMapping(value = "/api/books/uploadImage", consumes = "multipart/form-data")
 	String uploadImage(@RequestPart("file")MultipartFile file);
+
+	@GetMapping("/api/books/top/book-like")
+	List<TopBookLikeResponse> getTopBookLike();
 }

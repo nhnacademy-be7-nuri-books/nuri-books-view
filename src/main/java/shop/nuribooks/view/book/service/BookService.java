@@ -13,6 +13,7 @@ import shop.nuribooks.view.book.dto.BookContributorsResponse;
 import shop.nuribooks.view.book.dto.BookResponse;
 import shop.nuribooks.view.book.dto.BookUpdateRequest;
 import shop.nuribooks.view.book.dto.PersonallyBookRegisterRequest;
+import shop.nuribooks.view.book.dto.TopBookLikeResponse;
 import shop.nuribooks.view.common.dto.PagedResponse;
 
 public interface BookService {
@@ -35,4 +36,6 @@ public interface BookService {
 	List<CategoryResponse> getAllCategories();
 
 	String uploadImage(MultipartFile file);
+
+	List<TopBookLikeResponse> getTopBookLikes();
 }
