@@ -3,7 +3,6 @@
         const updateHandler = (url) => {
             // url과 id로 이루어진 path로 api 요청 보냄. 다른 url 형식일 땐 수정하여야함.
             const form = document.getElementById('update-form');
-
             const formData = new FormData(form);
 
             fetch(url + "/" + data, {
@@ -29,25 +28,26 @@
 
     </script>
     <!-- 출판사 이름 수정 모달 -->
-    <div id="update-modal" class="modal fade" tabindex="-1" aria-labelledby="editPolicyModalLabel"
-         aria-hidden="true">
+    <div aria-hidden="true" aria-labelledby="editPolicyModalLabel" class="modal fade" id="update-modal"
+         tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editPolicyModalLabel">출판사 이름 수정</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="#" method="post" id="update-form">
+                    <form action="#" id="update-form" method="post">
                         <div class="mb-3">
-                            <label for="update-name" class="form-label">출판사 이름</label>
-                            <input type="text" class="form-control" id="update-name" name="name" required placeholder="출판사 이름">
+                            <label class="form-label" for="update-name">출판사 이름</label>
+                            <input class="form-control" id="update-name" name="name" placeholder="출판사 이름" required
+                                   type="text">
                         </div>
                         <div class="text-center">
-                            <button type="button" class="btn btn-primary" onclick="updateHandler('/admin/publisher')">
+                            <button class="btn btn-primary" onclick="updateHandler('/admin/publisher')" type="button">
                                 수정
                             </button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
+                            <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">아니오</button>
                         </div>
                     </form>
                 </div>

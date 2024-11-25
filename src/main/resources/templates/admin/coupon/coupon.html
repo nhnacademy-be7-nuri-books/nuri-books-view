@@ -61,8 +61,8 @@
                             th:text="${coupon.discount.intValue() + ' ' + (coupon.policyType.toString().equals('RATED') ? '%' : '₩')}">
                             할인 할당량
                         </td>
-                        <td class="text-center" th:text="${coupon.minimumOrderPrice}">최소 주문 금액</td>
-                        <td class="text-center" th:text="${coupon.maximumDiscountPrice}">최대 할인 금액</td>
+                        <td class="text-center" th:text="${coupon.minimumOrderPrice.intValue()}">최소 주문 금액</td>
+                        <td class="text-center" th:text="${coupon.maximumDiscountPrice.intValue()}">최대 할인 금액</td>
                         <td class="text-center" th:text="${coupon.createdAt}">시작일시</td>
                         <td class="text-center" th:text="${coupon.expiredAt}">종료일시</td>
                         <td class="text-center" th:text="${coupon.period}">기간</td>
@@ -91,7 +91,7 @@
                     </tbody>
                 </table>
             </div>
-            <div th:replace="~{fragments/page::page(url=@{'/admin/coupon'(type=${type})})}"></div>
+            <div th:replace="~{fragments/page::page}"></div>
         </div>
     </div>
 
