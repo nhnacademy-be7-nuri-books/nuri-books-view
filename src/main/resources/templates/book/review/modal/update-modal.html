@@ -28,7 +28,7 @@
                         });
 
                         star.addEventListener('mouseleave', () => {
-                            const selectedValue = document.querySelector('input[name="score"]:checked')?.value || 0;
+                            const selectedValue = document.querySelector('input[name="uscore"]:checked')?.value || 0;
                             stars.forEach(s => {
                                 s.style.color = s.dataset.value <= selectedValue ? '#ffae00' : '#ccc';
                             });
@@ -36,16 +36,22 @@
 
                         star.addEventListener('click', () => {
                             const value = star.dataset.value;
-                            document.getElementById(`ustar${value}`).checked = true;
+                            document.getElementById("ustar" + value).checked = true;
                         });
                     });
                 });
             });
-
+        </script>
+        <script>
             document.addEventListener('DOMContentLoaded', () => {
-
+                const form = document.getElementById('update-form');
+                form.addEventListener('submit', () => {
+                    const selectedInput = document.querySelector('input[name="uscore"]:checked');
+                    if (selectedInput) {
+                        selectedInput.name = 'score';
+                    }
+                });
             });
-
         </script>
         <style>
             /* 별점 스타일 */
@@ -72,10 +78,10 @@
                     <form id="update-form" th:method="PUT">
                         <input name="bookId" th:value="${book.id}" type="hidden">
                         <div>
-                            <label class="form-label fw-bold" for="star">별점</label>
-                            <div id="star">
+                            <label class="form-label fw-bold" for="ustar">별점</label>
+                            <div id="ustar">
                                 <th:block th:each="i : ${#numbers.sequence(1, 5)}">
-                                    <input class="btn-check" name="score" th:checked="${i == 1}"
+                                    <input class="btn-check" name="uscore"
                                            th:id="'ustar' + ${i}" th:value="${i}" type="radio">
                                     <label class="star-lab" th:data-value="${i}"
                                            th:for="'ustar' + ${i}">★</label>

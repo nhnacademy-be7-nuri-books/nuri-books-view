@@ -1,6 +1,7 @@
 package shop.nuribooks.view.book.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +18,8 @@ public interface BookService {
 	PagedResponse<BookContributorsResponse> getBooks(int page, int size);
 
 	BookResponse getBookById(Long bookId);
+	
+	BookResponse getBookByIdAndUpdateRecentView(Long bookId, Set<Long> recentViewSet);
 
 	void registerAladinBook(AladinBookRegisterRequest aladinRequest);
 

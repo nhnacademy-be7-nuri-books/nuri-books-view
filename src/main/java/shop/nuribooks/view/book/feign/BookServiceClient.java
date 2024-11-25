@@ -31,7 +31,8 @@ public interface BookServiceClient {
 	PagedResponse<BookContributorsResponse> getBooks(@RequestParam("page") int page, @RequestParam("size") int size);
 
 	@GetMapping("/api/books/{book-id}")
-	BookResponse getBookById(@PathVariable(name = "book-id") Long bookId);
+	BookResponse getBookById(@PathVariable(name = "book-id") Long bookId,
+		@RequestParam(value = "update-recent-view", required = false) boolean updateRecentView);
 
 	@GetMapping("/api/categories")
 	List<CategoryResponse> getAllCategories();

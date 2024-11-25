@@ -72,7 +72,7 @@
     </style>
 
 
-    <div class="image-gallery mt-4">
+    <div class="image-gallery mt-4" th:if="${review.reviewImages.size > 0}">
         <div class="swiper-container">
             <div class="swiper-wrapper">
                 <!-- 이미지 반복 -->
