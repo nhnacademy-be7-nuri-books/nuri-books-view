@@ -29,4 +29,9 @@ public class ShippingServiceImpl implements ShippingService {
 	public ResponseMessage startDelivery(Long id) {
 		return shippingServiceFeignClient.updateDeliveryStatus(id).getBody();
 	}
+
+	@Override
+	public ResponseMessage completeDelivery(Long id) {
+		return shippingServiceFeignClient.completeDelivery(id).getBody();
+	}
 }

@@ -49,4 +49,10 @@ public class ShippingController {
 		return ResponseEntity.status(HttpStatus.OK)
 			.body(shippingService.startDelivery(id));
 	}
+
+	@PutMapping("/delivery-complete/{id}")
+	public ResponseEntity<ResponseMessage> completeDelivery(@PathVariable Long id) {
+		return ResponseEntity.status(HttpStatus.OK)
+			.body(shippingService.completeDelivery(id));
+	}
 }

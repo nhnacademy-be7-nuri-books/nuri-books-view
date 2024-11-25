@@ -12,4 +12,6 @@ public interface ShippingService {
 	ShippingResponse getShippingResponse(Long id);
 
 	ResponseMessage startDelivery(Long id);
+
+	ResponseMessage completeDelivery(Long id);
 }

@@ -21,4 +21,7 @@ public interface ShippingServiceFeignClient {
 
 	@PutMapping("/{id}")
 	ResponseEntity<ResponseMessage> updateDeliveryStatus(@PathVariable Long id);
+
+	@PutMapping("/delivery-complete/{id}")
+	ResponseEntity<ResponseMessage> completeDelivery(@PathVariable Long id);
 }

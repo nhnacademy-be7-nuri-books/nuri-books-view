@@ -42,7 +42,12 @@
 
                             <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
                                     th:onclick="'openModal(\'update-modal\', '+ ${shipping.id} +')'">
-                                <i class="fas fa-truck me-2"></i>배송
+                                <i class="fas fa-truck me-2"></i>배송 시작
+                            </button>
+
+                            <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
+                                    th:onclick="'openModal(\'finish-modal\', '+ ${shipping.id} +')'">
+                                <i class="fas fa-check me-2"></i>배송 완료
                             </button>
                         </td>
                     </tr>
@@ -56,6 +61,7 @@
         </div>
     </div>
     <div th:replace="~{admin/shipping/modal/update_modal::update_modal}"></div>
+    <div th:replace="~{admin/shipping/modal/finish_modal::finish_modal}"></div>
 </div>
 </body>
 </html>
