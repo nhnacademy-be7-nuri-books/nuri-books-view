@@ -18,6 +18,7 @@ import shop.nuribooks.view.admin.category.dto.CategoryResponse;
 import shop.nuribooks.view.admin.category.service.AdminCategoryService;
 import shop.nuribooks.view.book.dto.BookContributorsResponse;
 import shop.nuribooks.view.book.dto.BookResponse;
+import shop.nuribooks.view.book.dto.TopBookLikeResponse;
 import shop.nuribooks.view.book.service.BookService;
 import shop.nuribooks.view.booklike.dto.LikeStatusResponse;
 import shop.nuribooks.view.booklike.service.BookLikeService;
