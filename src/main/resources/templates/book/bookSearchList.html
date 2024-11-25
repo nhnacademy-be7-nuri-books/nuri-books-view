@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{${layout}}">
+<html layout:decorate="~{${layout}}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>도서 목록</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         /* 공통 스타일 */
         .header-container {
@@ -223,9 +223,9 @@
                 <i class="fas fa-chevron-down"></i>
             </button>
             <ul class="sort-menu" id="sortMenu">
-                <li th:each="sort_type : ${sort_types}"
+                <li onclick="setSortType(this)"
                     th:data-sort-type="${sort_type.name()}"
-                    onclick="setSortType(this)"
+                    th:each="sort_type : ${sort_types}"
                     th:text="${sort_type.getKorName()}"></li>
             </ul>
         </div>
@@ -234,9 +234,9 @@
     <!-- 도서 목록 리스트형 스타일 -->
     <div class="container book-list">
         <div class="book-item" th:each="book : ${pages.content}">
-            <a th:href="@{/view/book/details/{bookId}(bookId=${book.id})}"
-               class="book-thumbnail">
-                <img th:src="${book.thumbnail_image_url}" alt="도서 이미지">
+            <a class="book-thumbnail"
+               th:href="@{/view/book/details/{bookId}(bookId=${book.id})}">
+                <img alt="도서 이미지" th:src="${book.thumbnail_image_url}">
             </a>
             <div class="book-details">
                 <a th:href="@{/view/book/details/{bookId}(bookId=${book.id})}">
@@ -260,7 +260,7 @@
             </div>
         </div>
 
-        <div th:if="${#lists.isEmpty(pages.content)}" class="no-books-container text-center my-5">
+        <div class="no-books-container text-center my-5" th:if="${#lists.isEmpty(pages.content)}">
             <div class="no-books-icon">
                 <i class="fas fa-exclamation-circle text-muted" style="font-size: 3rem;"></i>
             </div>
@@ -268,8 +268,8 @@
                 <p class="text-muted" style="font-size: 1.25rem;">조건에 맞는 도서가 없습니다.</p>
             </div>
         </div>
-        <div th:replace="fragments/page::page(url=${current_url})"></div>
     </div>
+    <div th:replace="fragments/page::page"></div>
 </div>
 </body>
 </html>
