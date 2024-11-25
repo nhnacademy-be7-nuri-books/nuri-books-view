@@ -23,18 +23,21 @@
                     <tbody>
                     <tr th:each="shipping : ${pages.content}">
                         <td class="text-center" th:text="${shipping.id}">ID</td>
-                        <td class="text-center" th:text="${shipping.orderId != null ? shipping.orderId : 'N/A'}">주문번호
+                        <td class="text-center" th:text="${shipping.orderId}">주문번호
                         </td>
-                        <td class="text-center" th:text="${shipping.shippingAt != null ? shipping.shippingAt : 'N/A'}">
+                        <td class="text-center"
+                            th:text="${shipping.shippingAt != null ? shipping.shippingAt : '발송 대기중'}">
                             발송일
                         </td>
                         <td class="text-center"
-                            th:text="${shipping.orderInvoiceNumber != null ? shipping.orderInvoiceNumber : 'N/A'}">송장번호
+                            th:text="${shipping.orderInvoiceNumber != null ? shipping.orderInvoiceNumber : '발송 대기중'}">
+                            송장번호
                         </td>
                         <td class="text-center"
-                            th:text="${shipping.shippingCompletedAt != null ? shipping.shippingCompletedAt : 'N/A'}">
+                            th:text="${shipping.shippingCompletedAt != null ? shipping.shippingCompletedAt : (shipping.orderInvoiceNumber == null ? '배송 전' : '배송 중')}">
                             배송완료날짜
                         </td>
+
                         <td class="text-end">
                             <!-- 상세보기 버튼 -->
                             <a th:href="@{/admin/shipping/{id}(id=${shipping.id})}"
