@@ -13,11 +13,11 @@ import shop.nuribooks.view.common.util.ExceptionUtil;
 import shop.nuribooks.view.exception.ApiErrorException;
 import shop.nuribooks.view.exception.DefaultServerError;
 import shop.nuribooks.view.order.order.dto.request.OrderListPeriodRequest;
-import shop.nuribooks.view.order.order.dto.request.OrderTempRegisterRequest;
+import shop.nuribooks.view.order.order.dto.request.OrderRegisterRequest;
 import shop.nuribooks.view.order.order.dto.response.OrderDetailResponse;
 import shop.nuribooks.view.order.order.dto.response.OrderInformationResponse;
 import shop.nuribooks.view.order.order.dto.response.OrderListResponse;
-import shop.nuribooks.view.order.order.dto.response.OrderTempRegisterResponse;
+import shop.nuribooks.view.order.order.dto.response.OrderRegisterResponse;
 import shop.nuribooks.view.order.order.feign.OrderServiceClient;
 
 @Service
@@ -40,7 +40,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public OrderTempRegisterResponse saveOrder(OrderTempRegisterRequest orderTempRegisterRequest) {
+	public OrderRegisterResponse saveOrder(OrderRegisterRequest orderTempRegisterRequest) {
 		try {
 			return orderServiceClient.saveOrder(orderTempRegisterRequest).getBody();
 		} catch (FeignException e) {
@@ -68,8 +68,8 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public OrderDetailResponse getOrderDetail(Long orderId) {
-		return orderServiceClient.getOrderDetail(orderId)
+	public OrderDetailResponse getOrderDetail(Long orderId, Pageable pageable) {
+		return orderServiceClient.getOrderDetail(orderId, pageable)
 			.getBody();
 	}
 

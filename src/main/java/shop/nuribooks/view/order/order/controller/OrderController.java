@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
@@ -42,20 +43,22 @@ public class OrderController {
 	 * @param request HttpServletRequest
 	 * @param bookId 책 아이디
 	 * @param quantity 책 갯수
-	 * @param attributes
-	 * @param model
-	 * @return
+	 * @param model orderInformation
+	 * @return resource path
 	 */
 	@GetMapping("/{book-id}")
 	public String getOrderForm(
-		HttpServletRequest request, @PathVariable("book-id") Long bookId, @RequestParam Integer quantity,
-		RedirectAttributes attributes, Model model) {
+		HttpServletRequest request, @PathVariable("book-id") Long bookId, @RequestParam Integer quantity, Model model) {
 
 		String accessToken = CookieUtil.findByCookieKey(request, HttpHeaders.AUTHORIZATION);
 
 		OrderInformationResponse response = orderService.getOrderInformation(bookId, quantity);
 
-		model.addAttribute("orderInformation", response);
+		model.addAttribute("customerInfo", response.customer());
+		model.addAttribute("bookOrderInfo", response.bookOrderResponse());
+		model.addAttribute("shippingInfo", response.shippingPolicyResponse());
+		model.addAttribute("paperList", response.paperResponse());
+		model.addAttribute("allTypeCoupon", response.allTypeCoupon());
 
 		if (Objects.nonNull(accessToken)) {
 			// 회원
@@ -66,6 +69,14 @@ public class OrderController {
 		}
 	}
 
+	/**
+	 * 장바구니로부터 상품 구매 - 주문 폼 불러오기
+	 *
+	 * @param request HttpServletRequest
+	 * @param model model
+	 * @param redirectAttributes 예외 메시지용
+	 * @return resource path
+	 */
 	@GetMapping("/cart")
 	public String getCartOrderForm(HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		String accessToken = CookieUtil.findByCookieKey(request, HttpHeaders.AUTHORIZATION);
@@ -76,7 +87,11 @@ public class OrderController {
 				redirectAttributes.addFlashAttribute(errorMessageKey, "도서를 담아주세요");
 				return "redirect:/api/cart";
 			}
-			model.addAttribute("orderInformation", response);
+			model.addAttribute("customerInfo", response.customer());
+			model.addAttribute("bookOrderInfo", response.bookOrderResponse());
+			model.addAttribute("shippingInfo", response.shippingPolicyResponse());
+			model.addAttribute("paperList", response.paperResponse());
+			model.addAttribute("allTypeCoupon", response.allTypeCoupon());
 			return "order/member-order-form";
 		}
 		String customerId = CookieUtil.findByCookieKey(request, CART_COOKIE_ID);
@@ -86,17 +101,32 @@ public class OrderController {
 				redirectAttributes.addFlashAttribute(errorMessageKey, "도서를 담아주세요");
 				return "redirect:/api/cart";
 			}
-			model.addAttribute("orderInformation", response);
+			model.addAttribute("customerInfo", response.customer());
+			model.addAttribute("bookOrderInfo", response.bookOrderResponse());
+			model.addAttribute("shippingInfo", response.shippingPolicyResponse());
+			model.addAttribute("paperList", response.paperResponse());
+			model.addAttribute("allTypeCoupon", response.allTypeCoupon());
 			return "order/customer-order-form";
 		}
 		return "cart";
 	}
 
+	/**
+	 * 주문 목록 불러오기
+	 *
+	 * @param model model
+	 * @param orderListPeriodRequest 주문 목록을 불러오기 위한 조건
+	 * @param includeOrdersInPendingStatus 대기중인 주문 포함 여부
+	 * @return resource path
+	 * @throws IOException IO 예외
+	 */
 	@GetMapping("/list")
 	public String getOrderList(Model model, OrderListPeriodRequest orderListPeriodRequest,
 		@RequestParam(name = "include-pending", defaultValue = "true") boolean includeOrdersInPendingStatus,
-		Pageable pageable) throws
-		IOException {
+		@RequestParam(required = false, defaultValue = "0") int page,
+		@RequestParam(required = false, defaultValue = "5") int size) throws IOException {
+
+		Pageable pageable = PageRequest.of(page, size);
 		Page<OrderListResponse> orders = orderService.getOrderList(orderListPeriodRequest, includeOrdersInPendingStatus,
 			pageable);
 
@@ -132,10 +162,20 @@ public class OrderController {
 		return "member/order/my-orders";
 	}
 
+	/**
+	 * 주문 상세 불러오기
+	 *
+	 * @param orderId 주문 아이디
+	 * @param model model
+	 * @return 주문 상세 resource path
+	 */
 	@GetMapping("/detail/{order-id}")
-	public String getOrderDetail(@PathVariable("order-id") Long orderId, Model model) {
+	public String getOrderDetail(@PathVariable("order-id") Long orderId, Model model,
+		@RequestParam(required = false, defaultValue = "0") int page,
+		@RequestParam(required = false, defaultValue = "5") int size) {
 
-		OrderDetailResponse orderDetailResponse = orderService.getOrderDetail(orderId);
+		Pageable pageable = PageRequest.of(page, size);
+		OrderDetailResponse orderDetailResponse = orderService.getOrderDetail(orderId, pageable);
 
 		model.addAttribute("orderId", orderId);
 		model.addAttribute("orderSummary", orderDetailResponse.order());
