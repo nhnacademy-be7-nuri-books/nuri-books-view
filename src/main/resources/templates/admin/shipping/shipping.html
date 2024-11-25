@@ -26,11 +26,11 @@
                         <td class="text-center" th:text="${shipping.orderId}">주문번호
                         </td>
                         <td class="text-center"
-                            th:text="${shipping.shippingAt != null ? shipping.shippingAt : '발송 대기중'}">
+                            th:text="${shipping.shippingAt != null ? shipping.shippingAt : '발송 대기'}">
                             발송일
                         </td>
                         <td class="text-center"
-                            th:text="${shipping.orderInvoiceNumber != null ? shipping.orderInvoiceNumber : '발송 대기중'}">
+                            th:text="${shipping.orderInvoiceNumber != null ? shipping.orderInvoiceNumber : '발송 대기'}">
                             송장번호
                         </td>
                         <td class="text-center"
