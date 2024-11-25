@@ -69,4 +69,9 @@ public class BookController {
 		model.addAttribute("categories", categoryList);
 		return "book/category/all-category";
 	}
+
+	@GetMapping("/all")
+	public List<BookResponse> getAllBooks() {
+		return bookService.getAllBooks();
+	}
 }

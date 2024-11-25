@@ -24,10 +24,12 @@ public interface BookService {
 	PagedResponse<BookContributorsResponse> getBooksByCategoryId(Long categoryId, int page, int size);
 
 	void updateBook(Long bookId, BookUpdateRequest bookUpdateRequest);
-  
+
 	void deleteBook(Long bookId);
 
 	List<CategoryResponse> getAllCategories();
 
 	String uploadImage(MultipartFile file);
+
+	List<BookResponse> getAllBooks();
 }

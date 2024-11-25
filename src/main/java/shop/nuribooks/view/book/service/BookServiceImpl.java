@@ -66,4 +66,10 @@ public class BookServiceImpl implements BookService {
 	public String uploadImage(MultipartFile file) {
 		return bookServiceClient.uploadImage(file);
 	}
+
+	@Override
+	public List<BookResponse> getAllBooks() {
+		return bookServiceClient.getAllBooks();
+	}
+
 }

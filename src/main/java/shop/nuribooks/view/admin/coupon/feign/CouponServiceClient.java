@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.validation.Valid;
+import shop.nuribooks.view.admin.coupon.dto.BookCouponRequest;
 import shop.nuribooks.view.admin.coupon.dto.CouponRequest;
 import shop.nuribooks.view.admin.coupon.dto.CouponResponse;
 import shop.nuribooks.view.admin.coupon.enums.CouponType;
@@ -24,6 +25,9 @@ public interface CouponServiceClient {
 
 	@PostMapping("/api/coupons")
 	ResponseEntity<ResponseMessage> registerCoupon(@Valid @RequestBody CouponRequest couponRequest);
+
+	@PostMapping("/api/coupons/book-coupons")
+	ResponseEntity<ResponseMessage> registerBookCoupon(@Valid @RequestBody BookCouponRequest bookCouponRequest);
 
 	@PutMapping("/api/coupons/{coupon-id}")
 	ResponseEntity<ResponseMessage> updateCoupon(@PathVariable("coupon-id") Long id,
