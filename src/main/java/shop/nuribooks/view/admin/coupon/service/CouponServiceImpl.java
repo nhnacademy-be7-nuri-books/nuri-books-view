@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import shop.nuribooks.view.admin.category.feign.AdminCategoryClient;
+import shop.nuribooks.view.admin.coupon.dto.BookCouponRequest;
+import shop.nuribooks.view.admin.coupon.dto.CategoryCouponRequest;
 import shop.nuribooks.view.admin.coupon.dto.CouponRequest;
 import shop.nuribooks.view.admin.coupon.dto.CouponResponse;
 import shop.nuribooks.view.admin.coupon.enums.CouponType;
@@ -29,6 +31,11 @@ public class CouponServiceImpl implements CouponService {
 	}
 
 	@Override
+	public ResponseMessage registerBookCoupon(BookCouponRequest bookCouponRequest) {
+		return this.couponServiceClient.registerBookCoupon(bookCouponRequest).getBody();
+	}
+
+	@Override
 	public ResponseMessage updateCoupon(Long id, CouponRequest couponRequest) {
 		return this.couponServiceClient.updateCoupon(id, couponRequest).getBody();
 	}
@@ -39,7 +46,7 @@ public class CouponServiceImpl implements CouponService {
 	}
 
 	@Override
-	public ResponseMessage registerCategoryCoupon(CouponRequest couponRequest) {
+	public ResponseMessage registerCategoryCoupon(CategoryCouponRequest couponRequest) {
 		return this.couponServiceClient.registerCategoryCoupon(couponRequest).getBody();
 	}
 

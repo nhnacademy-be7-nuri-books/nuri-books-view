@@ -1,19 +1,257 @@
-<!-- 카테고리 선택 모달 -->
-<div aria-hidden="true" aria-labelledby="categoryModalLabel" class="modal fade" id="categoryModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="categoryModalLabel">카테고리 선택</h5>
-                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Bootstrap CSS (예시로 포함) -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div>
+
+    <div class="container-fluid" id="category-tables">
+        <div class="d-flex flex-nowrap overflow-auto text-nowrap">
+            <!-- 1 뎁스 테이블 -->
+            <div class="col-md-3 mb-4" id="depth-1-table">
+                <div class="card">
+                    <div class="card-header">1 뎁스</div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead class="thead-light">
+                            <tr>
+                                <th>아이디</th>
+                                <th>이름</th>
+                                <th>액션</th>
+                            </tr>
+                            </thead>
+                            <tbody id="depth-1-tbody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body">
-                <ul class="list-group">
-                    <li class="list-group-item" onclick="selectCategory(this)"
-                        th:data-id="${category.id}" th:each="category : ${categories}"
-                        th:text="${category.name}">
-                    </li>
-                </ul>
+
+            <!-- 2 ~ 5 뎁스 테이블 -->
+            <!-- 반복적인 설정을 통해 테이블 추가 -->
+            <!-- 2 뎁스 -->
+            <div class="col-md-3 mb-4" id="depth-2-table">
+                <div class="card">
+                    <div class="card-header">2 뎁스 <span class="position-absolute end-0 me-2" id="depth-2-parent-info"
+                                                        style="font-size: 0.85em;"></span></div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead class="thead-light">
+                            <tr>
+                                <th>아이디</th>
+                                <th>이름</th>
+                                <th>액션</th>
+                            </tr>
+                            </thead>
+                            <tbody id="depth-2-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3 ~ 5 뎁스 -->
+            <!-- 반복해서 depth-3, depth-4, depth-5 설정 -->
+            <div class="col-md-3 mb-4" id="depth-3-table">
+                <div class="card">
+                    <div class="card-header">3 뎁스 <span class="position-absolute end-0 me-2" id="depth-3-parent-info"
+                                                        style="font-size: 0.85em;"></span></div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead class="thead-light">
+                            <tr>
+                                <th>아이디</th>
+                                <th>이름</th>
+                                <th>액션</th>
+                            </tr>
+                            </thead>
+                            <tbody id="depth-3-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4 뎁스 -->
+            <div class="col-md-3 mb-4" id="depth-4-table">
+                <div class="card">
+                    <div class="card-header">4 뎁스 <span class="position-absolute end-0 me-2" id="depth-4-parent-info"
+                                                        style="font-size: 0.85em;"></span></div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead class="thead-light">
+                            <tr>
+                                <th>아이디</th>
+                                <th>이름</th>
+                                <th>액션</th>
+                            </tr>
+                            </thead>
+                            <tbody id="depth-4-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5 뎁스 -->
+            <div class="col-md-3 mb-4" id="depth-5-table">
+                <div class="card">
+                    <div class="card-header">5 뎁스 <span class="position-absolute end-0 me-2" id="depth-5-parent-info"
+                                                        style="font-size: 0.85em;"></span></div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead class="thead-light">
+                            <tr>
+                                <th>아이디</th>
+                                <th>이름</th>
+                                <th>액션</th>
+                            </tr>
+                            </thead>
+                            <tbody id="depth-5-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    <script th:inline="javascript">
+        // Thymeleaf 데이터를 전역 변수에 저장
+        window.allCategories = /*[[${categories}]]*/ [];
+        console.log('Loaded Categories:', window.allCategories);
+
+        // 페이지 로드 시 최상위 (parentId가 null인) 카테고리 데이터를 렌더링
+        document.addEventListener('DOMContentLoaded', function () {
+            renderCategories(window.allCategories, 1);
+        });
+
+        // 특정 카테고리의 자식 카테고리를 특정 뎁스에 렌더링
+        function renderCategories(categories, depth, parentName = '', parentId = '') {
+            if (!Array.isArray(categories)) {
+                console.error('Invalid categories data:', categories);
+                return;
+            }
+
+            // 선택한 depth 이후의 모든 depth 테이블 초기화
+            for (let i = depth; i <= 5; i++) {
+                const tableBody = document.querySelector(`#depth-${i}-tbody`);
+                const parentInfo = document.querySelector(`#depth-${i}-parent-info`);
+                if (tableBody) {
+                    tableBody.innerHTML = ''; // 기존 테이블 내용 지우기
+                }
+                if (parentInfo) {
+                    parentInfo.textContent = ''; // 상위 카테고리 정보 초기화
+                }
+            }
+
+            // 현재 depth의 테이블 바디 선택
+            const currentTableBody = document.querySelector(`#depth-${depth}-tbody`);
+            if (!currentTableBody) {
+                console.error(`Table body for depth ${depth} not found`);
+                return;
+            }
+
+            // 현재 depth의 테이블 내용 지우기
+            currentTableBody.innerHTML = '';
+
+            // 현재 depth에 맞는 카테고리 렌더링
+            categories.forEach(category => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                <td>${category.id}</td>
+                <td onclick='renderSubCategories(${JSON.stringify(category.subCategories)}, ${depth + 1}, this, "${category.name}", "${category.id}")' style="cursor: pointer; white-space: nowrap; width: 70%;">${category.name}</td>
+                <td><button class="btn btn-primary btn-sm" onclick="selectCategory('${category.id}', '${category.name}')">선택</button></td>
+            `;
+                currentTableBody.appendChild(row);
+            });
+
+            // 상위 카테고리 정보 업데이트
+            if (depth > 1 && parentName) {
+                const parentInfo = document.querySelector(`#depth-${depth}-parent-info`);
+                if (parentInfo) {
+                    parentInfo.textContent = `${parentName} (ID: ${parentId})`;
+                }
+            }
+        }
+
+        // 선택한 카테고리의 자식만 렌더링
+        function renderSubCategories(subCategories, depth, element, parentName, parentId) {
+            if (!Array.isArray(subCategories)) {
+                console.error('Invalid subCategories data:', subCategories);
+                return;
+            }
+
+            // 선택한 카테고리 강조 표시
+            const rows = element.parentNode.parentNode.querySelectorAll('tr');
+            rows.forEach(row => row.classList.remove('table-active'));
+            element.parentNode.classList.add('table-active');
+
+            // 선택한 depth 이후의 모든 depth 테이블 초기화
+            for (let i = depth; i <= 5; i++) {
+                const tableBody = document.querySelector(`#depth-${i}-tbody`);
+                const parentInfo = document.querySelector(`#depth-${i}-parent-info`);
+                if (tableBody) {
+                    tableBody.innerHTML = ''; // 기존 테이블 내용 지우기
+                }
+                if (parentInfo) {
+                    parentInfo.textContent = ''; // 상위 카테고리 정보 초기화
+                }
+            }
+
+            // 현재 depth에 맞는 테이블 바디 선택
+            const nextTableBody = document.querySelector(`#depth-${depth}-tbody`);
+            if (!nextTableBody) {
+                console.error(`Table body for depth ${depth} not found`);
+                return;
+            }
+
+            // 이전 depth의 자식 테이블 내용 지우기
+            nextTableBody.innerHTML = '';
+
+            // 하위 카테고리 렌더링
+            subCategories.forEach(subCategory => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                <td>${subCategory.id}</td>
+                <td onclick='renderSubCategories(${JSON.stringify(subCategory.subCategories)}, ${depth + 1}, this, "${subCategory.name}", "${subCategory.id}")' style="cursor: pointer; white-space: nowrap; width: 70%;">${subCategory.name}</td>
+                <td><button class="btn btn-primary btn-sm" onclick="selectCategory('${subCategory.id}', '${subCategory.name}')">선택</button></td>
+            `;
+                nextTableBody.appendChild(row);
+            });
+
+            // 상위 카테고리 정보 업데이트
+            if (parentName) {
+                const parentInfo = document.querySelector(`#depth-${depth}-parent-info`);
+                if (parentInfo) {
+                    parentInfo.textContent = `${parentName} (ID: ${parentId})`;
+                }
+            }
+        }
+
+        // selectCategory 함수 정의
+        function selectCategory(categoryId, categoryName) {
+            if (window.opener) {
+                const categoryIdField = window.opener.document.getElementById('categoryId');
+                const categoryNameField = window.opener.document.getElementById('categoryName');
+
+                if (categoryIdField && categoryNameField) {
+                    categoryIdField.value = categoryId;
+                    categoryNameField.value = categoryName; // 필요시 추가 필드 사용
+                    window.close(); // 팝업 창 닫기
+                } else {
+                    console.error('카테고리 ID 또는 이름 필드를 찾을 수 없습니다.');
+                }
+            } else {
+                console.error('부모 창을 찾을 수 없습니다.');
+            }
+        }
+
+    </script>
+
+
 </div>
+
+</body>
+</html>
