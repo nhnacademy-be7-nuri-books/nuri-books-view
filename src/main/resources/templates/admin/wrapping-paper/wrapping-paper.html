@@ -1,5 +1,5 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{admin/layout/adminlayout}">
+<html lang="en" layout:decorate="~{admin/layout/adminlayout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <body>
 <div layout:fragment="content">
     <div th:replace="~{admin/fragment/js-utils::utils}"></div>
@@ -29,7 +29,7 @@
                         <td class="text-center" th:text="${wrappingPaper.title}">포장지</td>
                         <td class="text-center" th:text="${wrappingPaper.wrappingPrice}">가격</td>
                         <td class="text-center">
-                            <img th:src="@{${wrappingPaper != null ? wrappingPaper.imageUrl : '/path/to/default/image.jpg'}}" alt="포장지 이미지">
+                            <img alt="포장지 이미지" th:src="@{${wrappingPaper != null ? wrappingPaper.imageUrl : '/path/to/default/image.jpg'}}">
                         </td>
                         <td class="text-end">
                             <!-- 수정 버튼 (수정 모달 트리거) -->
@@ -46,12 +46,12 @@
                     </tr>
 
                     <tr th:if="${#lists.isEmpty(pages.content)}">
-                        <td colspan="5" class="text-center text-muted">등록된 포장지가 없습니다.</td>
+                        <td class="text-center text-muted" colspan="5">등록된 포장지가 없습니다.</td>
                     </tr>
                     </tbody>
                 </table>
             </div>
-            <div th:replace="~{fragments/page::page(url=${'/admin/wrapping-paper'})}"></div>
+            <div th:replace="~{fragments/page::page}"></div>
         </div>
     </div>
 

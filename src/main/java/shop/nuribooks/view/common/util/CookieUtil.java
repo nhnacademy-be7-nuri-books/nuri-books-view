@@ -28,6 +28,22 @@ public class CookieUtil {
 	}
 
 	/**
+	 * HTTP 응답에 쿠키 추가
+	 *
+	 * @param response 쿠키가 추가 될 HttpServletResponse
+	 * @param name 쿠키 이름
+	 * @param value 쿠키 값
+	 * @param expiry 쿠키 유효일자
+	 */
+	public static void addCookie(HttpServletResponse response, String name, String value, int expiry) {
+		Cookie cookie = new Cookie(name, value);
+		cookie.setHttpOnly(true);
+		cookie.setPath("/");
+		cookie.setMaxAge(expiry);
+		response.addCookie(cookie);
+	}
+
+	/**
 	 * 쿠키를 삭제
 	 *
 	 * @param response {@link HttpServletResponse} 응답 객체

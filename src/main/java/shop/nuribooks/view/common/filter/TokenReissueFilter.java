@@ -74,7 +74,8 @@ public class TokenReissueFilter extends OncePerRequestFilter {
 					CookieUtil.addCookie(response, HttpHeaders.AUTHORIZATION, accessToken);
 
 					// 쿠키 갱신을 위해 리다이렉트
-					response.sendRedirect(request.getRequestURI());
+					response.setStatus(HttpServletResponse.SC_TEMPORARY_REDIRECT);
+					response.setHeader("Location", request.getRequestURI());
 					return;
 
 				} catch (FeignException e) {
