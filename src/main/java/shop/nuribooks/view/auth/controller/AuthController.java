@@ -166,11 +166,11 @@ public class AuthController {
     }
 
     @PostMapping("/login/inactive")
-    public String memberReactive(@ModelAttribute MemberReactiveRequest request, Model model) {
+    public String memberReactive(@ModelAttribute MemberReactiveRequest request, RedirectAttributes redirectAttributes) {
 
         authService.reactiveMember(request);
 
-        model.addAttribute("successMessage", "휴면회원 인증이 완료되었습니다.");
+        redirectAttributes.addFlashAttribute("successMessage", "휴면회원 인증이 완료되었습니다.");
 
         return "redirect:/login";
     }
