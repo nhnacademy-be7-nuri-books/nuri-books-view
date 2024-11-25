@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{${layout}}">
+<html layout:decorate="~{${layout}}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>도서 목록</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         /* 공통 스타일 */
         .header-container {
@@ -173,38 +173,6 @@
         .btn-delete:hover {
             background-color: #c82333;
         }
-
-        /* 페이지 네비게이션 */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-            font-size: 1em;
-        }
-
-        .pagination a, .pagination span {
-            margin: 0 5px;
-            padding: 8px 12px;
-            border-radius: 4px;
-            text-decoration: none;
-            color: #34495e;
-        }
-
-        .pagination .btn-secondary {
-            background-color: #0984e3;
-            border: none;
-            color: white;
-        }
-
-        .pagination .btn-secondary:hover {
-            background-color: #74b9ff;
-        }
-
-        .current-page {
-            font-weight: bold;
-            color: #0984e3;
-        }
     </style>
 </head>
 <body>
@@ -213,25 +181,37 @@
         <h1 class="header-title" th:text="${isAdmin} ? '관리자 도서 관리' : '추천 도서 목록'">추천 도서 목록</h1>
         <!-- 항목 개수 선택 드롭다운 -->
         <div class="page-size-selector">
-            <form th:action="@{/view/books}" method="get">
-                <label for="sizeSelect">페이지 당 항목 수:</label>
-                <select name="size" id="sizeSelect"
+            <form class="row justify-content-end " method="get" th:action="@{/view/books}">
+                <div>
+                    <label for="sizeSelect">페이지 당 도서 수:</label>
+                    <select id="sizeSelect" name="size"
                         onchange="document.getElementById('pageInput').value = 0; this.form.submit()">
-                    <option th:value="5" th:text="'5개씩 보기'" th:selected="${books.size == 5}"></option>
-                    <option th:value="10" th:text="'10개씩 보기'" th:selected="${books.size == 10}"></option>
-                    <option th:value="20" th:text="'20개씩 보기'" th:selected="${books.size == 20}"></option>
-                </select>
-                <input type="hidden" id="pageInput" name="page" th:value="${books.page}"/>
+                        <option th:selected="${pages.size == 5}" th:text="'5개씩 보기'" th:value="5"></option>
+                        <option th:selected="${pages.size == 10}" th:text="'10개씩 보기'" th:value="10"></option>
+                        <option th:selected="${pages.size == 20}" th:text="'20개씩 보기'" th:value="20"></option>
+                    </select>
+                </div>
+                <div>
+                    <label for="sortSelect">정렬 기준:</label>
+                    <select id="sortSelect" name="sort"
+                            onchange="document.getElementById('pageInput').value = 0; this.form.submit()">
+                        <option th:each="sort_type : ${sort_types}"
+                                th:selected="${pages.sort.getOrderFor(sort_type.name) != null}"
+                                th:text="${sort_type.korName}"
+                                th:value="${sort_type}"></option>
+                    </select>
+                </div>
+                <input id="pageInput" name="page" th:value="0" type="hidden"/>
             </form>
         </div>
     </div>
 
     <!-- 도서 목록 리스트형 스타일 -->
     <div class="container book-list">
-        <div class="book-item" th:each="bookWithContributors : ${books.content}">
-            <a th:href="@{/view/book/details/{bookId}(bookId=${bookWithContributors.bookDetails.id})}"
-                class="book-thumbnail">
-                <img th:src="${bookWithContributors.bookDetails.thumbnailImageUrl}" alt="도서 이미지">
+        <div class="book-item" th:each="bookWithContributors : ${pages.content}">
+            <a class="book-thumbnail"
+               th:href="@{/view/book/details/{bookId}(bookId=${bookWithContributors.bookDetails.id})}">
+                <img alt="도서 이미지" th:src="${bookWithContributors.bookDetails.thumbnailImageUrl}">
             </a>
             <div class="book-details">
                 <a th:href="@{/view/book/details/{bookId}(bookId=${bookWithContributors.bookDetails.id})}">
@@ -255,17 +235,17 @@
 
                     <!-- 판매가 -->
                     <span class="book-sale-price"
-                          th:text="'판매가: ' + ${#numbers.formatInteger(bookWithContributors.bookDetails.salePrice, 0, 'COMMA')} + ' 원'">판매가</span>
+                          th:text="'판매가: ' + ${#numbers.formatInteger(bookWithContributors.bookDetails.getSalePrice(), 0, 'COMMA')} + ' 원'">판매가</span>
                 </p>
 
                 <!-- 관리자 버튼 (isAdmin인 경우에만 표시) -->
                 <div class="book-actions" th:if="${isAdmin}">
-                    <a th:href="@{/admin/view/book/update-form/{bookId}(bookId=${bookWithContributors.bookDetails.id})}"
-                       class="btn btn-edit">
+                    <a class="btn btn-edit"
+                       th:href="@{/admin/view/book/update-form/{bookId}(bookId=${bookWithContributors.bookDetails.id})}">
                         수정
                     </a>
-                    <button type="button" class="btn-delete"
-                            th:attr="data-book-id=${bookWithContributors.bookDetails.id}" onclick="deleteBook(this)">삭제
+                    <button class="btn-delete" onclick="deleteBook(this)"
+                            th:attr="data-book-id=${bookWithContributors.bookDetails.id}" type="button">삭제
                     </button>
                     <script>
                         function deleteBook(button) {
@@ -295,42 +275,8 @@
         </div>
     </div>
 
-    <nav class="pagination">
-        <!-- 이전 버튼 -->
-        <a class="btn btn-secondary"
-           th:if="${books.page > 0} and ${isAdmin}"
-           th:href="@{/admin/view/books(page=${books.page - 1}, size=${books.size})}">
-            이전
-        </a>
-        <a class="btn btn-secondary"
-           th:if="${books.page > 0} and !${isAdmin}"
-           th:href="@{/view/books(page=${books.page - 1}, size=${books.size})}">
-            이전
-        </a>
+    <div th:replace="~{fragments/page::page}"></div>
 
-        <!-- 페이지 번호 링크 -->
-        <span th:each="i : ${#numbers.sequence(1, books.totalPages)}"
-              th:if="${i >= books.page - 2 && i <= books.page + 3}">
-        <a th:if="${isAdmin}" th:href="@{/admin/view/books(page=${i - 1}, size=${books.size})}"
-           th:text="${i}" th:classappend="${i == books.page + 1} ? 'current-page' : ''">
-        </a>
-        <a th:unless="${isAdmin}" th:href="@{/view/books(page=${i - 1}, size=${books.size})}"
-           th:text="${i}" th:classappend="${i == books.page + 1} ? 'current-page' : ''">
-        </a>
-    </span>
-
-        <!-- 다음 버튼 -->
-        <a class="btn btn-secondary"
-           th:if="${books.page < books.totalPages - 1} and ${isAdmin}"
-           th:href="@{/admin/view/books(page=${books.page + 1}, size=${books.size})}">
-            다음
-        </a>
-        <a class="btn btn-secondary"
-           th:if="${books.page < books.totalPages - 1} and !${isAdmin}"
-           th:href="@{/view/books(page=${books.page + 1}, size=${books.size})}">
-            다음
-        </a>
-    </nav>
 </div>
 </body>
 </html>
