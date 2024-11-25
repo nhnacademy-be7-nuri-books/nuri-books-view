@@ -132,6 +132,9 @@
                     th:onclick="'openModal(\'register-modal\', '+ ${orderId} +')'">
                 <i class="fas fa-edit me-2"></i>반품 요청
             </button>
+            <a class="btn btn-outline-secondary btn-sm" th:href="@{/orders/refunds/{order-id}(order-id=${orderId})}">
+                <i class="fas fa-edit me-2"></i>환불
+            </a>
 
         </div>
 
@@ -139,7 +142,6 @@
             <a class="btn btn-secondary btn-lg" th:href="@{/orders/list}">목록으로</a>
         </div>
 
-        <div th:replace="~{member/order/returnrequest/register_modal::register_modal}"></div>
 
     </div>
 </div>
