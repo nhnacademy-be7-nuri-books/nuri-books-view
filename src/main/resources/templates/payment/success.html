@@ -24,7 +24,7 @@
     </div>
 
     <div class="box_section" style="width: 600px; text-align: left">
-        <b>Response Data :</b>
+        <!--        <b>Response Data :</b>-->
         <div id="response" style="white-space: initial"></div>
     </div>
 
@@ -64,7 +64,7 @@
         }
 
         confirm().then(function (data) {
-            document.getElementById("response").innerHTML = `<pre>${JSON.stringify(data, null, 4)}</pre>`;
+            // document.getElementById("response").innerHTML = `<pre>${JSON.stringify(data, null, 4)}</pre>`;
         });
 
         const orderIdElement = document.getElementById("orderId");

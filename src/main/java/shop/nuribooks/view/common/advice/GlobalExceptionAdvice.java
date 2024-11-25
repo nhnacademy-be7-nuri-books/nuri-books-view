@@ -14,8 +14,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
+import shop.nuribooks.view.common.dto.ErrorResponse;
 import shop.nuribooks.view.common.dto.ResponseMessage;
 import shop.nuribooks.view.common.util.ExceptionUtil;
+import shop.nuribooks.view.exception.ApiErrorException;
 import shop.nuribooks.view.exception.BadRequestException;
 import shop.nuribooks.view.exception.CustomJsonProcessingException;
 import shop.nuribooks.view.exception.DefaultServerError;
@@ -125,4 +127,20 @@ public class GlobalExceptionAdvice {
 			.body(new ResponseMessage(HttpStatus.BAD_REQUEST.value(), errorMessage));
 	}
 
+	/**
+	 * 서버 에러 JSON 응답으로 처리
+	 *
+	 * @param ex 예외
+	 * @return ErrorResponse
+	 */
+	@ExceptionHandler(ApiErrorException.class)
+	public ResponseEntity<ErrorResponse> handleApiErrorException(ApiErrorException ex) {
+		ErrorResponse errorResponse = new ErrorResponse(
+			ex.getStatusCode(),
+			ex.getErrorMessage(),
+			null
+		);
+
+		return ResponseEntity.status(ex.getStatusCode()).body(errorResponse);
+	}
 }
