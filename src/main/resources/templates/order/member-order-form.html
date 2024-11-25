@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/order-layout}">
+<html layout:decorate="~{layouts/order-layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <div layout:fragment="content">
     <!-- Main Content -->
     <div class="row">
@@ -10,7 +10,13 @@
     </div>
 
     <!-- 주소 모달 창-->
-    <div th:replace="order/contents/address-modal :: addressModal"></div>
+    <div th:replace="~{order/contents/address-modal :: addressModal}"></div>
+
+    <!-- 상품 쿠폰 모달 창-->
+    <div th:replace="~{order/contents/coupon-modal :: couponModal}"></div>
+
+    <!-- 포장 모달 창-->
+    <div th:replace="~{order/contents/wrapping-modal :: wrappingModal}"></div>
 
     <!-- 주문서 영역 -->
     <div class="container mt-5">
@@ -23,40 +29,40 @@
                         <div class="card mb-3">
                             <h5 class="mb-0">
                                 <button
-                                        class="btn btn-link accordion-button"
-                                        type="button"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#collapseCustomerInfo"
-                                        aria-expanded="false"
                                         aria-controls="collapseCustomerInfo"
+                                        aria-expanded="true"
+                                        class="btn `btn-link accordion-button"
+                                        data-bs-target="#collapseCustomerInfo"
+                                        data-bs-toggle="collapse"
+                                        type="button"
                                 >
                                     주문자 정보
                                 </button>
                             </h5>
                             <div
-                                    id="collapseCustomerInfo"
-                                    class="collapse"
                                     aria-labelledby="headingCustomerInfo"
+                                    class="collapse show"
+                                    id="collapseCustomerInfo"
                             >
                                 <div class="card-body">
                                     <br/>
                                     <h4>주문자 정보</h4>
                                     <div class="form-group">
                                         <label class="font-weight-bold">주문자 이름</label>
-                                        <span style="display: block;" id="customer-name"
-                                              th:text="${orderInformation.name}">홍길동</span>
+                                        <span id="customer-name" style="display: block;"
+                                              th:text="${customerInfo.name}">홍길동</span>
                                     </div>
                                     <br/>
                                     <div class="form-group">
                                         <label class="font-weight-bold">전화번호</label>
-                                        <span style="display: block;" id="customer-phone"
-                                              th:text="${orderInformation.phoneNumber}">0000000000</span>
+                                        <span id="customer-phone" style="display: block;"
+                                              th:text="${customerInfo.phoneNumber}">0000000000</span>
                                     </div>
                                     <br/>
                                     <div class="form-group">
                                         <label class="font-weight-bold">이메일</label>
-                                        <span style="display: block;" id="customer-email"
-                                              th:text="${orderInformation.email}">000@0000000</span>
+                                        <span id="customer-email" style="display: block;"
+                                              th:text="${customerInfo.email}">000@0000000</span>
                                     </div>
                                     <br/>
                                 </div>
@@ -69,60 +75,62 @@
                         <div class="card mb-3">
                             <h5 class="mb-0">
                                 <button
-                                        class="btn btn-link accordion-button"
-                                        type="button"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#collapseShippingInfo"
-                                        aria-expanded="false"
                                         aria-controls="collapseShippingInfo"
+                                        aria-expanded="true"
+                                        class="btn btn-link accordion-button"
+                                        data-bs-target="#collapseShippingInfo"
+                                        data-bs-toggle="collapse"
+                                        type="button"
                                 >
                                     배송지 정보
                                 </button>
                             </h5>
                             <div
-                                    id="collapseShippingInfo"
-                                    class="collapse"
                                     aria-labelledby="headingShippingInfo"
+                                    class="collapse show"
+                                    id="collapseShippingInfo"
                             >
                                 <div class="card-body">
                                     <br/>
                                     <h4>배송 정보</h4>
                                     <div class="form-group">
                                         <label class="font-weight-bold" for="shipping-address">수취자 이름</label>
-                                        <input type="text" class="form-control" id="shipping-name"
-                                               placeholder="수취자 이름을 입력하세요"/>
+                                        <input class="form-control" id="shipping-name" placeholder="수취자 이름을 입력하세요"
+                                               type="text"/>
                                     </div>
                                     <div class="form-group">
                                         <label class="font-weight-bold" for="shipping-address">수취자 연락처</label>
-                                        <input type="text" class="form-control" id="shipping-phone-number"
-                                               placeholder="수취자 연락처를 입력하세요"/>
+                                        <input class="form-control" id="shipping-phone-number"
+                                               placeholder="수취자 연락처를 입력하세요"
+                                               type="text"/>
                                     </div>
                                     <br/>
                                     <div class="form-group">
                                         <label class="font-weight-bold" for="shipping-address">수취자 주소</label>
                                         <div class="d-flex">
-                                            <input type="button" class="me-2 lex-grow-1" id="Postcode"
-                                                   onclick="daumPostcode()" value="도로명 주소 찾기"/>
-                                            <button class="btn btn-primary flex-grow-1" data-bs-toggle="modal"
-                                                    data-bs-target="#addressModal">
+                                            <input class="me-2 lex-grow-1" id="Postcode" onclick="daumPostcode()"
+                                                   type="button" value="도로명 주소 찾기"/>
+                                            <button class="btn btn-primary flex-grow-1" data-bs-target="#addressModal"
+                                                    data-bs-toggle="modal">
                                                 주소 목록 보기
                                             </button>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="font-weight-bold" for="shipping-address">배송지</label>
-                                        <input type="text" class="form-control" id="shipping-address"
-                                               placeholder="주소명 찾기를 이용하세요." readonly/>
+                                        <input class="form-control" id="shipping-address" placeholder="주소명 찾기를 이용하세요."
+                                               readonly type="text"/>
                                     </div>
                                     <div class="form-group">
                                         <label for="shipping-address-detail">배송지 상세주소</label>
-                                        <input type="text" class="form-control" id="shipping-address-detail"
-                                               placeholder="배송지 상세주소를 입력하세요"/>
+                                        <input class="form-control" id="shipping-address-detail"
+                                               placeholder="배송지 상세주소를 입력하세요"
+                                               type="text"/>
                                     </div>
                                     <div class="form-group">
                                         <label for="shipping-zipcode">우편번호</label>
-                                        <input type="text" class="form-control" id="shipping-zipcode"
-                                               placeholder="주소명 찾기를 이용하세요." readonly/>
+                                        <input class="form-control" id="shipping-zipcode" placeholder="주소명 찾기를 이용하세요."
+                                               readonly type="text"/>
                                     </div>
                                     <br/>
                                 </div>
@@ -131,27 +139,27 @@
                     </div>
 
                     <!-- 주문 상세 정보 -->
-                    <div th:replace="order/contents/products-info :: productsInfo"></div>
+                    <div th:replace="~{order/contents/products-info :: productsInfo}"></div>
 
                     <!-- 결제 UI -->
                     <div class="col-md-12">
                         <div class="card mb-3">
                             <h5 class="mb-0">
                                 <button
-                                        class="btn btn-link accordion-button"
-                                        type="button"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#collapsePayment"
-                                        aria-expanded="false"
                                         aria-controls="collapsePayment"
+                                        aria-expanded="true"
+                                        class="btn btn-link accordion-button"
+                                        data-bs-target="#collapsePayment"
+                                        data-bs-toggle="collapse"
+                                        type="button"
                                 >
                                     결제
                                 </button>
                             </h5>
                             <div
-                                    id="collapsePayment"
-                                    class="collapse"
                                     aria-labelledby="headingPayment"
+                                    class="collapse show"
+                                    id="collapsePayment"
                             >
                                 <div class="card-body">
                                     <h4>결제 정보</h4>
@@ -168,20 +176,20 @@
                         <div class="card mb-3">
                             <h5 class="mb-0">
                                 <button
-                                        class="btn btn-link accordion-button"
-                                        type="button"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#collapseCouponPointInfo"
-                                        aria-expanded="false"
                                         aria-controls="collapseCouponPointInfo"
+                                        aria-expanded="true"
+                                        class="btn btn-link accordion-button"
+                                        data-bs-target="#collapseCouponPointInfo"
+                                        data-bs-toggle="collapse"
+                                        type="button"
                                 >
                                     쿠폰 & 포인트
                                 </button>
                             </h5>
                             <div
-                                    id="collapseCouponPointInfo"
-                                    class="collapse"
                                     aria-labelledby="headingCouponPointInfo"
+                                    class="collapse show"
+                                    id="collapseCouponPointInfo"
                             >
                                 <div class="card-body">
                                     <br/>
@@ -191,15 +199,15 @@
                                     <div class="form-group">
                                         <label class="font-weight-bold">사용할 포인트</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" id="usedPoints" name="usedPoints"
-                                                   placeholder="사용할 포인트 입력" min="0" value="0">
-                                            <button class="btn btn-secondary" type="button" id="applyPointsBtn">사용
+                                            <input class="form-control" id="usedPoints" min="0" name="usedPoints"
+                                                   placeholder="사용할 포인트 입력" type="text" value="0">
+                                            <button class="btn btn-secondary" id="applyPointsBtn" type="button">사용
                                             </button>
-                                            <button class="btn btn-secondary" type="button" id="useAllPointsBtn">전액 사용
+                                            <button class="btn btn-secondary" id="useAllPointsBtn" type="button">전액 사용
                                             </button>
                                         </div>
                                         <small class="form-text text-muted">사용가능 포인트: <span id="availablePoints"
-                                                                                            th:text="${orderInformation.point}">1000</span>
+                                                                                            th:text="${customerInfo.point}">1000</span>
                                             포인트</small>
                                     </div>
                                     <br/>
@@ -209,52 +217,60 @@
                                     <!-- 쿠폰 정보 -->
                                     <div class="form-group">
                                         <label class="font-weight-bold">주문에 적용 가능한 쿠폰</label>
-                                        <ul id="availableCoupons" class="list-group">
-                                            <!-- 예시: 쿠폰 리스트 -->
-                                            <li class="list-group-item">
-                                                <input type="checkbox" id="coupon1" name="coupons" value="coupon1">
-                                                <label for="coupon1">10% 할인 쿠폰</label>
-                                            </li>
-                                            <li class="list-group-item">
-                                                <input type="checkbox" id="coupon2" name="coupons" value="coupon2">
-                                                <label for="coupon2">5000원 할인 쿠폰</label>
-                                            </li>
-                                            <!-- 추가되는 쿠폰 목록 -->
-                                        </ul>
-                                        <br/>
+                                        <div class="dropdown">
+                                            <!-- 드롭다운 버튼 -->
+                                            <button aria-expanded="false" class="btn btn-primary dropdown-toggle"
+                                                    data-bs-toggle="dropdown"
+                                                    id="couponDropdownMenuButton" type="button">
+                                                쿠폰 선택
+                                            </button>
+
+                                            <ul aria-labelledby="couponDropdownMenuButton" class="dropdown-menu">
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                       onclick="handleNoCouponSelection()">
+                                                        <div class="d-flex align-items-center">
+                                                            <span>적용 하지 않음</span>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                                <div th:each="allCoupon : ${allTypeCoupon}">
+                                                    <li>
+                                                        <a class="dropdown-item" onclick="updatePriceByAllCoupon(this)"
+                                                           th:data-coupon-discount="${allCoupon.discount}"
+                                                           th:data-coupon-id="${allCoupon.memberCouponId}"
+                                                           th:data-coupon-maximum-discount="${allCoupon.maximumDiscountPrice}"
+                                                           th:data-coupon-name="${allCoupon.couponName}"
+                                                           th:data-coupon-policy="${allCoupon.policyType.toKorName()}">
+                                                            <div class="d-flex align-items-center">
+                                                                <span th:text="${allCoupon.couponName}">쿠폰 제목</span>
+                                                                -
+                                                                <span th:text="${allCoupon.discount}">할인가격</span>
+                                                                -
+                                                                <span th:text="${allCoupon.policyType.toKorName()}">할인가격</span>
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                </div>
+                                            </ul>
+                                            <input id="usingAllCouponId" type="hidden">
+                                        </div>
                                     </div>
                                     <br/>
 
-                                    <div class="form-group">
-                                        <label class="font-weight-bold">상품에 적용 가능한 쿠폰</label>
-                                        <ul id="productCoupons" class="list-group">
-                                            <!-- 예시: 상품에 적용할 수 있는 쿠폰 리스트 -->
-                                            <li class="list-group-item">
-                                                <input type="checkbox" id="productCoupon1" name="productCoupons"
-                                                       value="productCoupon1">
-                                                <label for="productCoupon1">2,000원 할인 쿠폰</label>
-                                            </li>
-                                            <li class="list-group-item">
-                                                <input type="checkbox" id="productCoupon2" name="productCoupons"
-                                                       value="productCoupon2">
-                                                <label for="productCoupon2">3,000원 할인 쿠폰</label>
-                                            </li>
-                                            <!-- 추가되는 상품 쿠폰 목록 -->
-                                        </ul>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- 배송 날짜 예약 -->
-                    <div th:replace="order/contents/expect-order-info :: expectOrderInfo"></div>
+                    <div th:replace="~{order/contents/expect-order-info :: expectOrderInfo}"></div>
 
                 </div>
             </div>
 
             <!-- 오른쪽: 결제 금액 -->
             <div class="col-md-3">
-                <div th:replace="order/contents/total-info :: totalInfo"></div>
+                <div th:replace="~{order/contents/total-info :: totalInfo}"></div>
             </div>
         </div>
     </div>
@@ -264,13 +280,15 @@
     <th:block layout:fragment="script">
         <script th:inline="javascript">
             /*<![CDATA[*/
-            const orderDetails = /*[[${orderInformation.bookOrderResponse}]]*/ [];
-            const shippingId = /*[[${orderInformation.shippingPolicyId}]]*/ 1
+            const orderDetails = /*[[${bookOrderInfo}]]*/ [];
+            const shippingId = /*[[${shippingInfo.id}]]*/ 1;
             /*]]>*/
         </script>
         <script src="/js/order/memberOrder.js"></script>
         <script src="/js/order/postcode.js"></script>
         <script src="/js/order/addressModal.js"></script>
+        <script src="/js/order/wrappingModal.js"></script>
+        <script src="/js/order/allCoupon.js"></script>
     </th:block>
 </div>
 </html>

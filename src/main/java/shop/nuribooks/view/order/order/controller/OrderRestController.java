@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import shop.nuribooks.view.order.order.dto.OrderTempRegisterRequest;
-import shop.nuribooks.view.order.order.dto.OrderTempRegisterResponse;
+import shop.nuribooks.view.order.order.dto.request.OrderRegisterRequest;
+import shop.nuribooks.view.order.order.dto.response.OrderRegisterResponse;
 import shop.nuribooks.view.order.order.service.OrderService;
 
 @RestController
@@ -28,10 +28,10 @@ public class OrderRestController {
 	 * @return
 	 */
 	@PostMapping("/save")
-	public ResponseEntity<OrderTempRegisterResponse> doOrder(
-		@RequestBody OrderTempRegisterRequest orderTempRegisterRequest) {
+	public ResponseEntity<OrderRegisterResponse> doOrder(
+		@RequestBody OrderRegisterRequest orderTempRegisterRequest) {
 
-		OrderTempRegisterResponse orderTempRegisterResponse = orderService.saveOrder(orderTempRegisterRequest);
+		OrderRegisterResponse orderTempRegisterResponse = orderService.saveOrder(orderTempRegisterRequest);
 		return ResponseEntity.status(HttpStatus.OK).body(orderTempRegisterResponse);
 
 	}

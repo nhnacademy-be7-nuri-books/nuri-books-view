@@ -9,12 +9,15 @@ import org.springframework.stereotype.Service;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import shop.nuribooks.view.common.util.ExceptionUtil;
+import shop.nuribooks.view.exception.ApiErrorException;
 import shop.nuribooks.view.exception.DefaultServerError;
-import shop.nuribooks.view.order.order.dto.OrderInformationResponse;
-import shop.nuribooks.view.order.order.dto.OrderListPeriodRequest;
-import shop.nuribooks.view.order.order.dto.OrderListResponse;
-import shop.nuribooks.view.order.order.dto.OrderTempRegisterRequest;
-import shop.nuribooks.view.order.order.dto.OrderTempRegisterResponse;
+import shop.nuribooks.view.order.order.dto.request.OrderListPeriodRequest;
+import shop.nuribooks.view.order.order.dto.request.OrderRegisterRequest;
+import shop.nuribooks.view.order.order.dto.response.OrderDetailResponse;
+import shop.nuribooks.view.order.order.dto.response.OrderInformationResponse;
+import shop.nuribooks.view.order.order.dto.response.OrderListResponse;
+import shop.nuribooks.view.order.order.dto.response.OrderRegisterResponse;
 import shop.nuribooks.view.order.order.feign.OrderServiceClient;
 
 @Service
@@ -37,12 +40,13 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public OrderTempRegisterResponse saveOrder(OrderTempRegisterRequest orderTempRegisterRequest) {
+	public OrderRegisterResponse saveOrder(OrderRegisterRequest orderTempRegisterRequest) {
 		try {
 			return orderServiceClient.saveOrder(orderTempRegisterRequest).getBody();
 		} catch (FeignException e) {
-			log.error("saveOrder - 주문 폼 불러오기 실패");
-			throw new DefaultServerError(e.status(), e.getMessage());
+			String message = ExceptionUtil.handleFeignException(e);
+			log.error("saveOrder - 주문 폼 저장 실패 - {}", message);
+			throw new ApiErrorException(e.status(), message);
 		}
 	}
 
@@ -60,6 +64,12 @@ public class OrderServiceImpl implements OrderService {
 	public Page<OrderListResponse> getOrderList(OrderListPeriodRequest orderListPeriodRequest,
 		boolean includeOrdersInPendingStatus, Pageable pageable) throws IOException {
 		return orderServiceClient.getOrderList(orderListPeriodRequest, includeOrdersInPendingStatus, pageable)
+			.getBody();
+	}
+
+	@Override
+	public OrderDetailResponse getOrderDetail(Long orderId, Pageable pageable) {
+		return orderServiceClient.getOrderDetail(orderId, pageable)
 			.getBody();
 	}
 

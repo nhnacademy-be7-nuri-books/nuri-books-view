@@ -1,14 +1,14 @@
 <!-- src/main/resources/templates/address-modal.html -->
-<div th:fragment="addressModal" class="modal fade" id="addressModal" tabindex="-1" aria-labelledby="addressModalLabel"
-     aria-hidden="true">
+<div aria-hidden="true" aria-labelledby="addressModalLabel" class="modal fade" id="addressModal" tabindex="-1"
+     th:fragment="addressModal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addressModalLabel">주소 목록</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
             </div>
             <div class="modal-body">
-                <!-- 주소 목록을 여기에 동적으로 출력할 예정 -->
+                <!-- 주소 목록 -->
                 <table class="table table-hover">
                     <thead class="table-light">
                     <tr>
@@ -22,7 +22,7 @@
                     </thead>
                     <tbody>
 
-                    <th:block th:each="address, iterStat  : ${orderInformation.addressList}">
+                    <th:block th:each="address, iterStat  : ${customerInfo.addressList}">
                         <tr>>
                             <td class="text-center" th:text="${iterStat.index + 1}"></td>
                             <td class="text-center" th:text="${address.name}"></td>
@@ -30,7 +30,7 @@
                             <td class="text-center address" th:text="${address.address}"></td>
                             <td class="text-center detail-address" th:text="${address.detailAddress}"></td>
                             <td>
-                                <button id=type="submit" class="btn btn-custom1 btn-sm select-address-btn">
+                                <button class="btn btn-custom1 btn-sm select-address-btn" id=type="submit">
                                     선택
                                 </button>
                             </td>
@@ -40,7 +40,7 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">닫기</button>
             </div>
         </div>
     </div>

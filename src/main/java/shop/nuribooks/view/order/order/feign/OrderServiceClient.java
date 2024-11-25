@@ -11,11 +11,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import shop.nuribooks.view.order.order.dto.OrderInformationResponse;
-import shop.nuribooks.view.order.order.dto.OrderListPeriodRequest;
-import shop.nuribooks.view.order.order.dto.OrderListResponse;
-import shop.nuribooks.view.order.order.dto.OrderTempRegisterRequest;
-import shop.nuribooks.view.order.order.dto.OrderTempRegisterResponse;
+import shop.nuribooks.view.common.dto.ResponseMessage;
+import shop.nuribooks.view.order.order.dto.request.OrderListPeriodRequest;
+import shop.nuribooks.view.order.order.dto.request.OrderRegisterRequest;
+import shop.nuribooks.view.order.order.dto.response.OrderDetailResponse;
+import shop.nuribooks.view.order.order.dto.response.OrderInformationResponse;
+import shop.nuribooks.view.order.order.dto.response.OrderListResponse;
+import shop.nuribooks.view.order.order.dto.response.OrderRegisterResponse;
+import shop.nuribooks.view.payment.dto.PaymentRequest;
 
 @FeignClient(name = "order", url = "http://localhost:8080")
 public interface OrderServiceClient {
@@ -28,11 +31,18 @@ public interface OrderServiceClient {
 	ResponseEntity<OrderInformationResponse> getCartOrderInformation(@PathVariable("cart-id") String cartId);
 
 	@PostMapping("/api/orders")
-	ResponseEntity<OrderTempRegisterResponse> saveOrder(@RequestBody OrderTempRegisterRequest orderTempRegisterRequest);
+	ResponseEntity<OrderRegisterResponse> saveOrder(@RequestBody OrderRegisterRequest orderTempRegisterRequest);
 
 	@GetMapping("/api/orders")
 	ResponseEntity<Page<OrderListResponse>> getOrderList(
 		@SpringQueryMap OrderListPeriodRequest orderListPeriodRequest,
 		@RequestParam boolean includeOrdersInPendingStatus,
-		@RequestParam Pageable pageable);
+		Pageable pageable);
+
+	@GetMapping("/api/orders/details/{order-id}")
+	ResponseEntity<OrderDetailResponse> getOrderDetail(@PathVariable("order-id") Long orderId,
+		Pageable pageable);
+
+	@PostMapping("/api/orders/verify")
+	ResponseEntity<ResponseMessage> verifyOrderInformation(@RequestBody PaymentRequest paymentRequest);
 }

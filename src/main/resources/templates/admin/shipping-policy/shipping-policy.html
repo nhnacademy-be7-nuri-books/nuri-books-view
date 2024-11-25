@@ -1,5 +1,5 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{admin/layout/adminlayout}">
+<html lang="en" layout:decorate="~{admin/layout/adminlayout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <body>
 <div layout:fragment="content">
     <div th:replace="~{admin/fragment/js-utils::utils}"></div>
@@ -47,12 +47,12 @@
                     </tr>
 
                     <tr th:if="${#lists.isEmpty(pages.content)}">
-                        <td colspan="5" class="text-center text-muted">등록된 배송비 정책이 없습니다.</td>
+                        <td class="text-center text-muted" colspan="5">등록된 배송비 정책이 없습니다.</td>
                     </tr>
                     </tbody>
                 </table>
             </div>
-            <div th:replace="~{fragments/page::page(url=${'/admin/shipping-policy'})}"></div>
+            <div th:replace="~{fragments/page::page}"></div>
         </div>
     </div>
 

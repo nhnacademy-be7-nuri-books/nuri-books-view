@@ -3,7 +3,6 @@ package shop.nuribooks.view.cart.controller;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +30,6 @@ import shop.nuribooks.view.cart.dto.response.CartBookResponse;
 import shop.nuribooks.view.cart.service.CartClientService;
 import shop.nuribooks.view.common.decoder.JwtDecoder;
 import shop.nuribooks.view.common.util.CookieUtil;
-import shop.nuribooks.view.order.order.dto.OrderInformationResponse;
 
 @RequiredArgsConstructor
 @Controller
@@ -46,6 +44,12 @@ public class CartController {
 	private String refreshHeaderName;
 	@Value("${success.message-key}")
 	private String successMessageKey;
+
+	private static BigDecimal getTotalPrice(List<CartBookResponse> cart) {
+		return cart.stream()
+			.map(CartBookResponse::totalPrice)
+			.reduce(BigDecimal.ZERO, BigDecimal::add);
+	}
 
 	@PostMapping("/api/cart/{book-id}")
 	public String addCart(@PathVariable("book-id") Long bookId, @RequestParam Integer quantity,
@@ -114,12 +118,6 @@ public class CartController {
 			return customerId;
 		}
 		return null;
-	}
-
-	private static BigDecimal getTotalPrice(List<CartBookResponse> cart) {
-		return cart.stream()
-			.map(CartBookResponse::totalPrice)
-			.reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
 
 }

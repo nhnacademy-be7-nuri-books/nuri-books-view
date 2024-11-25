@@ -2,8 +2,6 @@ package shop.nuribooks.view.review.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.validation.Valid;
 import shop.nuribooks.view.common.dto.PagedResponse;
 import shop.nuribooks.view.review.dto.request.ReviewRequest;
+import shop.nuribooks.view.review.dto.request.ReviewUpdateRequest;
 import shop.nuribooks.view.review.dto.response.ReviewBookResponse;
 import shop.nuribooks.view.review.dto.response.ReviewMemberResponse;
 
@@ -38,7 +37,7 @@ public interface ReviewServiceClient {
 
 	@PutMapping("/api/reviews/{reviewId}")
 	ReviewMemberResponse updateReview(
-		@Valid @RequestBody ReviewRequest reviewRequest,
+		@Valid @RequestBody ReviewUpdateRequest reviewUpdateRequest,
 		@PathVariable long reviewId
 	);
 }

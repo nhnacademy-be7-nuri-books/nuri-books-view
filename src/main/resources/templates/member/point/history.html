@@ -1,4 +1,4 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{member/layout/memberlayout}">
+<html lang="en" layout:decorate="~{member/layout/memberlayout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
 <body>
 <div layout:fragment="content">
     <script in>
@@ -20,18 +20,18 @@
                 <!-- Filter Section -->
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <div>
-                        <a href="/my-points?type=ALL" class="btn btn-outline-secondary me-2"
+                        <a class="btn btn-outline-secondary me-2" href="/my-points?type=ALL"
                            th:classappend="${type} == 'ALL' ? 'active text-white bg-primary' : ''">전체</a>
-                        <a href="/my-points?type=USED" class="btn btn-outline-secondary me-2"
+                        <a class="btn btn-outline-secondary me-2" href="/my-points?type=USED"
                            th:classappend="${type} == 'USED' ? 'active text-white bg-primary' : ''">사용</a>
-                        <a href="/my-points?type=SAVED" class="btn btn-outline-secondary"
+                        <a class="btn btn-outline-secondary" href="/my-points?type=SAVED"
                            th:classappend="${type} == 'SAVED' ? 'active text-white bg-primary' : ''">적립</a>
                     </div>
                     <div class="d-flex">
-                        <input type="hidden" id="type" name="type" th:value="${type}" class="form-control me-2" />
-                        <input type="date" id="start" name="start" th:value="${period.start}" class="form-control me-2" />
-                        <input type="date" id="end" name="end" th:value="${period.end}" class="form-control me-2" />
-                        <button type="button" class="btn btn-primary w-100" onclick="gotoURL()">
+                        <input class="form-control me-2" id="type" name="type" th:value="${type}" type="hidden" />
+                        <input class="form-control me-2" id="start" name="start" th:value="${period.start}" type="date" />
+                        <input class="form-control me-2" id="end" name="end" th:value="${period.end}" type="date" />
+                        <button class="btn btn-primary w-100" onclick="gotoURL()" type="button">
                             <i class="fas fa-check-circle me-1"></i> 적용하기
                         </button>
                     </div>
@@ -53,13 +53,13 @@
                         <td class="text-center" th:text="${point.amount.intValue()}">포인트</td>
                     </tr>
                     <tr th:if="${#lists.isEmpty(pages.content)}">
-                        <td colspan="3" class="text-center text-muted">해당 기간 내의 포인트 내역이 없습니다.</td>
+                        <td class="text-center text-muted" colspan="3">해당 기간 내의 포인트 내역이 없습니다.</td>
                     </tr>
                     </tbody>
                 </table>
 
                 <!-- Pagination -->
-                <div th:replace="fragments/page::page(url=@{'/my-points'(type=${type}, start=${period.start}, end=${period.end})})"></div>
+                <div th:replace="fragments/page::page"></div>
             </div>
         </div>
     </div>

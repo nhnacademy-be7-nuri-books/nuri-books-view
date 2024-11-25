@@ -1,19 +1,24 @@
-<div th:fragment="page(url)">
+<div th:fragment="page">
     <nav aria-label="Page navigation" class="d-flex justify-content-center mt-4">
-        <div class="pagination">
+        <div class="pagination"
+             th:with="
+                 cleanQuery=${#strings.replace(#strings.replace(currentQuery, '&page=' + pages.number, ''), 'page=' + pages.number, '')},
+                 baseUrl=${cleanQuery.isEmpty() ? currentUri : (currentUri + '?' + cleanQuery)}
+            ">
             <!-- 이전 버튼 -->
-            <a class="page-link btn btn-secondary mr-1" th:href="@{${url}(page=${pages.number - 1})}"
+            <a class="page-link btn btn-secondary mr-1" th:href="@{${baseUrl}(page=${pages.number - 1})}"
                th:if="${pages.number > 0}">&laquo; 이전</a>
 
             <!-- 페이지 번호 목록 (5개씩 표시) -->
-            <a class="page-link btn btn-light mr-1" th:each="i : ${#numbers.sequence(1, pages.totalPages)}"
-               th:if="${i > 0 && i >= pages.number - 2 && i <= pages.number + 3}"
-               th:href="@{${url}(page=${i - 1})}"
+            <a class="page-link btn btn-light mr-1"
                th:classappend="${i == pages.number + 1} ? 'active btn-primary' : ''"
+               th:each="i : ${#numbers.sequence(1, pages.totalPages)}"
+               th:href="@{${baseUrl}(page=${i - 1})}"
+               th:if="${i > 0 && i >= pages.number - 2 && i <= pages.number + 3}"
                th:text="${i}">1</a>
 
             <!-- 다음 버튼 -->
-            <a class="page-link btn btn-secondary" th:href="@{${url}(page=${pages.number + 1})}"
+            <a class="page-link btn btn-secondary" th:href="@{${baseUrl}(page=${pages.number + 1})}"
                th:if="${pages.number < pages.totalPages - 1}">다음 &raquo;</a>
         </div>
     </nav>

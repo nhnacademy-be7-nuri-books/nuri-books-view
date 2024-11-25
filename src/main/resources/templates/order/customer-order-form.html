@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/order-layout}">
+<html layout:decorate="~{layouts/order-layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <div layout:fragment="content">
     <!-- Main Content -->
     <div class="row">
@@ -7,6 +7,9 @@
             <h2>비회원 주문</h2>
         </div>
     </div>
+
+    <!-- 포장 모달 창-->
+    <div th:replace="~{order/contents/wrapping-modal :: wrappingModal}"></div>
 
     <!-- 주문서 영역 -->
     <div class="container mt-5">
@@ -19,56 +22,61 @@
                         <div class="card mb-3">
                             <h5 class="mb-0">
                                 <button
-                                        class="btn btn-link accordion-button"
-                                        type="button"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#collapseCustomerInfo"
-                                        aria-expanded="false"
                                         aria-controls="collapseCustomerInfo"
+                                        aria-expanded="true"
+                                        class="btn btn-link accordion-button"
+                                        data-bs-target="#collapseCustomerInfo"
+                                        data-bs-toggle="collapse"
+                                        type="button"
                                 >
                                     주문자 정보
                                 </button>
                             </h5>
                             <div
-                                    id="collapseCustomerInfo"
-                                    class="collapse"
                                     aria-labelledby="headingCustomerInfo"
+                                    class="collapse show"
+                                    id="collapseCustomerInfo"
                             >
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="customer-name">주문자 이름</label>
-                                        <input type="text" class="form-control" id="customer-name"
-                                               placeholder="이름을 입력하세요."
-                                               onfocus="this.placeholder = ''" onblur="this.placeholder = '이름을 입력하세요.'"
-                                               required/>
+                                        <input class="form-control" id="customer-name"
+                                               onblur="this.placeholder = '이름을 입력하세요.'"
+                                               onfocus="this.placeholder = ''"
+                                               placeholder="이름을 입력하세요." required
+                                               type="text"/>
                                     </div>
                                     <div class="form-group">
                                         <label for="customer-password">비밀번호</label>
-                                        <input type="password" class="form-control" id="customer-password"
-                                               placeholder="비밀번호를 입력하세요."
+                                        <input class="form-control" id="customer-password"
+                                               onblur="this.placeholder = '비밀번호를 입력하세요.'"
                                                onfocus="this.placeholder = ''"
-                                               onblur="this.placeholder = '비밀번호를 입력하세요.'" required/>
+                                               placeholder="비밀번호를 입력하세요."
+                                               required type="password"/>
                                     </div>
                                     <div class="form-group">
 
-                                        <input type="password" class="form-control" id="customer-repeat-password"
-                                               placeholder="비밀번호를 한번 더 입력하세요."
+                                        <input class="form-control" id="customer-repeat-password"
+                                               onblur="this.placeholder = '비밀번호를 한번 더 입력하세요.'"
                                                onfocus="this.placeholder = ''"
-                                               onblur="this.placeholder = '비밀번호를 한번 더 입력하세요.'" required/>
+                                               placeholder="비밀번호를 한번 더 입력하세요."
+                                               required type="password"/>
                                     </div>
                                     <div class="form-group">
                                         <label for="customer-phone">전화번호</label>
-                                        <input type="text" class="form-control" id="customer-phone"
-                                               placeholder="전화번호를 입력하세요."
+                                        <input class="form-control" id="customer-phone"
+                                               onblur="this.placeholder = '전화번호를 입력하세요.'"
                                                onfocus="this.placeholder = ''"
-                                               onblur="this.placeholder = '전화번호를 입력하세요.'" required/>
+                                               placeholder="전화번호를 입력하세요."
+                                               required type="text"/>
                                     </div>
                                     <div class="form-group">
                                         <label for="customer-email">이메일</label>
-                                        <input type="email" class="form-control" id="customer-email"
-                                               placeholder="이메일를 입력하세요."
-                                               onfocus="this.placeholder = ''" onblur="this.placeholder = '이메일를 입력하세요.'"
-                                               required/>
+                                        <input class="form-control" id="customer-email"
+                                               onblur="this.placeholder = '이메일를 입력하세요.'"
+                                               onfocus="this.placeholder = ''"
+                                               placeholder="이메일를 입력하세요." required
+                                               type="email"/>
                                     </div>
                                 </div>
                             </div>
@@ -80,51 +88,53 @@
                         <div class="card mb-3">
                             <h5 class="mb-0">
                                 <button
-                                        class="btn btn-link accordion-button"
-                                        type="button"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#collapseShippingInfo"
-                                        aria-expanded="false"
                                         aria-controls="collapseShippingInfo"
+                                        aria-expanded="true"
+                                        class="btn btn-link accordion-button"
+                                        data-bs-target="#collapseShippingInfo"
+                                        data-bs-toggle="collapse"
+                                        type="button"
                                 >
                                     배송지 정보
                                 </button>
                             </h5>
                             <div
-                                    id="collapseShippingInfo"
-                                    class="collapse"
                                     aria-labelledby="headingShippingInfo"
+                                    class="collapse show"
+                                    id="collapseShippingInfo"
                             >
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="shipping-address">수취자 이름</label>
-                                        <input type="text" class="form-control" id="shipping-name"
-                                               placeholder="수취자 이름를 입력하세요"/>
+                                        <input class="form-control" id="shipping-name" placeholder="수취자 이름를 입력하세요"
+                                               type="text"/>
                                     </div>
                                     <div class="form-group">
                                         <label for="shipping-address">수취자 연락처</label>
-                                        <input type="text" class="form-control" id="shipping-phone-number"
-                                               placeholder="수취자 연락처를 입력하세요"/>
+                                        <input class="form-control" id="shipping-phone-number"
+                                               placeholder="수취자 연락처를 입력하세요"
+                                               type="text"/>
                                     </div>
                                     <div class="form-group">
                                         <label for="shipping-address">수취자 주소</label>
-                                        <input type="button" class="form-control" id="Postcode"
-                                               onclick="daumPostcode()" value="도로명 주소 찾기"/>
+                                        <input class="form-control" id="Postcode" onclick="daumPostcode()"
+                                               type="button" value="도로명 주소 찾기"/>
                                     </div>
                                     <div class="form-group">
                                         <label for="shipping-address">배송지</label>
-                                        <input type="text" class="form-control" id="shipping-address"
-                                               placeholder="주소명 찾기를 이용하세요." readonly/>
+                                        <input class="form-control" id="shipping-address" placeholder="주소명 찾기를 이용하세요."
+                                               readonly type="text"/>
                                     </div>
                                     <div class="form-group">
                                         <label for="shipping-address">배송지 상세주소</label>
-                                        <input type="text" class="form-control" id="shipping-address-detail"
-                                               placeholder="배송지 상세주소를 입력하세요"/>
+                                        <input class="form-control" id="shipping-address-detail"
+                                               placeholder="배송지 상세주소를 입력하세요"
+                                               type="text"/>
                                     </div>
                                     <div class="form-group">
                                         <label for="shipping-address">우편번호</label>
-                                        <input type="text" class="form-control" id="shipping-zipcode"
-                                               placeholder="주소명 찾기를 이용하세요." readonly/>
+                                        <input class="form-control" id="shipping-zipcode" placeholder="주소명 찾기를 이용하세요."
+                                               readonly type="text"/>
                                     </div>
                                 </div>
                             </div>
@@ -132,27 +142,27 @@
                     </div>
 
                     <!-- 주문 상세 정보 -->
-                    <div th:replace="order/contents/products-info :: productsInfo"></div>
+                    <div th:replace="~{order/contents/customer-products-info :: customerProductsInfo}"></div>
 
                     <!-- 결제 UI -->
                     <div class="col-md-12">
                         <div class="card mb-3">
                             <h5 class="mb-0">
                                 <button
-                                        class="btn btn-link accordion-button"
-                                        type="button"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#collapsePayment"
-                                        aria-expanded="false"
                                         aria-controls="collapsePayment"
+                                        aria-expanded="true"
+                                        class="btn btn-link accordion-button"
+                                        data-bs-target="#collapsePayment"
+                                        data-bs-toggle="collapse"
+                                        type="button"
                                 >
                                     결제
                                 </button>
                             </h5>
                             <div
-                                    id="collapsePayment"
-                                    class="collapse"
                                     aria-labelledby="headingPayment"
+                                    class="collapse show"
+                                    id="collapsePayment"
                             >
                                 <div class="card-body">
                                     <div id="payment-method"></div> <!-- 결제 UI 영역 -->
@@ -163,7 +173,7 @@
                     </div>
 
                     <!-- 배송 날짜 예약 -->
-                    <div th:replace="order/contents/expect-order-info :: expectOrderInfo"></div>
+                    <div th:replace="~{order/contents/expect-order-info :: expectOrderInfo}"></div>
 
 
                 </div>
@@ -176,20 +186,26 @@
                     <div class="form-group">
                         <!-- 배송비 -->
                         <div class="mb-3">
-                            <label for="shipping-cost" class="font-weight-bold">배송비</label>
-                            <div id="shipping-cost" th:text="${orderInformation.shippingFee}">3000</div>
+                            <label class="font-weight-bold" for="shipping-cost">배송비</label>
+                            <div id="shipping-cost" th:text="${shippingInfo.shippingFee}">3000</div>
                         </div>
 
                         <!-- 도서 전체 금액 -->
                         <div class="mb-3">
-                            <label for="book-list-amount" class="font-weight-bold">도서 전체 금액</label>
+                            <label class="font-weight-bold" for="book-list-amount">도서 전체 금액</label>
                             <div id="book-list-amount">3000</div>
+                        </div>
+
+                        <!-- 포장비 -->
+                        <div class="mb-3">
+                            <label class="font-weight-bold" for="wrapping-amount">포장비</label>
+                            <div id="wrapping-amount">0</div>
                         </div>
 
                         <!-- 총 결제 금액 -->
                         <div class="mb-3">
-                            <label for="total-amount" class="font-weight-bold">총 결제 금액</label>
-                            <div type="text" class="form-control" id="total-amount">111</div>
+                            <label class="font-weight-bold" for="total-amount">총 결제 금액</label>
+                            <div class="form-control" id="total-amount" type="text">111</div>
                         </div>
                     </div>
 
@@ -207,12 +223,13 @@
     <th:block layout:fragment="script">
         <script th:inline="javascript">
             /*<![CDATA[*/
-            const orderDetails = /*[[${orderInformation.bookOrderResponse}]]*/ [];
-            const shippingId = /*[[${orderInformation.shippingPolicyId}]]*/ 1;
+            const orderDetails = /*[[${bookOrderInfo}]]*/ [];
+            const shippingId = /*[[${shippingInfo.id}]]*/ 1;
             /*]]>*/
         </script>
         <script src="/js/order/customerOrder.js"></script>
         <script src="/js/order/postcode.js"></script>
+        <script src="/js/order/wrappingModal.js"></script>
     </th:block>
 </div>
 </html>

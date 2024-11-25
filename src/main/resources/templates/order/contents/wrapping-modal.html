@@ -1,0 +1,78 @@
+<!-- src/main/resources/templates/address-modal.html -->
+<div aria-hidden="true" aria-labelledby="wrappingModalLabel" class="modal fade" data-bs-backdrop="static"
+     data-bs-keyboard="false"
+     id="wrappingModal" tabindex="-1" th:fragment="wrappingModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="wrappingModalLabel">포장지 선택</h5>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+            </div>
+            <div class="modal-body">
+                <!-- 포장지 선택 드롭다운 -->
+                <div class="mb-3">
+                    <label class="form-label">포장지 종류</label>
+                    <div class="dropdown">
+                        <!-- 드롭다운 버튼 -->
+                        <button aria-expanded="false" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                                id="dropdownMenuButton" type="button">
+                            포장지 선택
+                        </button>
+
+                        <!-- 커스텀 드롭다운 메뉴 -->
+                        <ul aria-labelledby="dropdownMenuButton" class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item"
+                                   onclick="handleNoWrappingSelection()">
+                                    <div class="d-flex align-items-center">
+                                        <span>적용 하지 않음</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <div th:each="paper : ${paperList}">
+                                <li>
+                                    <a class="dropdown-item" onclick="updatePackagingInfo(this)"
+                                       th:data-image-url="@{${paper.imageUrl}}"
+                                       th:data-paper-id="${paper.id}"
+                                       th:data-price="${paper.wrappingPrice}"
+                                       th:data-title="${paper.title}">
+                                        <div class="d-flex align-items-center">
+                                            <img alt="포장지 이미지" style="width: 30px; height: 30px; margin-right: 10px;"
+                                                 th:src="@{${paper.imageUrl}}">
+                                            <span th:text="${paper.title}">포장지 제목</span> -
+                                            <span th:text="${paper.wrappingPrice}">가격</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 포장 가능한 책 목록 -->
+                <div class="mb-3">
+                    <h6>포장할 책을 선택하세요</h6>
+                    <div th:each="book : ${bookOrderInfo}">
+                        <div class="form-check">
+                            <!-- 책이 포장 가능한지 여부를 `book.isPackagingPossible()`로 확인 -->
+                            <input class="form-check-input"
+                                   th:disabled="${book.isPackageable}"
+                                   th:id="'book' + ${book.bookId}"
+                                   th:name="selectedBooks"
+                                   th:value="${book.bookId}"
+                                   type="checkbox">
+                            <label class="form-check-label" th:for="'book' + ${book.bookId}">
+                                <span th:text="${book.title}"></span>
+                                <span th:text="'(' + (book.isPackageable ? '포장 가능' : '포장 불가') + ')'"/>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="confirmWrapping" onclick="confirmWrapping()" type="button">확인
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
