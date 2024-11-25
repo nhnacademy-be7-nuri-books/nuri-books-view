@@ -1,14 +1,8 @@
 <div th:fragment="update_modal">
     <script>
         const updateHandler = (url) => {
-            // url과 id로 이루어진 path로 api 요청 보냄. 다른 url 형식일 땐 수정하여야함.
-            const form = document.getElementById('update-form');
-
-            const formData = new FormData(form);
-
             fetch(url + "/" + data, {
                 method: 'PUT',
-                body: formData
             })
                 .then(response => {
                     if (!response.ok) {
@@ -23,7 +17,6 @@
                 .catch(error => {
                     showMessage(error);
                 });
-            form.reset();
             $('#update-modal').modal('hide');
         }
     </script>
@@ -33,30 +26,17 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editPolicyModalLabel">배송비 정책 수정</h5>
+                    <h5 class="modal-title" id="editPolicyModalLabel">배송 상태 변경</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="#" method="post" id="update-form">
-                        <div class="mb-3">
-                            <input type="hidden" value="update" class="form-control" id="update-name" name="name"
-                                   required placeholder="배송비 정책 이름">
-                            <label for="shippingFee" class="form-label">배송비</label>
-                            <input type="number" min="0" class="form-control" id="shippingFee" name="shippingFee"
-                                   required
-                                   placeholder="배송비를 변경합니다.">
-                            <label for="minimumOrderPrice" class="form-label">최소주문금액</label>
-                            <input type="number" min="0" class="form-control" id="minimumOrderPrice"
-                                   name="minimumOrderPrice" required
-                                   placeholder="최소주문금액을 변경합니다.">
-                        </div>
-                        <div class="text-center">
-                            <button type="button" class="btn btn-primary"
-                                    onclick="updateHandler('/admin/shipping-policy')">수정
-                            </button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
-                        </div>
-                    </form>
+                    <div class="text-center">
+                        <p>배송을 시작하시겠습니까?</p>
+                        <button type="button" class="btn btn-primary"
+                                onclick="updateHandler('/admin/shipping')">배송 시작
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    </div>
                 </div>
             </div>
         </div>
