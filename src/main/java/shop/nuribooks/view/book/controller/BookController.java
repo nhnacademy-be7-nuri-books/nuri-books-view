@@ -17,33 +17,39 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.admin.category.dto.CategoryRequest;
 import shop.nuribooks.view.admin.category.dto.CategoryResponse;
 import shop.nuribooks.view.admin.category.service.AdminCategoryService;
 import shop.nuribooks.view.book.dto.BookContributorsResponse;
 import shop.nuribooks.view.book.dto.BookResponse;
+import shop.nuribooks.view.book.dto.TopBookLikeResponse;
+import shop.nuribooks.view.book.enums.SortType;
 import shop.nuribooks.view.book.service.BookService;
+import shop.nuribooks.view.booklike.dto.LikeStatusResponse;
+import shop.nuribooks.view.booklike.service.BookLikeService;
 import shop.nuribooks.view.common.dto.PagedResponse;
 import shop.nuribooks.view.common.util.CookieUtil;
 import shop.nuribooks.view.common.util.TimeUtil;
 import shop.nuribooks.view.review.dto.response.ReviewMemberResponse;
 import shop.nuribooks.view.review.service.ReviewService;
 
+@Slf4j
 @RequiredArgsConstructor
 @Controller
 public class BookController {
 	private final BookService bookService;
 	private final ReviewService reviewService;
 	private final AdminCategoryService adminCategoryService;
+	private final BookLikeService bookLikeService;
 	private final String RECENT_VIEW_LIST_KEY = "recent_view_list";
-	private final int RECENT_VIEW_LIST_SIZE = 10;
 
 	@GetMapping("/view/books")
-	public String getBooks(@RequestParam(defaultValue = "0") int page,
-		@RequestParam(defaultValue = "10") int size,
+	public String getBooks(@PageableDefault Pageable pageable,
 		Model model) {
-		PagedResponse<BookContributorsResponse> books = bookService.getBooks(page, size);
-		model.addAttribute("books", books);
+		Page<BookContributorsResponse> books = bookService.getBooks(pageable);
+		model.addAttribute("pages", books);
+		model.addAttribute("sort_types", SortType.values());
 		model.addAttribute("isAdmin", false);
 		model.addAttribute("layout", "layouts/layout1");  // 일반 사용자 레이아웃
 		return "book/bookList";
@@ -68,6 +74,8 @@ public class BookController {
 		model.addAttribute("pages", pages);
 		model.addAttribute("type", "member");
 
+		LikeStatusResponse likeStatus = bookLikeService.getLikeStatus(bookId);
+		model.addAttribute("likeStatus", likeStatus);
 		// 쿠키에 새로운 최근 목록 업데이트. TTL = 발행일 자정까지 .
 		CookieUtil.addCookie(res, RECENT_VIEW_LIST_KEY, getRecentViewSetString(recentViewSet),
 			(int)TimeUtil.getLeftSecondOfToday());

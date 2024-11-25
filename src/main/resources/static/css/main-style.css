@@ -1,0 +1,101 @@
+/* 캐러셀 컨테이너 */
+.carousel-container {
+    position: relative;
+    max-width: 1200px;
+    margin: 40px auto;
+}
+
+.section-title {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    margin: 40px 0;
+}
+
+/* 캐러셀 아이템 내부의 도서 리스트 */
+.product-list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+    margin: 0 auto;
+    max-width: 1000px;
+}
+
+/* 도서 아이템 */
+.product-item {
+    width: 150px;
+    margin: 0 10px;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+/* 썸네일 컨테이너 */
+.thumbnail-container {
+    width: 140px;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+/* 이미지 스타일 */
+.thumbnail-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* 도서명 스타일 */
+.product-name {
+    width: 140px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #000000;
+    margin-top: 10px;
+    margin-bottom: 0;
+    text-align: center;
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.product-name:hover {
+    color: #0056b3;
+}
+
+/* 네비게이션 버튼 */
+.carousel-control-prev,
+.carousel-control-next {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 1;
+}
+
+.carousel-control-prev {
+    left: 10px;
+}
+
+.carousel-control-next {
+    right: 10px;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    filter: invert(1);
+}

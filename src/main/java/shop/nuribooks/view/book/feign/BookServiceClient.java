@@ -3,6 +3,8 @@ package shop.nuribooks.view.book.feign;
 import java.util.List;
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,13 +23,14 @@ import shop.nuribooks.view.book.dto.BookContributorsResponse;
 import shop.nuribooks.view.book.dto.BookResponse;
 import shop.nuribooks.view.book.dto.BookUpdateRequest;
 import shop.nuribooks.view.book.dto.PersonallyBookRegisterRequest;
+import shop.nuribooks.view.book.dto.TopBookLikeResponse;
 import shop.nuribooks.view.common.dto.PagedResponse;
 import shop.nuribooks.view.common.dto.ResponseMessage;
 
 @FeignClient(name = "book", url = "http://localhost:8080")
 public interface BookServiceClient {
 	@GetMapping("/api/books")
-	PagedResponse<BookContributorsResponse> getBooks(@RequestParam("page") int page, @RequestParam("size") int size);
+	Page<BookContributorsResponse> getBooks(Pageable pageable);
 
 	@GetMapping("/api/books/{book-id}")
 	BookResponse getBookById(@PathVariable(name = "book-id") Long bookId,
@@ -61,4 +64,7 @@ public interface BookServiceClient {
 
 	@GetMapping("/api/books/all")
 	List<BookResponse> getAllBooks();
+
+	@GetMapping("/api/books/top/book-like")
+	List<TopBookLikeResponse> getTopBookLike();
 }

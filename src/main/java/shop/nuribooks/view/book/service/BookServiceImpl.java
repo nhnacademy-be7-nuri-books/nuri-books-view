@@ -3,6 +3,8 @@ package shop.nuribooks.view.book.service;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,6 +15,7 @@ import shop.nuribooks.view.book.dto.BookContributorsResponse;
 import shop.nuribooks.view.book.dto.BookResponse;
 import shop.nuribooks.view.book.dto.BookUpdateRequest;
 import shop.nuribooks.view.book.dto.PersonallyBookRegisterRequest;
+import shop.nuribooks.view.book.dto.TopBookLikeResponse;
 import shop.nuribooks.view.book.feign.BookServiceClient;
 import shop.nuribooks.view.common.dto.PagedResponse;
 
@@ -22,8 +25,8 @@ public class BookServiceImpl implements BookService {
 	private final BookServiceClient bookServiceClient;
 
 	@Override
-	public PagedResponse<BookContributorsResponse> getBooks(int page, int size) {
-		return bookServiceClient.getBooks(page, size);
+	public Page<BookContributorsResponse> getBooks(Pageable pageable) {
+		return bookServiceClient.getBooks(pageable);
 	}
 
 	@Override
@@ -82,4 +85,8 @@ public class BookServiceImpl implements BookService {
 		return bookServiceClient.getAllBooks();
 	}
 
+	@Override
+	public List<TopBookLikeResponse> getTopBookLikes() {
+		return bookServiceClient.getTopBookLike();
+	}
 }

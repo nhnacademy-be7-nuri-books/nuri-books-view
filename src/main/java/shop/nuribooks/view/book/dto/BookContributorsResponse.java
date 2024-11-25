@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 public record BookContributorsResponse(
-	AdminBookListResponse bookDetails,
+	BookListResponse bookDetails,
 	Map<String, List<String>> contributorsByRole
 ) {
 }

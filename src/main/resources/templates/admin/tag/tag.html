@@ -1,5 +1,5 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{admin/layout/adminlayout}">
+<html lang="en" layout:decorate="~{admin/layout/adminlayout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <body>
 
 <div layout:fragment="content">
@@ -38,12 +38,12 @@
                         </td>
                     </tr>
                     <tr th:if="${#lists.isEmpty(pages.content)}">
-                        <td colspan="3" class="text-center text-muted">등록된 태그가 없습니다.</td>
+                        <td class="text-center text-muted" colspan="3">등록된 태그가 없습니다.</td>
                     </tr>
                     </tbody>
                 </table>
             </div>
-            <div th:replace="~{fragments/page::page(url=${'/admin/tag'})}"></div>
+            <div th:replace="~{fragments/page::page}"></div>
 
         </div>
     </div>

@@ -3,6 +3,8 @@ package shop.nuribooks.view.book.service;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import shop.nuribooks.view.admin.category.dto.CategoryResponse;
@@ -11,10 +13,11 @@ import shop.nuribooks.view.book.dto.BookContributorsResponse;
 import shop.nuribooks.view.book.dto.BookResponse;
 import shop.nuribooks.view.book.dto.BookUpdateRequest;
 import shop.nuribooks.view.book.dto.PersonallyBookRegisterRequest;
+import shop.nuribooks.view.book.dto.TopBookLikeResponse;
 import shop.nuribooks.view.common.dto.PagedResponse;
 
 public interface BookService {
-	PagedResponse<BookContributorsResponse> getBooks(int page, int size);
+	Page<BookContributorsResponse> getBooks(Pageable pageable);
 
 	BookResponse getBookById(Long bookId);
 	
@@ -35,4 +38,6 @@ public interface BookService {
 	String uploadImage(MultipartFile file);
 
 	List<BookResponse> getAllBooks();
+  
+	List<TopBookLikeResponse> getTopBookLikes();
 }
