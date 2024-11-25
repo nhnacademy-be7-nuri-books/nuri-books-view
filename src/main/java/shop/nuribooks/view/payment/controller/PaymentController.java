@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -91,8 +89,23 @@ public class PaymentController {
 		paymentInformation.put("amount", amount);
 		paymentInformation.put("paymentKey", paymentKey);
 
-		// todo : 주문된 정보의 가격 변조 확인
-		PaymentRequest paymentRequest = new ObjectMapper().readValue(jsonBody, PaymentRequest.class);
+		PaymentRequest paymentRequest = new PaymentRequest(
+			String.valueOf(paymentInformation.get("orderId")),
+			String.valueOf(paymentInformation.get("amount")),
+			String.valueOf(paymentInformation.get("paymentKey"))
+		);
+
+		// 주문된 정보의 가격 변조 확인
+		ResponseMessage verifyMessage = paymentService.verifyOrderInformation(paymentRequest);
+		if (verifyMessage.statusCode() != 200) {
+			log.error("결제 금액 검증 실패로 결제 실패");
+
+			JSONObject jsonResponse = new JSONObject();
+			jsonResponse.put("statusCode", verifyMessage.statusCode());
+			jsonResponse.put("message", verifyMessage.message());
+
+			return ResponseEntity.status(verifyMessage.statusCode()).body(jsonResponse);
+		}
 
 		String widgetSecretKey = "test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6";
 

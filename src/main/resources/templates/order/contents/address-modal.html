@@ -22,7 +22,7 @@
                     </thead>
                     <tbody>
 
-                    <th:block th:each="address, iterStat  : ${orderInformation.addressList}">
+                    <th:block th:each="address, iterStat  : ${customerInfo.addressList}">
                         <tr>>
                             <td class="text-center" th:text="${iterStat.index + 1}"></td>
                             <td class="text-center" th:text="${address.name}"></td>
