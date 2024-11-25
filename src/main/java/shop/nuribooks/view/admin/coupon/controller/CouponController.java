@@ -1,5 +1,7 @@
 package shop.nuribooks.view.admin.coupon.controller;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import shop.nuribooks.view.admin.category.dto.CategoryResponse;
+import shop.nuribooks.view.admin.category.service.AdminCategoryService;
 import shop.nuribooks.view.admin.coupon.dto.CouponRequest;
 import shop.nuribooks.view.admin.coupon.dto.CouponResponse;
 import shop.nuribooks.view.admin.coupon.enums.CouponType;
@@ -30,6 +34,7 @@ import shop.nuribooks.view.common.dto.ResponseMessage;
 @RequestMapping("/admin/coupon")
 public class CouponController {
 	private final CouponService couponService;
+	private final AdminCategoryService adminCategoryService;
 
 	@GetMapping
 	public String getCoupons(Model model, @PageableDefault Pageable pageable,
@@ -61,4 +66,20 @@ public class CouponController {
 		ResponseMessage message = this.couponService.expireCoupon(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(message);
 	}
+
+	@PostMapping("/category")
+	public ResponseEntity<ResponseMessage> registerCategoryCoupon(
+		@Valid @ModelAttribute CouponRequest couponRequest
+	) {
+		ResponseMessage message = this.couponService.registerCategoryCoupon(couponRequest);
+		return ResponseEntity.status(HttpStatus.CREATED).body(message);
+	}
+
+	@GetMapping("/categories")
+	public String getAllCategories(Model model) {
+		List<CategoryResponse> categoryList = adminCategoryService.getAllCategories();
+		model.addAttribute("categories", categoryList);
+		return "admin/coupon/modal/category_modal";
+	}
+
 }

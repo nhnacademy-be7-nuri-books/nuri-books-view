@@ -16,4 +16,6 @@ public interface CouponService {
 	ResponseMessage updateCoupon(Long id, CouponRequest couponRequest);
 
 	ResponseMessage expireCoupon(Long id);
+
+	ResponseMessage registerCategoryCoupon(CouponRequest couponRequest);
 }

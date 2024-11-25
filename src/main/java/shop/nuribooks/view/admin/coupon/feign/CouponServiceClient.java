@@ -31,4 +31,7 @@ public interface CouponServiceClient {
 
 	@PutMapping("/api/coupons/{coupon-id}/expire")
 	ResponseEntity<ResponseMessage> expireCoupon(@PathVariable("coupon-id") Long id);
+
+	@PostMapping("/api/coupons/category")
+	ResponseEntity<ResponseMessage> registerCategoryCoupon(@Valid @RequestBody CouponRequest couponRequest);
 }

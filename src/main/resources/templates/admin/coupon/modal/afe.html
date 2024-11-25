@@ -1,10 +1,15 @@
 <div th:fragment="register_modal">
     <script>
-        const submitHandler = (url) => {
+        const submitHandler = () => {
             const form = document.getElementById('register_form');
+            const couponType = document.getElementById('couponType').value;
 
             const formData = new FormData(form);
+            let url = '/admin/coupon';
 
+            if (couponType === 'BOOK') {
+                url = '/admin/coupon/book';
+            }
             fetch(url, {
                 method: 'POST',
                 body: formData
@@ -30,40 +35,13 @@
             const policyType = document.getElementById("policyType").value;
             const amountInput = document.getElementById("discount");
 
-            if (policyType === 'RATED') {
+            if (policyType === 'RATED') { // Adjust according to actual value for Type 1
                 amountInput.setAttribute("max", "100");
                 amountInput.value = 0;
             } else {
                 amountInput.removeAttribute("max");
                 amountInput.value = 0;
             }
-        }
-
-        function handleCouponTypeChange() {
-            const couponType = document.getElementById("couponType").value;
-            const categoryField = document.getElementById("categoryField");
-            const bookField = document.getElementById("bookField");
-
-            // 쿠폰 유형에 따라 표시할 필드를 조정합니다.
-            if (couponType === 'ALL') {
-                categoryField.style.display = 'none';
-                bookField.style.display = 'none';
-            } else if (couponType === 'CATEGORY') {
-                categoryField.style.display = 'block';
-                bookField.style.display = 'none';
-            } else if (couponType === 'BOOK') {
-                categoryField.style.display = 'none';
-                bookField.style.display = 'block';
-            }
-        }
-
-        function openCategoryPopup() {
-            // 팝업 창을 열기 위한 URL과 설정 지정
-            const popupUrl = '/category/select'; // 카테고리 선택 페이지 URL로 변경해 주세요
-            const popupOptions = 'width=600,height=400,top=100,left=100,resizable=yes,scrollbars=yes';
-
-            // 팝업 창 열기
-            window.open(popupUrl, 'categoryPopup', popupOptions);
         }
 
     </script>
@@ -94,33 +72,18 @@
                                        type="text">
 
                                 <label class="form-label" for="couponType">쿠폰 유형</label>
-                                <select class="form-select" id="couponType" name="couponType"
-                                        onchange="handleCouponTypeChange()">
+                                <select class="form-select" id="couponType" name="couponType">
                                     <option th:each="couponType : ${couponTypes}" th:text="${couponType.toKorName()}"
                                             th:value="${couponType}"></option>
                                 </select>
 
-                                <!-- 카테고리 관련 입력 필드 -->
-                                <div id="categoryField" style="display: none;">
-                                    <label class="form-label" for="categoryId">카테고리 선택</label>
-                                    <div class="input-group">
-                                        <input class="form-control" id="categoryId" name="categoryId" readonly
-                                               type="text">
-                                        <button class="btn btn-outline-secondary" onclick="openCategoryPopup()"
-                                                type="button">카테고리 선택
-                                        </button>
-                                    </div>
-                                </div>
-
-
-                                <!-- 책 관련 입력 필드 -->
-                                <div id="bookField" style="display: none;">
-                                    <label class="form-label" for="bookId">책 선택</label>
-                                    <select class="form-select" id="bookId" name="bookId">
-                                        <option th:each="book : ${books}" th:text="${book.title}"
-                                                th:value="${book.id}"></option>
-                                    </select>
-                                </div>
+                                <label class="form-label" for="bookId">도서 리스트</label>
+                                <select class="form-select" id="bookId" name="bookId">
+                                    <option disabled selected value="">-- 도서 선택 --</option>
+                                    <th:block th:each="book : ${books}">
+                                        <option th:text="${book.title}" th:value="${book.id}"></option>
+                                    </th:block>
+                                </select>
 
                                 <label class="form-label" for="policyType">정책 유형</label>
                                 <select class="form-select" id="policyType" name="policyType" onchange="setMaxAmount()">
@@ -130,8 +93,18 @@
 
                                 <label class="form-label" for="discount">할인 할당량</label>
                                 <input class="form-control" id="discount" min="0" name="discount" placeholder="할인 할당량"
-                                       required type="number">
+                                       required
+                                       type="number">
+                                <script>
+                                    document.getElementById('discount').addEventListener('input', function () {
+                                        const maxAmount = this.getAttribute('max');
+                                        console.log(this.value)
+                                        if (maxAmount && this.value > Number(maxAmount)) {
+                                            this.value = maxAmount;
+                                        }
+                                    });
 
+                                </script>
                                 <label class="form-label" for="minimumOrderPrice">최소 주문 금액</label>
                                 <input class="form-control" id="minimumOrderPrice" min="0" name="minimumOrderPrice"
                                        placeholder="최소 주문 금액" required type="number">
@@ -161,7 +134,7 @@
                                 </select>
                             </div>
                             <div class="text-center">
-                                <button class="btn btn-primary" onclick="submitHandler('/admin/coupon')" type="button">
+                                <button class="btn btn-primary" onclick="submitHandler()" type="button">
                                     등록
                                 </button>
                                 <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">아니오</button>

@@ -21,6 +21,16 @@
                        th:classappend="${type} == 'CATEGORY' ? 'active text-white bg-primary' : ''">카테고리</a>
                 </div>
                 <div id="register-modal" th:replace="~{admin/coupon/modal/register_modal::register_modal}"></div>
+
+                <!-- 카테고리 쿠폰 등록 버튼 -->
+                <div class="text-end mb-3">
+                    <button class="btn btn-primary" id="openCategoryCouponModal"
+                            onclick="openModal('register-category-coupon-modal')">
+                        <i class="fas fa-plus-circle me-2"></i> 카테고리 쿠폰 등록
+                    </button>
+                </div>
+
+
                 <!-- 쿠폰 정책 목록 테이블 -->
                 <table class="table table-hover" id="data-table">
 
