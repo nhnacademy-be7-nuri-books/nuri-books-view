@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import shop.nuribooks.view.admin.coupon.dto.BookCouponRequest;
 import shop.nuribooks.view.admin.coupon.dto.CouponRequest;
 import shop.nuribooks.view.admin.coupon.dto.CouponResponse;
 import shop.nuribooks.view.admin.coupon.enums.CouponType;
@@ -24,6 +25,11 @@ public class CouponServiceImpl implements CouponService {
 	@Override
 	public ResponseMessage registerCoupon(CouponRequest couponRequest) {
 		return this.couponServiceClient.registerCoupon(couponRequest).getBody();
+	}
+
+	@Override
+	public ResponseMessage registerBookCoupon(BookCouponRequest bookCouponRequest) {
+		return this.couponServiceClient.registerBookCoupon(bookCouponRequest).getBody();
 	}
 
 	@Override

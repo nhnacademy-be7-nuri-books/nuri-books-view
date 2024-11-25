@@ -51,7 +51,7 @@ public interface BookServiceClient {
 	@GetMapping("/api/books/category/{category-id}")
 	PagedResponse<BookContributorsResponse> getBooksByCategoryId(@PathVariable(name = "category-id") Long categoryId,
 		@RequestParam("page") int page, @RequestParam("size") int size);
-	
+
 	@PutMapping("/api/books/{book-id}")
 	ResponseEntity<ResponseMessage> updateBook(@PathVariable(name = "book-id") Long bookId,
 		@Valid @RequestBody BookUpdateRequest bookUpdateRequest);
@@ -60,7 +60,10 @@ public interface BookServiceClient {
 	Void deleteBook(@PathVariable(name = "book-id") Long bookId);
 
 	@PostMapping(value = "/api/books/uploadImage", consumes = "multipart/form-data")
-	String uploadImage(@RequestPart("file")MultipartFile file);
+	String uploadImage(@RequestPart("file") MultipartFile file);
+
+	@GetMapping("/api/books/all")
+	List<BookResponse> getAllBooks();
 
 	@GetMapping("/api/books/top/book-like")
 	List<TopBookLikeResponse> getTopBookLike();
