@@ -1,0 +1,97 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout/adminlayout}">
+<body>
+<div layout:fragment="content">
+    <div th:replace="~{admin/fragment/js-utils::utils}"></div>
+    <!-- admin/shipping/shippingDetail.html -->
+    <div class="container">
+        <h2>배송 상세 정보</h2>
+        <div class="card">
+            <div class="card-header">
+                배송 ID: <span th:text="${shipping.id}">ID</span>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <th>주문번호</th>
+                        <td><input type="text" class="form-control"
+                                   th:value="${shipping.orderId != null ? shipping.orderId : 'N/A'}" readonly></td>
+                    </tr>
+                    <tr>
+                        <th>송장번호</th>
+                        <td><input type="text" class="form-control"
+                                   th:value="${shipping.orderInvoiceNumber != null ? shipping.orderInvoiceNumber : 'N/A'}"
+                                   readonly></td>
+                    </tr>
+                    <tr>
+                        <th>배송비</th>
+                        <td><input type="text" class="form-control"
+                                   th:value="${shipping.shippingPolicy.shippingFee != null ? shipping.shippingPolicy.shippingFee : 'N/A'}"
+                                   readonly></td>
+                    </tr>
+                    <tr>
+                        <th>수령인 이름</th>
+                        <td><input type="text" class="form-control"
+                                   th:value="${shipping.recipientName != null ? shipping.recipientName : 'N/A'}"
+                                   readonly></td>
+                    </tr>
+                    <tr>
+                        <th>수령인 주소</th>
+                        <td><input type="text" class="form-control"
+                                   th:value="${shipping.recipientAddress != null ? shipping.recipientAddress : 'N/A'}"
+                                   readonly></td>
+                    </tr>
+                    <tr>
+                        <th>수령인 상세 주소</th>
+                        <td><input type="text" class="form-control"
+                                   th:value="${shipping.recipientAddressDetail != null ? shipping.recipientAddressDetail : 'N/A'}"
+                                   readonly></td>
+                    </tr>
+                    <tr>
+                        <th>수령인 우편번호</th>
+                        <td><input type="text" class="form-control"
+                                   th:value="${shipping.recipientZipcode != null ? shipping.recipientZipcode : 'N/A'}"
+                                   readonly></td>
+                    </tr>
+                    <tr>
+                        <th>수령인 전화번호</th>
+                        <td><input type="text" class="form-control"
+                                   th:value="${shipping.recipientPhoneNumber != null ? shipping.recipientPhoneNumber : 'N/A'}"
+                                   readonly></td>
+                    </tr>
+                    <tr>
+                        <th>발송인 이름</th>
+                        <td><input type="text" class="form-control"
+                                   th:value="${shipping.senderName != null ? shipping.senderName : 'N/A'}" readonly>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>발송인 전화번호</th>
+                        <td><input type="text" class="form-control"
+                                   th:value="${shipping.senderPhoneNumber != null ? shipping.senderPhoneNumber : 'N/A'}"
+                                   readonly></td>
+                    </tr>
+                    <tr>
+                        <th>배송 시작 날짜</th>
+                        <td><input type="text" class="form-control"
+                                   th:value="${shipping.shippingAt != null ? shipping.shippingAt : 'N/A'}" readonly>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>배송 완료 날짜</th>
+                        <td><input type="text" class="form-control"
+                                   th:value="${shipping.shippingCompletedAt != null ? shipping.shippingCompletedAt : 'N/A'}"
+                                   readonly></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <a href="/admin/shipping" class="btn btn-primary mt-3">목록으로 돌아가기</a>
+    </div>
+</div>
+
+</body>
+</html>
