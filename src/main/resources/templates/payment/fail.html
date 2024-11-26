@@ -1,24 +1,25 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/order-layout}">
+<html layout:decorate="~{layouts/order-layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <div layout:fragment="content">
-    <div id="info" class="box_section" style="width: 600px">
-        <img width="100px" src="https://static.toss.im/lotties/error-spot-no-loop-space-apng.png"/>
-        <h2>결제를 실패했어요</h2>
-
-        <div class="p-grid typography--p" style="margin-top: 50px">
-            <div class="p-grid-col text--left"><b>에러메시지</b></div>
-            <div class="p-grid-col text--right" id="message"></div>
+    <div id="info">
+        <div class="d-flex justify-content-center align-items-center" style="margin-top: 50px">
+            <img src="https://static.toss.im/lotties/error-spot-no-loop-space-apng.png" width="100px"/>
+            <h2>결제를 실패했어요</h2>
         </div>
-        <div class="p-grid typography--p" style="margin-top: 10px">
-            <div class="p-grid-col text--left"><b>에러코드</b></div>
-            <div class="p-grid-col text--right" id="code"></div>
+        <div class="d-flex flex-column justify-content-center align-items-center px-3" style="margin-top: 10px">
+            <div class="p-grid-col text--left"><b>에러메시지 : </b>
+                <span class="p-grid-col text--right" id="message"></span>
+            </div>
         </div>
-        <div class="p-grid">
+        <div class="d-flex flex-column justify-content-center align-items-center px-3" style="margin-top: 10px">
+            <div class="p-grid-col text--left"><b>에러코드</b>
+                <span class="p-grid-col text--right" id="code"></span>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-3">
             <button class="button p-grid-col5"
-                    onclick="location.href='https://docs.tosspayments.com/guides/v2/payment-widget/integration';">연동 문서
-            </button>
-            <button class="button p-grid-col5" onclick="location.href='https://discord.gg/A4fRFXQhRu';"
-                    style="background-color: #e8f3ff; color: #1b64da">실시간 문의
+                    th:onclick="|location.href='@{/view/books}'|">
+                도서 목록으로
             </button>
         </div>
     </div>

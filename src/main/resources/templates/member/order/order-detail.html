@@ -62,17 +62,21 @@
 
             <div class="row mb-3 border-bottom pb-4">
                 <div class="col-md-3 d-flex justify-content-center"><span class="fw-bold">받는 분</span></div>
-                <div class="col-md-9"><span>홍길동</span></div>
+                <div class="col-md-9"><span th:text="${shipping.recipientName}">홍길동</span></div>
             </div>
 
             <div class="row mb-3 border-bottom pb-4">
                 <div class="col-md-3 d-flex justify-content-center"><span class="fw-bold">연락처</span></div>
-                <div class="col-md-9"><span>010-1234-5678</span></div>
+                <div class="col-md-9"><span th:text="${shipping.recipientPhoneNumber}">010-1234-5678</span></div>
             </div>
 
             <div class="row mb-3">
                 <div class="col-md-3 d-flex justify-content-center"><span class="fw-bold">주소</span></div>
-                <div class="col-md-9"><span>서울특별시 강남구 테헤란로 123</span></div>
+                <div class="col-md-9">
+                    <span th:text="'(' +${shipping.recipientZipcode} + ') '">12223</span>
+                    <span th:text="${shipping.recipientAddress} + ' '">서울특별시 강남구 테헤란로 123</span>
+                    <span th:text="${shipping.recipientAddressDetail}">1층</span>
+                </div>
             </div>
         </div>
 
@@ -84,30 +88,35 @@
             <div class="row mb-3 py-2" style="border-bottom: 1px solid #dee2e6;">
                 <div class="col px-3 py-2" style="border-right: 1px solid #dee2e6;">
                     <div class="d-flex justify-content-between">
-                        <span class="fw-bold ">주문 금액</span>
-                        <span class="fw-bold text-primary">000원</span>
+                        <span class="fw-bold">주문 금액</span>
+                        <span class="fw-bold text-primary"
+                              th:text="${payment.totalPrice != null ? payment.totalPrice : 0} + '원'">000원</span>
                     </div>
                     <div class="d-flex justify-content-between">
                         <span class="text-muted small">총 상품 금액</span>
-                        <span class="text-muted small">000원</span>
+                        <span class="text-muted small"
+                              th:text="${middlePayment} + '원'">000원</span>
                     </div>
                     <div class="d-flex justify-content-between">
                         <span class="text-muted small">배송비</span>
-                        <span class="text-muted small">000원</span>
+                        <span class="text-muted small"
+                              th:text="${payment.shippingPrice != null ? payment.shippingPrice : 0} + '원'">000원</span>
                     </div>
                 </div>
 
                 <div class="col px-3 py-2 " style="border-right: 1px solid #dee2e6;">
                     <div class="d-flex justify-content-between">
                         <span class="fw-bold ">쿠폰 금액</span>
-                        <span class="fw-bold text-primary">000원</span>
+                        <span class="fw-bold text-primary"
+                              th:text="${payment.orderCouponPrice != null ? payment.orderCouponPrice : 0} + '원'">000원</span>
                     </div>
                 </div>
 
                 <div class="col px-3 py-2">
                     <div class="d-flex justify-content-between">
                         <span class="fw-bold ">포인트 금액</span>
-                        <span class="fw-bold text-primary">000원</span>
+                        <span class="fw-bold text-primary"
+                              th:text="${payment.usingPoint != null ? payment.usingPoint : 0} + '원'">000원</span>
                     </div>
                 </div>
             </div>
@@ -119,19 +128,26 @@
                 <div class="col-4 justify-content-between px-3 py-2">
                     <div>
                         <span class="fw-bold">총 합계</span>
-                        <span class="fw-bold text-primary">0000원</span>
+                        <span class="fw-bold text-primary"
+                              th:text="${payment.totalPrice != null ? payment.totalPrice : 0} + '원'">0000원</span>
                     </div>
                     <div>
                         <span class="text-muted small">적립금</span>
-                        <span class="text-muted text-primary small">000원</span>
+                        <span class="text-muted text-primary small"
+                              th:text="${payment.savingPoint != null ? payment.savingPoint : 0} + '원'">000원</span>
                     </div>
                 </div>
             </div>
 
-            <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
-                    th:onclick="'openModal(\'register-modal\', '+ ${orderId} +')'">
-                <i class="fas fa-edit me-2"></i>반품 요청
-            </button>
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
+                        th:onclick="'openModal(\'register-modal\', '+ ${orderId} +')'">
+                    <i class="fas fa-edit me-2"></i>반품 요청
+                </button>
+                <a class="btn btn-outline-secondary btn-sm" th:href="@{/orders/refunds/{order-id}(order-id=${orderId})}">
+                    <i class="fas fa-edit me-2"></i>환불
+                </a>
+            </div>
 
         </div>
 
@@ -139,7 +155,6 @@
             <a class="btn btn-secondary btn-lg" th:href="@{/orders/list}">목록으로</a>
         </div>
 
-        <div th:replace="~{member/order/returnrequest/register_modal::register_modal}"></div>
 
     </div>
 </div>

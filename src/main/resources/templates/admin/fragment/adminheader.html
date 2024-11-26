@@ -25,24 +25,24 @@
                 <!-- User & Cart Section -->
                 <div class="col-lg-auto d-flex justify-content-between align-items-center">
                     <div th:if="${isLoggedIn == null or isLoggedIn == false}">
-                        <a th:href="@{/api/cart}" class="header-item">
-                            <i class="fas fa-shopping-bag me-2"></i><span id="header-qty1"
-                                                                          class="me-3 font-weight-bold">2</span>
+                        <a class="header-item" th:href="@{/api/cart}">
+                            <i class="fas fa-shopping-bag me-2"></i><span class="me-3 font-weight-bold"
+                                                                          id="header-qty1">2</span>
                         </a>
-                        <a th:href="@{/login}" class="header-item">
+                        <a class="header-item" th:href="@{/login}">
                             <span class="font-weight-normal">로그인</span>
                         </a>
-                        <a th:href="@{/sign-up}" class="header-item">
+                        <a class="header-item" th:href="@{/sign-up}">
                             <span class="font-weight-normal">회원가입</span>
                         </a>
                     </div>
                     <div th:if="${isLoggedIn}">
-                        <a th:href="@{/api/cart}" class="header-item">
-                            <i class="fas fa-shopping-bag me-2"></i><span id="header-qty2" class="me-3">2</span>
+                        <a class="header-item" th:href="@{/api/cart}">
+                            <i class="fas fa-shopping-bag me-2"></i>
                         </a>
-                        <form th:action="@{/logout}" method="post" style="display:inline;">
-                            <button type="submit" class="header-item"
-                                    style="border: none; background: none; padding: 0;">
+                        <form method="post" style="display:inline;" th:action="@{/logout}">
+                            <button class="header-item" style="border: none; background: none; padding: 0;"
+                                    type="submit">
                                 <span class="font-weight-normal">로그아웃</span>
                             </button>
                         </form>

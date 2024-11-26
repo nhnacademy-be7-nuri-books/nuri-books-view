@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.validation.Valid;
 import shop.nuribooks.view.admin.coupon.dto.BookCouponRequest;
+import shop.nuribooks.view.admin.coupon.dto.CategoryCouponRequest;
 import shop.nuribooks.view.admin.coupon.dto.CouponRequest;
 import shop.nuribooks.view.admin.coupon.dto.CouponResponse;
 import shop.nuribooks.view.admin.coupon.enums.CouponType;
@@ -35,4 +36,7 @@ public interface CouponServiceClient {
 
 	@PutMapping("/api/coupons/{coupon-id}/expire")
 	ResponseEntity<ResponseMessage> expireCoupon(@PathVariable("coupon-id") Long id);
+
+	@PostMapping("/api/coupons/category-coupons")
+	ResponseEntity<ResponseMessage> registerCategoryCoupon(@Valid @RequestBody CategoryCouponRequest couponRequest);
 }
