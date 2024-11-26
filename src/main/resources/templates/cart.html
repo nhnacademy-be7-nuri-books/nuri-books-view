@@ -57,8 +57,8 @@
                             <span th:text="${cartBookResponse != null ? cartBookResponse.title : 'No Title'}"></span>
                         </td>
                         <td>
-                                                    <span th:text="${cartBookResponse != null && cartBookResponse.price != null
-                                                    ? cartBookResponse.price + '원' : '가격 정보 없음'}"></span>
+                            <span th:if="${cartBookResponse.price != null}"
+                                  th:text=" ${#numbers.formatInteger(cartBookResponse.price, 1, 'COMMA') + '원'}"></span>
                         </td>
                         <td>
                             <form method="post" th:action="@{/api/cart/updateQuantity}">
@@ -76,12 +76,12 @@
                             <span th:text="${cartBookResponse != null ? cartBookResponse.discountRate + '%': 'No Title'}"></span>
                         </td>
                         <td>
-                                                    <span th:text="${cartBookResponse != null && cartBookResponse.salePrice != null
-                                                    ? cartBookResponse.salePrice + '원' : '가격 정보 없음'}"></span>
+                               <span th:if="${cartBookResponse.price != null}"
+                                     th:text=" ${#numbers.formatInteger(cartBookResponse.salePrice, 1, 'COMMA') + '원'}"></span>
                         </td>
                         <td>
-                                                   <span th:attr="data-total-price=${cartBookResponse.totalPrice != null ? cartBookResponse.totalPrice : 0}"
-                                                         th:text="${cartBookResponse != null && cartBookResponse.totalPrice != null ? cartBookResponse.totalPrice + '원' : '가격 정보 없음'}"></span>
+                                 <span th:if="${cartBookResponse.price != null}"
+                                       th:text=" ${#numbers.formatInteger(cartBookResponse.totalPrice, 1, 'COMMA') + '원'}"></span>
                         </td>
                         <td>
                             <button onclick="deleteBookFromCart(this)"
@@ -98,8 +98,9 @@
                         <th></th>
                         <th></th>
                         <th>
-                                                      <span th:id="cart-total-price" th:text="${totalPrice != null && totalPrice != null
-                                                        ? totalPrice + '원' : '가격 정보 없음'}"></span>
+                              <span th:id="cart-total-price" th:if="${totalPrice != null}"
+                                    th:text=" ${#numbers.formatInteger(totalPrice, 1, 'COMMA') + '원'}"></span>
+
                         </th>
                     </tr>
                     </tfoot>
