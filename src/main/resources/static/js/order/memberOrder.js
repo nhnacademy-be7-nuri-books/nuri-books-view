@@ -132,6 +132,7 @@ async function main() {
         if (!valid) {
             errorToastElement.style.display = "block";
             errorToast.show();
+            isPaymentInProgress = false;
             return;
         }
 
