@@ -18,8 +18,7 @@
                 <div class="col-lg-auto d-flex justify-content-end align-items-center">
                     <div th:if="${isLoggedIn == null or isLoggedIn == false}">
                         <a class="header-item" th:href="@{/api/cart}">
-                            <i class="fas fa-shopping-bag me-2"></i><span class="me-3 font-weight-bold"
-                                                                          id="header-qty1">2</span>
+                            <i class="fas fa-shopping-bag me-2"></i>
                         </a>
                         <a class="header-item" th:href="@{/login}">
                             <span class="font-weight-normal">로그인</span>
