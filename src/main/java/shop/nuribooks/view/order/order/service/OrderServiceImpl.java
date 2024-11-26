@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.common.util.ExceptionUtil;
 import shop.nuribooks.view.exception.ApiErrorException;
 import shop.nuribooks.view.exception.DefaultServerError;
+import shop.nuribooks.view.order.order.dto.OrderCancelDto;
 import shop.nuribooks.view.order.order.dto.request.OrderListPeriodRequest;
 import shop.nuribooks.view.order.order.dto.request.OrderRegisterRequest;
 import shop.nuribooks.view.order.order.dto.response.OrderDetailResponse;
@@ -77,6 +78,12 @@ public class OrderServiceImpl implements OrderService {
 	public Page<OrderListResponse> getCancelledOrderList(OrderListPeriodRequest orderListPeriodRequest,
 		Pageable pageable) {
 		return orderServiceClient.getCancelledOrderList(orderListPeriodRequest, pageable)
+			.getBody();
+	}
+
+	@Override
+	public OrderCancelDto getOrderCancel(Long orderId) {
+		return orderServiceClient.getOrderCancel(orderId)
 			.getBody();
 	}
 

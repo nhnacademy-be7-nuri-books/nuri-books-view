@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -23,6 +24,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import shop.nuribooks.view.common.decoder.JwtDecoder;
 import shop.nuribooks.view.common.util.CookieUtil;
+import shop.nuribooks.view.order.order.dto.OrderCancelDto;
 import shop.nuribooks.view.order.order.dto.request.OrderListPeriodRequest;
 import shop.nuribooks.view.order.order.dto.response.OrderDetailResponse;
 import shop.nuribooks.view.order.order.dto.response.OrderInformationResponse;
@@ -171,7 +173,7 @@ public class OrderController {
 	 * @return resource path
 	 * @throws IOException IO 예외
 	 */
-	@GetMapping("/Cancelled-list")
+	@GetMapping("/cancelled-list")
 	public String getCancelledOrderList(Model model, OrderListPeriodRequest orderListPeriodRequest,
 		@RequestParam(required = false, defaultValue = "0") int page,
 		@RequestParam(required = false, defaultValue = "5") int size) throws IOException {
@@ -218,6 +220,36 @@ public class OrderController {
 		model.addAttribute("isCancelled", isCancelled);
 
 		return "member/order/order-detail";
+	}
+
+	/**
+	 * 주문 취소 폼 불러오기
+	 *
+	 * @param orderId 주문 아이디
+	 * @return 주문 상세 resource path
+	 */
+	@GetMapping("/cancel/{order-id}")
+	public String getOrderCancel(@PathVariable("order-id") Long orderId, Model model) {
+
+		OrderCancelDto orderCancelDto = orderService.getOrderCancel(orderId);
+
+		model.addAttribute("paymentPrice", orderCancelDto.paymentPrice());
+		model.addAttribute("bookAppliedCouponList", orderCancelDto.bookAppliedCouponList());
+		model.addAttribute("usingPoint", orderCancelDto.usingPoint());
+
+		return "member/order/cancel/cancel";
+	}
+
+	/**
+	 * 주문 취소 폼 불러오기
+	 *
+	 * @param orderId 주문 아이디
+	 * @return 주문 상세 resource path
+	 */
+	@PostMapping("/cancel/{order-id}")
+	public String doOrderCancel(@PathVariable("order-id") Long orderId) {
+
+		return "redirect:orders/cancelled-list";
 	}
 
 }

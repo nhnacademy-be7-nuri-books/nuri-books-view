@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import shop.nuribooks.view.order.order.dto.OrderCancelDto;
 import shop.nuribooks.view.order.order.dto.request.OrderListPeriodRequest;
 import shop.nuribooks.view.order.order.dto.request.OrderRegisterRequest;
 import shop.nuribooks.view.order.order.dto.response.OrderDetailResponse;
@@ -26,4 +27,6 @@ public interface OrderService {
 	OrderDetailResponse getOrderDetail(Long orderId, Pageable pageable);
 
 	Page<OrderListResponse> getCancelledOrderList(OrderListPeriodRequest orderListPeriodRequest, Pageable pageable);
+
+	OrderCancelDto getOrderCancel(Long orderId);
 }
