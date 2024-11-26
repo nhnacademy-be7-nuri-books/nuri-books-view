@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import shop.nuribooks.view.auth.dto.request.LoginRequest;
+import shop.nuribooks.view.auth.dto.request.NonMemberRequest;
+import shop.nuribooks.view.auth.dto.response.NonMemberResponse;
 
 /**
  * auth 관련 FeignClient
@@ -48,5 +50,10 @@ public interface AuthServiceClient {
 	})
 	@PostMapping("/api/auth/logout")
 	ResponseEntity<Void> logout();
+
+	@PostMapping("/api/auth/non-member/check")
+	ResponseEntity<NonMemberResponse> checkNonMember(
+		@RequestBody NonMemberRequest nonMemberRequest
+	);
 }
 
