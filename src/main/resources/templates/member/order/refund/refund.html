@@ -52,20 +52,21 @@
                     <span class="fw-bold ">주문 금액</span>
                     <span class="fw-bold text-primary" th:text="${refundInfo.paymentAmount()}"></span>
                 </div>
-                <!--                    <div class="d-flex justify-content-between">-->
-                <!--                        <span class="text-muted small">총 상품 금액</span>-->
-                <!--                        <span class="text-muted small">000원</span>-->
-                <!--                    </div>-->
-                <!--                    <div class="d-flex justify-content-between">-->
-                <!--                        <span class="text-muted small">배송비</span>-->
-                <!--                        <span class="text-muted small">000원</span>-->
-                <!--                    </div>-->
             </div>
+
 
             <div class="col px-3 py-2 " style="border-right: 1px solid #dee2e6;">
                 <div class="d-flex justify-content-between">
                     <span class="fw-bold ">차감 금액</span>
                     <span class="fw-bold text-primary" th:text="${refundInfo.deductedAmount()}"></span>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <span class="text-muted small">환불 배송비</span>
+                    <span class="text-muted small" th:text="${refundInfo.shippingPrice()}"></span>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <span class="text-muted small">적립 받은 금액</span>
+                    <span class="text-muted small" th:text="${refundInfo.savingPointAmount()}"></span>
                 </div>
             </div>
 

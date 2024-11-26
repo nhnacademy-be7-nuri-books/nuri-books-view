@@ -23,4 +23,9 @@ public class MemberCouponServiceImpl implements MemberCouponService {
 	public Page<MemberCouponResponse> getExpiredOrUsedCouponsByMemberId(Pageable pageable) {
 		return memberCouponClient.getExpiredOrUsedCouponsByMemberId(pageable);
 	}
+
+	@Override
+	public void registerMemberToBookCoupon(Long id) {
+		memberCouponClient.issueMemberToBookCoupon(id).getBody();
+	}
 }

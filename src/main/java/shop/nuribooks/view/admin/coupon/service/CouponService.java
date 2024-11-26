@@ -4,14 +4,21 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import shop.nuribooks.view.admin.coupon.dto.BookCouponRequest;
+import shop.nuribooks.view.admin.coupon.dto.BookCouponResponse;
 import shop.nuribooks.view.admin.coupon.dto.CategoryCouponRequest;
+import shop.nuribooks.view.admin.coupon.dto.CategoryCouponResponse;
 import shop.nuribooks.view.admin.coupon.dto.CouponRequest;
 import shop.nuribooks.view.admin.coupon.dto.CouponResponse;
+import shop.nuribooks.view.admin.coupon.dto.MemberCouponIssueRequest;
 import shop.nuribooks.view.admin.coupon.enums.CouponType;
 import shop.nuribooks.view.common.dto.ResponseMessage;
 
 public interface CouponService {
 	Page<CouponResponse> getCoupons(CouponType type, Pageable pageable);
+
+	BookCouponResponse getBookCoupon(Long id);
+
+	CategoryCouponResponse getCategoryCoupon(Long id);
 
 	ResponseMessage registerCoupon(CouponRequest couponRequest);
 
@@ -22,4 +29,9 @@ public interface CouponService {
 	ResponseMessage expireCoupon(Long id);
 
 	ResponseMessage registerCategoryCoupon(CategoryCouponRequest couponRequest);
+
+	CouponResponse getCouponById(Long couponId);
+
+	ResponseMessage issueMemberCoupon(MemberCouponIssueRequest memberCouponIssueRequest);
+
 }

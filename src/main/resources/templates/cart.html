@@ -6,8 +6,6 @@
     <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
           name="viewport">
     <meta content="ie=edge" http-equiv="X-UA-Compatible">
-    <title>E-Commerce Template</title>
-
     <link href="//fonts.googleapis.com/css?family=Righteous" rel="stylesheet">
     <link href="//fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300i,700" rel="stylesheet">
     <link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i" rel="stylesheet">
@@ -100,11 +98,13 @@
                         <th>
                               <span th:id="cart-total-price" th:if="${totalPrice != null}"
                                     th:text=" ${#numbers.formatInteger(totalPrice, 1, 'COMMA') + '원'}"></span>
-
                         </th>
                     </tr>
                     </tfoot>
                 </table>
+                <div class="col-12 d-flex justify-content-end">
+                    <a class="btn btn-outline-success btn-lg" href="/orders/cart">구매하기</a>
+                </div>
             </div>
         </div>
     </div>

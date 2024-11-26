@@ -213,6 +213,8 @@ async function main() {
 
         console.log(JSON.stringify(orderData));
 
+        let result;
+
         try {
 
             const apiUrl = window.location.origin + "/orders/save";
@@ -224,7 +226,7 @@ async function main() {
                 body: JSON.stringify(orderData),
             });
 
-            const result = await response.json();
+            result = await response.json();
 
             if (response.ok) {
                 await widgets.requestPayment({

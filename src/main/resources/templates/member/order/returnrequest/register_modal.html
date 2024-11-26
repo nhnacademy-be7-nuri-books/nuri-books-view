@@ -26,8 +26,7 @@
                     if (!response.ok) {
                         showMessage("등록 실패");
                     } else {
-                        refreshList();
-                        showMessage();
+                        alert("요청 완료");
                     }
                 })
                 .catch(error => {

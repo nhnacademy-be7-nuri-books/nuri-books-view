@@ -10,4 +10,6 @@ public interface MemberCouponService {
 
 	Page<MemberCouponResponse> getExpiredOrUsedCouponsByMemberId(Pageable pageable);
 
+	void registerMemberToBookCoupon(Long id);
+
 }

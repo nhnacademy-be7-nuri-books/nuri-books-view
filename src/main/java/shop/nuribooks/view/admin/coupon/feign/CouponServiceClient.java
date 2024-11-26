@@ -13,9 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.validation.Valid;
 import shop.nuribooks.view.admin.coupon.dto.BookCouponRequest;
+import shop.nuribooks.view.admin.coupon.dto.BookCouponResponse;
 import shop.nuribooks.view.admin.coupon.dto.CategoryCouponRequest;
+import shop.nuribooks.view.admin.coupon.dto.CategoryCouponResponse;
 import shop.nuribooks.view.admin.coupon.dto.CouponRequest;
 import shop.nuribooks.view.admin.coupon.dto.CouponResponse;
+import shop.nuribooks.view.admin.coupon.dto.MemberCouponIssueRequest;
 import shop.nuribooks.view.admin.coupon.enums.CouponType;
 import shop.nuribooks.view.common.dto.ResponseMessage;
 
@@ -23,6 +26,15 @@ import shop.nuribooks.view.common.dto.ResponseMessage;
 public interface CouponServiceClient {
 	@GetMapping("/api/coupons")
 	ResponseEntity<Page<CouponResponse>> getCoupons(@RequestParam(value = "type") CouponType type, Pageable pageable);
+
+	@GetMapping("/api/coupons/book-coupons/{bookId}")
+	ResponseEntity<BookCouponResponse> getBookCoupon(@PathVariable("bookId") Long id);
+
+	@GetMapping("/api/coupons/category-coupons/{category-id}")
+	ResponseEntity<CategoryCouponResponse> getCategoryCoupon(@PathVariable("category-id") Long id);
+
+	@GetMapping("/api/coupons/{coupon-id}")
+	ResponseEntity<CouponResponse> getCoupon(@PathVariable("coupon-id") Long id);
 
 	@PostMapping("/api/coupons")
 	ResponseEntity<ResponseMessage> registerCoupon(@Valid @RequestBody CouponRequest couponRequest);
@@ -39,4 +51,7 @@ public interface CouponServiceClient {
 
 	@PostMapping("/api/coupons/category-coupons")
 	ResponseEntity<ResponseMessage> registerCategoryCoupon(@Valid @RequestBody CategoryCouponRequest couponRequest);
+
+	@PostMapping("/api/member-coupons")
+	ResponseMessage issueMemberCoupon(@RequestBody MemberCouponIssueRequest memberCouponIssueRequest);
 }

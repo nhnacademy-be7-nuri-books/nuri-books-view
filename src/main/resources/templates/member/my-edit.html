@@ -1,92 +1,75 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{member/layout/memberlayout}">
-<head>
-    <title>회원 정보 수정</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        /* 회원 정보 수정 영역을 화면 높이의 10%만큼 아래로 밀기 */
-        .content-section {
-            margin-top: 10vh; /* 화면 높이의 10%만큼 내려요 */
-        }
-
-        /* placeholder 텍스트 스타일을 회색으로 */
-        ::placeholder {
-            color: #6c757d; /* 옅은 회색 */
-            opacity: 1; /* 기본 불투명도 설정 */
-        }
-
-        .error {
-            color: red;
-        }
-    </style>
-</head>
+<html lang="en" layout:decorate="~{member/layout/memberlayout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <body>
 <div layout:fragment="content">
-    <!-- 마이 페이지 본문 -->
-    <main class="row content-section">
-        <div class="col-lg-8 col-md-10 col-sm-12 mx-auto bg-light rounded shadow py-4 mb-4">
-            <div class="text-center mb-4">
-                <p>회원님의 비밀번호를 수정하세요.</p>
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">비밀번호 수정</h2>
             </div>
-            <form class="row" th:action="@{/my-edit}" method="post" id="my_page_form">
-                <div class="col-md-12 form-group mb-3">
-                    <label for="password">새 비밀번호</label>
-                    <input type="password" class="form-control" id="password" name="password"
-                           placeholder="새 비밀번호" required>
-                    <small id="passwordError" class="form-text text-muted error" style="display:none;"></small>
-                </div>
-                <div class="col-md-12 form-group mb-3">
-                    <label for="confirmPassword">새 비밀번호 확인</label>
-                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
-                           placeholder="새 비밀번호 확인" required>
-                </div>
-                <div id="passwordMatchError" class="text-danger" style="display:none;">
-                    비밀번호가 일치하지 않습니다.
-                </div>
-                <div class="col-md-12 form-group mb-3">
-                    <button type="submit" class="btn btn-primary w-100">비밀번호 수정</button>
-                </div>
-            </form>
-            <div id="alertMessage" class="alert alert-danger" style="display:none;"></div> <!-- 오류 메시지 표시 영역 -->
+            <div class="card-body">
+                <form class="row" id="my_page_form" method="post" th:action="@{/my-edit}">
+                    <div class="col-md-12 form-group mb-3">
+                        <label for="password">새 비밀번호</label>
+                        <input class="form-control" id="password" name="password" placeholder="새 비밀번호"
+                               required type="password">
+                        <small class="form-text text-muted error" id="passwordError"
+                               style="display:none;"></small>
+                    </div>
+                    <div class="col-md-12 form-group mb-3">
+                        <label for="confirmPassword">새 비밀번호 확인</label>
+                        <input class="form-control" id="confirmPassword" name="confirmPassword"
+                               placeholder="새 비밀번호 확인"
+                               required type="password">
+                    </div>
+                    <div class="text-danger" id="passwordMatchError" style="display:none;">
+                        비밀번호가 일치하지 않습니다.
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-primary" type="submit">비밀번호 수정</button>
+                    </div>
+                </form>
+                <div class="alert alert-danger" id="alertMessage" style="display:none;"></div>
+                <!-- 오류 메시지 표시 영역 -->
+            </div>
         </div>
-    </main>
-
+    </div>
     <!-- Bootstrap JS, Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Custom Modal for ResponseMessage -->
-    <div class="modal fade" id="responseModal" tabindex="-1" aria-labelledby="responseModalLabel" aria-hidden="true">
+    <div aria-hidden="true" aria-labelledby="responseModalLabel" class="modal fade" id="responseModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="responseModalLabel">비밀번호 변경</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
                 </div>
                 <div class="modal-body" id="modalMessage" th:text="${message}">
                     <!-- 서버에서 전달된 메시지가 여기에 동적으로 삽입됩니다 -->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="responseBtn">확인</button>
+                    <button class="btn btn-primary" id="responseBtn" type="button">확인</button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Custom Modal for Confirmation -->
-    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div aria-hidden="true" aria-labelledby="confirmationModalLabel" class="modal fade" id="confirmationModal"
+         tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="confirmationModalLabel">비밀번호 수정</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
                 </div>
                 <div class="modal-body">
                     입력하신 새 비밀번호로 수정하시겠습니까?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                    <button type="button" class="btn btn-primary" id="confirmBtn">확인</button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">취소</button>
+                    <button class="btn btn-primary" id="confirmBtn" type="button">확인</button>
                 </div>
             </div>
         </div>
@@ -129,7 +112,7 @@
         }
 
         // 페이지가 로드되면 메시지가 있으면 모달을 띄운다.
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             const message = document.getElementById('modalMessage').textContent;
 
             if (message) {
@@ -177,7 +160,7 @@
             alertMessage.textContent = message;
 
             // 몇 초 후에 경고 메시지 숨기기
-            setTimeout(function() {
+            setTimeout(function () {
                 alertMessage.style.display = "none";
             }, 5000);
         }
