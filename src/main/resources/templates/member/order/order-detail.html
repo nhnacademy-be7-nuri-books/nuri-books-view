@@ -90,12 +90,12 @@
                     <div class="d-flex justify-content-between">
                         <span class="fw-bold">주문 금액</span>
                         <span class="fw-bold text-primary"
-                              th:text="${payment.totalPrice != null ? payment.totalPrice : 0} + '원'">000원</span>
+                              th:text="${middlePayment} + '원'">000원</span>
                     </div>
                     <div class="d-flex justify-content-between">
                         <span class="text-muted small">총 상품 금액</span>
                         <span class="text-muted small"
-                              th:text="${middlePayment} + '원'">000원</span>
+                              th:text="${payment.unitPrice != null ? payment.unitPrice : 0} + '원'">000원</span>
                     </div>
                     <div class="d-flex justify-content-between">
                         <span class="text-muted small">배송비</span>
@@ -139,7 +139,7 @@
                 </div>
             </div>
 
-            <div class="d-flex justify-content-end">
+            <div class="d-flex justify-content-end" th:if="${isCancelled == false}">
                 <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
                         th:onclick="'openModal(\'register-modal\', '+ ${orderId} +')'">
                     <i class="fas fa-edit me-2"></i>반품 요청

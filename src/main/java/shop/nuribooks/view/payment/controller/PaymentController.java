@@ -67,6 +67,13 @@ public class PaymentController {
 		return "payment/fail";
 	}
 
+	/**
+	 * 결제 확인
+	 *
+	 * @param jsonBody 토스페이먼츠로부터 받은 요청
+	 * @return 토스페이먼츠로부터 받은 응답
+	 * @throws Exception 예외 처리
+	 */
 	@RequestMapping(value = "/confirm")
 	public ResponseEntity<JSONObject> confirmPayment(@RequestBody String jsonBody) throws Exception {
 

@@ -1,0 +1,54 @@
+<html lang="en" layout:decorate="~{member/layout/memberlayout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+<div layout:fragment="content" style="margin-left: 90px; margin-right: 90px;">
+    <script th:inline="javascript"></script>
+    <div th:replace="~{admin/fragment/js-utils::utils}"></div>
+
+    <!-- 결제 정보 -->
+    <div class="card-body">
+        <h4 class="mb-0 p-3">취소 받을 정보</h4>
+
+        <div class="row mb-3 py-2" style="border-bottom: 1px solid #dee2e6;">
+            <div class="col px-3 py-2" style="border-right: 1px solid #dee2e6;">
+                <div class="d-flex justify-content-between">
+                    <span class="fw-bold ">결제 금액</span>
+                    <span class="fw-bold text-primary"> 00원 </span>
+                </div>
+            </div>
+
+            <div class="col px-3 py-2 " style="border-right: 1px solid #dee2e6;">
+                <div class="d-flex justify-content-between">
+                    <span class="fw-bold ">돌려받을 쿠폰 정보</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <span class="text-muted small">주문 쿠폰</span>
+                    <span class="text-muted small"> 없음 </span>
+                </div>
+                <!--                th:each="coupon : ${orderCoupons}"-->
+                <div class="d-flex justify-content-between">
+                    <span class="text-muted small">도서 쿠폰</span>
+                    <span class="text-muted small"> 없음 </span>
+                </div>
+            </div>
+
+            <div class="col px-3 py-2">
+                <div class="d-flex justify-content-between">
+                    <span class="fw-bold ">돌려받을 포인트</span>
+                    <span class="fw-bold text-primary"></span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <form method="post" th:action="@{/orders/cancel/{order-id}(order-id=${orderId})}">
+        <label class="form-label" for="reason">취소 사유</label>
+        <textarea class="form-control" cols="50" id="reason" name="reason"
+                  placeholder="환불 사유를 작성해 주세요"></textarea>
+        <input name="refundAmount" type="hidden">
+        <div class="d-flex justify-content-center align-items-center py-5">
+            <button class="btn btn-secondary btn-lg" type="submit">주문 취소하기</button>
+        </div>
+    </form>
+</div>
+</html>
