@@ -51,7 +51,7 @@ public class MemberCouponController {
 
 	@PostMapping("/my-coupon/{coupon-id}")
 	public ResponseEntity<ResponseMessage> registerCoupon(@PathVariable(name = "coupon-id") Long couponId) {
-		memberCouponService.registerMemberCoupon(couponId);
+		memberCouponService.registerMemberToBookCoupon(couponId);
 		return ResponseEntity.status(HttpStatus.CREATED)
 			.body(new ResponseMessage(HttpStatus.CREATED.value(), "쿠폰 발급 성공"));
 	}

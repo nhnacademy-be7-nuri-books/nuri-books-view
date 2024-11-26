@@ -22,4 +22,6 @@ public interface MemberCouponClient {
 	@PostMapping("/api/member-coupons/{coupon-id}")
 	ResponseEntity<Void> issueMemberToBookCoupon(@PathVariable(name = "coupon-id") Long couponId);
 
+	@PostMapping("/api/member-coupons/category/{coupon-id}")
+	ResponseEntity<Void> issueMemberToCategoryCoupon(@PathVariable(name = "coupon-id") Long couponId);
 }

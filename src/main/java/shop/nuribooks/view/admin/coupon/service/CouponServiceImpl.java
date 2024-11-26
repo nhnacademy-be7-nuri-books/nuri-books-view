@@ -9,6 +9,7 @@ import shop.nuribooks.view.admin.category.feign.AdminCategoryClient;
 import shop.nuribooks.view.admin.coupon.dto.BookCouponRequest;
 import shop.nuribooks.view.admin.coupon.dto.BookCouponResponse;
 import shop.nuribooks.view.admin.coupon.dto.CategoryCouponRequest;
+import shop.nuribooks.view.admin.coupon.dto.CategoryCouponResponse;
 import shop.nuribooks.view.admin.coupon.dto.CouponRequest;
 import shop.nuribooks.view.admin.coupon.dto.CouponResponse;
 import shop.nuribooks.view.admin.coupon.dto.MemberCouponIssueRequest;
@@ -30,6 +31,11 @@ public class CouponServiceImpl implements CouponService {
 	@Override
 	public BookCouponResponse getBookCoupon(Long id) {
 		return this.couponServiceClient.getBookCoupon(id).getBody();
+	}
+
+	@Override
+	public CategoryCouponResponse getCategoryCoupon(Long id) {
+		return this.couponServiceClient.getCategoryCoupon(id).getBody();
 	}
 
 	@Override

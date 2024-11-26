@@ -22,6 +22,7 @@ import shop.nuribooks.view.admin.category.dto.CategoryRequest;
 import shop.nuribooks.view.admin.category.dto.CategoryResponse;
 import shop.nuribooks.view.admin.category.service.AdminCategoryService;
 import shop.nuribooks.view.admin.coupon.dto.BookCouponResponse;
+import shop.nuribooks.view.admin.coupon.dto.CategoryCouponResponse;
 import shop.nuribooks.view.admin.coupon.service.CouponService;
 import shop.nuribooks.view.book.dto.BookContributorsResponse;
 import shop.nuribooks.view.book.dto.BookResponse;
@@ -102,6 +103,13 @@ public class BookController {
 		model.addAttribute("bookCategories", bookCategories);
 		model.addAttribute("categoryName", categoryName);
 		model.addAttribute("categoryId", categoryId);
+
+		try {
+			CategoryCouponResponse categoryCoupon = couponService.getCategoryCoupon(categoryId);
+			model.addAttribute("categoryCoupon", categoryCoupon);
+		} catch (Exception e) {
+			model.addAttribute("categoryCoupon", null);
+		}
 		return "book/bookCategoryList";
 	}
 

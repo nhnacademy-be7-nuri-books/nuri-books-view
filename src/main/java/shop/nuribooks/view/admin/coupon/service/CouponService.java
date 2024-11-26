@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import shop.nuribooks.view.admin.coupon.dto.BookCouponRequest;
 import shop.nuribooks.view.admin.coupon.dto.BookCouponResponse;
 import shop.nuribooks.view.admin.coupon.dto.CategoryCouponRequest;
+import shop.nuribooks.view.admin.coupon.dto.CategoryCouponResponse;
 import shop.nuribooks.view.admin.coupon.dto.CouponRequest;
 import shop.nuribooks.view.admin.coupon.dto.CouponResponse;
 import shop.nuribooks.view.admin.coupon.dto.MemberCouponIssueRequest;
@@ -16,6 +17,8 @@ public interface CouponService {
 	Page<CouponResponse> getCoupons(CouponType type, Pageable pageable);
 
 	BookCouponResponse getBookCoupon(Long id);
+
+	CategoryCouponResponse getCategoryCoupon(Long id);
 
 	ResponseMessage registerCoupon(CouponRequest couponRequest);
 
