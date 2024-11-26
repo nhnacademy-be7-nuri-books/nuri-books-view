@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.validation.Valid;
 import shop.nuribooks.view.admin.coupon.dto.BookCouponRequest;
+import shop.nuribooks.view.admin.coupon.dto.BookCouponResponse;
 import shop.nuribooks.view.admin.coupon.dto.CategoryCouponRequest;
 import shop.nuribooks.view.admin.coupon.dto.CouponRequest;
 import shop.nuribooks.view.admin.coupon.dto.CouponResponse;
@@ -23,6 +24,9 @@ import shop.nuribooks.view.common.dto.ResponseMessage;
 public interface CouponServiceClient {
 	@GetMapping("/api/coupons")
 	ResponseEntity<Page<CouponResponse>> getCoupons(@RequestParam(value = "type") CouponType type, Pageable pageable);
+
+	@GetMapping("/api/coupons/book-coupons/{bookId}")
+	ResponseEntity<BookCouponResponse> getBookCoupon(@PathVariable("bookId") Long id);
 
 	@PostMapping("/api/coupons")
 	ResponseEntity<ResponseMessage> registerCoupon(@Valid @RequestBody CouponRequest couponRequest);
