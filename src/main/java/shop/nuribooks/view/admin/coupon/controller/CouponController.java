@@ -84,6 +84,11 @@ public class CouponController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(message);
 	}
 
+	// @GetMapping("/book/{book-id}")
+	// public ResponseEntity<BookCouponResponse> getBookCoupon(@PathVariable("book-id") Long bookId) {
+	//
+	// }
+
 	@PutMapping("/{coupon-id}")
 	public ResponseEntity<ResponseMessage> updateCoupon(@PathVariable("coupon-id") Long id,
 		@Valid @ModelAttribute CouponRequest couponRequest) {
