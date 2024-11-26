@@ -20,8 +20,9 @@
                     <a class="btn btn-outline-secondary" href="/admin/coupon?type=CATEGORY"
                        th:classappend="${type} == 'CATEGORY' ? 'active text-white bg-primary' : ''">카테고리</a>
                 </div>
+
                 <div id="register-modal" th:replace="~{admin/coupon/modal/register_modal::register_modal}"></div>
-                
+
                 <!-- 쿠폰 정책 목록 테이블 -->
                 <table class="table table-hover" id="data-table">
 
@@ -64,8 +65,9 @@
                         </td>
                         <td class="text-end">
                             <!-- 수정 버튼 (수정 모달 트리거) -->
-                            <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
-                                    th:onclick="'openModal(\'update-modal\', '+ ${coupon.id} +')'">
+                            <button class="btn btn-outline-secondary btn-sm" data-bs-target="#update-modal"
+                                    data-bs-toggle="modal"
+                                    th:onclick="'loadCouponData(' + ${coupon.id} + ')'">
                                 <i class="fas fa-edit me-2"></i>수정
                             </button>
 
@@ -88,6 +90,38 @@
 
     <div th:replace="~{admin/coupon/modal/update_modal::update_modal}"></div>
     <div th:replace="~{admin/coupon/modal/delete_modal::delete_modal}"></div>
+
+    <script th:inline="javascript">
+
+        function loadCouponData(couponId) {
+            // AJAX 요청을 통해 쿠폰 데이터를 가져옴
+            fetch('/admin/coupon/' + couponId)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('데이터를 불러올 수 없습니다.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // 가져온 데이터를 수정 모달의 필드에 설정
+                    document.getElementById('update-name').value = data.name;
+                    document.getElementById('couponType').value = data.couponType;
+                    document.getElementById('policyType').value = data.policyType;
+                    document.getElementById('discount').value = data.discount;
+                    document.getElementById('update-minimumOrderPrice').value = data.minimumOrderPrice;
+                    document.getElementById('update-maximumDiscountPrice').value = data.maximumDiscountPrice;
+                    document.getElementById('update-createdAt').value = data.createdAt;
+                    document.getElementById('update-expiredAt').value = data.expiredAt;
+                    document.getElementById('update-period').value = data.period;
+                    document.getElementById('update-expirationType').value = data.expirationType;
+                })
+                .catch(error => {
+                    console.error('오류:', error);
+                    alert('쿠폰 정보를 불러오는데 실패했습니다.');
+                });
+        }
+
+    </script>
 </div>
 </body>
 </html>

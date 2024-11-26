@@ -7,6 +7,7 @@ import shop.nuribooks.view.admin.coupon.dto.BookCouponRequest;
 import shop.nuribooks.view.admin.coupon.dto.CategoryCouponRequest;
 import shop.nuribooks.view.admin.coupon.dto.CouponRequest;
 import shop.nuribooks.view.admin.coupon.dto.CouponResponse;
+import shop.nuribooks.view.admin.coupon.dto.MemberCouponIssueRequest;
 import shop.nuribooks.view.admin.coupon.enums.CouponType;
 import shop.nuribooks.view.common.dto.ResponseMessage;
 
@@ -22,4 +23,8 @@ public interface CouponService {
 	ResponseMessage expireCoupon(Long id);
 
 	ResponseMessage registerCategoryCoupon(CategoryCouponRequest couponRequest);
+
+	CouponResponse getCouponById(Long couponId);
+
+	ResponseMessage issueMemberCoupon(MemberCouponIssueRequest memberCouponIssueRequest);
 }
