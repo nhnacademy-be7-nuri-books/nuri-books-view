@@ -166,7 +166,7 @@ async function main() {
         };
 
         console.log(orderData);
-
+        let result;
         try {
             console.log(JSON.stringify(orderData));
             // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
@@ -180,7 +180,7 @@ async function main() {
                 body: JSON.stringify(orderData),
             });
 
-            const result = await response.json();
+            result = await response.json();
 
             if (response.ok) {
                 await widgets.requestPayment({
