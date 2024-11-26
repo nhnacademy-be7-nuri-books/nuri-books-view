@@ -1,30 +1,30 @@
 <!DOCTYPE html>
 <html layout:decorate="~{layouts/order-layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <div layout:fragment="content">
-    <div class="box_section" style="width: 600px">
-        <img src="https://static.toss.im/illusts/check-blue-spot-ending-frame.png" width="100px"/>
-        <h2>결제를 완료했어요</h2>
-
-        <div class="p-grid typography--p" style="margin-top: 50px">
-            <div class="p-grid-col text--left"><b>결제금액</b></div>
-            <div class="p-grid-col text--right" id="amount"></div>
+    <div class="box_section">
+        <div class="d-flex justify-content-center align-items-center" style="margin-top: 50px">
+            <img src="https://static.toss.im/illusts/check-blue-spot-ending-frame.png" width="100px"/>
+            <h2>결제를 완료했어요</h2>
         </div>
-        <div class="p-grid typography--p" style="margin-top: 10px">
-            <div class="p-grid-col text--left"><b>주문번호</b></div>
-            <div class="p-grid-col text--right" id="orderId"></div>
+        <div class="d-flex flex-column justify-content-center align-items-center px-3" style="margin-top: 10px">
+            <div class="p-grid-col text--left"><b>결제금액 : </b>
+                <span class="p-grid-col text--right" id="amount">0000원</span>
+            </div>
         </div>
-        <div class="p-grid">
+        <div class="d-flex flex-column justify-content-center align-items-center px-3" style="margin-top: 10px">
+            <div class="p-grid-col text--left"><b>주문번호 : </b><span class="p-grid-col text--right" id="orderId">NB-ORDER-000000000</span>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-3">
             <button class="button p-grid-col5"
-                    onclick="location.href='https://docs.tosspayments.com/guides/v2/payment-widget/integration';">연동 문서
-            </button>
-            <button class="button p-grid-col5" onclick="location.href='https://discord.gg/A4fRFXQhRu';"
-                    style="background-color: #e8f3ff; color: #1b64da">실시간 문의
+                    th:onclick="|location.href='@{/view/books}'|">
+                도서 목록으로
             </button>
         </div>
     </div>
 
     <div class="box_section" style="width: 600px; text-align: left">
-        <b>Response Data :</b>
+        <!--        <b>Response Data :</b>-->
         <div id="response" style="white-space: initial"></div>
     </div>
 
@@ -64,7 +64,7 @@
         }
 
         confirm().then(function (data) {
-            document.getElementById("response").innerHTML = `<pre>${JSON.stringify(data, null, 4)}</pre>`;
+            // document.getElementById("response").innerHTML = `<pre>${JSON.stringify(data, null, 4)}</pre>`;
         });
 
         const orderIdElement = document.getElementById("orderId");

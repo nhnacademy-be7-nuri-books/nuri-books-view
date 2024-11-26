@@ -2,7 +2,6 @@ package shop.nuribooks.view.admin.publisher;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +15,7 @@ import shop.nuribooks.view.admin.publisher.dto.PublisherRequest;
 import shop.nuribooks.view.admin.publisher.dto.PublisherResponse;
 import shop.nuribooks.view.common.dto.ResponseMessage;
 
-@FeignClient(name = "books", url = "http://localhost:8080")
+@FeignClient(name = "publishers", url = "http://localhost:8080")
 public interface PublisherServiceClient {
 	@PostMapping("/api/books/publishers")
 	ResponseEntity<ResponseMessage> registerPublisher(@RequestBody PublisherRequest request);

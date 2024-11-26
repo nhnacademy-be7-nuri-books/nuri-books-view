@@ -81,6 +81,11 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
+	public List<BookResponse> getAllBooks() {
+		return bookServiceClient.getAllBooks();
+	}
+
+	@Override
 	public List<TopBookLikeResponse> getTopBookLikes() {
 		return bookServiceClient.getTopBookLike();
 	}

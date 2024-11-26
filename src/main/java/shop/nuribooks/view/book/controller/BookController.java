@@ -102,6 +102,11 @@ public class BookController {
 		return "book/category/all-category";
 	}
 
+	@GetMapping("/all")
+	public List<BookResponse> getAllBooks() {
+		return bookService.getAllBooks();
+}
+  
 	private String ExtractValueFromCookie(HttpServletRequest req, String key) {
 		Cookie[] cookies = req.getCookies();
 		for (int i = 0; cookies != null && i < cookies.length; i++) {

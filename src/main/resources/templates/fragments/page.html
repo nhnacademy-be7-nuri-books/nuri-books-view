@@ -2,7 +2,7 @@
     <nav aria-label="Page navigation" class="d-flex justify-content-center mt-4">
         <div class="pagination"
              th:with="
-                 cleanQuery=${#strings.replace(#strings.replace(currentQuery, '&page=' + pages.number, ''), 'page=', '')},
+                 cleanQuery=${#strings.replace(#strings.replace(currentQuery, '&page=' + pages.number, ''), 'page=' + pages.number, '')},
                  baseUrl=${cleanQuery.isEmpty() ? currentUri : (currentUri + '?' + cleanQuery)}
             ">
             <!-- 이전 버튼 -->
