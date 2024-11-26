@@ -34,7 +34,7 @@ public class RefundController {
 		@ModelAttribute RefundRequest refundRequest) {
 		refundService.registerRefund(orderId, refundRequest);
 
-		return "member/order/refund/refund";
+		return "redirect:/orders/list";
 	}
 
 }

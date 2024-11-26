@@ -78,7 +78,9 @@
                                      th:text=" ${#numbers.formatInteger(cartBookResponse.salePrice, 1, 'COMMA') + '원'}"></span>
                         </td>
                         <td>
-                                 <span th:if="${cartBookResponse.price != null}"
+                                 <span th:attr="data-total-price=${cartBookResponse.totalPrice}"
+                                       th:id="data-total-price"
+                                       th:if="${cartBookResponse.price != null}"
                                        th:text=" ${#numbers.formatInteger(cartBookResponse.totalPrice, 1, 'COMMA') + '원'}"></span>
                         </td>
                         <td>
@@ -121,12 +123,11 @@
             })
                 .then(response => {
                     if (response.ok) { // 삭제가 성공적으로 완료되면
-                        // 버튼이 속한 tr 요소를 찾아 제거
                         const row = button.closest('tr');
                         if (row) {
                             row.remove();
-                            updateTotalPrice();
                         }
+                        updateTotalPrice();
                     } else {
                         alert("삭제하는 데 문제가 발생했습니다.");
                     }
