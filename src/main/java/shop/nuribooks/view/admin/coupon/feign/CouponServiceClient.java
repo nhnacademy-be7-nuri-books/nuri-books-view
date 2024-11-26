@@ -43,7 +43,7 @@ public interface CouponServiceClient {
 
 	@PostMapping("/api/coupons/category-coupons")
 	ResponseEntity<ResponseMessage> registerCategoryCoupon(@Valid @RequestBody CategoryCouponRequest couponRequest);
-
+  
 	@PostMapping("/api/member-coupons")
 	ResponseMessage issueMemberCoupon(@RequestBody MemberCouponIssueRequest memberCouponIssueRequest);
 }

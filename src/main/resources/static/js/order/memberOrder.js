@@ -64,9 +64,14 @@ async function main() {
         }
     }
 
+    let isPaymentInProgress = false;
+
     // ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
     // @docs https://docs.tosspayments.com/sdk/v2/js#widgetsrequestpayment
     button.addEventListener("click", async function () {
+
+        if (isPaymentInProgress) return;
+        isPaymentInProgress = true;
 
         totalPrice = calculateTotalPrice();
 
@@ -162,20 +167,21 @@ async function main() {
 
         console.log(orderData);
 
-        console.log(JSON.stringify(orderData));
-        // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
-        // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
-        const apiUrl = window.location.origin + "/orders/save";
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(orderData),
-        });
-
-        const result = await response.json();
         try {
+            console.log(JSON.stringify(orderData));
+            // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
+            // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
+            const apiUrl = window.location.origin + "/orders/save";
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(orderData),
+            });
+
+            const result = await response.json();
+
             if (response.ok) {
                 await widgets.requestPayment({
                     orderId: "NB-M-ORDER-0000000" + result.orderId,
@@ -196,6 +202,8 @@ async function main() {
             }
         } catch {
             alert(`주문 정보를 저장하는 데 실패했습니다. 사유: ${result.message}`);
+        } finally {
+            isPaymentInProgress = false;  // 결제 처리 완료
         }
 
     });

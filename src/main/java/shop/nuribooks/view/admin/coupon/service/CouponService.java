@@ -27,4 +27,5 @@ public interface CouponService {
 	CouponResponse getCouponById(Long couponId);
 
 	ResponseMessage issueMemberCoupon(MemberCouponIssueRequest memberCouponIssueRequest);
+
 }

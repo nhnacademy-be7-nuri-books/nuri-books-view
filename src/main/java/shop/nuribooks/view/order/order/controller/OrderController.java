@@ -3,6 +3,7 @@ package shop.nuribooks.view.order.order.controller;
 import static shop.nuribooks.view.cart.controller.CartController.*;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -181,7 +182,15 @@ public class OrderController {
 		model.addAttribute("orderSummary", orderDetailResponse.order());
 		model.addAttribute("pages", orderDetailResponse.orderItems());
 		model.addAttribute("shipping", orderDetailResponse.shipping());
+
+		BigDecimal unitPrice = orderDetailResponse.payment().unitPrice();
+		BigDecimal shippingPrice = orderDetailResponse.payment().shippingPrice();
+
+		BigDecimal middlePayment = (unitPrice != null ? unitPrice : BigDecimal.ZERO)
+			.add(shippingPrice != null ? shippingPrice : BigDecimal.ZERO);
+		
 		model.addAttribute("payment", orderDetailResponse.payment());
+		model.addAttribute("middlePayment", middlePayment);
 
 		return "member/order/order-detail";
 	}
