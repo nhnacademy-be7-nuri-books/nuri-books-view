@@ -84,14 +84,6 @@ public class CouponController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(message);
 	}
 
-	@PostMapping("/category")
-	public ResponseEntity<ResponseMessage> registerCategoryCoupon(
-		@Valid @ModelAttribute CategoryCouponRequest couponRequest
-	) {
-		ResponseMessage message = this.couponService.registerCategoryCoupon(couponRequest);
-		return ResponseEntity.status(HttpStatus.CREATED).body(message);
-	}
-
 	@PutMapping("/{coupon-id}")
 	public ResponseEntity<ResponseMessage> updateCoupon(@PathVariable("coupon-id") Long id,
 		@Valid @ModelAttribute CouponRequest couponRequest) {
