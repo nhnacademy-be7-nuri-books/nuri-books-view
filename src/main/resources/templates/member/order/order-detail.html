@@ -149,14 +149,13 @@
                     <i class="fas fa-edit me-2"></i>환불
                 </a>
             </div>
-
         </div>
 
         <div class="d-flex justify-content-center align-items-center py-5">
             <a class="btn btn-secondary btn-lg" th:href="@{/orders/list}">목록으로</a>
         </div>
 
-
     </div>
+    <div th:replace="~{member/order/returnrequest/register_modal::register_modal}"></div>
 </div>
 </html>

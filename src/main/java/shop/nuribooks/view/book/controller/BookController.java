@@ -21,9 +21,10 @@ import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.admin.category.dto.CategoryRequest;
 import shop.nuribooks.view.admin.category.dto.CategoryResponse;
 import shop.nuribooks.view.admin.category.service.AdminCategoryService;
+import shop.nuribooks.view.admin.coupon.dto.BookCouponResponse;
+import shop.nuribooks.view.admin.coupon.service.CouponService;
 import shop.nuribooks.view.book.dto.BookContributorsResponse;
 import shop.nuribooks.view.book.dto.BookResponse;
-import shop.nuribooks.view.book.dto.TopBookLikeResponse;
 import shop.nuribooks.view.book.enums.SortType;
 import shop.nuribooks.view.book.service.BookService;
 import shop.nuribooks.view.booklike.dto.LikeStatusResponse;
@@ -42,6 +43,7 @@ public class BookController {
 	private final ReviewService reviewService;
 	private final AdminCategoryService adminCategoryService;
 	private final BookLikeService bookLikeService;
+	private final CouponService couponService;
 	private final String RECENT_VIEW_LIST_KEY = "recent_view_list";
 
 	@GetMapping("/view/books")
@@ -76,6 +78,14 @@ public class BookController {
 
 		LikeStatusResponse likeStatus = bookLikeService.getLikeStatus(bookId);
 		model.addAttribute("likeStatus", likeStatus);
+
+		try {
+			BookCouponResponse bookCoupon = couponService.getBookCoupon(bookId);
+			model.addAttribute("bookCoupon", bookCoupon);
+		} catch (Exception e) {
+			model.addAttribute("bookCoupon", null);
+		}
+
 		// 쿠키에 새로운 최근 목록 업데이트. TTL = 발행일 자정까지 .
 		CookieUtil.addCookie(res, RECENT_VIEW_LIST_KEY, getRecentViewSetString(recentViewSet),
 			(int)TimeUtil.getLeftSecondOfToday());
@@ -105,8 +115,8 @@ public class BookController {
 	@GetMapping("/all")
 	public List<BookResponse> getAllBooks() {
 		return bookService.getAllBooks();
-}
-  
+	}
+
 	private String ExtractValueFromCookie(HttpServletRequest req, String key) {
 		Cookie[] cookies = req.getCookies();
 		for (int i = 0; cookies != null && i < cookies.length; i++) {

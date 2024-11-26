@@ -35,6 +35,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
+
         .book-title {
             font-size: 1.5rem; /* 기본 글꼴 크기 */
             font-weight: bold; /* 글씨 두께 */
@@ -45,6 +46,7 @@
             max-width: 100%; /* 최대 너비 */
             white-space: normal; /* 줄바꿈 허용 */
         }
+
         .book-meta {
             font-size: 0.9em;
             color: #4a5568;
@@ -162,7 +164,8 @@
         <div class="row justify-content-between">
             <!-- Book Thumbnail -->
             <div class="col-md-4 text-center">
-                <img alt="도서 이미지" class="book-thumbnail" th:src="${#strings.replace(book.thumbnailImageUrl, 'cover200', 'cover500')}">
+                <img alt="도서 이미지" class="book-thumbnail"
+                     th:src="${#strings.replace(book.thumbnailImageUrl, 'cover200', 'cover500')}">
             </div>
 
             <!-- Book Information -->
@@ -217,6 +220,44 @@
 
                 <!-- Buttons aligned to the right in one line -->
                 <div class="button-group mt-3">
+                    <input id="bookCoupon" th:value="${bookCoupon != null ? bookCoupon.couponId : ''}" type="hidden"/>
+                    <button class="btn btn-primary btn-custom" onclick="issueCoupon()"
+                            th:if="${bookCoupon != null}"
+                            type="button">쿠폰 발급
+                    </button>
+                    <script>
+                        function issueCoupon() {
+                            const couponId = document.getElementById("bookCoupon").value;
+
+                            const requestData = {
+                                couponId: couponId
+                            };
+
+                            fetch('/my-coupon/' + couponId, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(requestData)
+                            })
+                                .then(response => {
+                                    if (response.status === 201) {
+                                        alert('쿠폰이 발급되었습니다!');
+                                    } else if (response.status === 409) {
+                                        alert('이미 발급 받은 쿠폰입니다.');
+                                    } else {
+                                        alert('쿠폰 발급에 실패했습니다. 관리자에게 문의해주세요.');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error issuing coupon:', error);
+                                    alert('쿠폰 발급에 문제가 발생했습니다. 관리자에게 문의해주세요.');
+                                });
+                        }
+                    </script>
+
+                </div>
+                <div class="button-group mt-3">
                     <label for="quantity">수량:</label>
                     <input id="quantity" max="100" min="1" name="quantity" type="number" value="1">
                     <!-- 바로 구매하기 버튼 (GET 요청) -->
@@ -237,29 +278,29 @@
                     <form id="cartForm" method="post" th:action="@{/api/cart/{book-id}(book-id=${book.id})}">
                         <input id="cartQuantity" name="quantity" type="hidden">
                     </form>
-<!--                    <form th:action="@{/orders/{book-id}(book-id=${book.id})}" method="get">-->
-<!--                        <label for="quantity">수량:</label>-->
-<!--                        <button type="submit"-->
-<!--                                class="btn btn-secondary btn-custom">바로-->
-<!--                            구매하기-->
-<!--                        </button>-->
-<!--                    </form>-->
+                    <!--                    <form th:action="@{/orders/{book-id}(book-id=${book.id})}" method="get">-->
+                    <!--                        <label for="quantity">수량:</label>-->
+                    <!--                        <button type="submit"-->
+                    <!--                                class="btn btn-secondary btn-custom">바로-->
+                    <!--                            구매하기-->
+                    <!--                        </button>-->
+                    <!--                    </form>-->
 
-<!--                    <form id="cartForm" th:action="@{/api/cart/{book-id}(book-id=${book.id})}" method="post">-->
-<!--                        <label for="quantity">수량:</label>-->
-<!--                        <button type="submit"-->
-<!--                                class="btn btn-secondary btn-custom">장바구니에 담기-->
-<!--                        </button>-->
-<!--                    </form>-->
+                    <!--                    <form id="cartForm" th:action="@{/api/cart/{book-id}(book-id=${book.id})}" method="post">-->
+                    <!--                        <label for="quantity">수량:</label>-->
+                    <!--                        <button type="submit"-->
+                    <!--                                class="btn btn-secondary btn-custom">장바구니에 담기-->
+                    <!--                        </button>-->
+                    <!--                    </form>-->
                 </div>
             </div>
 
-    <!-- Book Description -->
+            <!-- Book Description -->
             <div class="book-description mt-5">
-              <h2 class="book-section-title">책 소개</h2>
-              <div class="book-meta mt-3" th:if="${book.simpleCategories?.size() > 0}">
-                <strong>카테고리:</strong>
-                <div th:each="breadcrumb : ${book.simpleCategories}">
+                <h2 class="book-section-title">책 소개</h2>
+                <div class="book-meta mt-3" th:if="${book.simpleCategories?.size() > 0}">
+                    <strong>카테고리:</strong>
+                    <div th:each="breadcrumb : ${book.simpleCategories}">
                     <span>
                       <span th:each="category, iterStat : ${breadcrumb}">
                         <a th:href="@{/view/books/categories/{categoryId}(categoryId=${category.id})}"
@@ -267,18 +308,19 @@
                         <span th:if="${!iterStat.last}"> > </span>
                       </span>
                     </span><br/>
+                    </div>
                 </div>
-              </div>
-              <p th:utext="${book.description}">책 소개 내용</p>
+                <p th:utext="${book.description}">책 소개 내용</p>
             </div>
+
 
             <!-- Book Contents -->
             <div class="book-contents mt-5">
-              <h2 class="book-section-title">목차</h2>
-              <p th:utext="${book.contents}">목차 내용</p>
+                <h2 class="book-section-title">목차</h2>
+                <p th:utext="${book.contents}">목차 내용</p>
             </div>
             <div class="mt-5">
-              <h2 class="book-section-title">리뷰</h2>
+                <h2 class="book-section-title">리뷰</h2>
                 <div th:replace="~{book/review/register-block::review}"></div>
                 <div th:replace="~{book/review/list::reviews}"></div>
                 <div th:replace="~{fragments/page::page}"></div>
@@ -297,6 +339,7 @@
 
             document.getElementById(formId).submit();
         }
+
         window.submitForm = submitForm;
     </script>
 </div>
