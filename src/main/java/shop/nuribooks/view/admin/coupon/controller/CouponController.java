@@ -45,28 +45,34 @@ public class CouponController {
 	@GetMapping
 	public String getCoupons(Model model, @PageableDefault Pageable pageable,
 		@RequestParam(value = "type", defaultValue = "ALL") CouponType type) {
-		Page<CouponResponse> coupons = this.couponService.getCoupons(type, pageable);
+		Page<CouponResponse> coupons = couponService.getCoupons(type, pageable);
 		model.addAttribute("pages", coupons);
 		model.addAttribute("policyTypes", PolicyType.values());
 		model.addAttribute("couponTypes", CouponType.values());
 		model.addAttribute("type", type);
 		model.addAttribute("expirationTypes", ExpirationType.values());
 
-		List<BookResponse> books = this.bookService.getAllBooks();
+		List<BookResponse> books = bookService.getAllBooks();
 		model.addAttribute("books", books);
 		return "admin/coupon/coupon";
 	}
 
+	@GetMapping("/{couponId}")
+	public ResponseEntity<CouponResponse> getCoupon(@PathVariable Long couponId) {
+		CouponResponse couponResponse = couponService.getCouponById(couponId);
+		return ResponseEntity.ok(couponResponse);
+	}
+
 	@PostMapping
 	public ResponseEntity<ResponseMessage> registerCoupon(@Valid @ModelAttribute CouponRequest couponRequest) {
-		ResponseMessage message = this.couponService.registerCoupon(couponRequest);
+		ResponseMessage message = couponService.registerCoupon(couponRequest);
 		return ResponseEntity.status(HttpStatus.CREATED).body(message);
 	}
 
 	@PostMapping("/book")
 	public ResponseEntity<ResponseMessage> registerBookCoupon(
 		@Valid @ModelAttribute BookCouponRequest bookCouponRequest) {
-		ResponseMessage message = this.couponService.registerBookCoupon(bookCouponRequest);
+		ResponseMessage message = couponService.registerBookCoupon(bookCouponRequest);
 		return ResponseEntity.status(HttpStatus.CREATED).body(message);
 	}
 
@@ -74,7 +80,7 @@ public class CouponController {
 	public ResponseEntity<ResponseMessage> registerCategoryCoupon(
 		@Valid @ModelAttribute CategoryCouponRequest couponRequest
 	) {
-		ResponseMessage message = this.couponService.registerCategoryCoupon(couponRequest);
+		ResponseMessage message = couponService.registerCategoryCoupon(couponRequest);
 		return ResponseEntity.status(HttpStatus.CREATED).body(message);
 	}
 
@@ -86,13 +92,27 @@ public class CouponController {
 	@PutMapping("/{coupon-id}")
 	public ResponseEntity<ResponseMessage> updateCoupon(@PathVariable("coupon-id") Long id,
 		@Valid @ModelAttribute CouponRequest couponRequest) {
-		ResponseMessage message = this.couponService.updateCoupon(id, couponRequest);
+		ResponseMessage message = couponService.updateCoupon(id, couponRequest);
+		return ResponseEntity.status(HttpStatus.OK).body(message);
+	}
+
+	@PutMapping("/book-coupon/{coupon-id}")
+	public ResponseEntity<ResponseMessage> updateBookCoupon(@PathVariable("coupon-id") Long id,
+		@Valid @ModelAttribute CouponRequest couponRequest) {
+		ResponseMessage message = couponService.updateCoupon(id, couponRequest);
+		return ResponseEntity.status(HttpStatus.OK).body(message);
+	}
+
+	@PutMapping("/category-coupon/{coupon-id}")
+	public ResponseEntity<ResponseMessage> updateCategoryCoupon(@PathVariable("coupon-id") Long id,
+		@Valid @ModelAttribute CouponRequest couponRequest) {
+		ResponseMessage message = couponService.updateCoupon(id, couponRequest);
 		return ResponseEntity.status(HttpStatus.OK).body(message);
 	}
 
 	@PutMapping("/{coupon-id}/expire")
 	public ResponseEntity<ResponseMessage> expireCoupon(@PathVariable("coupon-id") Long id) {
-		ResponseMessage message = this.couponService.expireCoupon(id);
+		ResponseMessage message = couponService.expireCoupon(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(message);
 	}
 
