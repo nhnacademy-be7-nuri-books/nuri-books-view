@@ -1,20 +1,20 @@
 package shop.nuribooks.view.common.decoder;
 
 import java.time.Instant;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.Base64;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.exception.CustomJsonProcessingException;
 
 /**
  * access jwt 의 페이로드 값 decoder
  * * @author : nuri
  */
+@Slf4j
 public class JwtDecoder {
 
 	private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -39,25 +39,20 @@ public class JwtDecoder {
 		return getClaimFromJwt(accessToken, "role");
 	}
 
-	/**
-	 * 해당 토큰이 만료되었는 지 확인
-	 *
-	 * <p>
-	 *     만료시간이 현재시간 -1분 기준으로 지났다면 true
-	 *     지나지 않았다면 false
-	 * </p>
-	 *
-	 * @param accessToken 토큰값
-	 * @return 만료되었다면 true, 만료되지 않았다면 false
-	 */
 	public static boolean isExpired(String accessToken) {
-		long exp = Long.parseLong(getClaimFromJwt(accessToken, "exp"));
-
-		ZonedDateTime expirationTime = ZonedDateTime.ofInstant(Instant.ofEpochSecond(exp), ZoneOffset.UTC);
-		ZonedDateTime currentTime = ZonedDateTime.now(ZoneOffset.UTC);
-
-		ZonedDateTime oneMinuteAgo = currentTime.minusMinutes(1);
-		return expirationTime.isBefore(oneMinuteAgo);
+		try {
+			long exp = Long.parseLong(getClaimFromJwt(accessToken, "exp"));
+			Instant expirationInstant = Instant.ofEpochSecond(exp);
+			Instant now = Instant.now();
+			Instant checkTime = expirationInstant.minusSeconds(60 * 5);
+			log.info("expiration : {}", expirationInstant);
+			log.info("check time : {}", checkTime);
+			log.info("now : {}", now);
+			log.info("isExpired : {}", !now.isBefore(checkTime));
+			return !now.isBefore(checkTime);
+		} catch (Exception ex) {
+			return true;
+		}
 	}
 
 	/**
