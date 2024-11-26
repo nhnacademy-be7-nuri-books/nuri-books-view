@@ -73,4 +73,11 @@ public class OrderServiceImpl implements OrderService {
 			.getBody();
 	}
 
+	@Override
+	public Page<OrderListResponse> getCancelledOrderList(OrderListPeriodRequest orderListPeriodRequest,
+		Pageable pageable) {
+		return orderServiceClient.getCancelledOrderList(orderListPeriodRequest, pageable)
+			.getBody();
+	}
+
 }

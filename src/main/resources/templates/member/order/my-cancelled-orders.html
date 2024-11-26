@@ -21,7 +21,7 @@
 
             console.log('includeOrdersInPendingStatus:', includeOrdersInPendingStatus);
 
-            window.location.href = "/orders/list?include-pending=" + includeOrdersInPendingStatus + "&start=" + start + "&end=" + end;
+            window.location.href = "/orders/list?start=" + start + "&end=" + end;
         }
 
         //DATE -> YYYY-MM-DD
@@ -46,19 +46,6 @@
         const setPeriod = (period) => {
             setDateRange(period);
         };
-
-        function updateExcludeUnpaid() {
-            const checkbox = document.getElementById('excludeUnpaid');
-            const hiddenInput = document.getElementById('excludeUnpaidValue');
-
-            if (checkbox.checked) {
-                hiddenInput.value = 'false';
-            } else {
-                hiddenInput.value = 'true';
-            }
-
-            console.log('hiddenInput.value:', hiddenInput.value);
-        }
     </script>
 
     <div class="container mt-5">
@@ -68,40 +55,6 @@
                     <h2 class="mb-0">주문 내역</h2>
                 </div>
                 <div class="card-body">
-                    <!-- 주문 상태 표시 -->
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div class="status-step d-flex justify-content-between w-100">
-                            <div class="status-step complete">
-                                <div class="status-text">대기</div>
-                                <span th:text="${pendingCount}">0</span>
-                            </div>
-                            <div class="status-step complete">
-                                <div class="status-text">결제 완료</div>
-                                <span th:text="${paidCount}">0</span>
-                            </div>
-                            <div class="status-step complete">
-                                <div class="status-text">배송중</div>
-                                <span th:text="${shippingCount}">0</span>
-                            </div>
-                            <div class="status-step">
-                                <div class="status-text">배송완료</div>
-                                <span th:text="${completedCount}">0</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Filter Section -->
-                    <div>
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <div>
-                                <input class="form-check-input me-2" id="excludeUnpaid" name="excludeUnpaid"
-                                       onchange="updateExcludeUnpaid()" type="checkbox">
-                                <label class="form-check-label" for="excludeUnpaid">미 결제 건 미포함</label>
-                                <input id="excludeUnpaidValue" name="excludeUnpaidValue" type="hidden">
-                            </div>
-                        </div>
-                    </div>
-
                     <div>
                         <div class="d-flex align-items-center me-3 mb-3">
                             <label class="mb-0 me-3">구매 기간</label>
@@ -142,23 +95,18 @@
                         <td class="text-center">
                             <span th:text="${order.orderedAt.toLocalDate}">주문일자</span>
                             <br>
-                            <span style="font-size: 0.8rem; color: #6c757d;"
-                                  th:text="${order.orderInvoiceNumber != null ? order.orderInvoiceNumber : '송장 번호 미정'}"></span>
                         </td>
                         <td class="text-center" th:text="${order.title}">주문명</td>
                         <td class="text-center" th:text="${order.paymentPrice.intValue()}">주문금액</td>
                         <td class="text-center" th:text="${order.orderState.getKorName()}">상태</td>
                         <td class="text-center">
                             <a class="btn btn-link btn-sm text-primary"
-                               th:href="@{'/orders/detail/{orderId}' (orderId = ${order.orderId})}">상세 보기</a>
-                            <a class="btn btn-link btn-sm text-dark"
-                               th:href="@{'/orders/cancel/{order-id}' (order-id = ${order.orderId})}"
-                               th:if="${order.orderState.getKorName() == '주문 대기' or order.orderState.getKorName() == '결제 완료'}">주문
-                                취소</a>
+                               th:href="@{'/orders/detail/{orderId}?isCancelled=true' (orderId = ${order.orderId})}">상세
+                                보기</a>
                         </td>
                     </tr>
                     <tr th:if="${#lists.isEmpty(pages.content)}">
-                        <td class="text-center text-muted" colspan="4">해당 기간 내의 주문 내역이 없습니다.</td>
+                        <td class="text-center text-muted" colspan="4">해당 기간 내의 취소/환불 내역이 없습니다.</td>
                     </tr>
                     </tbody>
                 </table>

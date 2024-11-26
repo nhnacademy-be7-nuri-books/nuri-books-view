@@ -45,4 +45,9 @@ public interface OrderServiceClient {
 
 	@PostMapping("/api/orders/verify")
 	ResponseEntity<ResponseMessage> verifyOrderInformation(@RequestBody PaymentRequest paymentRequest);
+
+	@GetMapping("/api/orders/cancel")
+	ResponseEntity<Page<OrderListResponse>> getCancelledOrderList(
+		@SpringQueryMap OrderListPeriodRequest orderListPeriodRequest,
+		Pageable pageable);
 }

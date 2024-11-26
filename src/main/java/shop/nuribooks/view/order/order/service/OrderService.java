@@ -24,4 +24,6 @@ public interface OrderService {
 		boolean includeOrdersInPendingStatus, Pageable pageable) throws IOException;
 
 	OrderDetailResponse getOrderDetail(Long orderId, Pageable pageable);
+
+	Page<OrderListResponse> getCancelledOrderList(OrderListPeriodRequest orderListPeriodRequest, Pageable pageable);
 }
