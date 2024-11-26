@@ -29,7 +29,7 @@
                     </div>
                     <div th:if="${isLoggedIn}">
                         <a class="header-item" th:href="@{/api/cart}">
-                            <i class="fas fa-shopping-bag me-2"></i><span class="me-3" id="header-qty2">2</span>
+                            <i class="fas fa-shopping-bag me-2"></i>
                         </a>
                         <form method="post" style="display:inline;" th:action="@{/logout}">
                             <button class="header-item" style="border: none; background: none; padding: 0;"

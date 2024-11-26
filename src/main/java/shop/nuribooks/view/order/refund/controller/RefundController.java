@@ -24,8 +24,6 @@ public class RefundController {
 		RefundInfoResponse refundResponse = refundService.getRefundResponse(orderId);
 
 		model.addAttribute("orderId", orderId);
-		model.addAttribute("pages", refundResponse.orderItems());
-		model.addAttribute("payment", refundResponse.payment());
 		model.addAttribute("refundInfo", refundResponse.refundInfo());
 
 		return "member/order/refund/refund";
