@@ -1,28 +1,40 @@
-<div th:fragment="totalInfo" id="payment-amount-container">
+<div id="payment-amount-container" th:fragment="totalInfo">
     <h5>결제 금액</h5>
     <div class="form-group">
         <!-- 배송비 -->
         <div class="mb-3">
-            <label for="shipping-cost" class="font-weight-bold">배송비</label>
-            <div id="shipping-cost" th:text="${orderInformation.shippingFee}">3000</div>
+            <label class="font-weight-bold" for="shipping-cost">배송비</label>
+            <div id="shipping-cost" th:text="${shippingInfo.shippingFee}">3000</div>
         </div>
 
         <!-- 도서 전체 금액 -->
         <div class="mb-3">
-            <label for="book-list-amount" class="font-weight-bold">도서 전체 금액</label>
+            <label class="font-weight-bold" for="book-list-amount">도서 전체 금액</label>
             <div id="book-list-amount">3000</div>
+        </div>
+
+        <!-- 쿠폰 적용 전체 금액 -->
+        <div class="mb-3">
+            <label class="font-weight-bold" for="apply-coupon-point">쿠폰 적용 시 금액</label>
+            <div id="apply-coupon-point">0</div>
+        </div>
+
+        <!-- 포장비 -->
+        <div class="mb-3">
+            <label class="font-weight-bold" for="wrapping-amount">포장비</label>
+            <div id="wrapping-amount">0</div>
         </div>
 
         <!-- 포인트 -->
         <div class="mb-3">
-            <label for="use-point" class="font-weight-bold">사용 포인트</label>
+            <label class="font-weight-bold" for="use-point">사용 포인트</label>
             <div id="use-point">0</div>
         </div>
 
         <!-- 총 결제 금액 -->
         <div class="mb-3">
-            <label for="total-amount" class="font-weight-bold">총 결제 금액</label>
-            <div type="text" class="form-control" id="total-amount">111</div>
+            <label class="font-weight-bold" for="total-amount">총 결제 금액</label>
+            <div class="form-control" id="total-amount" type="text">111</div>
         </div>
     </div>
 

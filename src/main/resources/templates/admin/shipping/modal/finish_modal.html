@@ -1,0 +1,43 @@
+<div th:fragment="finish_modal">
+    <script>
+        const completeHandler = (url) => {
+            fetch(url + "/delivery-complete/" + data, {
+                method: 'PUT',
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        response.json().then(data => {
+                            showMessage("수정 실패 \n" + data.message)
+                        });
+                    } else {
+                        refreshList();
+                        showMessage();
+                    }
+                })
+                .catch(error => {
+                    showMessage(error);
+                });
+            $('#finish-modal').modal('hide');
+        }
+    </script>
+    <div id="finish-modal" class="modal fade" tabindex="-1" aria-labelledby="editPolicyModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editPolicyModalLabel">배송 상태 변경</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <p>배송을 완료하시겠습니까?</p>
+                        <button type="button" class="btn btn-primary"
+                                onclick="completeHandler('/admin/shipping')">배송 완료
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,92 @@
+<html lang="en" layout:decorate="~{member/layout/memberlayout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+<div layout:fragment="content" style="margin-left: 90px; margin-right: 90px;">
+    <script th:inline="javascript"></script>
+    <div th:replace="~{admin/fragment/js-utils::utils}"></div>
+
+    <!--    <div class="card">-->
+    <!--        <div class="card-header bg-primary text-white">-->
+    <!--            <h2 class="mb-0">주문 상세</h2>-->
+    <!--        </div>-->
+
+    <!--        <br/>-->
+
+    <!--        <div class="card-body">-->
+    <!--            <h4 class="mb-0 p-3">주문한 도서 목록</h4>-->
+    <!--            &lt;!&ndash;Order Table&ndash;&gt;-->
+    <!--            <table class="table table-hover" id="data-table1">-->
+    <!--                <thead class="table-light">-->
+    <!--                <tr>-->
+    <!--                    <th class="text-center">도서명</th>-->
+    <!--                    <th class="text-center">판매가</th>-->
+    <!--                    <th class="text-center">수량</th>-->
+    <!--                    <th class="text-center">구매가</th>-->
+    <!--                    <th class="text-center">진행현황</th>-->
+    <!--                </tr>-->
+    <!--                </thead>-->
+    <!--                <tbody>-->
+    <!--                <tr th:each="orderDetail : ${pages.content}">-->
+    <!--                    <td class="text-center">-->
+    <!--                        <img alt="상품 이미지" class="img-fluid mr-3"-->
+    <!--                             th:src="@{${orderDetail.thumbnailImageUrl}}">-->
+    <!--                        <span th:text="${orderDetail.title}">책 이름</span>-->
+    <!--                    </td>-->
+    <!--                    <td class="text-center" th:text="${orderDetail.price.intValue()}">판매가</td>-->
+    <!--                    <td class="text-center" th:text="${orderDetail.bookCount}">주문금액</td>-->
+    <!--                    <td class="text-center" th:text="${orderDetail.discountedPrice.intValue()}">구매가</td>-->
+    <!--                    <td class="text-center" th:text="${orderDetail.orderState.getKorName()}">상채</td>-->
+    <!--                </tr>-->
+    <!--                </tbody>-->
+    <!--            </table>-->
+    <!--            <div th:replace="fragments/page::page"></div>-->
+    <!--        </div>-->
+
+    <!-- 결제 정보 -->
+    <div class="card-body">
+        <h4 class="mb-0 p-3">환불 받을 정보</h4>
+
+        <!-- 주문 금액 -->
+        <div class="row mb-3 py-2" style="border-bottom: 1px solid #dee2e6;">
+            <div class="col px-3 py-2" style="border-right: 1px solid #dee2e6;">
+                <div class="d-flex justify-content-between">
+                    <span class="fw-bold ">주문 금액</span>
+                    <span class="fw-bold text-primary" th:text="${refundInfo.paymentAmount()}"></span>
+                </div>
+                <!--                    <div class="d-flex justify-content-between">-->
+                <!--                        <span class="text-muted small">총 상품 금액</span>-->
+                <!--                        <span class="text-muted small">000원</span>-->
+                <!--                    </div>-->
+                <!--                    <div class="d-flex justify-content-between">-->
+                <!--                        <span class="text-muted small">배송비</span>-->
+                <!--                        <span class="text-muted small">000원</span>-->
+                <!--                    </div>-->
+            </div>
+
+            <div class="col px-3 py-2 " style="border-right: 1px solid #dee2e6;">
+                <div class="d-flex justify-content-between">
+                    <span class="fw-bold ">차감 금액</span>
+                    <span class="fw-bold text-primary" th:text="${refundInfo.deductedAmount()}"></span>
+                </div>
+            </div>
+
+            <div class="col px-3 py-2">
+                <div class="d-flex justify-content-between">
+                    <span class="fw-bold ">환불 받을 포인트</span>
+                    <span class="fw-bold text-primary" th:text="${refundInfo.totalRefundAmount()}"></span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <form method="post" th:action="@{/orders/refunds/{order-id}(order-id=${orderId})}">
+        <label class="form-label" for="reason">환불 사유</label>
+        <textarea class="form-control" cols="50" id="reason" name="reason"
+                  placeholder="환불 사유를 작성해 주세요"></textarea>
+        <input name="refundAmount" th:value="${refundInfo.totalRefundAmount()}" type="hidden">
+        <div class="d-flex justify-content-center align-items-center py-5">
+            <button class="btn btn-secondary btn-lg" type="submit">환불하기</button>
+        </div>
+    </form>
+</div>
+</html>

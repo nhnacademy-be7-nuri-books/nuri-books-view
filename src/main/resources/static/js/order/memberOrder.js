@@ -4,12 +4,12 @@ main();
 async function main() {
 
     const totalCount = countBooks();
-    const totalPrice = calculateTotalPrice();
 
     const button = document.getElementById("payment-button");
     const coupon = document.getElementById("order-coupon-list");
     document.getElementById("total-items").textContent = totalCount;
 
+    let totalPrice = calculateTotalPrice();
     const amount = {
         currency: "KRW",
         value: totalPrice,
@@ -47,24 +47,6 @@ async function main() {
     // @docs https://docs.tosspayments.com/reference/widget-sdk#renderagreement선택자-옵션
     await widgets.renderAgreement({selector: "#agreement", variantKey: "AGREEMENT"});
 
-    // ------  주문서의 결제 금액이 변경되었을 경우 결제 금액 업데이트 ------
-    // @docs https://docs.tosspayments.com/sdk/v2/js#widgetssetamount
-    // coupon.addEventListener("change", async function () {
-    //     if (coupon.checked) {
-    //         await widgets.setAmount({
-    //             currency: "KRW",
-    //             value: amount.value - 5000,
-    //         });
-    //
-    //         return;
-    //     }
-    //
-    //     await widgets.setAmount({
-    //         currency: "KRW",
-    //         value: amount,
-    //     });
-    // });
-
     const selectedRadio = document.querySelector('input[name="deliveryDate"]:checked');
     let selectedDate = null;
 
@@ -82,10 +64,21 @@ async function main() {
         }
     }
 
+    let isPaymentInProgress = false;
+
     // ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
     // @docs https://docs.tosspayments.com/sdk/v2/js#widgetsrequestpayment
     button.addEventListener("click", async function () {
 
+        if (isPaymentInProgress) return;
+        isPaymentInProgress = true;
+
+        totalPrice = calculateTotalPrice();
+
+        await widgets.setAmount({
+            currency: "KRW",
+            value: totalPrice,
+        });
 
         // 검증
         let valid = true;
@@ -160,23 +153,24 @@ async function main() {
 
         // 임시 주문 정보
         let orderData = {
-            paymentPrice: getAllSalePrices(),  // 순수 도서 가격
-            wrappingPrice: 2000,   // 포장 비용 예시 - todo: 이후 id로 변경하기
+            paymentPrice: totalPrice,  // 총 결제 가격
+            paymentBooks: getAllSalePrices(),  // 순수 도서 가격
             expectedDeliveryAt: selectedDate,
             orderDetails: bookList,  // 주문 상세
             shippingRegister: shippingRegister,  // 배송 정보
             customerRegister: null, // 회원 정보
             usingPoint: updateFinalPrice(),
-            allAppliedCoupon: null,
-            wrapping: null
+            allAppliedCoupon: document.getElementById("usingAllCouponId").value,
+            wrapping: document.getElementById("packagingId").value,   // 포장 비용 예시
+            wrappingList: document.getElementById("selectedBooksHidden").value
         };
 
         console.log(orderData);
 
-        console.log(JSON.stringify(orderData));
-        // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
-        // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
         try {
+            console.log(JSON.stringify(orderData));
+            // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
+            // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
             const apiUrl = window.location.origin + "/orders/save";
             const response = await fetch(apiUrl, {
                 method: 'POST',
@@ -187,11 +181,10 @@ async function main() {
             });
 
             const result = await response.json();
-            console.log(result);
 
             if (response.ok) {
                 await widgets.requestPayment({
-                    orderId: "NB-ORDER-0000000" + result.orderId,
+                    orderId: "NB-M-ORDER-0000000" + result.orderId,
                     orderName: result.orderName,
                     successUrl: window.location.origin + "/payments/success",
                     failUrl: window.location.origin + "/payments/fail",
@@ -200,12 +193,17 @@ async function main() {
                     customerMobilePhone: document.getElementById('customer-phone').textContent,
                 });
             } else {
-                throw new Error("주문 정보를 저장하는 데 실패했습니다. 결제 수단 또는 정보를 확인해주세요.");
-            }
+                // 에러 메시지 출력
+                console.error("에러 코드:", result.status);
+                console.error("에러 메시지:", result.message);
 
-        } catch (error) {
-            console.error('주문 정보 저장 중 오류 발생:', error);
-            alert('주문 저장 실패. 다시 시도해주세요.');
+                // 사용자에게 에러 메시지 표시
+                throw new Error(`주문 정보 저장 실패: ${result.message}`);
+            }
+        } catch {
+            alert(`주문 정보를 저장하는 데 실패했습니다. 사유: ${result.message}`);
+        } finally {
+            isPaymentInProgress = false;  // 결제 처리 완료
         }
 
     });
@@ -223,22 +221,30 @@ function getAllSalePrices() {
         return parseInt(element.textContent.replace(/[^\d]/g, ''));
     })
 
-    console.log("순수 책 가격: " + salePrices);  // 예시: [15000, 15000]
-    return salePrices;
+    return salePrices.reduce((total, price) => total + price, 0);
 }
 
 // 총 결제 금액을 계산하고 input 필드에 값을 넣기
 function calculateTotalPrice() {
-    const salePrices = getAllSalePrices();  // 모든 세일가 값을 가져옴
     const shippingPrice = document.getElementById('shipping-cost').textContent // 배송비
+    const wrappingPrice = document.getElementById('wrapping-amount').textContent // 포장비
     const usePoint = updateFinalPrice(); // 사용 포인트
-    let bookListPrice = salePrices.reduce((total, price) => total + price, 0); // 도서 가격
-    let totalPrice = bookListPrice + parseInt(shippingPrice, 10) - usePoint; // 총 결제 금액 계산
+    let bookListPrice = getAllSalePrices(); // 도서 가격
+    let couponApplyPrice = document.getElementById("apply-coupon-point").innerText // 쿠폰 적용 금액
+    let totalPrice;
 
+    if (couponApplyPrice === "0") {
+        totalPrice = bookListPrice + parseInt(shippingPrice, 10) + parseInt(wrappingPrice, 10) - usePoint; // 총 결제 금액 계산
+    } else {
+        totalPrice = parseInt(couponApplyPrice, 10) + parseInt(shippingPrice, 10) + parseInt(wrappingPrice, 10) - usePoint; // 총 결제 금액 계산
+    }
+
+    // 총 결제 금액을 input 필드에 넣기
     document.getElementById('book-list-amount').textContent = bookListPrice;
     document.getElementById('total-amount').textContent = totalPrice;
 
     console.log("사용 포인트: %d", usePoint);
+    console.log("포장비: " + wrappingPrice);
     console.log("배송비: " + shippingPrice);
     console.log("총 결제 가격: " + totalPrice);
     return totalPrice;  // 포맷된 가격 반환
@@ -302,7 +308,6 @@ function updateFinalPrice() {
         calculateTotalPrice();
     });
 
-    console.log(finalPointLabel.textContent);
     // 최종 결제 금액 업데이트
     return parseInt(finalPointLabel.textContent, 10);
 
