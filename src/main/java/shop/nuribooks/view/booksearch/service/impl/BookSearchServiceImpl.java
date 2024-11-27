@@ -17,8 +17,9 @@ public class BookSearchServiceImpl implements BookSearchService {
 	private final BookSearchServiceClient bookSearchServiceClient;
 
 	@Override
-	public Page<BookSearchResponse> getSearchResult(String keyword, SearchType searchType, SortType sortType,
+	public Page<BookSearchResponse> getSearchResult(String keyword, Long categoryId, SearchType searchType,
+		SortType sortType,
 		Pageable pageable) {
-		return this.bookSearchServiceClient.getSearchResult(keyword, searchType, sortType, pageable);
+		return bookSearchServiceClient.getSearchResult(keyword, categoryId, searchType, sortType, pageable);
 	}
 }
