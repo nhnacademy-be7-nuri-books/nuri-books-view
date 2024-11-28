@@ -40,9 +40,20 @@ public interface OrderServiceClient {
 		@RequestParam boolean includeOrdersInPendingStatus,
 		Pageable pageable);
 
+	@GetMapping("/api/orders/non-member/{customer-id}")
+	ResponseEntity<Page<OrderListResponse>> getNonMemberOrderList(
+		@SpringQueryMap OrderListPeriodRequest orderListPeriodRequest,
+		@RequestParam boolean includeOrdersInPendingStatus,
+		Pageable pageable,
+		@PathVariable("customer-id") Long customerId);
+
 	@GetMapping("/api/orders/details/{order-id}")
 	ResponseEntity<OrderDetailResponse> getOrderDetail(@PathVariable("order-id") Long orderId,
 		Pageable pageable);
+
+	@GetMapping("/api/orders/{order-id}/non-member/{customer-id}")
+	ResponseEntity<OrderDetailResponse> getNonMemberOrderDetail(@PathVariable("order-id") Long orderId,
+		@PathVariable("customer-id") Long customerId, Pageable pageable);
 
 	@PostMapping("/api/orders/verify")
 	ResponseEntity<ResponseMessage> verifyOrderInformation(@RequestBody PaymentRequest paymentRequest);
