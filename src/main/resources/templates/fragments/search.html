@@ -1,13 +1,14 @@
 <div th:fragment="search">
-    <form th:action="@{/search}" method="get">
+
+    <form method="get" th:action="@{/search}">
         <div class="input-group">
             <!-- 검색 타입 드롭다운 -->
             <div class="dropdown">
                 <button
                         class="btn btn-outline-secondary dropdown-toggle"
-                        type="button"
                         id="searchTypeDropdown"
-                        onclick="toggleDropdown()">
+                        onclick="toggleDropdown()"
+                        type="button">
                     <span id="selectedSearchType">통합 검색</span>
                 </button>
                 <ul class="dropdown-menu" id="dropdownMenu">
@@ -16,13 +17,15 @@
             </div>
             <!-- 검색어 입력 -->
             <input
-                    type="search"
                     class="form-control"
                     name="keyword"
                     placeholder="검색어를 입력하세요"
+                    required
                     th:value="${param.keyword}"
-                    required>
-            <input type="hidden" name="search_type" id="searchType" value="ALL">
+                    type="search">
+            <input id="searchType" name="search_type" type="hidden" value="ALL">
+            <input id="category_id" name="category_id" th:if="${categoryId != null}" th:value="${categoryId}"
+                   type="hidden">
             <!-- 검색 버튼 -->
             <button class="btn btn-dark" type="submit">
                 <i class="fas fa-search"></i>

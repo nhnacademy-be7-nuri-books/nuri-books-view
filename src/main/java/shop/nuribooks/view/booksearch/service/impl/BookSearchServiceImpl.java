@@ -1,5 +1,7 @@
 package shop.nuribooks.view.booksearch.service.impl;
 
+import java.util.Objects;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,9 @@ public class BookSearchServiceImpl implements BookSearchService {
 	public Page<BookSearchResponse> getSearchResult(String keyword, Long categoryId, SearchType searchType,
 		SortType sortType,
 		Pageable pageable) {
-		return bookSearchServiceClient.getSearchResult(keyword, categoryId, searchType, sortType, pageable);
+		if (Objects.nonNull(categoryId))
+			return bookSearchServiceClient.getSearchResult(keyword, categoryId, searchType, sortType, pageable);
+		else
+			return bookSearchServiceClient.getSearchResultWithoutCategoryId(keyword, searchType, sortType, pageable);
 	}
 }

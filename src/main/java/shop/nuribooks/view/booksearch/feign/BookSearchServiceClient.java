@@ -21,4 +21,12 @@ public interface BookSearchServiceClient {
 		@RequestParam(name = "sort_type", required = false, defaultValue = "ACCURACY") SortType sortType,
 		@PageableDefault Pageable pageable
 	);
+
+	@GetMapping("/api/books/search")
+	Page<BookSearchResponse> getSearchResultWithoutCategoryId(
+		@RequestParam("keyword") String keyword,
+		@RequestParam(name = "search_type", required = false, defaultValue = "ALL") SearchType searchType,
+		@RequestParam(name = "sort_type", required = false, defaultValue = "ACCURACY") SortType sortType,
+		@PageableDefault Pageable pageable
+	);
 }

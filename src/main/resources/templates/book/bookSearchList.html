@@ -175,6 +175,47 @@
         .sort-menu.show {
             display: block;
         }
+
+        .right-container {
+            display: flex; /* Flexbox 활성화 */
+            flex-direction: column; /* 세로로 정렬 */
+            align-items: flex-end; /* 오른쪽 정렬 */
+            gap: 10px; /* 요소 간 간격 */
+            margin-right: 10px; /* 오른쪽 여백 */
+        }
+
+    </style>
+    <style>
+        .category-tag {
+            display: inline-flex;
+            align-items: center;
+            background-color: #4c4b4b; /* 블럭 배경색: 검은색 */
+            color: #fff; /* 글자색: 하얀색 */
+            padding: 10px 15px;
+            border-radius: 8px; /* 각 꼭짓점 둥글게 */
+            margin: 5px; /* 태그 간 여백 */
+            font-size: 14px;
+            white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+        }
+
+        .category-text {
+            margin-right: 10px; /* 텍스트와 버튼 간 간격 */
+        }
+
+        .delete-button {
+            background-color: #e65757; /* 버튼 배경색: 붉은색 */
+            color: #fff; /* 버튼 글자색: 하얀색 */
+            border: none;
+            border-radius: 4px; /* 버튼 모서리 둥글게 */
+            padding: 5px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .delete-button:hover {
+            background-color: #e34f4f; /* 버튼 hover 시 더 진한 붉은색 */
+        }
     </style>
 
     <script th:inline="javascript">
@@ -211,31 +252,58 @@
                 });
             }
         })
+
+        function removeCategoryTag() {
+            // `categoryId`를 가진 요소를 찾아 삭제
+            const categoryId = document.getElementById('category_id');
+            const url = new URL(window.location.href);
+            if (categoryId) {
+                url.searchParams.delete('category_id');
+                categoryId.remove();
+            }
+            const categoryTag = document.getElementById('category_tag');
+            if (categoryTag) {
+                categoryTag.remove();
+            }
+            window.location.href = url.toString();
+        }
     </script>
 </head>
 <body>
 <div layout:fragment="content">
     <div class="header-container">
         <h1 class="header-title">검색된 도서</h1>
-        <div class="sort-dropdown">
-            <button class="sort-button" onclick="toggleSortDropdown()">
-                <span id="selectedSortType">정렬 선택</span>
-                <i class="fas fa-chevron-down"></i>
-            </button>
-            <ul class="sort-menu" id="sortMenu">
-                <li onclick="setSortType(this)"
-                    th:data-sort-type="${sort_type.name()}"
-                    th:each="sort_type : ${sort_types}"
-                    th:text="${sort_type.getKorName()}"></li>
-            </ul>
+        <div class="right-container">
+            <div>
+                <span>정렬 기준: </span>
+                <div class="sort-dropdown">
+                    <button class="sort-button" onclick="toggleSortDropdown()">
+                        <span id="selectedSortType">정렬 선택</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <ul class="sort-menu" id="sortMenu">
+                        <li onclick="setSortType(this)"
+                            th:data-sort-type="${sort_type.name()}"
+                            th:each="sort_type : ${sort_types}"
+                            th:text="${sort_type.getKorName()}"></li>
+                    </ul>
+                </div>
+            </div>
+            <div id="category_tag" th:if="${categoryName != null}">
+                <span>현재 검색한 카테고리: </span>
+                <div class="category-tag">
+                    <span class="category-text" th:text="${categoryName.name}">카테고리 이름</span>
+                    <button class="delete-button" onclick="removeCategoryTag()">X</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- 도서 목록 리스트형 스타일 -->
     <div class="container book-list">
         <div class="book-item" th:each="book : ${pages.content}">
-            <a class="book-thumbnail"
-               th:href="@{/view/book/details/{bookId}(bookId=${book.id})}">
+            <a class="book-thumbnail" th:href="@{/view/book/details/{bookId}(bookId=${book.id})}"
+               x>
                 <img alt="도서 이미지" th:src="${book.thumbnail_image_url}">
             </a>
             <div class="book-details">
