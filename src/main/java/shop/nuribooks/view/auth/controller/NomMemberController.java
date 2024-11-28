@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.auth.dto.request.NonMemberRequest;
@@ -31,15 +32,22 @@ public class NomMemberController {
 	}
 
 	@PostMapping("/non-member")
-	public String doNonMember(RedirectAttributes redirectAttributes, NonMemberRequest loginRequest) {
+	public String doNonMember(HttpSession session, RedirectAttributes redirectAttributes,
+		NonMemberRequest loginRequest) {
 		String returnMessage = nonmemberService.checkNonMember(loginRequest);
 		if (returnMessage.startsWith(successMessageKey)) {
 			redirectAttributes.addFlashAttribute(successMessageKey, "비회원 주문 목록을 불러옵니다.");
 			Long customerId = Long.parseLong(returnMessage.split(" ")[1]);
 			String email = returnMessage.split(" ")[2];
 
-			redirectAttributes.addFlashAttribute("customerId", customerId);
-			redirectAttributes.addFlashAttribute("email", email);
+			// 1. redirectAttributes 사용
+			// redirectAttributes.addFlashAttribute("customerId", customerId);
+			// redirectAttributes.addFlashAttribute("email", email);
+
+			// 2. session 사용
+			session.setAttribute("customerId", customerId);
+			session.setAttribute("email", email);
+
 			return "redirect:/non-member/orders";
 		} else {
 			redirectAttributes.addFlashAttribute(errorMessageKey, "비회원 주문 목록 조회에 실패하였습니다.");

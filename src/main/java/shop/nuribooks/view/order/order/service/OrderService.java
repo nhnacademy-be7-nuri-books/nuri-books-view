@@ -24,6 +24,9 @@ public interface OrderService {
 	Page<OrderListResponse> getOrderList(OrderListPeriodRequest orderListPeriodRequest,
 		boolean includeOrdersInPendingStatus, Pageable pageable) throws IOException;
 
+	Page<OrderListResponse> getNonMemberOrderList(OrderListPeriodRequest orderListPeriodRequest,
+		boolean includeOrdersInPendingStatus, Pageable pageable, Long customerId) throws IOException;
+
 	OrderDetailResponse getOrderDetail(Long orderId, Pageable pageable);
 
 	Page<OrderListResponse> getCancelledOrderList(OrderListPeriodRequest orderListPeriodRequest, Pageable pageable);
