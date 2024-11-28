@@ -35,8 +35,8 @@
                         <!--                        <th class="text-center">쿠폰 유형</th>-->
                         <!--                        <th class="text-center">정책 유형</th>-->
                         <th class="text-center">할인 할당량</th>
-                        <th class="text-center">최소 주문 금액</th>
-                        <th class="text-center">최대 할인 금액</th>
+                        <!--                        <th class="text-center">최소 주문 금액</th>-->
+                        <!--                        <th class="text-center">최대 할인 금액</th>-->
                         <th class="text-center">생성일</th>
                         <th class="text-center">만료일</th>
                         <th class="text-center">기간</th>
@@ -55,8 +55,8 @@
                             th:text="${coupon.discount.intValue() + ' ' + (coupon.policyType.toString().equals('RATED') ? '%' : '₩')}">
                             할인 할당량
                         </td>
-                        <td class="text-center" th:text="${coupon.minimumOrderPrice.intValue()}">최소 주문 금액</td>
-                        <td class="text-center" th:text="${coupon.maximumDiscountPrice.intValue()}">최대 할인 금액</td>
+                        <!--                        <td class="text-center" th:text="${coupon.minimumOrderPrice.intValue()}">최소 주문 금액</td>-->
+                        <!--                        <td class="text-center" th:text="${coupon.maximumDiscountPrice.intValue()}">최대 할인 금액</td>-->
                         <td class="text-center" th:text="${coupon.createdAt}">생성일</td>
                         <td class="text-center" th:text="${coupon.expiredAt}">만료일</td>
                         <td class="text-center" th:text="${coupon.period}">기간</td>
@@ -67,6 +67,10 @@
                         </td>
                         <td class="text-end">
                             <!-- 수정 버튼 (수정 모달 트리거) -->
+                            <a class="btn btn-outline-secondary btn-sm"
+                               th:href="@{/admin/coupon/detail/{coupon-id}(coupon-id=${coupon.id})}">
+                                <i class="fas fa-eye me-2"></i>자세히</a>
+
                             <button class="btn btn-outline-secondary btn-sm" data-bs-target="#update-modal"
                                     data-bs-toggle="modal"
                                     th:onclick="'loadCouponData(' + ${coupon.id} + ')'">

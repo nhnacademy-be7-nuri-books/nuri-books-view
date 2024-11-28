@@ -85,6 +85,24 @@ public class CouponController {
 		return "admin/coupon/coupon";
 	}
 
+	/**
+	 * 쿠폰 상세 조회
+	 * @param couponId
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/detail/{coupon-id}")
+	public String getCouponDetail(@PathVariable(name = "coupon-id") Long couponId,
+		Model model) {
+		CouponResponse couponResponse = couponService.getCouponById(couponId);
+		model.addAttribute("coupon", couponResponse);
+		model.addAttribute("policyTypes", PolicyType.values());
+		model.addAttribute("couponTypes", CouponType.values());
+		model.addAttribute("expirationTypes", ExpirationType.values());
+
+		return "admin/coupon/coupon_detail";
+	}
+
 	@GetMapping("/{couponId}")
 	public ResponseEntity<CouponResponse> getCoupon(@PathVariable Long couponId) {
 		CouponResponse couponResponse = couponService.getCouponById(couponId);
