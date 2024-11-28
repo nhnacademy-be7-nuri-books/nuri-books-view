@@ -42,14 +42,43 @@ public class CouponController {
 	private final CouponService couponService;
 	private final AdminCategoryService adminCategoryService;
 
+	/**
+	 * 쿠폰 타입 별로 조회
+	 * @param model
+	 * @param pageable
+	 * @param type
+	 * @return
+	 */
 	@GetMapping
 	public String getCoupons(Model model, @PageableDefault Pageable pageable,
-		@RequestParam(value = "type", defaultValue = "ALL") CouponType type) {
+		@RequestParam(value = "type", defaultValue = "MiXED") CouponType type) {
 		Page<CouponResponse> coupons = couponService.getCoupons(type, pageable);
 		model.addAttribute("pages", coupons);
 		model.addAttribute("policyTypes", PolicyType.values());
 		model.addAttribute("couponTypes", CouponType.values());
 		model.addAttribute("type", type);
+		model.addAttribute("expirationTypes", ExpirationType.values());
+
+		List<BookResponse> books = bookService.getAllBooks();
+		model.addAttribute("books", books);
+		return "admin/coupon/coupon";
+	}
+
+	/**
+	 * 모든 쿠폰 한번에 조회
+	 * @param model
+	 * @param pageable
+	 * @return
+	 */
+	@GetMapping("/list")
+	public String getAllCoupons(Model model, @PageableDefault Pageable pageable) {
+
+		Page<CouponResponse> combinedCoupons = couponService.getAllCoupons(pageable);
+
+		model.addAttribute("pages", combinedCoupons);
+		model.addAttribute("policyTypes", PolicyType.values());
+		model.addAttribute("couponTypes", CouponType.values());
+		model.addAttribute("type", "MIXED");
 		model.addAttribute("expirationTypes", ExpirationType.values());
 
 		List<BookResponse> books = bookService.getAllBooks();

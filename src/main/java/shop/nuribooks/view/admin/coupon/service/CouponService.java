@@ -16,6 +16,8 @@ import shop.nuribooks.view.common.dto.ResponseMessage;
 public interface CouponService {
 	Page<CouponResponse> getCoupons(CouponType type, Pageable pageable);
 
+	Page<CouponResponse> getAllCoupons(Pageable pageable);
+
 	BookCouponResponse getBookCoupon(Long id);
 
 	CategoryCouponResponse getCategoryCoupon(Long id);
