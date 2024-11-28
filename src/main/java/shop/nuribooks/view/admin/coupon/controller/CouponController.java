@@ -71,11 +71,9 @@ public class CouponController {
 	 * @return
 	 */
 	@GetMapping("/list")
-	public String getAllCoupons(Model model, @PageableDefault Pageable pageable) {
-
-		Page<CouponResponse> combinedCoupons = couponService.getAllCoupons(pageable);
-
-		model.addAttribute("pages", combinedCoupons);
+	public String getCoupons(Model model, @PageableDefault Pageable pageable) {
+		Page<CouponResponse> coupons = this.couponService.getAllCoupons(pageable);
+		model.addAttribute("pages", coupons);
 		model.addAttribute("policyTypes", PolicyType.values());
 		model.addAttribute("couponTypes", CouponType.values());
 		model.addAttribute("expirationTypes", ExpirationType.values());
