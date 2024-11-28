@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout1}">
+<html layout:decorate="~{layouts/layout1}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <div layout:fragment="content">
     <!-- Main Content -->
     <div class="row">
@@ -13,72 +13,74 @@
             <div class="text-center mb-4">
                 <p>Please fill in your details to register.</p>
             </div>
-            <form class="row" th:action="@{/sign-up}" method="post" id="register_form">
+            <form class="row" id="register_form" method="post" th:action="@{/sign-up}">
                 <div class="col-md-12 form-group mb-3">
                     <label for="username">아이디</label>
-                    <input type="text" class="form-control" id="username" name="username"
-                           th:value="${userRequest?.username ?: ''}" placeholder="아이디"
-                           onfocus="this.placeholder = ''" onblur="this.placeholder = '아이디'" required>
+                    <input class="form-control" id="username" name="username" onblur="this.placeholder = '아이디'"
+                           onfocus="this.placeholder = ''" placeholder="아이디"
+                           required th:value="${userRequest?.username ?: ''}" type="text">
+                    <small class="form-text text-muted" id="usernameError" style="display:none;"></small>
                 </div>
                 <div class="col-md-12 form-group mb-3">
                     <label>성별:</label>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="gender" id="male" value="MALE">
+                        <input class="form-check-input" id="male" name="gender" type="radio" value="MALE">
                         <label class="form-check-label" for="male">남성</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="gender" id="female" value="FEMALE">
+                        <input class="form-check-input" id="female" name="gender" type="radio" value="FEMALE">
                         <label class="form-check-label" for="female">여성</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="gender" id="other" value="OTHER" checked>
+                        <input checked class="form-check-input" id="other" name="gender" type="radio" value="OTHER">
                         <label class="form-check-label" for="other">기타</label>
                     </div>
                 </div>
                 <div class="col-md-12 form-group mb-3">
                     <label for="name">이름</label>
-                    <input type="text" class="form-control" id="name" name="name"
-                           th:value="${userRequest?.name ?: ''}" placeholder="이름"
-                           onfocus="this.placeholder = ''" onblur="this.placeholder = '이름'" required>
+                    <input class="form-control" id="name" name="name" onblur="this.placeholder = '이름'"
+                           onfocus="this.placeholder = ''" placeholder="이름"
+                           required th:value="${userRequest?.name ?: ''}" type="text">
+                    <small class="form-text text-muted" id="nameError" style="display:none;"></small>
                 </div>
                 <div class="col-md-12 form-group mb-3">
                     <label for="email">이메일 주소</label>
-                    <input type="email" class="form-control" id="email" name="email"
-                           th:value="${userRequest?.email ?: ''}" placeholder="이메일 주소"
-                           onfocus="this.placeholder = ''" onblur="this.placeholder = '이메일 주소'" required>
+                    <input class="form-control" id="email" name="email" onblur="this.placeholder = '이메일 주소'"
+                           onfocus="this.placeholder = ''" placeholder="이메일 주소"
+                           required th:value="${userRequest?.email ?: ''}" type="email">
+                    <small class="form-text text-muted" id="emailError" style="display:none;"></small>
                 </div>
                 <div class="col-md-6 form-group mb-3">
                     <label for="password">비밀번호</label>
-                    <input type="password" class="form-control" id="password" name="password"
-                           placeholder="비밀번호" onfocus="this.placeholder = ''"
-                           onblur="this.placeholder = '비밀번호'" required>
+                    <input class="form-control" id="password" name="password" onblur="this.placeholder = '비밀번호'"
+                           onfocus="this.placeholder = ''" placeholder="비밀번호"
+                           required type="password">
+                    <small class="form-text text-muted" id="passwordError" style="display:none;"></small>
                 </div>
                 <div class="col-md-6 form-group mb-3">
                     <label for="confirmPassword">비밀번호 확인</label>
-                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
-                           placeholder="비밀번호 확인" onfocus="this.placeholder = ''"
-                           onblur="this.placeholder = '비밀번호 확인'" required>
+                    <input class="form-control" id="confirmPassword" name="confirmPassword"
+                           onblur="this.placeholder = '비밀번호 확인'"
+                           onfocus="this.placeholder = ''" placeholder="비밀번호 확인"
+                           required type="password">
+                    <small class="form-text text-muted" id="passwordMatchError" style="display:none;"></small>
                 </div>
                 <div class="col-md-12 form-group mb-3">
                     <label for="phoneNumber">전화번호</label>
-                    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
-                           th:value="${userRequest?.phoneNumber ?: ''}" placeholder="전화번호"
-                           onfocus="this.placeholder = ''" onblur="this.placeholder = '전화번호'" required>
+                    <input class="form-control" id="phoneNumber" name="phoneNumber" onblur="this.placeholder = '전화번호'"
+                           onfocus="this.placeholder = ''" placeholder="전화번호"
+                           required th:value="${userRequest?.phoneNumber ?: ''}" type="text">
+                    <small class="form-text text-muted" id="phoneNumberError" style="display:none;"></small>
                 </div>
                 <div class="col-md-12 form-group mb-3">
-                    <label for="birth">생일</label>
-                    <input type="date" class="form-control" id="birth" name="birthday"
-                           th:value="${userRequest?.birthday ?: ''}" onfocus="this.placeholder = ''"
-                           onblur="this.placeholder = '생일'" required>
+                    <label for="birthday">생일</label>
+                    <input class="form-control" id="birthday" name="birthday" onblur="this.placeholder = '생일'"
+                           onfocus="this.placeholder = ''" required
+                           th:value="${userRequest?.birthday ?: ''}" type="date">
+                    <small class="form-text text-muted" id="birthdayError" style="display:none;"></small>
                 </div>
                 <div class="col-md-12 form-group mb-3">
-                    <div class="creat_account">
-                        <input type="checkbox" id="f-option2" name="selector">
-                        <label for="f-option2">로그인 유지</label>
-                    </div>
-                </div>
-                <div class="col-md-12 form-group mb-3">
-                    <button type="submit" class="btn btn-primary w-100">회원가입</button>
+                    <button class="btn btn-primary w-100" type="submit">회원가입</button>
                 </div>
             </form>
         </div>
@@ -99,63 +101,10 @@
             form.addEventListener("submit", function (event) {
                 let valid = true;
 
-                const username = document.getElementById("username").value;
-                const name = document.getElementById("name").value;
-                const email = document.getElementById("email").value;
-                const password = document.getElementById("password").value;
-                const confirmPassword = document.getElementById("confirmPassword").value;
-                const phoneNumber = document.getElementById("phoneNumber").value;
-                const birthday = document.getElementById("birth").value;
-
-                // 필수 입력 검증
-                if (!username || !name || !email || !password || !confirmPassword || !phoneNumber || !birthday) {
-                    errorMessage.textContent = "모든 필드를 입력해야 합니다.";
-                    valid = false;
-                }
-
-                // 아이디 정규식 (영어 소문자와 숫자가 각각 최소 1개 이상 포함)
-                const usernamePattern = /^(?=.*[a-z])(?=.*[0-9]).{8,20}$/;
-                if (!usernamePattern.test(username)) {
-                    errorMessage.textContent = "아이디는 영어 소문자와 숫자만 포함하며, 8자 이상 20자 이하로 입력해야 하며, 영어 소문자와 숫자가 각각 최소 1개 이상 포함되어야 합니다.";
-                    valid = false;
-                }
-
-                // 비밀번호 정규식 (영문자와 숫자와 특수문자가 각각 최소 1개 이상 포함)
-                const passwordPattern = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,20}$/;
-                if (!passwordPattern.test(password)) {
-                    errorMessage.textContent = "비밀번호는 영문자와 숫자와 특수문자만 포함하며, 8자 이상 20자 이하로 입력해야 하며, 영문자와 숫자와 특수문자가 각각 최소 1개 이상 포함되어야 합니다.";
-                    valid = false;
-                }
-
-                // 비밀번호 일치 여부 검증
-                if (password !== confirmPassword) {
-                    errorMessage.textContent = "비밀번호가 일치하지 않습니다.";
-                    valid = false;
-                }
-
-                // 이름 길이 검증
-                if (name.length < 2 || name.length > 30) {
-                    errorMessage.textContent = "사용자 이름은 2자 이상 30자 이하로 입력해야 합니다.";
-                    valid = false;
-                }
-
-                // 이메일 형식 검증
-                const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-                if (email && !emailPattern.test(email)) {
-                    errorMessage.textContent = "유효한 이메일 주소를 입력하세요.";
-                    valid = false;
-                }
-
-                // 이메일 길이 검증
-                if (email.length > 30) {
-                    errorMessage.textContent = "이메일은 30자 이내로 입력해야 합니다.";
-                    valid = false;
-                }
-
-                // 휴대전화 번호 정규식 (010으로 시작하고 총 11자리)
-                const phonePattern = /^010\d{8}$/;
-                if (!phonePattern.test(phoneNumber)) {
-                    errorMessage.textContent = "휴대전화 번호는 '-' 없이 '010'으로 시작하는 11자리의 숫자로 입력해야 합니다.";
+                // 각 필드 유효성 검증
+                if (!validateUsername() || !validatePassword() || !validatePasswordMatch() || !validateName()
+                    || !validateEmail() || !validatePhoneNumber() || !validateBirthday()) {
+                    errorMessage.textContent = "입력 정보가 올바르지 않습니다.";
                     valid = false;
                 }
 
@@ -165,9 +114,169 @@
                     errorToastElement.style.display = "block";
                     errorToast.show();
                 }
-
             });
         });
+
+        // 아이디 유효성 검사
+        function validateUsername() {
+            const usernameField = document.getElementById('username');
+            const usernameError = document.getElementById('usernameError');
+            const username = usernameField.value;
+
+            const usernamePattern = /^(?=.*[a-z])(?=.*[0-9])[a-z0-9]{8,20}$/; // 8~20자 영문자, 숫자만 가능
+
+            if (!usernamePattern.test(username)) {
+                usernameError.style.display = 'block';
+                usernameError.textContent = "아이디는 8자 이상 20자 이하, 영어 소문자와 숫자가 각각 1개 이상 포함되어야 합니다.";
+                usernameField.style.borderColor = "red";
+                return false;
+            } else {
+                usernameError.style.display = 'none';
+                usernameField.style.borderColor = "";
+                return true;
+            }
+        }
+
+        // 비밀번호 유효성 검사
+        function validatePassword() {
+            const passwordField = document.getElementById('password');
+            const passwordError = document.getElementById('passwordError');
+            const password = passwordField.value;
+
+            // 비밀번호 정규식 (영문자와 숫자와 특수문자가 각각 최소 1개 이상 포함)
+            const passwordPattern = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,20}$/;
+
+            if (!passwordPattern.test(password)) {
+                passwordError.style.display = 'block';
+                passwordError.textContent = "비밀번호는 8자 이상 20자 이하, 영문자, 숫자, 특수문자가 각각 1개 이상 포함되어야 합니다.";
+                passwordField.style.borderColor = "red";
+                return false;
+            } else {
+                passwordError.style.display = 'none';
+                passwordField.style.borderColor = "";
+                return true;
+            }
+        }
+
+        // 비밀번호 일치 여부 확인
+        function validatePasswordMatch() {
+            const password = document.getElementById('password').value;
+            const confirmPasswordField = document.getElementById('confirmPassword');
+            const confirmPassword = confirmPasswordField.value;
+            const passwordMatchError = document.getElementById('passwordMatchError');
+
+            if (password !== confirmPassword) {
+                passwordMatchError.style.display = 'block';
+                passwordMatchError.textContent = "비밀번호가 일치하지 않습니다.";
+                confirmPasswordField.style.borderColor = "red";
+                return false;
+            } else {
+                passwordMatchError.style.display = 'none';
+                confirmPasswordField.style.borderColor = "";
+                return true;
+            }
+        }
+
+        // 이름 유효성 검사
+        function validateName() {
+            const nameField = document.getElementById('name');
+            const nameError = document.getElementById('nameError');
+            const name = nameField.value;
+
+            // 이름 길이 검증
+            const namePattern = /^[a-zA-Z가-힣]{2,30}$/;
+
+            if (!namePattern.test(name)) {
+                nameError.style.display = 'block';
+                nameError.textContent = "사용자 이름은 영문자와 완성형 한글만 포함하여 2자 이상 30자 이하로 입력해야 합니다.";
+                nameField.style.borderColor = "red";
+                return false;
+            } else {
+                nameError.style.display = 'none';
+                nameField.style.borderColor = "";
+                return true;
+            }
+        }
+
+        // 이메일 유효성 검사
+        function validateEmail() {
+            const emailField = document.getElementById('email');
+            const emailError = document.getElementById('emailError');
+            const email = emailField.value;
+
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+            if (!emailPattern.test(email) || email.length > 30) {
+                emailError.style.display = 'block';
+                emailError.textContent = "유효한 이메일 주소를 입력하세요.";
+                emailField.style.borderColor = "red";
+                return false;
+            } else {
+                emailError.style.display = 'none';
+                emailField.style.borderColor = "";
+                return true;
+            }
+        }
+
+        // 전화번호 유효성 검사
+        function validatePhoneNumber() {
+            const phoneNumberField = document.getElementById('phoneNumber');
+            const phoneNumberError = document.getElementById('phoneNumberError');
+            const phoneNumber = phoneNumberField.value;
+
+            const phoneNumberPattern = /^010\d{8}$/;
+
+            if (!phoneNumberPattern.test(phoneNumber)) {
+                phoneNumberError.style.display = 'block';
+                phoneNumberError.textContent = "휴대전화 번호는 '-' 없이 '010'으로 시작하는 11자리의 숫자로 입력해야 합니다.";
+                phoneNumberField.style.borderColor = "red";
+                return false;
+            } else {
+                phoneNumberError.style.display = 'none';
+                phoneNumberField.style.borderColor = "";
+                return true;
+            }
+        }
+
+        // 생일 검사
+        function validateBirthday() {
+            const birthdayField = document.getElementById('birthday');
+            const birthdayError = document.getElementById('birthdayError');
+            const birthday = birthdayField.value;
+
+            // 현재 날짜를 YYYY-MM-DD 형식으로 가져옵니다.
+            const currentDate = new Date();
+            const currentDateString = currentDate.toISOString().split('T')[0]; // "YYYY-MM-DD" 형식으로 변환
+
+            if (!birthday) {
+                birthdayError.style.display = 'block';
+                birthdayError.textContent = "생일을 입력하세요.";
+                birthdayField.style.borderColor = "red";
+                return false;
+            }
+
+            // 사용자가 입력한 생일이 현재 날짜보다 앞선 날짜인지 확인
+            if (birthday > currentDateString) {
+                birthdayError.style.display = 'block';
+                birthdayError.textContent = "생일은 현재날짜를 앞설 수 없습니다.";
+                birthdayField.style.borderColor = "red";
+                return false;
+            } else {
+                birthdayError.style.display = 'none';
+                birthdayField.style.borderColor = "";
+                return true;
+            }
+        }
+
+        // 실시간 유효성 검사
+        document.getElementById('username').addEventListener('input', validateUsername);
+        document.getElementById('password').addEventListener('input', validatePassword);
+        document.getElementById('confirmPassword').addEventListener('input', validatePasswordMatch);
+        document.getElementById('name').addEventListener('input', validateName);
+        document.getElementById('email').addEventListener('input', validateEmail);
+        document.getElementById('phoneNumber').addEventListener('input', validatePhoneNumber);
+        document.getElementById('birthday').addEventListener('input', validateBirthday);
+
     </script>
 </th:block>
 <!-- Script -->
