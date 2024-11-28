@@ -29,6 +29,8 @@ public interface OrderService {
 
 	OrderDetailResponse getOrderDetail(Long orderId, Pageable pageable);
 
+	OrderDetailResponse getNonMemberOrderDetail(Long orderId, Pageable pageable, Long customerId);
+
 	Page<OrderListResponse> getCancelledOrderList(OrderListPeriodRequest orderListPeriodRequest, Pageable pageable);
 
 	OrderCancelDto getOrderCancel(Long orderId);

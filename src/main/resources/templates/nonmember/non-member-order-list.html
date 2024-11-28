@@ -163,7 +163,7 @@
                         <td class="text-center" th:text="${order.orderState.getKorName()}">상태</td>
                         <td class="text-center">
                             <a class="btn btn-link btn-sm text-primary"
-                               th:href="@{'/orders/detail/{orderId}' (orderId = ${order.orderId})}">상세 보기</a>
+                               th:href="@{'/non-member/orders/detail/{orderId}' (orderId = ${order.orderId})}">상세 보기</a>
                             <a class="btn btn-link btn-sm text-dark"
                                th:href="@{'/orders/cancel/{order-id}' (order-id = ${order.orderId})}"
                                th:if="${order.orderState.getKorName() == '주문 대기' or order.orderState.getKorName() == '결제 완료'}">주문

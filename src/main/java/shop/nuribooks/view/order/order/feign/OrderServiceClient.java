@@ -51,6 +51,10 @@ public interface OrderServiceClient {
 	ResponseEntity<OrderDetailResponse> getOrderDetail(@PathVariable("order-id") Long orderId,
 		Pageable pageable);
 
+	@GetMapping("/api/orders/{order-id}/non-member/{customer-id}")
+	ResponseEntity<OrderDetailResponse> getNonMemberOrderDetail(@PathVariable("order-id") Long orderId,
+		@PathVariable("customer-id") Long customerId, Pageable pageable);
+
 	@PostMapping("/api/orders/verify")
 	ResponseEntity<ResponseMessage> verifyOrderInformation(@RequestBody PaymentRequest paymentRequest);
 

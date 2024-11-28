@@ -83,6 +83,12 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
+	public OrderDetailResponse getNonMemberOrderDetail(Long orderId, Pageable pageable, Long customerId) {
+		return orderServiceClient.getNonMemberOrderDetail(orderId, customerId, pageable)
+			.getBody();
+	}
+
+	@Override
 	public Page<OrderListResponse> getCancelledOrderList(OrderListPeriodRequest orderListPeriodRequest,
 		Pageable pageable) {
 		return orderServiceClient.getCancelledOrderList(orderListPeriodRequest, pageable)

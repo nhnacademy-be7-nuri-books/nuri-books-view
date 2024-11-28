@@ -1,6 +1,7 @@
 package shop.nuribooks.view.order.order.controller;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -8,11 +9,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import shop.nuribooks.view.order.order.dto.request.OrderListPeriodRequest;
+import shop.nuribooks.view.order.order.dto.response.OrderDetailResponse;
 import shop.nuribooks.view.order.order.dto.response.OrderListResponse;
 import shop.nuribooks.view.order.order.service.OrderService;
 
@@ -83,6 +86,35 @@ public class NonMemberOrderController {
 		model.addAttribute("periodDuration", includeOrdersInPendingStatus);
 
 		return "nonmember/non-member-order-list";
+	}
+
+	@GetMapping("/non-member/orders/detail/{order-id}")
+	public String getNonMemberOrderDetails(@PathVariable("order-id") Long orderId, Model model,
+		@RequestParam(required = false, defaultValue = "0") int page,
+		@RequestParam(required = false, defaultValue = "5") int size,
+		@RequestParam(required = false, defaultValue = "false") boolean isCancelled,
+		HttpSession session) {
+
+		Pageable pageable = PageRequest.of(page, size);
+		Long customerId = (Long)session.getAttribute("customerId");
+		OrderDetailResponse orderDetailResponse = orderService.getNonMemberOrderDetail(orderId, pageable, customerId);
+
+		model.addAttribute("orderId", orderId);
+		model.addAttribute("orderSummary", orderDetailResponse.order());
+		model.addAttribute("pages", orderDetailResponse.orderItems());
+		model.addAttribute("shipping", orderDetailResponse.shipping());
+
+		BigDecimal unitPrice = orderDetailResponse.payment().unitPrice();
+		BigDecimal shippingPrice = orderDetailResponse.payment().shippingPrice();
+
+		BigDecimal middlePayment = (unitPrice != null ? unitPrice : BigDecimal.ZERO)
+			.add(shippingPrice != null ? shippingPrice : BigDecimal.ZERO);
+
+		model.addAttribute("payment", orderDetailResponse.payment());
+		model.addAttribute("middlePayment", middlePayment);
+		model.addAttribute("isCancelled", isCancelled);
+
+		return "nonmember/non-member-order-detail";
 	}
 }
 
