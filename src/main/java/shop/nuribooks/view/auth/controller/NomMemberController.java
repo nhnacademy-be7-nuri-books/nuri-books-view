@@ -40,7 +40,6 @@ public class NomMemberController {
 
 			redirectAttributes.addFlashAttribute("customerId", customerId);
 			redirectAttributes.addFlashAttribute("email", email);
-
 			return "redirect:/non-member/orders";
 		} else {
 			redirectAttributes.addFlashAttribute(errorMessageKey, "비회원 주문 목록 조회에 실패하였습니다.");
