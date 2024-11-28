@@ -51,7 +51,7 @@ public class CouponController {
 	 */
 	@GetMapping
 	public String getCoupons(Model model, @PageableDefault Pageable pageable,
-		@RequestParam CouponType type) {
+		@RequestParam(name = "type", defaultValue = "ALL") CouponType type) {
 		Page<CouponResponse> coupons = couponService.getCoupons(type, pageable);
 		model.addAttribute("pages", coupons);
 		model.addAttribute("policyTypes", PolicyType.values());
