@@ -27,8 +27,6 @@ public class NonMemberOrderController {
 		@RequestParam(name = "include-pending", defaultValue = "true") boolean includeOrdersInPendingStatus,
 		@RequestParam(required = false, defaultValue = "0") int page,
 		@RequestParam(required = false, defaultValue = "5") int size,
-		// @ModelAttribute("customerId") Long customerId,
-		// @ModelAttribute("email") String email,
 		HttpSession session,
 		Model model
 	) throws IOException {
@@ -40,7 +38,6 @@ public class NonMemberOrderController {
 			return "redirect:/non-member";
 		}
 
-		// 고객 ID가 없으면 리다이렉트
 		if (customerId == null) {
 			return "redirect:/non-member";
 		}
@@ -48,7 +45,6 @@ public class NonMemberOrderController {
 		model.addAttribute("customerId", customerId);
 		model.addAttribute("email", email);
 
-		// 기존 기간 정보를 현재 요청에 반영
 		if (orderListPeriodRequest != null) {
 			orderListPeriodRequest.setStart(orderListPeriodRequest.getStart());
 			orderListPeriodRequest.setEnd(orderListPeriodRequest.getEnd());
@@ -60,14 +56,13 @@ public class NonMemberOrderController {
 			pageable,
 			customerId);
 
-		// 주문 상태별 카운트
 		int pendingCount = 0;
 		int paidCount = 0;
 		int shippingCount = 0;
 		int completedCount = 0;
 
 		for (OrderListResponse order : orders) {
-			String status = order.orderState().name();  // 상태를 가져옵니다.
+			String status = order.orderState().name();
 			if ("PENDING".equals(status)) {
 				pendingCount++;
 			} else if ("PAID".equals(status)) {
@@ -79,7 +74,6 @@ public class NonMemberOrderController {
 			}
 		}
 
-		// 모델에 필요한 데이터 추가
 		model.addAttribute("pendingCount", pendingCount);
 		model.addAttribute("paidCount", paidCount);
 		model.addAttribute("shippingCount", shippingCount);

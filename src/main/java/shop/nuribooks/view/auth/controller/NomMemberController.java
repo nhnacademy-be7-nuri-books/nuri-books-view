@@ -40,14 +40,8 @@ public class NomMemberController {
 			Long customerId = Long.parseLong(returnMessage.split(" ")[1]);
 			String email = returnMessage.split(" ")[2];
 
-			// 1. redirectAttributes 사용
-			// redirectAttributes.addFlashAttribute("customerId", customerId);
-			// redirectAttributes.addFlashAttribute("email", email);
-
-			// 2. session 사용
 			session.setAttribute("customerId", customerId);
 			session.setAttribute("email", email);
-
 			return "redirect:/non-member/orders";
 		} else {
 			redirectAttributes.addFlashAttribute(errorMessageKey, "비회원 주문 목록 조회에 실패하였습니다.");
