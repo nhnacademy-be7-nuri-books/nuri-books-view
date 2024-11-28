@@ -166,10 +166,9 @@ async function main() {
             wrappingList: document.getElementById("selectedBooksHidden").value
         };
 
-        console.log(orderData);
+        //console.log(orderData);
         let result;
         try {
-            console.log(JSON.stringify(orderData));
             // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
             // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
             const apiUrl = window.location.origin + "/orders/save";
@@ -240,13 +239,30 @@ function calculateTotalPrice() {
         totalPrice = parseInt(couponApplyPrice, 10) + parseInt(shippingPrice, 10) + parseInt(wrappingPrice, 10) - usePoint; // 총 결제 금액 계산
     }
 
+    if (totalPrice < 0) {
+
+        const errorMessage = document.getElementById("errorMessage");
+        const errorToastElement = document.getElementById("errorToast")
+        const errorToast = new bootstrap.Toast(errorToastElement);
+        errorMessage.textContent = "적용된 포인트가 전체 주문 금액보다 큽니다.";
+        errorToastElement.style.display = "block";
+        errorToast.show();
+
+        const finalPointLabel = document.getElementById('use-point');
+        const usedPointsField = document.getElementById('usedPoints');
+        finalPointLabel.textContent = "0";
+        usedPointsField.value = "0";
+
+        totalPrice = totalPrice + usePoint;
+    }
+
     // 총 결제 금액을 input 필드에 넣기
     document.getElementById('book-list-amount').textContent = bookListPrice;
     document.getElementById('total-amount').textContent = totalPrice;
 
-    console.log("사용 포인트: %d", usePoint);
-    console.log("포장비: " + wrappingPrice);
-    console.log("배송비: " + shippingPrice);
+    // console.log("사용 포인트: %d", usePoint);
+    // console.log("포장비: " + wrappingPrice);
+    // console.log("배송비: " + shippingPrice);
     console.log("총 결제 가격: " + totalPrice);
     return totalPrice;  // 포맷된 가격 반환
 }
@@ -326,7 +342,6 @@ function processOrderDetails() {
             BookAppliedCouponRequestStub: null
         };
     });
-    console.log(list);
     return list;
 }
 

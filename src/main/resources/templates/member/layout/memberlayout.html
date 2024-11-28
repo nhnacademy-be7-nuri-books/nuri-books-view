@@ -37,8 +37,67 @@
             <footer class="bg-light text-center py-3 w-100 mt-auto">
                 <div th:replace="~{member/fragment/memberfooter :: memberFooter}"></div>
             </footer>
+
+            <!-- Messages -->
+            <div class="toast-container position-fixed bottom-0 start-0 p-3">
+                <div class="toast align-items-center text-white bg-success border-0" id="successToast"
+                     style="display: none">
+                    <div class="d-flex">
+                        <div class="toast-body" id="successMessage">
+                            <i class="fas fa-check-circle me-2"></i>
+                            <p th:text="${successMessage}"> 기본 성공 메시지입니다. </p>
+                        </div>
+                        <button aria-label="Close" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                                type="button"></button>
+                    </div>
+                </div>
+                <div class="toast align-items-center text-white bg-danger border-0" id="errorToast"
+                     style="display: none">
+                    <div class="d-flex">
+                        <div class="toast-body" id="errorMessage">
+                            <i class="fas fa-times-circle me-2"></i>
+                            <p th:text="${errorMessage}"> 기본 오류 메시지입니다. </p>
+                        </div>
+                        <button aria-label="Close" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                                type="button"></button>
+                    </div>
+                </div>
+            </div>
+            <!-- Messages -->
         </div>
     </div>
+    <!-- Script -->
+    <div th:if="${errorMessage}">
+        <script th:inline="javascript">
+            document.addEventListener('DOMContentLoaded', function () {
+                const errorMessage = document.getElementById("errorMessage");
+                const errorToastElement = document.getElementById("errorToast")
+                const errorToast = new bootstrap.Toast();
+
+                errorMessage.textContent = /*[[${errorMessage}]]*/ '실패';
+
+                errorToastElement.style.display = "block";
+                errorToast.show();
+            });
+        </script>
+    </div>
+
+    <div th:if="${successMessage}">
+        <script th:inline="javascript">
+            document.addEventListener('DOMContentLoaded', function () {
+                const successMessage = document.getElementById("successMessage");
+                const successToastElement = document.getElementById("successToast");
+                const successToast = new bootstrap.Toast(successToastElement);
+
+                successMessage.textContent = /*[[${successMessage}]]*/ '성공';
+
+                successToastElement.style.display = "block";
+                successToast.show();
+            });
+        </script>
+    </div>
+
+    <th:block layout:fragment="script"></th:block>
 </div>
 <script src="/js/jquery.min.js" type="text/javascript"></script>
 <script src="/js/bootstrap.min.js" type="text/javascript"></script>

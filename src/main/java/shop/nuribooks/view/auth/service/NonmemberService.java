@@ -24,7 +24,7 @@ public class NonmemberService {
 		try {
 			NonMemberResponse nonMemberResponse = authServiceClient.checkNonMember(loginRequest).getBody();
 			if (nonMemberResponse != null && nonMemberResponse.email() != null) {
-				return successMessageKey + " " + nonMemberResponse.customerId();
+				return successMessageKey + " " + nonMemberResponse.customerId() + " " + nonMemberResponse.email();
 			} else {
 				return errorMessageKey;
 			}

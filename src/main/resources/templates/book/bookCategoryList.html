@@ -166,6 +166,24 @@
             font-weight: bold;
             color: #0984e3;
         }
+
+        .search-container {
+            display: flex; /* Flexbox 활성화 */
+            justify-content: center; /* 가로 중앙 정렬 */
+        }
+
+        .search-bar {
+            width: 40%; /* 너비를 40%로 제한 */
+        }
+
+        label[for="search-container"] {
+            display: block; /* 라벨을 블록 요소로 */
+            font-size: 18px; /* 글꼴 크기 */
+            font-weight: bold; /* 굵은 글꼴 */
+            margin-bottom: 10px; /* 라벨과 검색창 사이의 여백 */
+            text-align: center; /* 중앙 정렬 */
+            color: #333; /* 글자 색상 */
+        }
     </style>
 </head>
 <body>
@@ -224,6 +242,10 @@
                 </select>
                 <input id="pageInput" name="page" th:value="${bookCategories.page}" type="hidden"/>
             </form>
+        </div>
+        <label for="search-container">현재 카테고리에서 검색하기</label>
+        <div class="search-container" id="search-container">
+            <div class="search-bar" th:replace="~{fragments/search::search}"></div>
         </div>
     </div>
 
