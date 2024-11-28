@@ -10,6 +10,7 @@ public record OrderDetailItemDto(
 	String thumbnailImageUrl,
 	BigDecimal discountedPrice,
 	int bookCount,
-	OrderState orderState
+	OrderState orderState,
+	boolean isWrapped
 ) {
 }

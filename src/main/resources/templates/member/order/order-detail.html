@@ -22,6 +22,11 @@
                     <div class="col-6">
                         <span class="fw-bold">주문 명 </span><span th:text="${orderSummary.title}">oo책 1건</span>
                     </div>
+                    <div class="col-6">
+                        <span class="fw-bold">포장 정보 </span><span
+                            th:text="${orderSummary.wrappingInfo != null ? orderSummary.wrappingInfo.title : '포장 안함'}">포장지 이름</span>
+                    </div>
+
                 </li>
             </ul>
         </div>
@@ -37,6 +42,7 @@
                     <th class="text-center">수량</th>
                     <th class="text-center">구매가</th>
                     <th class="text-center">진행현황</th>
+                    <th class="text-center">포장여부</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -49,7 +55,8 @@
                     <td class="text-center" th:text="${orderDetail.price.intValue()}">판매가</td>
                     <td class="text-center" th:text="${orderDetail.bookCount}">주문금액</td>
                     <td class="text-center" th:text="${orderDetail.discountedPrice.intValue()}">구매가</td>
-                    <td class="text-center" th:text="${orderDetail.orderState.getKorName()}">상채</td>
+                    <td class="text-center" th:text="${orderDetail.orderState.getKorName()}">상태</td>
+                    <td class="text-center" th:text="${orderDetail.isWrapped ? '포장됨' : '포장 안됨'}">포장여부</td>
                 </tr>
                 </tbody>
             </table>
@@ -101,6 +108,11 @@
                         <span class="text-muted small">배송비</span>
                         <span class="text-muted small"
                               th:text="${payment.shippingPrice != null ? payment.shippingPrice : 0} + '원'">000원</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="text-muted small">포장비</span>
+                        <span class="text-muted small"
+                              th:text="${payment.wrappingPrice != null ? payment.wrappingPrice : 0} + '원'">000원</span>
                     </div>
                 </div>
 
