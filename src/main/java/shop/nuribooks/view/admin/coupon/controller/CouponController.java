@@ -51,7 +51,7 @@ public class CouponController {
 	 */
 	@GetMapping
 	public String getCoupons(Model model, @PageableDefault Pageable pageable,
-		@RequestParam(value = "type", defaultValue = "MiXED") CouponType type) {
+		@RequestParam CouponType type) {
 		Page<CouponResponse> coupons = couponService.getCoupons(type, pageable);
 		model.addAttribute("pages", coupons);
 		model.addAttribute("policyTypes", PolicyType.values());
@@ -78,7 +78,6 @@ public class CouponController {
 		model.addAttribute("pages", combinedCoupons);
 		model.addAttribute("policyTypes", PolicyType.values());
 		model.addAttribute("couponTypes", CouponType.values());
-		model.addAttribute("type", "MIXED");
 		model.addAttribute("expirationTypes", ExpirationType.values());
 
 		List<BookResponse> books = bookService.getAllBooks();

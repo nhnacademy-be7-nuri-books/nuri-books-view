@@ -13,7 +13,7 @@
                 <div>
                     <input class="form-control me-2" id="type" name="type" th:value="${type}" type="hidden"/>
 
-                    <a class="btn btn-outline-secondary me-2" href="/admin/coupon/list?type=MIXED"
+                    <a class="btn btn-outline-secondary me-2" href="/admin/coupon/list"
                        th:classappend="${type} == 'MIXED' ? 'active text-white bg-primary' : ''">모두 적용</a>
                     <a class="btn btn-outline-secondary me-2" href="/admin/coupon?type=ALL"
                        th:classappend="${type} == 'ALL' ? 'active text-white bg-primary' : ''">전체</a>
