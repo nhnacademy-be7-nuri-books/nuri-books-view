@@ -7,10 +7,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.auth.dto.request.NonMemberRequest;
 import shop.nuribooks.view.auth.service.NonmemberService;
 import shop.nuribooks.view.order.order.service.OrderService;
 
+@Slf4j
 @RequiredArgsConstructor
 @Controller
 public class NomMemberController {
@@ -34,11 +36,12 @@ public class NomMemberController {
 		if (returnMessage.startsWith(successMessageKey)) {
 			redirectAttributes.addFlashAttribute(successMessageKey, "비회원 주문 목록을 불러옵니다.");
 			Long customerId = Long.parseLong(returnMessage.split(" ")[1]);
+			String email = returnMessage.split(" ")[2];
 
-			// TODO: orderService에서 customerId를 기준으로 주문 목록 조회
-			redirectAttributes.addFlashAttribute("", customerId);
-			// return "redirect:/non-member/orders/detail";
-			return "redirect:/";
+			redirectAttributes.addFlashAttribute("customerId", customerId);
+			redirectAttributes.addFlashAttribute("email", email);
+
+			return "redirect:/non-member/orders";
 		} else {
 			redirectAttributes.addFlashAttribute(errorMessageKey, "비회원 주문 목록 조회에 실패하였습니다.");
 			return "redirect:/non-member";

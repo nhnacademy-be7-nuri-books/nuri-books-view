@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html
+        layout:decorate="~{layouts/layout1}"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-12 mt-3 text-center text-uppercase">
+        </div>
+    </div>
+
+    <main class="row">
+        <div class="col-lg-8 col-md-10 col-sm-12 mx-auto bg-light rounded shadow py-4 mb-4">
+            <div class="text-center mb-4">
+                <h4 th:text="${email} + ' ( 고객번호 : ' + ${customerId} +')님의 주문 정보'"></h4>
+            </div>
+
+        </div>
+    </main>
+</div>
+</html>
