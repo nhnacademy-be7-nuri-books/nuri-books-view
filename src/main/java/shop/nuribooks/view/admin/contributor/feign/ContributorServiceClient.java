@@ -2,7 +2,6 @@ package shop.nuribooks.view.admin.contributor.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +22,7 @@ public interface ContributorServiceClient {
 	ResponseEntity<ResponseMessage> registerContributor(@Valid @RequestBody ContributorRequest request);
 
 	@GetMapping("/api/contributors/{contributor-id}")
-	ResponseEntity<ContributorResponse> getContributor(@PathVariable(name = "contributor-id")  Long contributorId);
+	ResponseEntity<ContributorResponse> getContributor(@PathVariable(name = "contributor-id") Long contributorId);
 
 	@GetMapping("/api/contributors")
 	ResponseEntity<Page<ContributorResponse>> getAllContributors(
@@ -32,7 +31,7 @@ public interface ContributorServiceClient {
 
 	@PutMapping("/api/contributors/{contributor-id}")
 	ResponseEntity<ResponseMessage> updateContributor(
-		@PathVariable(name = "contributor-id")  Long contributorId, @Valid @RequestBody ContributorRequest request);
+		@PathVariable(name = "contributor-id") Long contributorId, @Valid @RequestBody ContributorRequest request);
 
 	@DeleteMapping("/api/contributors/{contributor-id}")
 	ResponseEntity<ResponseMessage> deleteContributor(@PathVariable(name = "contributor-id") Long contributorId);
