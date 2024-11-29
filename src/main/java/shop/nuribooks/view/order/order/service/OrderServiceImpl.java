@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import shop.nuribooks.view.common.dto.ResponseMessage;
 import shop.nuribooks.view.common.util.ExceptionUtil;
 import shop.nuribooks.view.exception.ApiErrorException;
 import shop.nuribooks.view.exception.DefaultServerError;
 import shop.nuribooks.view.order.order.dto.OrderCancelDto;
+import shop.nuribooks.view.order.order.dto.request.OrderCancelRequest;
 import shop.nuribooks.view.order.order.dto.request.OrderListPeriodRequest;
 import shop.nuribooks.view.order.order.dto.request.OrderRegisterRequest;
 import shop.nuribooks.view.order.order.dto.response.OrderDetailResponse;
@@ -98,6 +100,12 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public OrderCancelDto getOrderCancel(Long orderId) {
 		return orderServiceClient.getOrderCancel(orderId)
+			.getBody();
+	}
+
+	@Override
+	public ResponseMessage orderCancel(Long orderId, OrderCancelRequest orderCancelRequest) {
+		return orderServiceClient.orderCancel(orderId, orderCancelRequest)
 			.getBody();
 	}
 

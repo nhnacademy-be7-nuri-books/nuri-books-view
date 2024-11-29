@@ -12,10 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.validation.Valid;
-import shop.nuribooks.view.admin.coupon.dto.BookCouponRequest;
-import shop.nuribooks.view.admin.coupon.dto.BookCouponResponse;
-import shop.nuribooks.view.admin.coupon.dto.CategoryCouponRequest;
-import shop.nuribooks.view.admin.coupon.dto.CategoryCouponResponse;
 import shop.nuribooks.view.admin.coupon.dto.CouponRequest;
 import shop.nuribooks.view.admin.coupon.dto.CouponResponse;
 import shop.nuribooks.view.admin.coupon.dto.MemberCouponIssueRequest;
@@ -27,11 +23,8 @@ public interface CouponServiceClient {
 	@GetMapping("/api/coupons")
 	ResponseEntity<Page<CouponResponse>> getCoupons(@RequestParam(value = "type") CouponType type, Pageable pageable);
 
-	@GetMapping("/api/coupons/book-coupons/{bookId}")
-	ResponseEntity<BookCouponResponse> getBookCoupon(@PathVariable("bookId") Long id);
-
-	@GetMapping("/api/coupons/category-coupons/{category-id}")
-	ResponseEntity<CategoryCouponResponse> getCategoryCoupon(@PathVariable("category-id") Long id);
+	@GetMapping("/api/coupons/list")
+	ResponseEntity<Page<CouponResponse>> getAllCoupons(Pageable pageable);
 
 	@GetMapping("/api/coupons/{coupon-id}")
 	ResponseEntity<CouponResponse> getCoupon(@PathVariable("coupon-id") Long id);
@@ -39,18 +32,12 @@ public interface CouponServiceClient {
 	@PostMapping("/api/coupons")
 	ResponseEntity<ResponseMessage> registerCoupon(@Valid @RequestBody CouponRequest couponRequest);
 
-	@PostMapping("/api/coupons/book-coupons")
-	ResponseEntity<ResponseMessage> registerBookCoupon(@Valid @RequestBody BookCouponRequest bookCouponRequest);
-
 	@PutMapping("/api/coupons/{coupon-id}")
 	ResponseEntity<ResponseMessage> updateCoupon(@PathVariable("coupon-id") Long id,
 		@Valid @RequestBody CouponRequest couponRequest);
 
 	@PutMapping("/api/coupons/{coupon-id}/expire")
 	ResponseEntity<ResponseMessage> expireCoupon(@PathVariable("coupon-id") Long id);
-
-	@PostMapping("/api/coupons/category-coupons")
-	ResponseEntity<ResponseMessage> registerCategoryCoupon(@Valid @RequestBody CategoryCouponRequest couponRequest);
 
 	@PostMapping("/api/member-coupons")
 	ResponseMessage issueMemberCoupon(@RequestBody MemberCouponIssueRequest memberCouponIssueRequest);

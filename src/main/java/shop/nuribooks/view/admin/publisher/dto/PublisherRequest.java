@@ -1,6 +1,5 @@
 package shop.nuribooks.view.admin.publisher.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 

@@ -5,11 +5,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import shop.nuribooks.view.admin.category.feign.AdminCategoryClient;
-import shop.nuribooks.view.admin.coupon.dto.BookCouponRequest;
-import shop.nuribooks.view.admin.coupon.dto.BookCouponResponse;
-import shop.nuribooks.view.admin.coupon.dto.CategoryCouponRequest;
-import shop.nuribooks.view.admin.coupon.dto.CategoryCouponResponse;
 import shop.nuribooks.view.admin.coupon.dto.CouponRequest;
 import shop.nuribooks.view.admin.coupon.dto.CouponResponse;
 import shop.nuribooks.view.admin.coupon.dto.MemberCouponIssueRequest;
@@ -21,7 +16,6 @@ import shop.nuribooks.view.common.dto.ResponseMessage;
 @RequiredArgsConstructor
 public class CouponServiceImpl implements CouponService {
 	private final CouponServiceClient couponServiceClient;
-	private final AdminCategoryClient adminCategoryClient;
 
 	@Override
 	public Page<CouponResponse> getCoupons(CouponType type, Pageable pageable) {
@@ -29,23 +23,13 @@ public class CouponServiceImpl implements CouponService {
 	}
 
 	@Override
-	public BookCouponResponse getBookCoupon(Long id) {
-		return this.couponServiceClient.getBookCoupon(id).getBody();
-	}
-
-	@Override
-	public CategoryCouponResponse getCategoryCoupon(Long id) {
-		return this.couponServiceClient.getCategoryCoupon(id).getBody();
+	public Page<CouponResponse> getAllCoupons(Pageable pageable) {
+		return couponServiceClient.getAllCoupons(pageable).getBody();
 	}
 
 	@Override
 	public ResponseMessage registerCoupon(CouponRequest couponRequest) {
 		return couponServiceClient.registerCoupon(couponRequest).getBody();
-	}
-
-	@Override
-	public ResponseMessage registerBookCoupon(BookCouponRequest bookCouponRequest) {
-		return couponServiceClient.registerBookCoupon(bookCouponRequest).getBody();
 	}
 
 	@Override
@@ -56,11 +40,6 @@ public class CouponServiceImpl implements CouponService {
 	@Override
 	public ResponseMessage expireCoupon(Long id) {
 		return couponServiceClient.expireCoupon(id).getBody();
-	}
-
-	@Override
-	public ResponseMessage registerCategoryCoupon(CategoryCouponRequest couponRequest) {
-		return couponServiceClient.registerCategoryCoupon(couponRequest).getBody();
 	}
 
 	@Override

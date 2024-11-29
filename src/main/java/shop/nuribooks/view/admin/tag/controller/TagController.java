@@ -45,23 +45,11 @@ public class TagController {
 		return "admin/tag/tag";
 	}
 
-	// @GetMapping("/register")
-	// public String showTagRegisterPage() {
-	// 	return "admin/tag/tag-register";
-	// }
-
 	@PostMapping
 	public ResponseEntity<ResponseMessage> registerTag(TagRequest tagRequest) {
 		ResponseMessage message = tagService.registerTag(tagRequest);
 		return ResponseEntity.status(HttpStatus.CREATED).body(message);
 	}
-
-	// @GetMapping("/{tag-id}")
-	// public String showEditTagPage(@PathVariable("tag-id") Long id, Model model) {
-	// 	TagResponse tag = tagService.getTag(id);
-	// 	model.addAttribute("tag", tag);
-	// 	return "admin/tag/tag-edit";
-	// }
 
 	@PutMapping("/{tag-id}")
 	public ResponseEntity<ResponseMessage> updateTag(@PathVariable("tag-id") Long id, TagRequest tagRequest) {

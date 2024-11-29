@@ -34,18 +34,19 @@
             <div class="col px-3 py-2">
                 <div class="d-flex justify-content-between">
                     <span class="fw-bold ">돌려받을 포인트</span>
-                    <span class="fw-bold text-primary"></span>
+                    <span class="fw-bold text-primary"
+                          th:text="${usingPoint != null ? usingPoint : 0} + '포인트'"> 00</span>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <form method="post" th:action="@{/orders/cancel/{order-id}(order-id=${orderId})}">
+    <form method="post" th:action="@{/orders/{order-id}/cancel(order-id=${orderId})}">
         <label class="form-label" for="reason">취소 사유</label>
         <textarea class="form-control" cols="50" id="reason" name="reason"
                   placeholder="환불 사유를 작성해 주세요"></textarea>
-        <input name="refundAmount" type="hidden">
+        <input name="customerId" type="hidden" value="-1"> <!-- 비회원일 경우 채운다.-->
         <div class="d-flex justify-content-center align-items-center py-5">
             <button class="btn btn-secondary btn-lg" type="submit">주문 취소하기</button>
         </div>
