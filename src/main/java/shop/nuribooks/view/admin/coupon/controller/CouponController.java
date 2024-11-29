@@ -19,10 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import shop.nuribooks.view.admin.category.dto.CategoryResponse;
-import shop.nuribooks.view.admin.category.service.AdminCategoryService;
-import shop.nuribooks.view.admin.coupon.dto.BookCouponRequest;
-import shop.nuribooks.view.admin.coupon.dto.CategoryCouponRequest;
 import shop.nuribooks.view.admin.coupon.dto.CouponRequest;
 import shop.nuribooks.view.admin.coupon.dto.CouponResponse;
 import shop.nuribooks.view.admin.coupon.enums.CouponType;
@@ -40,7 +36,6 @@ public class CouponController {
 
 	private final BookService bookService;
 	private final CouponService couponService;
-	private final AdminCategoryService adminCategoryService;
 
 	/**
 	 * 쿠폰 타입 별로 조회
@@ -101,8 +96,8 @@ public class CouponController {
 		return "admin/coupon/coupon_detail";
 	}
 
-	@GetMapping("/{couponId}")
-	public ResponseEntity<CouponResponse> getCoupon(@PathVariable Long couponId) {
+	@GetMapping("/{coupon-id}")
+	public ResponseEntity<CouponResponse> getCoupon(@PathVariable(name = "coupon-id") Long couponId) {
 		CouponResponse couponResponse = couponService.getCouponById(couponId);
 		return ResponseEntity.ok(couponResponse);
 	}
@@ -113,37 +108,8 @@ public class CouponController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(message);
 	}
 
-	@PostMapping("/book")
-	public ResponseEntity<ResponseMessage> registerBookCoupon(
-		@Valid @ModelAttribute BookCouponRequest bookCouponRequest) {
-		ResponseMessage message = couponService.registerBookCoupon(bookCouponRequest);
-		return ResponseEntity.status(HttpStatus.CREATED).body(message);
-	}
-
-	@PostMapping("/category")
-	public ResponseEntity<ResponseMessage> registerCategoryCoupon(
-		@Valid @ModelAttribute CategoryCouponRequest couponRequest
-	) {
-		ResponseMessage message = couponService.registerCategoryCoupon(couponRequest);
-		return ResponseEntity.status(HttpStatus.CREATED).body(message);
-	}
-
 	@PutMapping("/{coupon-id}")
 	public ResponseEntity<ResponseMessage> updateCoupon(@PathVariable("coupon-id") Long id,
-		@Valid @ModelAttribute CouponRequest couponRequest) {
-		ResponseMessage message = couponService.updateCoupon(id, couponRequest);
-		return ResponseEntity.status(HttpStatus.OK).body(message);
-	}
-
-	@PutMapping("/book-coupon/{coupon-id}")
-	public ResponseEntity<ResponseMessage> updateBookCoupon(@PathVariable("coupon-id") Long id,
-		@Valid @ModelAttribute CouponRequest couponRequest) {
-		ResponseMessage message = couponService.updateCoupon(id, couponRequest);
-		return ResponseEntity.status(HttpStatus.OK).body(message);
-	}
-
-	@PutMapping("/category-coupon/{coupon-id}")
-	public ResponseEntity<ResponseMessage> updateCategoryCoupon(@PathVariable("coupon-id") Long id,
 		@Valid @ModelAttribute CouponRequest couponRequest) {
 		ResponseMessage message = couponService.updateCoupon(id, couponRequest);
 		return ResponseEntity.status(HttpStatus.OK).body(message);
@@ -153,13 +119,6 @@ public class CouponController {
 	public ResponseEntity<ResponseMessage> expireCoupon(@PathVariable("coupon-id") Long id) {
 		ResponseMessage message = couponService.expireCoupon(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(message);
-	}
-
-	@GetMapping("/categories")
-	public String getAllCategories(Model model) {
-		List<CategoryResponse> categoryList = adminCategoryService.getAllCategories();
-		model.addAttribute("categories", categoryList);
-		return "admin/coupon/modal/category_modal";
 	}
 
 }

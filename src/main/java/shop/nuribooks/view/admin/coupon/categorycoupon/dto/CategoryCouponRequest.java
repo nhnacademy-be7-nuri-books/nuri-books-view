@@ -1,4 +1,4 @@
-package shop.nuribooks.view.admin.coupon.dto;
+package shop.nuribooks.view.admin.coupon.categorycoupon.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,7 +12,7 @@ import shop.nuribooks.view.admin.coupon.enums.CouponType;
 import shop.nuribooks.view.admin.coupon.enums.ExpirationType;
 import shop.nuribooks.view.admin.point.enums.PolicyType;
 
-public record BookCouponRequest(
+public record CategoryCouponRequest(
 	@NotNull(message = "이름은 필수입니다.")
 	@Size(min = 2, max = 50)
 	String name,
@@ -46,7 +46,7 @@ public record BookCouponRequest(
 	@NotNull(message = "쿠폰유형은 필수입니다.")
 	CouponType couponType,
 
-	@NotNull(message = "도서 id는 필수입니다.")
-	Long bookId
+	@NotNull(message = "카테고리 id는 필수입니다.")
+	Long categoryId
 ) {
 }
