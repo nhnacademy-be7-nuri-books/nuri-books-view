@@ -1,0 +1,189 @@
+<html
+        layout:decorate="~{layouts/layout1}"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<div layout:fragment="content" style="margin-left: 90px; margin-right: 90px;">
+    <script th:inline="javascript">
+        document.addEventListener("DOMContentLoaded", function () {
+            const urlParams = new URLSearchParams(window.location.search);
+
+            // URL에서 데이터 가져오기
+            const startDate = urlParams.get("start") || /*[[${period.start}]]*/ '2024-01-01';
+            const endDate = urlParams.get("end") || /*[[${period.end}]]*/ '2024-12-31';
+            const includePending = urlParams.get("include-pending") || 'true';
+
+            // 가져온 데이터를 input 필드와 체크박스에 반영
+            document.getElementById('start').value = startDate;
+            document.getElementById('end').value = endDate;
+            document.getElementById('excludeUnpaid').checked = includePending !== 'true';
+            document.getElementById('excludeUnpaidValue').value = includePending;
+
+            console.log('Start Date:', startDate);
+            console.log('End Date:', endDate);
+            console.log('Include Pending:', includePending);
+        });
+
+        const gotoURL = () => {
+            const includeOrdersInPendingStatus = document.getElementById('excludeUnpaidValue').value;
+            const start = document.getElementById('start').value;
+            const end = document.getElementById('end').value;
+
+            console.log('includeOrdersInPendingStatus:', includeOrdersInPendingStatus);
+
+            // URL로 이동
+            window.location.href = `/non-member/orders?include-pending=${includeOrdersInPendingStatus}&start=${start}&end=${end}`;
+        };
+
+
+        //DATE -> YYYY-MM-DD
+        const formatDate = (date) => {
+            const year = date.getFullYear();
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const day = date.getDate().toString().padStart(2, '0');
+
+            return year + '-' + month + '-' + day;
+        }
+
+        const setDateRange = (months) => {
+            const today = new Date();
+            const startDate = new Date();
+
+            startDate.setMonth(today.getMonth() - months);
+
+            document.getElementById('start').value = formatDate(startDate);
+            document.getElementById('end').value = formatDate(today);
+        };
+
+        const setPeriod = (period) => {
+            setDateRange(period);
+        };
+
+        function updateExcludeUnpaid() {
+            const checkbox = document.getElementById('excludeUnpaid');
+            const hiddenInput = document.getElementById('excludeUnpaidValue');
+
+            if (checkbox.checked) {
+                hiddenInput.value = 'false';
+            } else {
+                hiddenInput.value = 'true';
+            }
+
+            console.log('hiddenInput.value:', hiddenInput.value);
+        }
+    </script>
+
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">주문 내역</h2>
+                </div>
+                <div class="card-body">
+                    <!-- 주문 상태 표시 -->
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="status-step d-flex justify-content-between w-100">
+                            <div class="status-step complete">
+                                <div class="status-text">대기</div>
+                                <span th:text="${pendingCount}">0</span>
+                            </div>
+                            <div class="status-step complete">
+                                <div class="status-text">결제 완료</div>
+                                <span th:text="${paidCount}">0</span>
+                            </div>
+                            <div class="status-step complete">
+                                <div class="status-text">배송중</div>
+                                <span th:text="${shippingCount}">0</span>
+                            </div>
+                            <div class="status-step">
+                                <div class="status-text">배송완료</div>
+                                <span th:text="${completedCount}">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filter Section -->
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <input class="form-check-input me-2" id="excludeUnpaid" name="excludeUnpaid"
+                                       onchange="updateExcludeUnpaid()" type="checkbox">
+                                <label class="form-check-label" for="excludeUnpaid">미 결제 건 미포함</label>
+                                <input id="excludeUnpaidValue" name="excludeUnpaidValue" type="hidden">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="d-flex align-items-center me-3 mb-3">
+                            <label class="mb-0 me-3">구매 기간</label>
+                            <a class="btn btn-outline-secondary me-2" href="javascript:void(0)" onclick="setPeriod(1)"
+                               th:classappend="${periodDuration == 1 ? 'active text-white bg-primary' : ''}">1개월</a>
+                            <a class="btn btn-outline-secondary me-2" href="javascript:void(0)" onclick="setPeriod(3)"
+                               th:classappend="${periodDuration == 3 ? 'active text-white bg-primary' : ''}">3개월</a>
+                            <a class="btn btn-outline-secondary me-2" href="javascript:void(0)" onclick="setPeriod(6)"
+                               th:classappend="${periodDuration == 6 ? 'active text-white bg-primary' : ''}">6개월</a>
+                        </div>
+                    </div>
+
+                    <!-- Date Range Section -->
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="d-flex me-3">
+                            <input class="form-control me-2" id="start" name="start" type="date"/>
+                            <input class="form-control me-2" id="end" name="end" type="date"/>
+                            <input type="hidden" id="customerId" name="customerId" th:value="${customerId}"/>
+                            <input type="hidden" id="email" name="email" th:value="${email}"/>
+                        </div>
+                        <button class="btn btn-primary ms-auto" onclick="gotoURL()" type="button">
+                            <i class="fas fa-check-circle me-1"></i> 조회하기
+                        </button>
+                    </div>
+                </div>
+
+                <!--Order Table-->
+                <table class="table table-hover" id="data-table">
+                    <thead class="table-light">
+                    <tr>
+                        <th class="text-center">주문일자</th>
+                        <th class="text-center">주문명</th>
+                        <th class="text-center">주문금액</th>
+                        <th class="text-center">상태</th>
+                        <th class="text-center"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="order : ${pages.content}">
+                        <td class="text-center">
+                            <span th:text="${order.orderedAt.toLocalDate}">주문일자</span>
+                            <br>
+                            <span style="font-size: 0.8rem; color: #6c757d;"
+                                  th:text="${order.orderInvoiceNumber != null ? order.orderInvoiceNumber : '송장 번호 미정'}"></span>
+                        </td>
+                        <td class="text-center" th:text="${order.title}">주문명</td>
+                        <td class="text-center" th:text="${order.paymentPrice.intValue()}">주문금액</td>
+                        <td class="text-center" th:text="${order.orderState.getKorName()}">상태</td>
+                        <td class="text-center">
+                            <a class="btn btn-link btn-sm text-primary"
+                               th:href="@{'/non-member/orders/detail/{orderId}' (orderId = ${order.orderId})}">상세 보기</a>
+                            <a class="btn btn-link btn-sm text-dark"
+                               th:href="@{'/orders/cancel/{order-id}' (order-id = ${order.orderId})}"
+                               th:if="${order.orderState.getKorName() == '주문 대기' or order.orderState.getKorName() == '결제 완료'}">주문
+                                취소</a>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(pages.content)}">
+                        <td class="text-center text-muted" colspan="4">해당 기간 내의 주문 내역이 없습니다.</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <!--                Pagination-->
+                <div th:replace="fragments/page::page"></div>
+            </div>
+            <a href="/sign-up" class="text-decoration-none">
+                <p class="text-center mt-5"
+                   th:text="${email} + ' (고객번호 : ' + ${customerId} + ') 님은 아직 비회원입니다. 회원가입을 하시겠습니까?'"></p>
+            </a>
+        </div>
+    </div>
+</div>
+</html>

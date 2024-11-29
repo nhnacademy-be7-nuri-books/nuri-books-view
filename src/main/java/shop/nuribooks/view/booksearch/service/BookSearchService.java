@@ -8,5 +8,6 @@ import shop.nuribooks.view.booksearch.enums.SearchType;
 import shop.nuribooks.view.booksearch.enums.SortType;
 
 public interface BookSearchService {
-	Page<BookSearchResponse> getSearchResult(String keyword, SearchType searchType, SortType sortType, Pageable pageable);
+	Page<BookSearchResponse> getSearchResult(String keyword, Long categoryId, SearchType searchType, SortType sortType,
+		Pageable pageable);
 }

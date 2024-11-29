@@ -71,8 +71,22 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
+	public Page<OrderListResponse> getNonMemberOrderList(OrderListPeriodRequest orderListPeriodRequest,
+		boolean includeOrdersInPendingStatus, Pageable pageable, Long customerId) throws IOException {
+		return orderServiceClient.getNonMemberOrderList(orderListPeriodRequest, includeOrdersInPendingStatus, pageable,
+				customerId)
+			.getBody();
+	}
+
+	@Override
 	public OrderDetailResponse getOrderDetail(Long orderId, Pageable pageable) {
 		return orderServiceClient.getOrderDetail(orderId, pageable)
+			.getBody();
+	}
+
+	@Override
+	public OrderDetailResponse getNonMemberOrderDetail(Long orderId, Pageable pageable, Long customerId) {
+		return orderServiceClient.getNonMemberOrderDetail(orderId, customerId, pageable)
 			.getBody();
 	}
 
