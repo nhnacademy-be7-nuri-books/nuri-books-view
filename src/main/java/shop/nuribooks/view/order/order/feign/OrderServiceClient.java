@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import shop.nuribooks.view.common.dto.ResponseMessage;
 import shop.nuribooks.view.order.order.dto.OrderCancelDto;
+import shop.nuribooks.view.order.order.dto.request.OrderCancelRequest;
 import shop.nuribooks.view.order.order.dto.request.OrderListPeriodRequest;
 import shop.nuribooks.view.order.order.dto.request.OrderRegisterRequest;
 import shop.nuribooks.view.order.order.dto.response.OrderDetailResponse;
@@ -52,6 +53,10 @@ public interface OrderServiceClient {
 		@SpringQueryMap OrderListPeriodRequest orderListPeriodRequest,
 		Pageable pageable);
 
-	@GetMapping("/api/orders/cancel/{order-id}")
+	@GetMapping("/api/orders/{order-id}/cancel")
 	ResponseEntity<OrderCancelDto> getOrderCancel(@PathVariable("order-id") Long orderId);
+
+	@PostMapping("/api/orders/{order-id}/cancel")
+	ResponseEntity<ResponseMessage> orderCancel(
+		@PathVariable("order-id") Long orderId, @RequestBody OrderCancelRequest orderCancelRequest);
 }

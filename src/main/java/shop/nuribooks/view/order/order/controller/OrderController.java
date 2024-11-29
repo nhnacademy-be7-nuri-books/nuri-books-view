@@ -4,6 +4,7 @@ import static shop.nuribooks.view.cart.controller.CartController.*;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,9 +24,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.common.decoder.JwtDecoder;
+import shop.nuribooks.view.common.dto.ResponseMessage;
 import shop.nuribooks.view.common.util.CookieUtil;
 import shop.nuribooks.view.order.order.dto.OrderCancelDto;
+import shop.nuribooks.view.order.order.dto.request.OrderCancelRequest;
 import shop.nuribooks.view.order.order.dto.request.OrderListPeriodRequest;
 import shop.nuribooks.view.order.order.dto.response.OrderDetailResponse;
 import shop.nuribooks.view.order.order.dto.response.OrderInformationResponse;
@@ -32,6 +37,7 @@ import shop.nuribooks.view.order.order.dto.response.OrderListResponse;
 import shop.nuribooks.view.order.order.service.OrderService;
 
 @Controller
+@Slf4j
 @RequestMapping("/orders")
 @RequiredArgsConstructor
 public class OrderController {
@@ -233,23 +239,29 @@ public class OrderController {
 
 		OrderCancelDto orderCancelDto = orderService.getOrderCancel(orderId);
 
+		model.addAttribute("orderId", orderId);
 		model.addAttribute("paymentPrice", orderCancelDto.paymentPrice());
 		model.addAttribute("bookAppliedCouponList", orderCancelDto.bookAppliedCouponList());
-		model.addAttribute("usingPoint", orderCancelDto.usingPoint());
+		model.addAttribute("usingPoint", orderCancelDto.usingPoint().setScale(0, RoundingMode.DOWN).abs());
 
 		return "member/order/cancel/cancel";
 	}
 
 	/**
-	 * 주문 취소 폼 불러오기
+	 * 주문 취소
 	 *
 	 * @param orderId 주문 아이디
 	 * @return 주문 상세 resource path
 	 */
-	@PostMapping("/cancel/{order-id}")
-	public String doOrderCancel(@PathVariable("order-id") Long orderId) {
+	@PostMapping("/{order-id}/cancel")
+	public String doOrderCancel(@PathVariable("order-id") Long orderId,
+		@ModelAttribute OrderCancelRequest refundRequest) {
 
-		return "redirect:orders/cancelled-list";
+		ResponseMessage orderCancelResult = orderService.orderCancel(orderId, refundRequest);
+
+		log.debug("{}", orderCancelResult.message());
+
+		return "redirect:/orders/cancelled-list";
 	}
 
 }
