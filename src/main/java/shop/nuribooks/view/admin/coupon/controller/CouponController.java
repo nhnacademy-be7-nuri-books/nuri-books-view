@@ -42,9 +42,16 @@ public class CouponController {
 	private final CouponService couponService;
 	private final AdminCategoryService adminCategoryService;
 
+	/**
+	 * 쿠폰 타입 별로 조회
+	 * @param model
+	 * @param pageable
+	 * @param type
+	 * @return
+	 */
 	@GetMapping
 	public String getCoupons(Model model, @PageableDefault Pageable pageable,
-		@RequestParam(value = "type", defaultValue = "ALL") CouponType type) {
+		@RequestParam(name = "type", defaultValue = "ALL") CouponType type) {
 		Page<CouponResponse> coupons = couponService.getCoupons(type, pageable);
 		model.addAttribute("pages", coupons);
 		model.addAttribute("policyTypes", PolicyType.values());
@@ -55,6 +62,43 @@ public class CouponController {
 		List<BookResponse> books = bookService.getAllBooks();
 		model.addAttribute("books", books);
 		return "admin/coupon/coupon";
+	}
+
+	/**
+	 * 모든 쿠폰 한번에 조회
+	 * @param model
+	 * @param pageable
+	 * @return
+	 */
+	@GetMapping("/list")
+	public String getCoupons(Model model, @PageableDefault Pageable pageable) {
+		Page<CouponResponse> coupons = this.couponService.getAllCoupons(pageable);
+		model.addAttribute("pages", coupons);
+		model.addAttribute("policyTypes", PolicyType.values());
+		model.addAttribute("couponTypes", CouponType.values());
+		model.addAttribute("expirationTypes", ExpirationType.values());
+
+		List<BookResponse> books = bookService.getAllBooks();
+		model.addAttribute("books", books);
+		return "admin/coupon/coupon";
+	}
+
+	/**
+	 * 쿠폰 상세 조회
+	 * @param couponId
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/detail/{coupon-id}")
+	public String getCouponDetail(@PathVariable(name = "coupon-id") Long couponId,
+		Model model) {
+		CouponResponse couponResponse = couponService.getCouponById(couponId);
+		model.addAttribute("coupon", couponResponse);
+		model.addAttribute("policyTypes", PolicyType.values());
+		model.addAttribute("couponTypes", CouponType.values());
+		model.addAttribute("expirationTypes", ExpirationType.values());
+
+		return "admin/coupon/coupon_detail";
 	}
 
 	@GetMapping("/{couponId}")

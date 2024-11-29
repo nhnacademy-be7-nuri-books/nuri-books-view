@@ -29,7 +29,7 @@
                         <td class="text-center" th:text="${policy.shippingFee}">배송비</td>
                         <td class="text-center" th:text="${policy.minimumOrderPrice}">최소주문금액</td>
                         <td class="text-center"
-                            th:text="${policy.expiration == null ? 'Active' : policy.expiration}">
+                            th:text="${policy.expiration == null ? 'Active' : #temporals.format(policy.expiration, 'yyyy-MM-dd HH:mm:ss')}">
                             만료기한
                         </td>
                         <td class="text-end">

@@ -13,6 +13,8 @@
                 <div>
                     <input class="form-control me-2" id="type" name="type" th:value="${type}" type="hidden"/>
 
+                    <a class="btn btn-outline-secondary me-2" href="/admin/coupon/list"
+                       th:classappend="${type} != 'ALL' ? '': 'active text-white bg-primary'">모두 적용</a>
                     <a class="btn btn-outline-secondary me-2" href="/admin/coupon?type=ALL"
                        th:classappend="${type} == 'ALL' ? 'active text-white bg-primary' : ''">전체</a>
                     <a class="btn btn-outline-secondary me-2" href="/admin/coupon?type=BOOK"
@@ -30,13 +32,13 @@
                     <tr>
                         <th class="text-center">ID</th>
                         <th class="text-center">쿠폰 이름</th>
-                        <th class="text-center">쿠폰 유형</th>
-                        <th class="text-center">정책 유형</th>
+                        <!--                        <th class="text-center">쿠폰 유형</th>-->
+                        <!--                        <th class="text-center">정책 유형</th>-->
                         <th class="text-center">할인 할당량</th>
-                        <th class="text-center">최소 주문 금액</th>
-                        <th class="text-center">최대 할인 금액</th>
-                        <th class="text-center">시작일시</th>
-                        <th class="text-center">종료일시</th>
+                        <!--                        <th class="text-center">최소 주문 금액</th>-->
+                        <!--                        <th class="text-center">최대 할인 금액</th>-->
+                        <th class="text-center">생성일</th>
+                        <th class="text-center">만료일</th>
                         <th class="text-center">기간</th>
                         <th class="text-center">만료 유형</th>
                         <th class="text-center">활성화 여부</th>
@@ -47,34 +49,38 @@
                     <tr th:each="coupon : ${pages.content}">
                         <td class="text-center" th:text="${coupon.id}">ID</td>
                         <td class="text-center" th:text="${coupon.name}">쿠폰 이름</td>
-                        <td class="text-center" th:text="${coupon.couponType}">쿠폰 유형</td>
-                        <td class="text-center" th:text="${coupon.policyType.toKorName()}">정책 유형</td>
+                        <!--                        <td class="text-center" th:text="${coupon.couponType}">쿠폰 유형</td>-->
+                        <!--                        <td class="text-center" th:text="${coupon.policyType.toKorName()}">정책 유형</td>-->
                         <td class="text-center"
                             th:text="${coupon.discount.intValue() + ' ' + (coupon.policyType.toString().equals('RATED') ? '%' : '₩')}">
                             할인 할당량
                         </td>
-                        <td class="text-center" th:text="${coupon.minimumOrderPrice.intValue()}">최소 주문 금액</td>
-                        <td class="text-center" th:text="${coupon.maximumDiscountPrice.intValue()}">최대 할인 금액</td>
-                        <td class="text-center" th:text="${coupon.createdAt}">시작일시</td>
-                        <td class="text-center" th:text="${coupon.expiredAt}">종료일시</td>
+                        <!--                        <td class="text-center" th:text="${coupon.minimumOrderPrice.intValue()}">최소 주문 금액</td>-->
+                        <!--                        <td class="text-center" th:text="${coupon.maximumDiscountPrice.intValue()}">최대 할인 금액</td>-->
+                        <td class="text-center" th:text="${coupon.createdAt}">생성일</td>
+                        <td class="text-center" th:text="${coupon.expiredAt}">만료일</td>
                         <td class="text-center" th:text="${coupon.period}">기간</td>
                         <td class="text-center" th:text="${coupon.expirationType.toKorName()}">만료 유형</td>
                         <td class="text-center"
-                            th:text="${coupon.expiredDate == null ? 'Active' : coupon.expiredDate}">
+                            th:text="${coupon.expiredDate == null ? 'Active' : #temporals.format(coupon.expiredDate, 'yyyy-MM-dd HH:mm:ss')}">
                             만료기한
                         </td>
                         <td class="text-end">
                             <!-- 수정 버튼 (수정 모달 트리거) -->
+                            <a class="btn btn-outline-secondary btn-sm"
+                               th:href="@{/admin/coupon/detail/{coupon-id}(coupon-id=${coupon.id})}">
+                                <i class="fas fa-eye me-2"></i>자세히</a>
+
                             <button class="btn btn-outline-secondary btn-sm" data-bs-target="#update-modal"
                                     data-bs-toggle="modal"
                                     th:onclick="'loadCouponData(' + ${coupon.id} + ')'">
                                 <i class="fas fa-edit me-2"></i>수정
                             </button>
 
-                            <a class="btn btn-outline-secondary btn-sm"
-                               th:onclick="'openModal(\'delete-modal\', '+ ${coupon.id} +')'">
+                            <button class="btn btn-outline-secondary btn-sm"
+                                    th:onclick="'openModal(\'delete-modal\', ' + ${coupon.id} + ')'" type="button">
                                 <i class="fas fa-trash-alt me-2"></i>만료
-                            </a>
+                            </button>
                         </td>
                     </tr>
 

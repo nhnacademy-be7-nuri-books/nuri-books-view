@@ -1,0 +1,95 @@
+<html lang="ko" layout:decorate="~{admin/layout/adminlayout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div layout:fragment="content">
+    <div th:replace="~{admin/fragment/js-utils::utils}"></div>
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+
+                <h2 class="mb-0">쿠폰 상세 정보</h2>
+            </div>
+            <div class="card-body">
+                <div class="card-header">
+                    쿠폰 ID: <span th:text="${coupon.id}">ID</span>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <tbody>
+                        <tr>
+                            <th>쿠폰 이름</th>
+                            <td><input class="form-control" readonly
+                                       th:value="${coupon.name}"
+                                       type="text"></td>
+                        </tr>
+                        <tr>
+                            <th>쿠폰 유형</th>
+                            <td><input class="form-control" readonly
+                                       th:value="${coupon.couponType }" type="text"></td>
+                        </tr>
+                        <tr>
+                            <th>할인 적용 유형</th>
+                            <td><input class="form-control" readonly
+                                       th:value="${coupon.policyType.toKorName()}"
+                                       type="text"></td>
+                        </tr>
+                        <tr>
+                            <th>할인 할당량</th>
+                            <td><input class="form-control" readonly
+                                       th:value="${coupon.discount.intValue() + ' ' + (coupon.policyType.toString().equals('RATED') ? '%' : '₩')}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>최소 주문 금액</th>
+                            <td><input class="form-control" readonly
+                                       th:value="${coupon.minimumOrderPrice.intValue()}"
+                                       type="text"></td>
+                        </tr>
+                        <tr>
+                            <th>최대 할인 금액</th>
+                            <td><input class="form-control" readonly
+                                       th:value="${coupon.maximumDiscountPrice.intValue()}"
+                                       type="text"></td>
+                        </tr>
+                        <tr>
+                            <th>쿠폰 생성일</th>
+                            <td><input class="form-control" readonly
+                                       th:value="${coupon.createdAt}"
+                                       type="text"></td>
+                        </tr>
+
+                        <tr>
+                            <th>만료 유형</th>
+                            <td><input class="form-control" readonly
+                                       th:value="${coupon.expirationType.toKorName()}" type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>만료 기간</th>
+                            <td><input class="form-control" readonly
+                                       th:value="${coupon.period}"
+                                       type="text"></td>
+                        </tr>
+                        <tr>
+                            <th>쿠폰 만료일</th>
+                            <td><input class="form-control" readonly
+                                       th:value="${coupon.expiredAt != null ? coupon.expiredAt : 'N/A'}"
+                                       type="text"></td>
+                        </tr>
+                        <tr>
+                            <th>활성화 여부</th>
+                            <td><input class="form-control" readonly
+                                       th:value="${coupon.expiredDate == null ? 'Active' : '만료일자: ' + #temporals.format(coupon.expiredDate, 'yyyy-MM-dd HH:mm:ss')}"
+                                       type="text">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <a class="btn btn-primary mt-3" href="/admin/coupon/list">목록으로 돌아가기</a>
+    </div>
+</div>
+</body>
+</html>

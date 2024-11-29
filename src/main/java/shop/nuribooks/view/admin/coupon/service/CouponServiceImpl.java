@@ -29,6 +29,11 @@ public class CouponServiceImpl implements CouponService {
 	}
 
 	@Override
+	public Page<CouponResponse> getAllCoupons(Pageable pageable) {
+		return couponServiceClient.getAllCoupons(pageable).getBody();
+	}
+
+	@Override
 	public BookCouponResponse getBookCoupon(Long id) {
 		return this.couponServiceClient.getBookCoupon(id).getBody();
 	}

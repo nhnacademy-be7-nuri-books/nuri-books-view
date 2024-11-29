@@ -27,6 +27,9 @@ public interface CouponServiceClient {
 	@GetMapping("/api/coupons")
 	ResponseEntity<Page<CouponResponse>> getCoupons(@RequestParam(value = "type") CouponType type, Pageable pageable);
 
+	@GetMapping("/api/coupons/list")
+	ResponseEntity<Page<CouponResponse>> getAllCoupons(Pageable pageable);
+
 	@GetMapping("/api/coupons/book-coupons/{bookId}")
 	ResponseEntity<BookCouponResponse> getBookCoupon(@PathVariable("bookId") Long id);
 
