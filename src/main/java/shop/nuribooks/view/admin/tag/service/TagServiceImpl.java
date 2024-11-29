@@ -39,11 +39,7 @@ public class TagServiceImpl implements TagService {
 
 	@Override
 	public Page<TagResponse> getAllTags(Pageable pageable) {
-		try {
-			return tagServiceClient.getAllTags(pageable.getPageNumber(), pageable.getPageSize()).getBody();
-		} catch (FeignException ex) {
-			throw new RuntimeException(ex.getMessage(), ex);
-		}
+		return tagServiceClient.getAllTags(pageable.getPageNumber(), pageable.getPageSize()).getBody();
 	}
 
 	@Override
