@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.admin.wrappingpaper.dto.WrappingPaperRequest;
@@ -32,6 +35,11 @@ import shop.nuribooks.view.common.dto.ResponseMessage;
 public class WrappingPaperAdminController {
 	private final WrappingPaperService wrappingPaperService;
 
+	@Operation(summary = "포장지 조회", description = "포장지를 조회합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "조회 성공"),
+		@ApiResponse(responseCode = "400", description = "잘못된 요청 데이터"),
+	})
 	@GetMapping
 	public String getWrappingPapers(
 		@RequestParam(required = false, defaultValue = "0") int page,
@@ -44,6 +52,11 @@ public class WrappingPaperAdminController {
 		return "admin/wrapping-paper/wrapping-paper";
 	}
 
+	@Operation(summary = "포장지 등록", description = "포장지를 등록합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "201", description = "조회 성공"),
+		@ApiResponse(responseCode = "400", description = "잘못된 요청 데이터"),
+	})
 	@PostMapping
 	public ResponseEntity<ResponseMessage> registerWrappingPaper(
 		@RequestParam("title") String title,
@@ -56,6 +69,11 @@ public class WrappingPaperAdminController {
 			.body(wrappingPaperService.registerWrappingPaper(wrappingPaperRequest));
 	}
 
+	@Operation(summary = "포장지 수정", description = "포장지를 수정합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "수정 성공"),
+		@ApiResponse(responseCode = "400", description = "잘못된 요청 데이터"),
+	})
 	@PutMapping("/{wrapping-paper-id}")
 	public ResponseEntity<ResponseMessage> updateWrappingPaper(
 		@RequestParam("title") String title,
@@ -69,6 +87,11 @@ public class WrappingPaperAdminController {
 			.body(wrappingPaperService.updateWrappingPaper(id, wrappingPaperRequest));
 	}
 
+	@Operation(summary = "포장지 삭제", description = "포장지를 삭제합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "삭제 성공"),
+		@ApiResponse(responseCode = "400", description = "잘못된 요청 데이터"),
+	})
 	@DeleteMapping("/{wrapping-paper-id}")
 	public ResponseEntity<ResponseMessage> removeWrappingPaper(
 		@PathVariable("wrapping-paper-id") Long id
