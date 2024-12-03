@@ -10,6 +10,7 @@ import shop.nuribooks.view.review.dto.request.ReviewRequest;
 import shop.nuribooks.view.review.dto.request.ReviewUpdateRequest;
 import shop.nuribooks.view.review.dto.response.ReviewBookResponse;
 import shop.nuribooks.view.review.dto.response.ReviewMemberResponse;
+import shop.nuribooks.view.review.dto.response.ReviewScoreResponse;
 import shop.nuribooks.view.review.feign.ReviewServiceClient;
 import shop.nuribooks.view.review.service.ReviewService;
 
@@ -36,5 +37,10 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public void updateReview(ReviewUpdateRequest reviewUpdateRequest, long reviewId) {
 		reviewServiceClient.updateReview(reviewUpdateRequest, reviewId);
+	}
+
+	@Override
+	public ReviewScoreResponse getScoreByBookId(long bookId) {
+		return reviewServiceClient.getReviewScore(bookId);
 	}
 }

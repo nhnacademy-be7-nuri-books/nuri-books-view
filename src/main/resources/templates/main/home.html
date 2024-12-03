@@ -47,13 +47,13 @@
 
 
         <div class="col-12 text-center text-uppercase">
-            <h2 class="section-title">누리의 서재 독자들이 좋아하는 도서 Top10</h2>
+            <h2 class="section-title">누리의 서재 독자들이 좋아하는 도서 Top 8</h2>
         </div>
 
         <div id="carouselExample" class="carousel slide carousel-container">
             <div class="carousel-inner">
 
-                <div th:each="group, iterStat : ${bookGroups}" th:class="'carousel-item' + (${iterStat.index == 0} ? ' active' : '')">
+                <div th:each="group, iterStat : ${likeGroups}" th:class="'carousel-item' + (${iterStat.index == 0} ? ' active' : '')">
                     <div class="product-list">
                         <!-- 그룹 내 도서 반복 -->
                         <div class="product-item" th:each="book : ${group}">
@@ -85,6 +85,41 @@
         <div class="col-12">
             <hr>
         </div>
+
+        <!-- Top Scores (Recommended) Section -->
+        <div class="col-12 text-center text-uppercase">
+            <h2 class="section-title">누리의 서재 독자들이 추천하는 도서 Top 8</h2>
+        </div>
+
+        <div id="carouselTopScores" class="carousel slide carousel-container">
+            <div class="carousel-inner">
+                <div th:each="group, iterStat : ${scoreGroups}" th:class="'carousel-item' + (${iterStat.index == 0} ? ' active' : '')">
+                    <div class="product-list">
+                        <!-- 그룹 내 도서 반복 -->
+                        <div class="product-item" th:each="book : ${group}">
+                            <div class="thumbnail-container">
+                                <a th:href="@{/view/book/details/{bookId}(bookId=${book.bookId})}">
+                                    <img alt="도서 이미지" th:src="${#strings.replace(book.thumbnailUrl, 'cover500', 'cover200')}" />
+                                </a>
+                            </div>
+                            <a class="product-name" th:href="@{/view/book/details/{bookId}(bookId=${book.bookId})}" th:text="${book.title}">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 네비게이션 버튼 -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselTopScores" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">이전</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselTopScores" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">다음</span>
+            </button>
+        </div>
+        <!-- Top Scores (Recommended) Section -->
 
     </main>
     <!-- Main Content -->

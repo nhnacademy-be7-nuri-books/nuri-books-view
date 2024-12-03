@@ -211,6 +211,12 @@
                     <span class="badge badge-secondary mr-1" th:each="tag : ${book.tagNames}" th:text="${tag}">태그</span>
                 </div>
 
+                <!-- 평균 평점 섹션 추가 -->
+                <div class="book-meta mt-3">
+                    <strong>평점:</strong>
+                    <span th:text="${score.avgScore}">0.0</span> / 5.0
+                </div>
+
                 <div class="like-button" id="like-button"
                      th:data-book-id="${book.id}"
                      th:data-liked="${likeStatus.isLiked}">
