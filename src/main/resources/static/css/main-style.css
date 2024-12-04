@@ -1,31 +1,25 @@
 /* 캐러셀 컨테이너 */
 .carousel-container {
     position: relative;
-    max-width: 1200px;
+    max-width: 1400px; /* 더 넓은 컨테이너 */
     margin: 40px auto;
-}
-
-.section-title {
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 2rem;
-    font-weight: 700;
-    text-align: center;
-    margin: 40px 0;
+    padding: 0 30px; /* 좌우 여백 추가 */
 }
 
 /* 캐러셀 아이템 내부의 도서 리스트 */
 .product-list {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly; /* 아이템 간격 균등 배분 */
     flex-wrap: nowrap;
     margin: 0 auto;
-    max-width: 1000px;
+    max-width: 1200px; /* 내부 크기 증가 */
+    padding: 20px 0; /* 상하 여백 추가 */
 }
 
 /* 도서 아이템 */
 .product-item {
-    width: 150px;
-    margin: 0 10px;
+    width: 250px; /* 아이템 크기 증가 */
+    margin: 0 25px; /* 도서 간격 증가 */
     padding: 20px 0;
     display: flex;
     flex-direction: column;
@@ -35,11 +29,12 @@
 
 /* 썸네일 컨테이너 */
 .thumbnail-container {
-    width: 140px;
-    height: 200px;
+    width: 220px; /* 썸네일 크기 증가 */
+    height: 300px;
     overflow: hidden;
-    border-radius: 5px;
+    border-radius: 10px;
     background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* 그림자 강화 */
 }
 
 /* 이미지 스타일 */
@@ -52,12 +47,12 @@
 
 /* 도서명 스타일 */
 .product-name {
-    width: 140px;
+    width: 220px; /* 너비 증가 */
     font-family: 'Roboto', sans-serif;
-    font-size: 0.9rem;
+    font-size: 1.2rem; /* 폰트 크기 증가 */
     font-weight: bold;
     color: #000000;
-    margin-top: 10px;
+    margin-top: 15px;
     margin-bottom: 0;
     text-align: center;
     text-decoration: none;
@@ -70,32 +65,54 @@
 }
 
 .product-name:hover {
-    color: #0056b3;
+    color: #007bff;
 }
 
 /* 네비게이션 버튼 */
 .carousel-control-prev,
 .carousel-control-next {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: #ffffff; /* 흰색 배경 유지 */
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
     z-index: 1;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* 버튼 그림자 */
+    border: 1px solid #ddd; /* 테두리 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 화살표 아이콘 초기화 */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background: none; /* 배경색 제거 */
+    width: 12px; /* 화살표 크기 조정 */
+    height: 12px;
+    border: solid black; /* 화살표 색상 검정 */
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+}
+
+/* 왼쪽 화살표 회전 */
+.carousel-control-prev-icon {
+    transform: rotate(135deg);
+}
+
+/* 오른쪽 화살표 회전 */
+.carousel-control-next-icon {
+    transform: rotate(-45deg);
 }
 
 .carousel-control-prev {
-    left: 10px;
+    left: 3%;
 }
 
 .carousel-control-next {
-    right: 10px;
-}
-
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-    filter: invert(1);
+    right: 3%;
 }

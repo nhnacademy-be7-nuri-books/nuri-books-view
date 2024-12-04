@@ -23,7 +23,7 @@ import shop.nuribooks.view.book.dto.BookContributorsResponse;
 import shop.nuribooks.view.book.dto.BookResponse;
 import shop.nuribooks.view.book.dto.BookUpdateRequest;
 import shop.nuribooks.view.book.dto.PersonallyBookRegisterRequest;
-import shop.nuribooks.view.book.dto.TopBookLikeResponse;
+import shop.nuribooks.view.book.dto.TopBookResponse;
 import shop.nuribooks.view.common.dto.PagedResponse;
 import shop.nuribooks.view.common.dto.ResponseMessage;
 
@@ -66,5 +66,8 @@ public interface BookServiceClient {
 	List<BookResponse> getAllBooks();
 
 	@GetMapping("/api/books/top/book-like")
-	List<TopBookLikeResponse> getTopBookLike();
+	List<TopBookResponse> getTopBookLike();
+
+	@GetMapping("/api/books/top/book-score")
+	List<TopBookResponse> getTopBookScore();
 }
