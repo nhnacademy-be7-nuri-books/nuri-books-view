@@ -3,29 +3,40 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>도서 상세 정보</title>
+    <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
+        /* 기본 스타일 설정 */
         body {
             background-color: #f3f4f6;
             font-family: 'Roboto', sans-serif;
             color: #333;
+            margin: 0;
+            padding: 0;
         }
 
         .container {
-            max-width: 1000px;
-            margin: 30px auto;
-            padding: 20px;
+            max-width: 900px; /* 최대 너비 900px */
+            margin: 40px auto;
+            padding: 20px; /* 패딩 20px */
             background-color: #ffffff;
             border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
 
-        .book-info {
-            text-align: right;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+        /* Bootstrap 그리드의 기본 gutter 사용 */
+        .row {
+            margin-right: -15px;
+            margin-left: -15px;
+        }
+
+        .row > [class*="col-"] {
+            padding-right: 15px;
+            padding-left: 15px;
         }
 
         .book-thumbnail {
@@ -33,79 +44,96 @@
             width: 100%;
             height: auto;
             border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .book-thumbnail:hover {
+            transform: scale(1.05);
+        }
+
+        /* 모든 내용 왼쪽 정렬 */
+        .book-details {
+            text-align: left; /* 왼쪽 정렬 */
         }
 
         .book-title {
-            font-size: 1.5rem; /* 기본 글꼴 크기 */
-            font-weight: bold; /* 글씨 두께 */
-            line-height: 1.4; /* 줄 간격 */
-            text-align: right; /* 텍스트 정렬 */
-            word-wrap: break-word; /* 단어 초과 시 줄바꿈 */
-            overflow-wrap: break-word; /* 긴 단어 줄바꿈 */
-            max-width: 100%; /* 최대 너비 */
-            white-space: normal; /* 줄바꿈 허용 */
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1.3;
+            text-align: left; /* 왼쪽 정렬 유지 */
+            margin-bottom: 10px; /* 마진 줄이기 */
         }
 
-        .book-meta {
-            font-size: 0.9em;
-            color: #4a5568;
-            margin: 5px 0;
-        }
-
+        .contributors,
+        .book-meta,
         .isbn-info {
-            font-size: 0.8em;
-            color: #718096;
-            margin-top: 10px;
+            text-align: left; /* 왼쪽 정렬 */
+            margin-bottom: 8px; /* 마진 줄이기 */
         }
 
+        /* 정가, 판매가, 할인율 표시 형식 변경 및 크기 조정 */
         .book-price {
-            margin-top: 10px;
+            margin-top: 15px;
             font-size: 1em;
             font-weight: 600;
+            text-align: left; /* 왼쪽 정렬 */
         }
 
         .book-price .original-price {
             color: #a0aec0;
             text-decoration: line-through;
-            font-size: 0.9em;
+            display: block; /* 정가를 블록으로 표시 */
+            margin-bottom: 5px; /* 정가와 판매가 간 간격 */
+            font-size: 0.9em; /* 정가 글자 크기 줄이기 */
+        }
+
+        .book-price .sale-price,
+        .book-price .discount-rate {
+            display: inline-block;
+            margin-right: 10px;
+            font-size: 1.1em; /* 판매가와 할인율 글자 크기 키우기 */
+        }
+
+        .book-price .sale-price {
+            color: #2d3748;
+            font-weight: 700;
         }
 
         .book-price .discount-rate {
             color: #e53e3e;
             font-weight: bold;
-            font-size: 0.95em;
-            margin-left: 10px;
         }
 
-        .book-price .sale-price {
-            color: #e53e3e;
-            font-weight: 700;
-            font-size: 1.5em;
-            margin-left: 20px;
+        /* 판매가와 ISBN 사이의 간격 조정 */
+        .isbn-info {
+            margin-top: 8px; /* 출판일과 상태 사이의 간격과 동일하게 설정 */
+            font-size: 0.9em; /* 글자 크기 조정 */
         }
 
         .book-description, .book-contents {
-            margin-top: 30px;
+            margin-top: 30px; /* 마진 줄이기 */
             line-height: 1.8;
             color: #2d3748;
+            text-align: left; /* 왼쪽 정렬 */
         }
 
         .book-section-title {
-            font-size: 1.5em;
+            font-size: 1.8em;
             font-weight: 700;
-            margin-bottom: 15px;
+            margin-bottom: 15px; /* 마진 줄이기 */
             color: #1a202c;
             border-bottom: 2px solid #2d3748;
-            padding-bottom: 8px;
+            padding-bottom: 5px; /* 패딩 줄이기 */
+            text-align: left; /* 왼쪽 정렬 */
         }
 
         .btn-custom {
-            padding: 8px 20px;
-            font-size: 0.9em;
+            padding: 8px 20px; /* 패딩 조정 */
+            font-size: 1em;
             font-weight: 600;
-            border-radius: 20px;
-            margin-left: 10px; /* 버튼 간 간격 */
+            border-radius: 25px;
+            margin-left: 5px; /* 마진 줄이기 */
             transition: all 0.3s ease;
         }
 
@@ -129,10 +157,45 @@
             background-color: #c53030;
         }
 
+        .btn-success {
+            background-color: #38a169;
+            color: #fff;
+            border: none;
+        }
+
+        .btn-success:hover {
+            background-color: #2f855a;
+        }
+
         .button-group {
             display: flex;
-            justify-content: flex-end;
+            align-items: center;
+            margin-top: 15px; /* 마진 줄이기 */
+            flex-wrap: wrap;
+            justify-content: flex-start; /* 왼쪽 정렬으로 변경 */
+        }
+
+        .button-group label {
+            margin-right: 10px;
+            font-weight: 500;
+        }
+
+        .button-group input[type="number"] {
+            width: 60px;
+            padding: 5px 10px;
+            border: 1px solid #cbd5e0;
+            border-radius: 5px;
+            margin-right: 15px;
+            margin-bottom: 10px; /* 모바일 대응 */
+        }
+
+        /* 좋아요 버튼과 쿠폰 발급 버튼을 같은 라인에 배치 */
+        .action-buttons {
+            display: flex;
+            align-items: center;
+            gap: 20px; /* 버튼 간의 간격 조정 */
             margin-top: 15px;
+            margin-bottom: 15px;
         }
 
         .like-button {
@@ -140,14 +203,17 @@
             align-items: center;
             cursor: pointer;
             color: grey;
-            gap: 5px;
+            gap: 8px;
             font-size: 1.2em;
-            margin-top: 10px;
-            justify-content: flex-end; /* 버튼을 오른쪽으로 정렬 */
+            transition: color 0.3s ease;
         }
 
         .like-button .liked {
             color: red;
+        }
+
+        .like-button:hover {
+            color: #e53e3e;
         }
 
         .like-count {
@@ -155,124 +221,158 @@
             font-weight: bold;
             color: #2d3748;
         }
-    </style>
 
+        /* 쿠폰 버튼 왼쪽 정렬 유지 */
+        .coupon-button {
+            text-align: left; /* 왼쪽 정렬 */
+        }
+
+        /* 이미지와 책 정보 섹션 사이에 간격 추가 */
+        @media (min-width: 768px) {
+            .col-md-5 {
+                margin-bottom: 0;
+            }
+        }
+
+        /* 반응형 조정 */
+        @media (max-width: 768px) {
+            .button-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .button-group input[type="number"],
+            .button-group button {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+
+            .book-price {
+                text-align: left; /* 모바일에서는 왼쪽 정렬 */
+            }
+
+            .contributors,
+            .book-meta,
+            .isbn-info {
+                text-align: left; /* 모바일에서는 왼쪽 정렬 */
+            }
+
+            .book-details {
+                text-align: left; /* 모바일에서는 왼쪽 정렬 */
+            }
+
+            .coupon-button {
+                text-align: left; /* 모바일에서는 왼쪽 정렬 */
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .like-button {
+                justify-content: flex-start; /* 모바일에서는 왼쪽 정렬 */
+                margin-top: 10px; /* 마진 줄이기 */
+            }
+        }
+    </style>
 </head>
 <body>
 <div layout:fragment="content">
     <div class="container">
-        <div class="row justify-content-between">
+        <!-- 기본 gutter 사용 -->
+        <div class="row">
             <!-- Book Thumbnail -->
-            <div class="col-md-4 text-center">
+            <div class="col-md-5 mb-4">
                 <img alt="도서 이미지" class="book-thumbnail"
                      th:src="${#strings.replace(book.thumbnailImageUrl, 'cover200', 'cover500')}">
             </div>
 
             <!-- Book Information -->
-            <div class="col-md-8 book-info">
+            <div class="col-md-7">
                 <h1 class="book-title" th:text="${book.title}">도서 제목</h1>
-                <!-- Contributors Information -->
-                <div class="contributors mt-3">
-                    <th:block th:each="entry : ${book.contributorsByRole}">
-                        <!-- 작가 이름들을 콤마로 구분하여 나열 -->
-                        <span th:each="name, iterStat : ${entry.value}" th:text="${name + (iterStat.last ? '' : ', ')}">작가 이름</span>
-                        <!-- 역할 표시 -->
-                        <span th:text="' : ' + ${entry.key}"> : 역할</span><br/>
-                    </th:block>
+                <div class="book-details">
+                    <!-- Contributors Information -->
+                    <div class="contributors">
+                        <th:block th:each="entry : ${book.contributorsByRole}">
+                            <span th:each="name, iterStat : ${entry.value}"
+                                  th:text="${name + (iterStat.last ? '' : ', ')}">작가 이름</span>
+                            <span th:text="' : ' + ${entry.key}"> : 역할</span><br/>
+                        </th:block>
+                    </div>
+                    <p class="book-meta"><strong>출판사:</strong> <span class="text-emphasis"
+                                                                     th:text="${book.publisherName}">출판사 정보</span></p>
+                    <p class="book-meta"><strong>출판일:</strong> <span
+                            class="text-emphasis"
+                            th:text="${#temporals.format(book.publicationDate, 'yyyy-MM-dd')}">출판일</span></p>
+                    <p class="book-meta"><strong>상태:</strong> <span class="text-emphasis"
+                                                                    th:text="${book.state}">상태 정보</span></p>
+
+                    <!-- ISBN 정보를 상태 정보 바로 아래로 이동 -->
+                    <p class="isbn-info" th:if="${book.isbn} != null">
+                        <strong>ISBN:</strong> <span th:text="${book.isbn}">ISBN 정보</span>
+                    </p>
+
+                    <div class="book-price">
+                        <!-- 정가 -->
+                        <span class="original-price"
+                              th:text="|정가: ${#numbers.formatInteger(book.price, 0, 'COMMA')} 원|">정가</span>
+
+                        <!-- 판매가 -->
+                        <span class="sale-price"
+                              th:text="|판매가: ${#numbers.formatInteger(book.salePrice, 0, 'COMMA')} 원|">판매가</span>
+
+                        <!-- 할인율 (조건부 출력) -->
+                        <span class="discount-rate" th:if="${book.discountRate > 0}"
+                              th:text="|(할인율: ${book.discountRate}%)|">할인율</span>
+                    </div>
+
+                    <div class="book-meta mt-3" th:if="${book.tagNames?.size() > 0}">
+                        <strong>태그:</strong>
+                        <span class="badge badge-secondary mr-1" th:each="tag : ${book.tagNames}"
+                              th:text="${tag}">태그</span>
+                    </div>
+
+                    <!-- 평균 평점 섹션 추가 -->
+                    <div class="book-meta mt-3">
+                        <strong>평점:</strong>
+                        <span th:text="${score.avgScore}">0.0</span> / 5.0
+                    </div>
+
+                    <!-- 좋아요 버튼과 쿠폰 발급 버튼을 같은 라인에 배치 -->
+                    <div class="action-buttons">
+                        <!-- Like Button -->
+                        <div class="like-button" id="like-button"
+                             th:data-book-id="${book.id}"
+                             th:data-liked="${likeStatus.isLiked}">
+                            <i class="fas fa-heart" th:classappend="${likeStatus.isLiked} ? 'liked' : ''"></i>
+                            <span id="like-count" th:text="${book.likeCount}">0</span>
+                        </div>
+
+                        <!-- Coupon Button -->
+                        <div class="coupon-button">
+                            <button class="btn btn-success btn-custom" onclick="issueCoupon()"
+                                    th:if="${bookCoupon != null}"
+                                    type="button">
+                                <i class="fas fa-ticket-alt"></i> 쿠폰 발급
+                            </button>
+                            <input id="bookCoupon" th:value="${bookCoupon != null ? bookCoupon.couponId : ''}" type="hidden"/>
+                        </div>
+                    </div>
                 </div>
-                <p class="book-meta"><strong>출판사:</strong> <span class="text-emphasis" th:text="${book.publisherName}">출판사 정보</span>
-                </p>
-                <p class="book-meta"><strong>출판일:</strong> <span
-                        class="text-emphasis"
-                        th:text="${#temporals.format(book.publicationDate, 'yyyy-MM-dd')}">출판일</span></p>
-                <p class="book-meta"><strong>상태:</strong> <span class="text-emphasis"
-                                                                th:text="${book.state}">상태 정보</span></p>
 
-                <div class="book-price">
-                    <!-- 정가 -->
-                    <span class="original-price"
-                          th:text="|정가: ${#numbers.formatInteger(book.price, 0, 'COMMA')} 원|">정가</span>
-
-                    <!-- 할인율 (조건부 출력) -->
-                    <span class="discount-rate" th:if="${book.discountRate > 0}"
-                          th:text="|할인율: ${book.discountRate}%|">할인율</span><br/>
-
-                    <!-- 판매가 -->
-                    <span class="sale-price"
-                          th:text="|판매가: ${#numbers.formatInteger(book.salePrice, 0, 'COMMA')} 원|">판매가</span>
-                </div>
-
-                <p class="isbn-info" th:if="${book.isbn} != null">
-                    <strong>ISBN:</strong> <span th:text="${book.isbn}">ISBN 정보</span>
-                </p>
-
-                <div class="book-meta mt-3" th:if="${book.tagNames?.size() > 0}">
-                    <strong>태그:</strong>
-                    <span class="badge badge-secondary mr-1" th:each="tag : ${book.tagNames}" th:text="${tag}">태그</span>
-                </div>
-
-                <!-- 평균 평점 섹션 추가 -->
-                <div class="book-meta mt-3">
-                    <strong>평점:</strong>
-                    <span th:text="${score.avgScore}">0.0</span> / 5.0
-                </div>
-
-                <div class="like-button" id="like-button"
-                     th:data-book-id="${book.id}"
-                     th:data-liked="${likeStatus.isLiked}">
-                    <i class="fas fa-heart" th:classappend="${likeStatus.isLiked} ? 'liked' : ''"></i>
-                    <span id="like-count" th:text="${book.likeCount}">0</span>
-                </div>
-
-                <!-- Buttons aligned to the right in one line -->
-                <div class="button-group mt-3">
-                    <input id="bookCoupon" th:value="${bookCoupon != null ? bookCoupon.couponId : ''}" type="hidden"/>
-                    <button class="btn btn-primary btn-custom" onclick="issueCoupon()"
-                            th:if="${bookCoupon != null}"
-                            type="button">쿠폰 발급
-                    </button>
-                    <script>
-                        function issueCoupon() {
-                            const couponId = document.getElementById("bookCoupon").value;
-
-                            const requestData = {
-                                couponId: couponId
-                            };
-
-                            fetch('/my-coupon/' + couponId, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify(requestData)
-                            })
-                                .then(response => {
-                                    if (response.status === 201) {
-                                        alert('쿠폰이 발급되었습니다!');
-                                    } else if (response.status === 409) {
-                                        alert('이미 발급 받은 쿠폰입니다.');
-                                    } else {
-                                        alert('쿠폰 발급에 실패했습니다. 관리자에게 문의해주세요.');
-                                    }
-                                })
-                                .catch(error => {
-                                    console.error('Error issuing coupon:', error);
-                                    alert('쿠폰 발급에 문제가 발생했습니다. 관리자에게 문의해주세요.');
-                                });
-                        }
-                    </script>
-
-                </div>
-                <div class="button-group mt-3">
+                <!-- Buttons aligned to the left in one line -->
+                <div class="button-group">
                     <label for="quantity">수량:</label>
                     <input id="quantity" max="100" min="1" name="quantity" type="number" value="1">
-                    <!-- 바로 구매하기 버튼 (GET 요청) -->
-                    <button class="btn btn-secondary btn-custom" onclick="submitForm('orderForm')" type="button">바로
-                        구매하기
+
+                    <button class="btn btn-secondary btn-custom" onclick="submitForm('orderForm')" type="button">
+                        <i class="fas fa-shopping-cart"></i> 바로 구매하기
                     </button>
 
-                    <!-- 장바구니에 담기 버튼 (POST 요청) -->
-                    <button class="btn btn-primary btn-custom" onclick="submitForm('cartForm')" type="button">장바구니에 담기
+                    <button class="btn btn-primary btn-custom" onclick="submitForm('cartForm')" type="button">
+                        <i class="fas fa-cart-plus"></i> 장바구니에 담기
                     </button>
 
                     <!-- GET 요청용 폼 -->
@@ -284,48 +384,35 @@
                     <form id="cartForm" method="post" th:action="@{/api/cart/{book-id}(book-id=${book.id})}">
                         <input id="cartQuantity" name="quantity" type="hidden">
                     </form>
-                    <!--                    <form th:action="@{/orders/{book-id}(book-id=${book.id})}" method="get">-->
-                    <!--                        <label for="quantity">수량:</label>-->
-                    <!--                        <button type="submit"-->
-                    <!--                                class="btn btn-secondary btn-custom">바로-->
-                    <!--                            구매하기-->
-                    <!--                        </button>-->
-                    <!--                    </form>-->
-
-                    <!--                    <form id="cartForm" th:action="@{/api/cart/{book-id}(book-id=${book.id})}" method="post">-->
-                    <!--                        <label for="quantity">수량:</label>-->
-                    <!--                        <button type="submit"-->
-                    <!--                                class="btn btn-secondary btn-custom">장바구니에 담기-->
-                    <!--                        </button>-->
-                    <!--                    </form>-->
                 </div>
             </div>
 
             <!-- Book Contents -->
-            <div class="book-contents mt-5">
+            <div class="col-12 book-contents mt-4">
                 <h2 class="book-section-title">목차</h2>
                 <p th:utext="${book.contents}">목차 내용</p>
             </div>
 
             <!-- Book Description -->
-            <div class="book-description mt-5">
+            <div class="col-12 book-description mt-4">
                 <h2 class="book-section-title">책 소개</h2>
                 <div class="book-meta mt-3" th:if="${book.simpleCategories?.size() > 0}">
                     <strong>카테고리:</strong>
-                    <div th:each="breadcrumb : ${book.simpleCategories}">
-                    <span>
-                      <span th:each="category, iterStat : ${breadcrumb}">
-                        <a th:href="@{/view/books/categories/{categoryId}(categoryId=${category.id})}"
-                           th:text="${category.name}"></a>
-                        <span th:if="${!iterStat.last}"> > </span>
-                      </span>
-                    </span><br/>
+                    <div th:each="breadcrumb : ${book.simpleCategories}" class="book-meta">
+                        <span>
+                            <span th:each="category, iterStat : ${breadcrumb}">
+                                <a th:href="@{/view/books/categories/{categoryId}(categoryId=${category.id})}"
+                                   th:text="${category.name}"></a>
+                                <span th:if="${!iterStat.last}"> &gt; </span>
+                            </span>
+                        </span><br/>
                     </div>
                 </div>
                 <p th:utext="${book.description}">책 소개 내용</p>
             </div>
 
-            <div class="mt-5">
+            <!-- Reviews Section -->
+            <div class="col-12 mt-4">
                 <h2 class="book-section-title">리뷰</h2>
                 <div th:replace="~{book/review/register-block::review}"></div>
                 <div th:replace="~{book/review/list::reviews}"></div>
@@ -346,10 +433,41 @@
             document.getElementById(formId).submit();
         }
 
+        function issueCoupon() {
+            const couponId = document.getElementById("bookCoupon").value;
+
+            const requestData = {
+                couponId: couponId
+            };
+
+            fetch('/my-coupon/' + couponId, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+            })
+                .then(response => {
+                    if (response.status === 201) {
+                        alert('쿠폰이 발급되었습니다!');
+                    } else if (response.status === 409) {
+                        alert('이미 발급 받은 쿠폰입니다.');
+                    } else {
+                        alert('쿠폰 발급에 실패했습니다. 관리자에게 문의해주세요.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error issuing coupon:', error);
+                    alert('쿠폰 발급에 문제가 발생했습니다. 관리자에게 문의해주세요.');
+                });
+        }
+
         window.submitForm = submitForm;
+        window.issueCoupon = issueCoupon;
     </script>
 </div>
 
+<!-- jQuery, Bootstrap JS, Font Awesome -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script th:src="@{/js/booklike/like-button.js}"></script>
