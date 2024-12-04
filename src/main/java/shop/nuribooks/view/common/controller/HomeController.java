@@ -11,7 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import shop.nuribooks.view.book.dto.TopBookLikeResponse;
+import shop.nuribooks.view.book.dto.TopBookResponse;
 import shop.nuribooks.view.book.service.BookService;
 
 @RequiredArgsConstructor
@@ -26,17 +26,26 @@ public class HomeController {
 	})
 	@GetMapping("/")
 	public String home(Model model) {
-		List<TopBookLikeResponse> topLikes = bookService.getTopBookLikes();
-		List<List<TopBookLikeResponse>> bookGroups = new ArrayList<>();
-		int groupSize = 5;
+		List<TopBookResponse> topLikes = bookService.getTopBookLikes();
+		List<List<TopBookResponse>> likeGroups = groupBooks(topLikes, 4);
+		model.addAttribute("likeGroups", likeGroups);
 
-		for (int i = 0; i < topLikes.size(); i += groupSize) {
-			int endIndex = Math.min(i + groupSize, topLikes.size());
-			List<TopBookLikeResponse> group = topLikes.subList(i, endIndex);
-			bookGroups.add(group);
+		List<TopBookResponse> topScores = bookService.getTopBookScores();
+		List<List<TopBookResponse>> scoreGroups = groupBooks(topScores, 4);
+		model.addAttribute("scoreGroups", scoreGroups);
+
+		return "main/home";
+	}
+
+	private List<List<TopBookResponse>> groupBooks(List<TopBookResponse> books, int groupSize) {
+		List<List<TopBookResponse>> groups = new ArrayList<>();
+
+		for (int i = 0; i < books.size(); i += groupSize) {
+			int endIndex = Math.min(i + groupSize, books.size());
+			List<TopBookResponse> group = books.subList(i, endIndex);
+			groups.add(group);
 		}
 
-		model.addAttribute("bookGroups", bookGroups);
-		return "main/home";
+		return groups;
 	}
 }

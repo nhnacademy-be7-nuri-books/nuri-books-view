@@ -36,6 +36,7 @@ import shop.nuribooks.view.common.dto.PagedResponse;
 import shop.nuribooks.view.common.util.CookieUtil;
 import shop.nuribooks.view.common.util.TimeUtil;
 import shop.nuribooks.view.review.dto.response.ReviewMemberResponse;
+import shop.nuribooks.view.review.dto.response.ReviewScoreResponse;
 import shop.nuribooks.view.review.service.ReviewService;
 
 @Slf4j
@@ -83,6 +84,9 @@ public class BookController {
 
 		LikeStatusResponse likeStatus = bookLikeService.getLikeStatus(bookId);
 		model.addAttribute("likeStatus", likeStatus);
+
+		ReviewScoreResponse scoreResponse = reviewService.getScoreByBookId(bookId);
+		model.addAttribute("score", scoreResponse);
 
 		try {
 			BookCouponResponse bookCoupon = bookCouponService.getBookCoupon(bookId);

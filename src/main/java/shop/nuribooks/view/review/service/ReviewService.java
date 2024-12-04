@@ -8,6 +8,7 @@ import shop.nuribooks.view.review.dto.request.ReviewRequest;
 import shop.nuribooks.view.review.dto.request.ReviewUpdateRequest;
 import shop.nuribooks.view.review.dto.response.ReviewBookResponse;
 import shop.nuribooks.view.review.dto.response.ReviewMemberResponse;
+import shop.nuribooks.view.review.dto.response.ReviewScoreResponse;
 
 public interface ReviewService {
 	Page<ReviewMemberResponse> getReviewsByBookId(long bookId, Pageable pageable);
@@ -15,4 +16,6 @@ public interface ReviewService {
 	void registerReview(ReviewRequest reviewRequest);
 
 	void updateReview(ReviewUpdateRequest reviewRequest, long reviewId);
+
+	ReviewScoreResponse getScoreByBookId(long bookId);
 }

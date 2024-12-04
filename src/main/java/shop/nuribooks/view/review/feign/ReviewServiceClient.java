@@ -15,6 +15,7 @@ import shop.nuribooks.view.review.dto.request.ReviewRequest;
 import shop.nuribooks.view.review.dto.request.ReviewUpdateRequest;
 import shop.nuribooks.view.review.dto.response.ReviewBookResponse;
 import shop.nuribooks.view.review.dto.response.ReviewMemberResponse;
+import shop.nuribooks.view.review.dto.response.ReviewScoreResponse;
 
 @FeignClient(name = "review", url = "http://localhost:8080")
 public interface ReviewServiceClient {
@@ -40,4 +41,7 @@ public interface ReviewServiceClient {
 		@Valid @RequestBody ReviewUpdateRequest reviewUpdateRequest,
 		@PathVariable long reviewId
 	);
+
+	@GetMapping("/api/books/{bookId}/score")
+	ReviewScoreResponse getReviewScore(@PathVariable long bookId);
 }
