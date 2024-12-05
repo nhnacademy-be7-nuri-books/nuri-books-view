@@ -49,13 +49,8 @@ public class CouponController {
 		@RequestParam(name = "type", defaultValue = "ALL") CouponType type) {
 		Page<CouponResponse> coupons = couponService.getCoupons(type, pageable);
 		model.addAttribute("pages", coupons);
-		model.addAttribute("policyTypes", PolicyType.values());
-		model.addAttribute("couponTypes", CouponType.values());
-		model.addAttribute("type", type);
-		model.addAttribute("expirationTypes", ExpirationType.values());
+		model.addAttribute("coupons", coupons.getContent());
 
-		List<BookResponse> books = bookService.getAllBooks();
-		model.addAttribute("books", books);
 		return "admin/coupon/coupon";
 	}
 
