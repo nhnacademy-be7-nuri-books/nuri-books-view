@@ -1,0 +1,70 @@
+<html lang="en" layout:decorate="~{admin/layout/adminlayout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div layout:fragment="content">
+    <div th:replace="~{admin/fragment/js-utils::utils}"></div>
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">쿠폰 정책 관리</h2>
+            </div>
+            <div class="card-body">
+
+                <div id="register-modal" th:replace="~{admin/coupon-policy/modal/register_modal::register_modal}"></div>
+                <!-- 쿠폰 정책 목록 테이블 -->
+                <table class="table table-hover" id="data-table">
+                    <thead class="table-light">
+                    <tr>
+                        <th class="text-center">ID</th>
+                        <th class="text-center">정책 이름</th>
+                        <th class="text-center">할인 유형</th>
+                        <th class="text-center">할인 할당량</th>
+                        <th class="text-center">최소 주문 금액</th>
+                        <th class="text-center">최대 할인 금액</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="policy : ${pages.content}">
+                        <td class="text-center" th:text="${policy.id}">ID</td>
+                        <td class="text-center" th:text="${policy.name}">정책 이름</td>
+                        <td class="text-center" th:text="${policy.discountType.toKorName()}">할인 유형</td>
+                        <td class="text-center"
+                            th:text="${policy.discount + ' ' + (policy.discountType.toString().equals('RATED') ? '%' : '₩')}">
+                            할인 할당량
+                        </td>
+                        <td class="text-center" th:text="${policy.minimumOrderPrice.intValue()}">정책 이름</td>
+                        <td class="text-center"
+                            th:text="${policy.maximumDiscountPrice == null ? '' : policy.maximumDiscountPrice.intValue()}">
+                            정책 이름
+                        </td>
+
+                        <td class="text-end">
+                            <!-- 수정 버튼 (수정 모달 트리거) -->
+                            <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
+                                    th:onclick="'openModal(\'update-modal\', '+ ${policy.id} +')'">
+                                <i class="fas fa-edit me-2"></i>수정
+                            </button>
+
+                            <a class="btn btn-outline-secondary btn-sm"
+                               th:onclick="'openModal(\'delete-modal\', '+ ${policy.id} +')'">
+                                <i class="fas fa-trash-alt me-2"></i>삭제
+                            </a>
+                        </td>
+                    </tr>
+
+                    <tr th:if="${#lists.isEmpty(pages.content)}">
+                        <td class="text-center text-muted" colspan="2">등록된 쿠폰 정책이 없습니다.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:replace="~{fragments/page::page}"></div>
+        </div>
+    </div>
+
+    <div th:replace="~{admin/coupon-policy/modal/update_modal::update_modal}"></div>
+    <div th:replace="~{admin/coupon-policy/modal/delete_modal::delete_modal}"></div>
+</div>
+</body>
+</html>
