@@ -5,11 +5,11 @@ public enum CouponType {
 
 	String kor;
 
-	CouponType(String kor){
+	CouponType(String kor) {
 		this.kor = kor;
 	}
 
-	public String toKorName(){
+	public String toKorName() {
 		return this.kor;
 	}
 }

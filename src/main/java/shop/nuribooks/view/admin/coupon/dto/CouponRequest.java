@@ -31,7 +31,7 @@ public record CouponRequest(
 	@NotNull(message = "수량 제한 여부는 필수 입니다.")
 	IssuanceType issuanceType,
 
-	int quantity,
+	Integer quantity,
 
 	Long itemId
 ) {
