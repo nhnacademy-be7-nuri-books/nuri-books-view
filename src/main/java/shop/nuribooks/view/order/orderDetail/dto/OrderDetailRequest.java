@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
-import shop.nuribooks.view.order.stub.coupon.BookAppliedCouponRequestStub;
 
 public record OrderDetailRequest(
 	@NotNull(message = "책 ID는 필수 입니다.")
@@ -16,8 +15,7 @@ public record OrderDetailRequest(
 	BigDecimal unitPrice, // 단가
 
 	//nullable
-	boolean isWrapped, // 포장 여부
-	BookAppliedCouponRequestStub bookCouponId // 도서 전용 쿠폰 (stub 객체 사용 이후 변경 예정)
+	boolean isWrapped // 포장 여부
 ) {
 
 }
