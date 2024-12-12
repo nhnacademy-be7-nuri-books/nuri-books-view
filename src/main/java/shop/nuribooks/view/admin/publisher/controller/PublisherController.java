@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shop.nuribooks.view.admin.publisher.dto.PublisherRequest;
@@ -45,7 +44,7 @@ public class PublisherController {
 
 	@PutMapping("/{publisher-id}")
 	public ResponseEntity<ResponseMessage> updatePublisher(@PathVariable("publisher-id") Long id,
-		@Valid @ModelAttribute PublisherRequest publisherRequest) {
+		@ModelAttribute PublisherRequest publisherRequest) {
 		ResponseMessage message = publisherService.updatePublisher(id, publisherRequest);
 		return ResponseEntity.status(HttpStatus.OK).body(message);
 	}
