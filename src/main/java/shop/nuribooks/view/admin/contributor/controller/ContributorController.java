@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import shop.nuribooks.view.admin.contributor.dto.ContributorRequest;
 import shop.nuribooks.view.admin.contributor.dto.ContributorResponse;
@@ -37,14 +36,14 @@ public class ContributorController {
 	}
 
 	@PostMapping
-	public ResponseEntity<ResponseMessage> registerContributor(@Valid @ModelAttribute ContributorRequest contributorRequest) {
+	public ResponseEntity<ResponseMessage> registerContributor(@ModelAttribute ContributorRequest contributorRequest) {
 		ResponseMessage message = contributorService.registerContributor(contributorRequest);
 		return ResponseEntity.status(HttpStatus.CREATED).body(message);
 	}
 
 	@PutMapping("/{contributor-id}")
 	public ResponseEntity<ResponseMessage> updateContributor(@PathVariable("contributor-id") Long id,
-		@Valid @ModelAttribute ContributorRequest contributorRequest) {
+		@ModelAttribute ContributorRequest contributorRequest) {
 		ResponseMessage message = contributorService.updateContributor(id, contributorRequest);
 		return ResponseEntity.status(HttpStatus.OK).body(message);
 	}
