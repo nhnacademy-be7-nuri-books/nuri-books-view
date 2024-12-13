@@ -1,0 +1,133 @@
+<html lang="en" layout:decorate="~{admin/layout/adminlayout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div layout:fragment="content">
+
+    <div th:replace="~{admin/fragment/js-utils::utils}"></div>
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">쿠폰 정책 관리</h2>
+            </div>
+            <div class="card-body">
+                <div>
+                    <input class="form-control me-2" id="type" name="type" th:value="${type}" type="hidden"/>
+
+                    <a class="btn btn-outline-secondary me-2" href="/admin/coupon/list"
+                       th:classappend="${type} != 'ALL' ? '': 'active text-white bg-primary'">모두 적용</a>
+                    <a class="btn btn-outline-secondary me-2" href="/admin/coupon?type=ALL"
+                       th:classappend="${type} == 'ALL' ? 'active text-white bg-primary' : ''">전체</a>
+                    <a class="btn btn-outline-secondary me-2" href="/admin/coupon?type=BOOK"
+                       th:classappend="${type} == 'BOOK' ? 'active text-white bg-primary' : ''">도서</a>
+                    <a class="btn btn-outline-secondary" href="/admin/coupon?type=CATEGORY"
+                       th:classappend="${type} == 'CATEGORY' ? 'active text-white bg-primary' : ''">카테고리</a>
+                </div>
+
+                <div id="register-modal" th:replace="~{admin/coupon/modal/register_modal::register_modal}"></div>
+
+                <!-- 쿠폰 정책 목록 테이블 -->
+                <table class="table table-hover" id="data-table">
+
+                    <thead class="table-light">
+                    <tr>
+                        <th class="text-center">ID</th>
+                        <th class="text-center">쿠폰 이름</th>
+                        <!--                        <th class="text-center">쿠폰 유형</th>-->
+                        <!--                        <th class="text-center">정책 유형</th>-->
+                        <th class="text-center">할인 할당량</th>
+                        <!--                        <th class="text-center">최소 주문 금액</th>-->
+                        <!--                        <th class="text-center">최대 할인 금액</th>-->
+                        <th class="text-center">생성일</th>
+                        <th class="text-center">만료일</th>
+                        <th class="text-center">기간</th>
+                        <th class="text-center">만료 유형</th>
+                        <th class="text-center">활성화 여부</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="coupon : ${pages.content}">
+                        <td class="text-center" th:text="${coupon.id}">ID</td>
+                        <td class="text-center" th:text="${coupon.name}">쿠폰 이름</td>
+                        <!--                        <td class="text-center" th:text="${coupon.couponType}">쿠폰 유형</td>-->
+                        <!--                        <td class="text-center" th:text="${coupon.policyType.toKorName()}">정책 유형</td>-->
+                        <td class="text-center"
+                            th:text="${coupon.discount.intValue() + ' ' + (coupon.discountType.toString().equals('RATED') ? '%' : '₩')}">
+                            할인 할당량
+                        </td>
+                        <!--                        <td class="text-center" th:text="${coupon.minimumOrderPrice.intValue()}">최소 주문 금액</td>-->
+                        <!--                        <td class="text-center" th:text="${coupon.maximumDiscountPrice.intValue()}">최대 할인 금액</td>-->
+                        <td class="text-center" th:text="${coupon.createdAt}">생성일</td>
+                        <td class="text-center" th:text="${coupon.expiredAt}">만료일</td>
+                        <td class="text-center" th:text="${coupon.period}">기간</td>
+                        <td class="text-center" th:text="${coupon.expirationType.toKorName()}">만료 유형</td>
+                        <td class="text-center"
+                            th:text="${coupon.deletedAt == null ? 'Active' : #temporals.format(coupon.deletedAt, 'yyyy-MM-dd HH:mm:ss')}">
+                            만료기한
+                        </td>
+                        <td class="text-end">
+                            <!-- 수정 버튼 (수정 모달 트리거) -->
+                            <a class="btn btn-outline-secondary btn-sm"
+                               th:href="@{/admin/coupon/detail/{coupon-id}(coupon-id=${coupon.id})}">
+                                <i class="fas fa-eye me-2"></i>자세히</a>
+
+                            <button class="btn btn-outline-secondary btn-sm" data-bs-target="#update-modal"
+                                    data-bs-toggle="modal"
+                                    th:onclick="'loadCouponData(' + ${coupon.id} + ')'">
+                                <i class="fas fa-edit me-2"></i>수정
+                            </button>
+
+                            <button class="btn btn-outline-secondary btn-sm"
+                                    th:onclick="'openModal(\'delete-modal\', ' + ${coupon.id} + ')'" type="button">
+                                <i class="fas fa-trash-alt me-2"></i>만료
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr th:if="${#lists.isEmpty(pages.content)}">
+                        <td class="text-center text-muted" colspan="10">등록된 쿠폰 정책이 없습니다.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:replace="~{fragments/page::page}"></div>
+        </div>
+    </div>
+
+    <div th:replace="~{admin/coupon/modal/update_modal::update_modal}"></div>
+    <div th:replace="~{admin/coupon/modal/delete_modal::delete_modal}"></div>
+
+    <script th:inline="javascript">
+
+        function loadCouponData(couponId) {
+            // AJAX 요청을 통해 쿠폰 데이터를 가져옴
+            fetch('/admin/coupon/' + couponId)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('데이터를 불러올 수 없습니다.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // 가져온 데이터를 수정 모달의 필드에 설정
+                    document.getElementById('update-name').value = data.name;
+                    document.getElementById('couponType').value = data.couponType;
+                    document.getElementById('policyType').value = data.policyType;
+                    document.getElementById('discount').value = data.discount;
+                    document.getElementById('update-minimumOrderPrice').value = data.minimumOrderPrice;
+                    document.getElementById('update-maximumDiscountPrice').value = data.maximumDiscountPrice;
+                    document.getElementById('update-createdAt').value = data.createdAt;
+                    document.getElementById('update-expiredAt').value = data.expiredAt;
+                    document.getElementById('update-period').value = data.period;
+                    document.getElementById('update-expirationType').value = data.expirationType;
+                })
+                .catch(error => {
+                    console.error('오류:', error);
+                    alert('쿠폰 정보를 불러오는데 실패했습니다.');
+                });
+        }
+
+    </script>
+</div>
+</body>
+</html>

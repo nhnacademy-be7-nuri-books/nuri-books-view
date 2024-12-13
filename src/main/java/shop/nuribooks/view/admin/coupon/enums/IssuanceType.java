@@ -1,11 +1,11 @@
 package shop.nuribooks.view.admin.coupon.enums;
 
-public enum CouponType {
-	ALL("전체"), BOOK("도서"), CATEGORY("카테고리");
+public enum IssuanceType {
+	LIMITED("한정"), UNLIMITED("무한");
 
 	String kor;
 
-	CouponType(String kor) {
+	IssuanceType(String kor) {
 		this.kor = kor;
 	}
 

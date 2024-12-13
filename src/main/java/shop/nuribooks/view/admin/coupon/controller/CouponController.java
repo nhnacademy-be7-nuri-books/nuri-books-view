@@ -23,6 +23,7 @@ import shop.nuribooks.view.admin.coupon.dto.CouponRequest;
 import shop.nuribooks.view.admin.coupon.dto.CouponResponse;
 import shop.nuribooks.view.admin.coupon.enums.CouponType;
 import shop.nuribooks.view.admin.coupon.enums.ExpirationType;
+import shop.nuribooks.view.admin.coupon.enums.IssuanceType;
 import shop.nuribooks.view.admin.coupon.service.CouponService;
 import shop.nuribooks.view.admin.point.enums.PolicyType;
 import shop.nuribooks.view.book.dto.BookResponse;
@@ -51,11 +52,9 @@ public class CouponController {
 		model.addAttribute("pages", coupons);
 		model.addAttribute("policyTypes", PolicyType.values());
 		model.addAttribute("couponTypes", CouponType.values());
-		model.addAttribute("type", type);
 		model.addAttribute("expirationTypes", ExpirationType.values());
+		model.addAttribute("issuanceTypes", IssuanceType.values());
 
-		List<BookResponse> books = bookService.getAllBooks();
-		model.addAttribute("books", books);
 		return "admin/coupon/coupon";
 	}
 
@@ -72,6 +71,7 @@ public class CouponController {
 		model.addAttribute("policyTypes", PolicyType.values());
 		model.addAttribute("couponTypes", CouponType.values());
 		model.addAttribute("expirationTypes", ExpirationType.values());
+		model.addAttribute("issuanceTypes", IssuanceType.values());
 
 		List<BookResponse> books = bookService.getAllBooks();
 		model.addAttribute("books", books);
