@@ -1,7 +1,21 @@
 <html lang="en" layout:decorate="~{member/layout/memberlayout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 >
 <div layout:fragment="content" style="margin-left: 90px; margin-right: 90px;">
-    <script th:inline="javascript"></script>
+    <script th:inline="javascript">
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById('cancelForm');
+            const reasonTextArea = document.getElementById('reason');
+
+            form.addEventListener('submit', function (event) {
+                const reasonLength = reasonTextArea.value.trim().length;
+
+                if (reasonLength < 5) {
+                    alert("환불 사유는 5자 이상이어야 합니다.");
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
     <div th:replace="~{admin/fragment/js-utils::utils}"></div>
 
     <!-- 결제 정보 -->
@@ -27,7 +41,7 @@
                     <span class="text-muted small" th:text="${coupon.name} + '-'"> 000 쿠폰</span>
                     <span class="text-muted small"
                           th:text="${coupon.discountPrice != null ? coupon.discountPrice : 0} + '원'"> 0원</span>
-                    <span class="text-muted small" th:text="${coupon.couponType.toKorName}"> 정량 </span>
+                    <span class="text-muted small" th:text="${coupon.couponType}"> 정량 </span>
                 </div>
             </div>
 
@@ -42,14 +56,16 @@
 
     </div>
 
-    <form method="post" th:action="@{/orders/{order-id}/cancel(order-id=${orderId})}">
+    <form id="cancelForm" method="post" th:action="@{/orders/{order-id}/cancel(order-id=${orderId})}">
         <label class="form-label" for="reason">취소 사유</label>
         <textarea class="form-control" cols="50" id="reason" name="reason"
                   placeholder="환불 사유를 작성해 주세요"></textarea>
         <input name="customerId" type="hidden" value="-1"> <!-- 비회원일 경우 채운다.-->
         <div class="d-flex justify-content-center align-items-center py-5">
-            <button class="btn btn-secondary btn-lg" type="submit">주문 취소하기</button>
+            <button class="btn btn-secondary btn-lg" id="submitButton" type="submit">주문 취소하기</button>
         </div>
     </form>
 </div>
+
+
 </html>

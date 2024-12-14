@@ -216,7 +216,6 @@
                                     <h4>쿠폰 정보</h4>
                                     <!-- 쿠폰 정보 -->
                                     <div class="form-group">
-                                        <label class="font-weight-bold">주문에 적용 가능한 쿠폰</label>
                                         <div class="dropdown">
                                             <!-- 드롭다운 버튼 -->
                                             <button aria-expanded="false" class="btn btn-primary dropdown-toggle"
@@ -238,16 +237,17 @@
                                                     <li>
                                                         <a class="dropdown-item" onclick="updatePriceByAllCoupon(this)"
                                                            th:data-coupon-discount="${allCoupon.discount}"
+                                                           th:data-coupon-discount-price="${allCoupon.discountPrice}"
                                                            th:data-coupon-id="${allCoupon.memberCouponId}"
                                                            th:data-coupon-maximum-discount="${allCoupon.maximumDiscountPrice}"
                                                            th:data-coupon-name="${allCoupon.couponName}"
-                                                           th:data-coupon-policy="${allCoupon.policyType.toKorName()}">
+                                                           th:data-coupon-policy="${allCoupon.discountType.toKorName()}">
                                                             <div class="d-flex align-items-center">
                                                                 <span th:text="${allCoupon.couponName}">쿠폰 제목</span>
                                                                 -
                                                                 <span th:text="${allCoupon.discount}">할인가격</span>
                                                                 -
-                                                                <span th:text="${allCoupon.policyType.toKorName()}">할인가격</span>
+                                                                <span th:text="${allCoupon.discountType.toKorName()}">할인가격</span>
                                                             </div>
                                                         </a>
                                                     </li>

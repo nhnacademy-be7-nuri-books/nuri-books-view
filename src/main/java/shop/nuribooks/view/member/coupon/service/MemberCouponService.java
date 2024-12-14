@@ -12,4 +12,5 @@ public interface MemberCouponService {
 
 	void registerMemberToBookCoupon(Long id);
 
+	void publishBookCouponIssue(Long couponId);
 }

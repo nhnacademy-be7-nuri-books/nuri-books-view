@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+<div th:replace="~{admin/fragment/js-utils::utils}"></div>
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">쿠폰 정책 관리</h2>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover" id="data-table">
+                <thead class="table-light">
+                <tr>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">정책 이름</th>
+                    <th class="text-center">할인 유형</th>
+                    <th class="text-center">할인 할당량</th>
+                    <th class="text-center">최소 주문 금액</th>
+                    <th class="text-center">최대 할인 금액</th>
+                    <th class="text-center">선택</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="policy : ${pages.content}">
+                    <td class="text-center" th:text="${policy.id}">ID</td>
+                    <td class="text-center" th:text="${policy.name}">정책 이름</td>
+                    <td class="text-center" th:text="${policy.discountType.toKorName()}">할인 유형</td>
+                    <td class="text-center"
+                        th:text="${policy.discount + ' ' + (policy.discountType.toString().equals('RATED') ? '%' : '₩')}">
+                        할인 할당량
+                    </td>
+                    <td class="text-center" th:text="${policy.minimumOrderPrice.intValue()}">최소 주문 금액</td>
+                    <td class="text-center"
+                        th:text="${policy.maximumDiscountPrice == null ? '' : policy.maximumDiscountPrice.intValue()}">
+                        최대 할인 금액
+                    </td>
+                    <td class="text-center">
+                        <button class="btn btn-primary btn-sm"
+                                onclick="selectCouponPolicy(this.dataset.policyId, this.dataset.policyName)"
+                                th:attr="data-policy-id=${policy.id}, data-policy-name=${policy.name}">
+                            선택
+                        </button>
+                    </td>
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(pages.content)}">
+                    <td class="text-center text-muted" colspan="7">등록된 쿠폰 정책이 없습니다.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    function selectCouponPolicy(couponPolicyId, couponPolicyName) {
+        // 팝업 창의 데이터를 부모 창으로 전달
+        if (window.opener) {
+            const policyIdField = window.opener.document.getElementById('couponPolicyId');
+            const policyNameField = window.opener.document.getElementById('couponPolicyName');
+
+            if (policyIdField && policyNameField) {
+                policyIdField.value = couponPolicyId;
+                policyNameField.value = couponPolicyName;
+
+                window.close(); // 팝업 창 닫기
+            } else {
+                console.error('부모 창에서 필요한 필드를 찾을 수 없습니다.');
+            }
+        } else {
+            console.error('부모 창을 찾을 수 없습니다.');
+        }
+    }
+</script>
+</body>
+</html>

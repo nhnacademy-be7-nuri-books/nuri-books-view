@@ -5,21 +5,26 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import shop.nuribooks.view.admin.coupon.enums.CouponType;
+import shop.nuribooks.view.admin.coupon.enums.DiscountType;
 import shop.nuribooks.view.admin.coupon.enums.ExpirationType;
-import shop.nuribooks.view.admin.point.enums.PolicyType;
+import shop.nuribooks.view.admin.coupon.enums.IssuanceType;
 
 public record CouponResponse(
 	Long id,
 	String name,
-	PolicyType policyType,
-	int discount,
+	CouponType couponType,
+	DiscountType discountType,
+	Integer discount,
 	BigDecimal minimumOrderPrice,
 	BigDecimal maximumDiscountPrice,
-	LocalDate createdAt,
+	ExpirationType expirationType,
 	LocalDate expiredAt,
 	Integer period,
-	ExpirationType expirationType,
-	LocalDateTime expiredDate,
-	CouponType couponType
+	IssuanceType issuanceType,
+	Integer quantity,
+	Long itemId,
+	String itemName,
+	LocalDate createdAt,
+	LocalDateTime deletedAt
 ) {
 }

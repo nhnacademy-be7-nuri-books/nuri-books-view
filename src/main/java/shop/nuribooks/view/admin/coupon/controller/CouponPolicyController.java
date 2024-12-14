@@ -38,6 +38,14 @@ public class CouponPolicyController {
 		return "admin/coupon-policy/coupon-policy";
 	}
 
+	@GetMapping("/popup")
+	public String showCouponPolicyPopup(Model model, @PageableDefault Pageable pageable) {
+		Page<CouponPolicyResponse> couponPolicies = couponPolicyService.getCouponPolicies(pageable);
+		model.addAttribute("pages", couponPolicies);
+		model.addAttribute("discountTypes", DiscountType.values());
+		return "admin/popup/coupon-policy-popup";
+	}
+
 	@GetMapping("/detail/{coupon-policy-id}")
 	public String getCouponPolicyDetail(@PathVariable(name = "coupon-policy-id") Long id,
 		Model model) {
