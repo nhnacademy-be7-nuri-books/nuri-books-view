@@ -8,6 +8,6 @@ public interface BookCouponService {
 
 	ResponseMessage registerBookCoupon(BookCouponRequest bookCouponRequest);
 
-	BookCouponResponse getBookCoupon(Long id);
+	BookCouponResponse getBookCoupon(Long bookId);
 
 }

@@ -56,4 +56,11 @@ public class MemberCouponController {
 			.body(new ResponseMessage(HttpStatus.CREATED.value(), "쿠폰 발급 성공"));
 	}
 
+	@PostMapping("/my-coupon/book/{coupon-id}")
+	public ResponseEntity<ResponseMessage> registerBookCoupon(@PathVariable(name = "coupon-id") Long couponId) {
+		memberCouponService.publishBookCouponIssue(couponId);
+		return ResponseEntity.status(HttpStatus.CREATED)
+			.body(new ResponseMessage(HttpStatus.CREATED.value(), "도서 쿠폰 발급 성공"));
+	}
+
 }

@@ -14,8 +14,8 @@ public class BookCouponServiceImpl implements BookCouponService {
 	private final BookCouponServiceClient bookCouponServiceClient;
 
 	@Override
-	public BookCouponResponse getBookCoupon(Long id) {
-		return this.bookCouponServiceClient.getBookCoupon(id).getBody();
+	public BookCouponResponse getBookCoupon(Long bookId) {
+		return this.bookCouponServiceClient.getBookCoupon(bookId).getBody();
 	}
 
 	@Override
