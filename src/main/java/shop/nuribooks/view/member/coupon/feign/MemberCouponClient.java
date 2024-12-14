@@ -19,6 +19,9 @@ public interface MemberCouponClient {
 	@GetMapping("/api/member-coupons/expired-or-used")
 	Page<MemberCouponResponse> getExpiredOrUsedCouponsByMemberId(Pageable pageable);
 
+	@PostMapping("/api/member-coupons/book/{coupon-id}")
+	ResponseEntity<Void> issueMemberToBookCouponMq(@PathVariable(name = "coupon-id") Long couponId);
+
 	@PostMapping("/api/member-coupons/{coupon-id}")
 	ResponseEntity<Void> issueMemberToBookCoupon(@PathVariable(name = "coupon-id") Long couponId);
 

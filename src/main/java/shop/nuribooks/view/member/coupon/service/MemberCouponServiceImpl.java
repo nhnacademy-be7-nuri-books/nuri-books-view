@@ -28,4 +28,9 @@ public class MemberCouponServiceImpl implements MemberCouponService {
 	public void registerMemberToBookCoupon(Long id) {
 		memberCouponClient.issueMemberToBookCoupon(id).getBody();
 	}
+
+	@Override
+	public void publishBookCouponIssue(Long couponId) {
+		memberCouponClient.issueMemberToBookCouponMq(couponId).getBody();
+	}
 }

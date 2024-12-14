@@ -17,7 +17,7 @@ import shop.nuribooks.view.common.dto.ResponseMessage;
 public interface BookCouponServiceClient {
 
 	@GetMapping("/api/coupons/book-coupons/{book-id}")
-	ResponseEntity<BookCouponResponse> getBookCoupon(@PathVariable("book-id") Long id);
+	ResponseEntity<BookCouponResponse> getBookCoupon(@PathVariable(name = "book-id") Long bookId);
 
 	@PostMapping("/api/coupons/book-coupons")
 	ResponseEntity<ResponseMessage> registerBookCoupon(@Valid @RequestBody BookCouponRequest bookCouponRequest);
