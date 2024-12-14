@@ -68,4 +68,11 @@ public class AdminCategoryController {
 		adminCategoryService.deleteCategory(categoryId);
 		return "redirect:/admin/category";
 	}
+
+	@GetMapping("/popup")
+	public String showCategoryPopUp(Model model) {
+		List<CategoryResponse> categoryList = adminCategoryService.getAllCategories();
+		model.addAttribute("categories", categoryList);
+		return "admin/popup/category-pop-up";
+	}
 }

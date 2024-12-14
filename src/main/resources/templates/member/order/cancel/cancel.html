@@ -27,7 +27,7 @@
                     <span class="text-muted small" th:text="${coupon.name} + '-'"> 000 쿠폰</span>
                     <span class="text-muted small"
                           th:text="${coupon.discountPrice != null ? coupon.discountPrice : 0} + '원'"> 0원</span>
-                    <span class="text-muted small" th:text="${coupon.couponType.toKorName}"> 정량 </span>
+                    <span class="text-muted small" th:text="${coupon.couponType}"> 정량 </span>
                 </div>
             </div>
 

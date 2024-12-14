@@ -1,0 +1,236 @@
+<div th:fragment="register_modal">
+    <script>
+        const submitHandler = () => {
+            const form = document.getElementById('register_form');
+            const couponType = document.getElementById('couponType').value;
+            const categoryId = document.getElementById('categoryId').value;
+            const bookId = document.getElementById('bookId').value;
+
+
+            // couponType에 따라 itemId를 설정
+            if (couponType === 'CATEGORY') {
+                document.getElementById('itemId').value = categoryId;
+            } else if (couponType === 'BOOK') {
+                document.getElementById('itemId').value = bookId;
+            } else {
+                // ALL 이거나 다른 유형이면 itemId는 비워둡니다.
+                document.getElementById('itemId').value = '';
+            }
+
+
+            const formData = new FormData(form);
+            let url = '/admin/coupon';
+
+            fetch(url, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        response?.json().then(data => {
+                            showMessage("등록 실패 \n" + data.message)
+                        });
+                    } else {
+                        refreshList();
+                        showMessage();
+                    }
+                })
+                .catch(error => {
+                    showMessage(error);
+                });
+
+            form.reset();
+            $('#register-modal').modal('hide');
+        }
+
+        // function setMaxAmount() {
+        //     const policyType = document.getElementById("policyType").value;
+        //     const amountInput = document.getElementById("discount");
+        //
+        //     if (policyType === 'RATED') {
+        //         amountInput.setAttribute("max", "100");
+        //         amountInput.value = 0;
+        //     } else {
+        //         amountInput.removeAttribute("max");
+        //         amountInput.value = 0;
+        //     }
+        // }
+
+        function handleCouponTypeChange() {
+            const couponType = document.getElementById("couponType").value;
+            const categoryField = document.getElementById("categoryField");
+            const bookField = document.getElementById("bookField");
+
+            // 쿠폰 유형에 따라 표시할 필드를 조정합니다.
+            if (couponType === 'ALL') {
+                categoryField.style.display = 'none';
+                bookField.style.display = 'none';
+            } else if (couponType === 'CATEGORY') {
+                categoryField.style.display = 'block';
+                bookField.style.display = 'none';
+            } else if (couponType === 'BOOK') {
+                categoryField.style.display = 'none';
+                bookField.style.display = 'block';
+            }
+        }
+
+        function toggleExpirationFields() {
+            const expirationType = document.getElementById("expirationType").value;
+            const dateField = document.getElementById("dateField");
+            const daysField = document.getElementById("daysField");
+
+            if (expirationType === "DATE") {
+                dateField.style.display = "block";
+                daysField.style.display = "none";
+            } else {
+                dateField.style.display = "none";
+                daysField.style.display = "block";
+            }
+        }
+
+        function toggleQuantityField() {
+            const issuanceType = document.getElementById("issuanceType").value;
+            const quantityField = document.getElementById("quantityField");
+
+            if (issuanceType === "LIMITED") {
+                quantityField.style.display = "block";
+            } else {
+                quantityField.style.display = "none";
+            }
+        }
+    </script>
+
+    <div>
+        <!-- 쿠폰 정책 등록 버튼 -->
+        <div class="text-end mb-4">
+            <button class="btn btn-outline-secondary btn-sm" id="openModalBtn" onclick="openModal('register-modal')">
+                <i class="fas fa-plus-circle me-2"></i>새로 만들기
+            </button>
+        </div>
+
+        <!-- 쿠폰 정책 등록 모달 -->
+        <div aria-labelledby="policyModalLabel" class="modal fade" id="register-modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="policyModalLabel">쿠폰 정책 등록</h5>
+                        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- 쿠폰 정책 등록 폼 -->
+
+                        <!-- 쿠폰 정책 등록 폼 -->
+                        <form action="#" id="register_form" method="post">
+                            <div class="mb-3">
+                                <label class="form-label" for="name">쿠폰 이름</label>
+                                <input class="form-control" id="name" name="name" placeholder="쿠폰 이름" required
+                                       type="text">
+
+                                <label class="form-label" for="couponType">쿠폰 유형</label>
+                                <select class="form-select" id="couponType" name="couponType"
+                                        onchange="handleCouponTypeChange()">
+                                    <option th:each="couponType : ${couponTypes}" th:text="${couponType}"
+                                            th:value="${couponType}"></option>
+                                </select>
+
+                                <!-- 카테고리 관련 입력 필드 -->
+                                <div id="categoryField" style="display: none;">
+                                    <label class="form-label" for="categoryId">카테고리 선택</label>
+                                    <div class="input-group mb-2">
+                                        <input class="form-control" id="categoryId" name="categoryId" readonly
+                                               type="text">
+                                        <button class="btn btn-outline-secondary" onclick="openCategoryPopup()"
+                                                type="button">카테고리 선택
+                                        </button>
+                                    </div>
+
+                                    <!-- 선택한 카테고리 이름을 보여주는 필드 추가 -->
+                                    <label class="form-label" for="categoryName">카테고리 이름</label>
+                                    <input class="form-control" id="categoryName" name="categoryName" readonly
+                                           type="text">
+                                </div>
+
+                                <!-- 책 관련 입력 필드 -->
+                                <div id="bookField" style="display: none;">
+                                    <label class="form-label" for="bookId">도서 리스트</label>
+                                    <select class="form-select" id="bookId" name="bookId">
+                                        <option disabled selected value="">-- 도서 선택 --</option>
+                                        <th:block th:each="book : ${books}">
+                                            <option th:text="${book.title}" th:value="${book.id}"></option>
+                                        </th:block>
+                                    </select>
+                                </div>
+
+                                <!-- 쿠폰 정책 선택 -->
+                                <div class="mb-3">
+                                    <label class="form-label" for="couponPolicyId">쿠폰 정책 선택</label>
+                                    <div class="input-group mb-2">
+                                        <input class="form-control" id="couponPolicyId" name="couponPolicyId"
+                                               placeholder="선택된 쿠폰 정책 ID" readonly
+                                               type="text">
+                                        <button class="btn btn-outline-secondary" onclick="openCouponPolicyPopup()"
+                                                type="button">쿠폰 정책 선택
+                                        </button>
+                                    </div>
+
+                                    <!-- 선택한 쿠폰 정책 이름을 보여주는 필드 -->
+                                    <label class="form-label" for="couponPolicyName">쿠폰 정책 이름</label>
+                                    <input class="form-control" id="couponPolicyName" name="couponPolicyName"
+                                           placeholder="선택된 쿠폰 정책 이름" readonly
+                                           type="text">
+                                </div>
+
+                                <label class="form-label" for="expirationType">만료 유형</label>
+                                <select class="form-select" id="expirationType" name="expirationType"
+                                        onchange="toggleExpirationFields()">
+                                    <option disabled selected value="">만료 유형을 선택하세요</option>
+                                    <th:block th:each="expType : ${expirationTypes}">
+                                        <option th:text="${expType.toKorName()}"
+                                                th:value="${expType}"></option>
+                                    </th:block>
+                                </select>
+
+                                <div id="dateField" style="display: none;">
+                                    <label class="form-label" for="expiredAt">종료일시</label>
+                                    <input class="form-control" id="expiredAt" name="expiredAt" type="date">
+                                </div>
+
+                                <div id="daysField" style="display: none;">
+                                    <label class="form-label" for="period">기간 (일)</label>
+                                    <input class="form-control" id="period" min="0" name="period"
+                                           placeholder="0은 지정하지 않음" type="number">
+                                </div>
+
+                                <label class="form-label" for="issuanceType">수량 제한 여부</label>
+                                <select class="form-select" id="issuanceType" name="issuanceType"
+                                        onchange="toggleQuantityField()">
+                                    <option disabled selected value="">수량 제한 여부를 선택하세요</option>
+                                    <option th:each="issType : ${issuanceTypes}"
+                                            th:text="${issType.name()}"
+                                            th:value="${issType}">
+                                    </option>
+                                </select>
+
+                                <div id="quantityField" style="display: none;">
+                                    <label class="form-label" for="quantity">수량</label>
+                                    <input class="form-control" id="quantity" min="1" name="quantity"
+                                           placeholder="수량을 입력하세요" type="number">
+                                </div>
+
+                                <input id="itemId" name="itemId" type="hidden">
+
+
+                            </div>
+                            <div class="text-center">
+                                <button class="btn btn-primary" onclick="submitHandler('/admin/coupon')" type="button">
+                                    등록
+                                </button>
+                                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">아니오</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
