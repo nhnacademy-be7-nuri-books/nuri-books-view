@@ -36,12 +36,18 @@ function confirmWrapping() {
 
     // 선택된 책이 없다면 포장지 정보를 "선택하지 않음"으로 표시하고 종료
     if (selectedBooks.length === 0) {
-        alert("선택된 책이 없습니다.");
+        handleNoWrappingSelection();
+
+        const modal = bootstrap.Modal.getInstance(document.getElementById('wrappingModal'));
+        modal.hide();
+
         return;
     }
 
-    // 숨겨진 input 필드에 선택된 책들 저장
-    document.getElementById("selectedBooksHidden").value = selectedBooks.join(',');
+    if (document.getElementById("packagingTitle").textContent !== "선택하지 않음") {
+        // 숨겨진 input 필드에 선택된 책들 저장
+        document.getElementById("selectedBooksHidden").value = selectedBooks.join(',');
+    }
 
     // 모달 닫기
     const modal = bootstrap.Modal.getInstance(document.getElementById('wrappingModal'));
